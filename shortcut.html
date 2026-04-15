@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTS-MANMIN 바로가기 | ENGINEER KIM MANMIN</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#00b4d8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --navy:   #0a1628;
+    --navy2:  #0f2040;
+    --blue:   #1a4a8a;
+    --accent: #00b4d8;
+    --gold:   #f0a500;
+    --green:  #00c896;
+    --text:   #d0e8ff;
+    --text2:  #8ab4d8;
+    --border: #1e3a5f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: radial-gradient(ellipse at top, #0f2040 0%, #0a1628 60%);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 20px 60px;
+  }
+
+  /* ── 로고 헤더 ── */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .logo-wrap {
+    width: 100px;
+    height: 100px;
+    border-radius: 22px;
+    overflow: hidden;
+    margin: 0 auto 16px;
+    box-shadow: 0 0 40px rgba(0,180,216,0.5), 0 8px 32px rgba(0,0,0,0.5);
+    border: 2px solid var(--accent);
+  }
+
+  .logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+
+  .header h1 span {
+    color: var(--accent);
+  }
+
+  .header .subtitle {
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ver-badge {
+    display: inline-block;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── 설치 카드 ── */
+  .install-card {
+    background: linear-gradient(135deg, rgba(0,180,216,0.12), rgba(0,150,183,0.06));
+    border: 1.5px solid var(--accent);
+    border-radius: 16px;
+    padding: 24px 28px;
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .install-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(0,180,216,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .install-card h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .install-card p {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+
+  .install-btn-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--accent), #0096b7);
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 800;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-shadow: 0 4px 20px rgba(0,180,216,0.4);
+    text-decoration: none;
+  }
+
+  .install-btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,180,216,0.6);
+  }
+
+  #pwa-install-trigger { display: none; }
+
+  /* ── 바로가기 그리드 ── */
+  .shortcut-section {
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .shortcut-section h3 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-left: 4px;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+
+  .shortcut-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .shortcut-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shortcut-card:hover {
+    background: rgba(0,180,216,0.08);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,180,216,0.2);
+  }
+
+  .shortcut-card .sc-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .shortcut-card .sc-text {
+    flex: 1;
+  }
+
+  .shortcut-card .sc-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .shortcut-card .sc-desc {
+    font-size: 10px;
+    color: var(--text2);
+    line-height: 1.4;
+  }
+
+  .shortcut-card .sc-arrow {
+    color: var(--accent);
+    font-size: 14px;
+    opacity: 0.6;
+  }
+
+  /* 컬러 variants */
+  .sc-blue  { border-left: 3px solid var(--accent); }
+  .sc-gold  { border-left: 3px solid var(--gold);   }
+  .sc-green { border-left: 3px solid var(--green);  }
+  .sc-purple{ border-left: 3px solid #a855f7;       }
+  .sc-red   { border-left: 3px solid #e84040;       }
+  .sc-teal  { border-left: 3px solid #14b8a6;       }
+
+  /* ── 설치 안내 스텝 ── */
+  .guide-card {
+    max-width: 500px;
+    width: 100%;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .guide-card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .guide-step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+
+  .guide-step:last-child { margin-bottom: 0; }
+
+  .step-num {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, var(--accent), #0096b7);
+    color: var(--navy);
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-text {
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .step-text strong { color: var(--text); }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    font-size: 10px;
+    color: rgba(138,180,216,0.4);
+    letter-spacing: 1px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 20px;
+  }
+
+  /* 토스트 */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: rgba(0,180,216,0.95);
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 30px;
+    transition: transform 0.3s;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ── 헤더 ── -->
+<div class="header">
+  <div class="logo-wrap">
+    <img src="icons/icon-192x192.png" alt="RTS-MANMIN Logo">
+  </div>
+  <h1><span>RTS</span>-MANMIN</h1>
+  <div class="subtitle">건축물 부하계산서 · ASHRAE 2009 RTS</div>
+  <div class="ver-badge">Ver 3.0 · ENGINEER KIM MANMIN</div>
+</div>
+
+<!-- ── PWA 설치 카드 ── -->
+<div class="install-card">
+  <h2>📲 앱으로 설치하기</h2>
+  <p>
+    홈 화면에 추가하면 인터넷 없이도 사용 가능한<br>
+    <strong style="color:var(--text)">네이티브 앱처럼</strong> 실행됩니다.
+  </p>
+  <button id="pwa-install-trigger" class="install-btn-main" onclick="installPWA()">
+    <span>📲</span> 지금 설치하기
+  </button>
+  <a href="index.html" class="install-btn-main" style="margin-top:0;">
+    <span>🚀</span> 바로 실행하기
+  </a>
+</div>
+
+<!-- ── 바로가기 그리드 ── -->
+<div class="shortcut-section">
+  <h3>⚡ 기능 바로가기</h3>
+  <div class="shortcut-grid">
+
+    <a href="index.html" class="shortcut-card sc-blue">
+      <span class="sc-icon">🏢</span>
+      <div class="sc-text">
+        <span class="sc-title">메인 계산서</span>
+        <span class="sc-desc">전체 부하계산 메인 화면</span>
+      </div>
+      <span class="sc-arrow">›</span>
+    </a>
+
+    <a href="index.html#tab-project" class="shortcut-card sc-gold">
+      <span class="sc-icon">📋</span>
+      <div class="sc-text">
+        <span class="sc-title">프로젝트 정보</span>
+        <span class="sc-desc">공사명·설계자·지역 설정</span>
+      </div>
+      <span class="sc-arrow">›</span>
+    </a>
+
+    <a href="index.html#tab-room" class="shortcut-card sc-green">
+      <span class="sc-icon">🏠</span>
+      <div class="sc-text">
+        <span class="sc-title">실 구성</span>
+        <span class="sc-desc">용도별 실 면적·온도 설정</span>
+      </div>
+      <span class="sc-arrow">›</span>
+    </a>
+
+    <a href="index.html#tab-external" class="shortcut-card sc-blue">
+      <span class="sc-icon">🌡️</span>
+      <div class="sc-text">
+        <span class="sc-title">외부 부하</span>
+        <span class="sc-desc">외벽·지붕·창호 열관류</span>
+      </div>
+      <span class="sc-arrow">›</span>
+    </a>
+
+    <a href="index.html#tab-internal" class="shortcut-card sc-purple">
+      <span class="sc-icon">💡</span>
+      <div class="sc-text">
+        <span class="sc-title">내부 부하</span>
+        <span class="sc-desc">인체·조명·기기 발열</span>
+      </div>
+      <span class="sc-arrow">›</span>
+    </a>
+
+    <a href="index.html#tab-rts" class="shortcut-card sc-teal">
+      <span class="sc-icon">📊</span>
+      <div class="sc-text">
+        <span class="sc-title">RTS 계수</span>
+        <span class="sc-desc">Radiant Time Series 계수</span>
+      </div>
+      <span class="sc-arrow">›</span>
+    </a>
+
+    <a href="index.html#tab-result" class="shortcut-card sc-green">
+      <span class="sc-icon">✅</span>
+      <div class="sc-text">
+        <span class="sc-title">결과 요약</span>
+        <span class="sc-desc">냉난방 부하 최종 결과</span>
+      </div>
+      <span class="sc-arrow">›</span>
+    </a>
+
+    <a href="index.html#tab-uval" class="shortcut-card sc-red">
+      <span class="sc-icon">🔢</span>
+      <div class="sc-text">
+        <span class="sc-title">열관류율 검토</span>
+        <span class="sc-desc">U값 기준 적합 여부 판정</span>
+      </div>
+      <span class="sc-arrow">›</span>
+    </a>
+
+  </div>
+</div>
+
+<!-- ── 설치 안내 ── -->
+<div class="guide-card">
+  <h3>📱 홈 화면 추가 방법</h3>
+
+  <div class="guide-step">
+    <div class="step-num">A</div>
+    <div class="step-text">
+      <strong>Chrome (Android / PC)</strong><br>
+      주소창 오른쪽 ⋮ 메뉴 → <strong>앱 설치</strong> 또는<br>
+      상단의 <strong>[지금 설치하기]</strong> 버튼 클릭
+    </div>
+  </div>
+
+  <div class="guide-step">
+    <div class="step-num">B</div>
+    <div class="step-text">
+      <strong>Safari (iPhone / iPad)</strong><br>
+      하단 공유 버튼(□↑) → <strong>홈 화면에 추가</strong> 선택
+    </div>
+  </div>
+
+  <div class="guide-step">
+    <div class="step-num">C</div>
+    <div class="step-text">
+      <strong>Edge (Windows)</strong><br>
+      주소창 오른쪽 ··· → <strong>앱 → 이 사이트를 앱으로 설치</strong>
+    </div>
+  </div>
+
+  <div class="guide-step">
+    <div class="step-num">D</div>
+    <div class="step-text">
+      <strong>GitHub Pages 배포 후</strong><br>
+      manminkim-eng.github.io 에 업로드하면<br>
+      HTTPS 환경에서 PWA 완전 활성화됩니다.
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<div class="footer">
+  RTS-MANMIN Ver 3.0 · ENGINEER KIM MANMIN · ASHRAE 2009 RTS Method<br>
+  © 2025 만민건축사사무소 · Iksan, Jeollabuk-do
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* PWA 설치 */
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('pwa-install-trigger').style.display = 'inline-flex';
+  });
+
+  function installPWA() {
+    if (!deferredPrompt) {
+      showToast('브라우저 주소창의 설치 아이콘을 클릭하세요 📲');
+      return;
+    }
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice => {
+      if (choice.outcome === 'accepted') showToast('✅ 앱이 설치되었습니다!');
+      deferredPrompt = null;
+      document.getElementById('pwa-install-trigger').style.display = 'none';
+    });
+  }
+
+  window.addEventListener('appinstalled', () => {
+    showToast('🎉 홈 화면에 추가되었습니다!');
+  });
+
+  /* 탭 해시 이동 */
+  document.querySelectorAll('a[href^="index.html#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const hash = a.href.split('#')[1];
+      sessionStorage.setItem('rts-goto-tab', hash);
+    });
+  });
+
+  /* 토스트 */
+  function showToast(msg, duration = 2800) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), duration);
+  }
+
+  /* Service Worker */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js', { scope: './' });
+  }
+</script>
+</body>
+</html>

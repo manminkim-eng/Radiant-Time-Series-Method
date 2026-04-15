@@ -1,72 +1,90 @@
-# RTS-MANMIN 건축물 부하계산서 · 열관류율 검토 시스템
+# RTS-MANMIN 건축물 부하계산서 Ver 3.0 — PWA 패키지
 
-**ENGINEER KIM MANMIN** | RTS-MANMIN Ver 3.0
-
----
-
-## 🌐 Live Demo
-
-| 앱 | URL |
-|---|---|
-| 🌡️ **RTS 부하계산서** | https://manminkim-eng.github.io/rts-manmin/RTS_부하계산서.html |
-| 🧱 **열관류율 검토 WAP** | https://manminkim-eng.github.io/rts-manmin/ |
+> ASHRAE 2009 RTS법 기반 건축물 냉난방 부하계산 전문 도구  
+> by **ENGINEER KIM MANMIN** · 만민건축사사무소 · Iksan, Jeollabuk-do
 
 ---
 
-## 📱 PWA 설치 (앱으로 사용)
-
-### PC (Chrome / Edge)
-주소창 우측 **⊕ 설치** 아이콘 클릭 → 앱 설치
-
-### 모바일 (Android Chrome)
-브라우저 메뉴 → **"홈 화면에 추가"**
-
-### iOS (Safari)
-공유 버튼 → **"홈 화면에 추가"**
-
----
-
-## 📂 파일 구성
+## 📦 파일 구성
 
 ```
-/
-├── index.html              ← 열관류율 종합 검토 시스템 (MANMIN-Ver3.0)
-├── RTS_부하계산서.html      ← RTS 건축물 부하계산서 (ASHRAE 2009 RTS법)
-├── .nojekyll               ← GitHub Pages 설정
-└── icons/                  ← PWA 아이콘
-    ├── icon-192x192.png
-    ├── icon-512x512.png
-    ├── apple-touch-icon.png
-    └── favicon-32x32.png
+pwa-rts-manmin/
+├── index.html          ← 메인 계산서 (PWA 태그 포함)
+├── shortcut.html       ← 바로가기 & 설치 안내 페이지
+├── manifest.json       ← PWA 매니페스트
+├── sw.js               ← Service Worker (오프라인 캐싱)
+├── README.md           ← 이 파일
+└── icons/
+    ├── icon-72x72.png
+    ├── icon-96x96.png
+    ├── icon-128x128.png
+    ├── icon-144x144.png
+    ├── icon-152x152.png
+    ├── icon-192x192.png   ← Android 홈 화면 아이콘
+    ├── icon-384x384.png
+    ├── icon-512x512.png   ← Splash Screen 아이콘
+    ├── favicon-16x16.png
+    ├── favicon-32x32.png
+    └── apple-touch-icon.png  ← iOS Safari 홈 화면 아이콘
 ```
 
 ---
 
-## 🔧 기능 요약
+## 🚀 GitHub Pages 배포 방법
 
-### 열관류율 검토 WAP (`index.html`)
-- 건축물 에너지절약설계기준 (국토교통부고시 제2025-738호) 기준값 자동 적용
-- 부위별 재료 레이어 입력 → U = 1/ΣR 자동 계산
-- 법적 기준 적합 판정 · A4 산출서 인쇄
-- **📤 RTS 전송 버튼** → 열관류율 + 재료 데이터를 RTS 부하계산서로 전달
+1. `manminkim-eng.github.io` 저장소에 이 파일들을 **루트 또는 서브폴더**에 업로드
+2. GitHub Settings → Pages → Source: `main` 브랜치 선택
+3. HTTPS로 자동 서빙 → PWA 완전 활성화
 
-### RTS 부하계산서 (`RTS_부하계산서.html`)
-- ASHRAE Fundamentals 2009 · Radiant Time Series Method
-- 실별 외피(유리창·외벽·지붕) + 내부발열(인체·조명·기기) 상세 입력
-- 24시간 냉방부하 · Peak 시각 · 난방부하 자동 계산
-- 💾 프로젝트 저장(.rts) / 📂 불러오기 — 작업 이어하기 지원
-- A4 전체 출력 (표지·목차·SHEET 0~8)
+### 서브폴더 배포 시 (`/rts/`)
 
----
+`manifest.json`의 `start_url`과 `scope`를 수정:
+```json
+"start_url": "/rts/index.html",
+"scope": "/rts/"
+```
 
-## 📐 계산 기준
-
-- **RTS Method** : ASHRAE Fundamentals 2009, Ch.18
-- **CTS/RTS 계수** : Zone 8 (중량 구조체) 기준
-- **Sol-Air 온도** : ASHRAE 2009 Fourier 계산식
-- **인체 발열** : Code A~I (SH/LH W/p, 26℃ 기준)
-- **법적 기준** : 건축물 에너지절약설계기준 제2025-738호
+`sw.js`의 `STATIC_ASSETS` 경로도 `/rts/` 프리픽스 추가.
 
 ---
 
-© 2026 ENGINEER KIM MANMIN · All rights reserved
+## 📱 PWA 설치 방법
+
+| 플랫폼 | 방법 |
+|--------|------|
+| **Android Chrome** | 주소창 오른쪽 ⋮ → **앱 설치** 또는 하단 배너 탭 |
+| **iPhone Safari** | 하단 공유(□↑) → **홈 화면에 추가** |
+| **PC Chrome** | 주소창 우측 설치 아이콘 클릭 |
+| **PC Edge** | ··· → 앱 → 이 사이트를 앱으로 설치 |
+
+---
+
+## ⚡ PWA 기능
+
+- ✅ **오프라인 지원** — Service Worker 캐시로 인터넷 없이 사용
+- ✅ **홈 화면 설치** — 네이티브 앱처럼 독립 실행
+- ✅ **앱 바로가기** — 각 탭으로 직접 진입
+- ✅ **자동 업데이트** — 새 버전 배포 시 자동 캐시 갱신
+- ✅ **Landscape 최적화** — 가로 모드 기본 설정
+- ✅ **테마 컬러** — 브라우저 UI에 MANMIN 네이비/시안 적용
+
+---
+
+## 🔧 커스터마이징
+
+### 프로젝트명 기본값 변경
+`index.html` 하단 `init()` 함수:
+```javascript
+if(pn && !pn.value) pn.value = '새 프로젝트명';
+if(pd && !pd.value) pd.value = '설계자명';
+```
+
+### 캐시 버전 업데이트
+`sw.js` 상단:
+```javascript
+const CACHE_NAME = 'rts-manmin-v3.0.1'; // 버전 번호 증가
+```
+
+---
+
+© 2025 만민건축사사무소 · ENGINEER KIM MANMIN

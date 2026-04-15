@@ -3,30 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- ===== PWA Meta Tags ===== -->
-<meta name="application-name" content="RTS-MANMIN">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="RTS-MANMIN">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#00b4d8">
-<meta name="msapplication-TileColor" content="#0a1628">
-<meta name="msapplication-TileImage" content="icons/icon-144x144.png">
-<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver3.0 by MANMIN">
-
-<!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
-
-<!-- Apple Touch Icons -->
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
-<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
-
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-<!-- ======================== -->
-
 <title>RTS-MANMIN 건축물 부하계산서 Ver3.0 | 만민 건축사 신사옥 신축공사</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
@@ -1493,16 +1469,6 @@
     </div>
   </div>
   <div class="header-badges">
-<button id="pwa-install-btn" onclick="installPWA()"
-  style="display:none;align-items:center;gap:6px;padding:6px 12px;
-         background:linear-gradient(135deg,#00b4d8,#0096b7);
-         border:none;border-radius:6px;color:#0a1628;font-size:10px;
-         font-weight:800;cursor:pointer;letter-spacing:0.5px;
-         font-family:'Noto Sans KR',sans-serif;
-         box-shadow:0 0 12px rgba(0,180,216,0.4);">
-  <span>📲</span> 앱 설치
-</button>
-
     <button class="btn-uval" onclick="window.open('https://manminkim-eng.github.io/u-value-app-/','_blank')" title="열관류율 종합 검토 시스템 열기">
       <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 2 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
       🧱 열관류율 검토
@@ -5312,74 +5278,5 @@ function init() {
 
 window.addEventListener('load', init);
 </script>
-
-<script>
-/* ===== PWA Service Worker 등록 ===== */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js', { scope: './' })
-      .then(reg => {
-        console.log('[PWA] Service Worker registered:', reg.scope);
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              console.log('[PWA] 새 버전이 사용 가능합니다. 페이지를 새로고침 하세요.');
-            }
-          });
-        });
-      })
-      .catch(err => console.error('[PWA] SW registration failed:', err));
-  });
-}
-
-/* ===== PWA 설치 배너 ===== */
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  const btn = document.getElementById('pwa-install-btn');
-  if (btn) btn.style.display = 'flex';
-});
-
-function installPWA() {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(choice => {
-    console.log('[PWA] Install choice:', choice.outcome);
-    deferredPrompt = null;
-    const btn = document.getElementById('pwa-install-btn');
-    if (btn) btn.style.display = 'none';
-  });
-}
-
-window.addEventListener('appinstalled', () => {
-  console.log('[PWA] App installed!');
-/* ===== 해시 기반 탭 이동 (바로가기 지원) ===== */
-(function() {
-  function gotoHashTab() {
-    const hash = location.hash.replace('#','') || sessionStorage.getItem('rts-goto-tab');
-    if (hash) {
-      sessionStorage.removeItem('rts-goto-tab');
-      // showTab 함수가 로드된 후 실행
-      const tryGo = setInterval(() => {
-        if (typeof showTab === 'function') {
-          clearInterval(tryGo);
-          const tabEl = document.getElementById(hash);
-          if (tabEl) showTab(hash);
-        }
-      }, 100);
-      setTimeout(() => clearInterval(tryGo), 3000);
-    }
-  }
-  window.addEventListener('load', gotoHashTab);
-  window.addEventListener('hashchange', gotoHashTab);
-})();
-
-  const btn = document.getElementById('pwa-install-btn');
-  if (btn) btn.style.display = 'none';
-});
-</script>
-
 </body>
 </html>
