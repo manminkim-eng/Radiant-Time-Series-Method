@@ -5381,5 +5381,198 @@ window.addEventListener('appinstalled', () => {
 });
 </script>
 
+
+<script>
+/* ══════════════════════════════════════════════════════
+   MANMIN RTS-Receiver  Ver3.1
+   ─────────────────────────────────────────────────────
+   열관류율 앱(u-value-app)으로부터 UVAL_PAYLOAD 수신 →
+   uval-ref 테이블 자동 채우기 + 판정 표시 + 토스트 알림
+   역전송: window.sendRtsResult() 로 결과를 opener에 전달
+══════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  const UVAL_ORIGIN = 'https://manminkim-eng.github.io';
+
+  /* ── localStorage 헬퍼 ── */
+  function _getLatest() {
+    try { return JSON.parse(localStorage.getItem('MANMIN_UVAL_LATEST') || 'null'); } catch(_) { return null; }
+  }
+
+  /* ──────────────────────────────────────────────────
+     payload → uval-ref 테이블 자동 채우기
+     열관류율 앱의 part/exposure 문자열을 RTS 행(idx)에 매핑
+  ────────────────────────────────────────────────── */
+  const PART_MAP = [
+    { idx:0, partKw:'외벽',  expKw:'직접' },
+    { idx:1, partKw:'외벽',  expKw:'간접' },
+    { idx:2, partKw:'지붕',  expKw:'직접' },
+    { idx:3, partKw:'지붕',  expKw:'간접' },
+    { idx:4, partKw:'바닥',  expKw:'직접' },
+    { idx:5, partKw:'창',    expKw:'직접' },
+    { idx:6, partKw:'창',    expKw:'간접' },
+  ];
+
+  function _applyPayload(payload) {
+    if (!payload) return;
+
+    /* 전역 상태 주입 */
+    window.MANMIN_UVAL = payload;
+
+    /* part + exposure → 매핑 */
+    const partStr = payload.partShort || payload.part || '';
+    const expStr  = payload.exposure  || '';
+
+    const matched = PART_MAP.filter(m =>
+      partStr.includes(m.partKw) &&
+      expStr.includes(m.expKw)
+    );
+
+    matched.forEach(m => {
+      const inp   = document.getElementById(`uval-design-${m.idx}`);
+      const judge = document.getElementById(`uval-judge-${m.idx}`);
+      if (!inp) return;
+
+      inp.value = payload.currentU;
+
+      /* 판정 갱신 */
+      if (judge) {
+        const stdU = parseFloat(inp.closest('tr')
+          ?.querySelector('td:nth-child(4)')
+          ?.textContent) || 0;
+        const pass = payload.currentU <= (stdU || payload.targetU || 9999);
+        judge.textContent  = payload.isPass ? '✓ 적합' : '✗ 초과';
+        judge.style.color  = payload.isPass ? 'var(--green)' : 'var(--red)';
+      }
+    });
+
+    /* 프로젝트명·설계자 자동 동기화 */
+    if (payload.projectName) {
+      const pn = document.getElementById('p-name');
+      if (pn && !pn.value) pn.value = payload.projectName;
+    }
+    if (payload.designerName) {
+      const pd = document.getElementById('p-designer');
+      if (pd && !pd.value) pd.value = payload.designerName;
+    }
+
+    /* 커스텀 이벤트 (확장 포인트) */
+    window.dispatchEvent(new CustomEvent('manmin:uval', { detail: payload }));
+
+    /* 수신 완료 토스트 */
+    _showReceivedToast(payload);
+
+    console.info('[RTS-Receiver] UVAL_PAYLOAD 적용 완료 →', payload.partShort, payload.currentU, 'W/m²K');
+  }
+
+  /* ── postMessage 수신 리스너 ── */
+  window.addEventListener('message', function (e) {
+    if (e.origin !== UVAL_ORIGIN) return;
+    const msg = e.data || {};
+    if (msg.type === 'UVAL_PAYLOAD' && msg.payload) {
+      _applyPayload(msg.payload);
+    }
+  });
+
+  /* ── 로드 완료 시 처리 ── */
+  window.addEventListener('load', function () {
+    if (window.opener && !window.opener.closed) {
+      /* ① opener에게 RTS_READY 신호 → 열관류율 앱이 postMessage로 payload 전송 */
+      try {
+        window.opener.postMessage({ type: 'RTS_READY' }, UVAL_ORIGIN);
+        console.info('[RTS-Receiver] RTS_READY 신호 전송');
+      } catch (err) {
+        /* opener 접근 실패 시 localStorage 폴백 */
+        console.warn('[RTS-Receiver] opener 접근 실패, localStorage 폴백:', err);
+        _applyPayload(_getLatest());
+      }
+    } else {
+      /* ② 직접 접속 / 새로고침: localStorage에서 최신 payload 읽기 */
+      const latest = _getLatest();
+      if (latest) {
+        console.info('[RTS-Receiver] localStorage 폴백 로드');
+        _applyPayload(latest);
+      }
+    }
+  });
+
+  /* ── RTS 결과 역전송 (RTS 계산 완료 후 호출) ── */
+  /*  사용법: window.sendRtsResult({ part, exposure, rtsLoad, rtsDetail }) */
+  window.sendRtsResult = function (result) {
+    const payload = Object.assign({}, result, { ts: new Date().toISOString() });
+    /* localStorage에도 백업 */
+    try {
+      localStorage.setItem(
+        'MANMIN_RTS_RESULT_' + (result.part || 'unknown'),
+        JSON.stringify(payload)
+      );
+    } catch (_) {}
+    /* opener에게 역전송 */
+    if (window.opener && !window.opener.closed) {
+      try {
+        window.opener.postMessage({ type: 'RTS_RESULT', payload }, UVAL_ORIGIN);
+        console.info('[RTS-Receiver] RTS_RESULT 역전송:', result.part);
+      } catch (err) {
+        console.warn('[RTS-Receiver] RTS_RESULT 역전송 실패:', err);
+      }
+    }
+  };
+
+  /* ── 수신 완료 토스트 ── */
+  function _showReceivedToast(payload) {
+    /* 기존 토스트 재사용 */
+    let toast = document.getElementById('_uval-recv-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = '_uval-recv-toast';
+      toast.style.cssText = [
+        'position:fixed','top:70px','right:18px','z-index:99999',
+        'background:linear-gradient(135deg,#064e3b,#065f46)',
+        'color:#6ee7b7',
+        'border:1.5px solid rgba(110,231,183,.45)',
+        'border-radius:12px','padding:14px 18px',
+        'box-shadow:0 6px 28px rgba(0,0,0,.55)',
+        'font-family:"Noto Sans KR",sans-serif',
+        'max-width:340px','font-size:12px','line-height:1.7',
+        'animation:_uval-in .22s cubic-bezier(.4,0,.2,1) both',
+      ].join(';');
+      document.body.appendChild(toast);
+    }
+
+    const passStr = payload.isPass ? '✅ 적합' : '❌ 기준 초과';
+    toast.innerHTML = `
+<style>
+@keyframes _uval-in{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+</style>
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+  <span style="font-size:18px;">🔗</span>
+  <div style="flex:1">
+    <div style="font-size:11px;font-weight:900;letter-spacing:.04em;">열관류율 데이터 수신 완료</div>
+    <div style="font-size:10px;color:rgba(110,231,183,.6);margin-top:1px;">${payload.projectName || ''}</div>
+  </div>
+  <button onclick="this.closest('#_uval-recv-toast').remove()"
+    style="background:none;border:none;color:rgba(110,231,183,.5);font-size:16px;cursor:pointer;padding:0;line-height:1;">✕</button>
+</div>
+<div style="background:rgba(0,0,0,.25);border-radius:8px;padding:9px 12px;font-size:11px;">
+  <div>부위 : <strong style="color:#a7f3d0">${payload.partShort || payload.part}</strong></div>
+  <div>U값 &nbsp;: <strong style="color:#fcd34d;font-family:'JetBrains Mono',monospace">${payload.currentU}</strong> W/m²K &nbsp;${passStr}</div>
+  <div>ΣR &nbsp;&nbsp;: ${payload.totalR} m²K/W · 레이어 ${payload.layerRows ? payload.layerRows.length : 0}개</div>
+</div>
+<div style="margin-top:8px;font-size:10px;color:rgba(110,231,183,.55);">
+  ▶ 열관류율 참조 입력표에 자동 반영되었습니다.
+</div>`;
+
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => {
+      toast.style.transition = 'opacity .2s';
+      toast.style.opacity = '0';
+      setTimeout(() => { if (toast.parentNode) toast.remove(); }, 220);
+    }, 7000);
+  }
+
+})();
+</script>
+
 </body>
 </html>
