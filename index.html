@@ -14,6 +14,9 @@
 <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
 <meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver3.0 by MANMIN">
 
+<!-- SheetJS Excel Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
 
@@ -728,6 +731,11 @@
     border-radius: 6px;
     overflow: hidden;
     margin-bottom: 16px;
+  }
+
+  /* hourly-table-block: 화면 모드에서 내부 여백 유지 */
+  .hourly-table-block > div[style*="overflow-x"] {
+    padding: 10px !important;
   }
 
   .sheet-block-header {
@@ -1853,34 +1861,75 @@
   .info-box { display: none !important; }
   .no-print { display: none !important; }
 
-  /* ── 24열 시각별 테이블: A4 가로 방향 전용 페이지 ── */
-  #tab-result .sheet-block:has(#tbl-hourly-load),
-  #tab-weather .sheet-block {
-    page: wide;
-  }
-  @page wide {
-    size: A4 landscape;
-    margin: 12mm 10mm;
-  }
+  /* ══════════════════════════════════════════════════════════
+     24열 시각별 테이블 인쇄 — 기본 설정
+     실제 scale 처리는 exportReport()에서 JS로 동적 주입
+     여기서는 Chrome이 named @page를 무시하므로 page: 지시자 제거
+  ══════════════════════════════════════════════════════════ */
 
-  /* 가로 테이블 글씨 더 축소 */
-  #tbl-hourly-load,
-  #tbody-hourly-temp {
-    font-size: 5.5pt !important;
-  }
-  #tbl-hourly-load th,
-  #tbl-hourly-load td,
-  #tbody-hourly-temp th,
-  #tbody-hourly-temp td {
-    padding: 1pt 1pt !important;
-    font-size: 5.5pt !important;
-    white-space: nowrap !important;
-  }
-
-  /* ── 가로 스크롤 컨테이너 → 인쇄 시 넘침 허용 ── */
+  /* 공통: 가로 스크롤 컨테이너 인쇄 시 overflow 해제 */
   [style*="overflow-x:auto"],
   [style*="overflow-x: auto"] {
     overflow: visible !important;
+  }
+
+  /* ── 실별 상세 계산서: 인쇄 시 용지 폭 맞춤 ── */
+  #room-detail-sheets .excel-wrap {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    overflow: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #room-detail-sheets .excel-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    font-size: 6pt !important;
+    overflow: visible !important;
+  }
+
+  /* 항목코드 열 */
+  #room-detail-sheets .excel-table th:nth-child(1),
+  #room-detail-sheets .excel-table td:nth-child(1) { width: 40pt !important; }
+  /* 내용 열 */
+  #room-detail-sheets .excel-table th:nth-child(2),
+  #room-detail-sheets .excel-table td:nth-child(2) { width: 60pt !important; }
+  /* 용량 열 */
+  #room-detail-sheets .excel-table th:nth-child(4),
+  #room-detail-sheets .excel-table td:nth-child(4) { width: 44pt !important; }
+  /* 난방 열 */
+  #room-detail-sheets .excel-table th:last-child,
+  #room-detail-sheets .excel-table td:last-child  { width: 36pt !important; }
+  /* 7시각 열: 균등 */
+  #room-detail-sheets .excel-table th:nth-child(n+5):not(:last-child),
+  #room-detail-sheets .excel-table td:nth-child(n+5):not(:last-child) {
+    width: auto !important;
+  }
+
+  #room-detail-sheets .excel-table th,
+  #room-detail-sheets .excel-table td {
+    padding: 1.2pt 1pt !important;
+    font-size: 6pt !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    border: 0.3pt solid #aaa !important;
+    line-height: 1.2 !important;
+  }
+
+  /* 요약 헤더 테이블 */
+  #tbl-room-summary {
+    width: 100% !important;
+    table-layout: fixed !important;
+    font-size: 6.5pt !important;
+  }
+
+  #tbl-room-summary th,
+  #tbl-room-summary td {
+    padding: 1.5pt 2pt !important;
+    font-size: 6.5pt !important;
+    white-space: nowrap !important;
   }
 
   /* ── 프린트 전용 페이지 헤더/푸터 ── */
@@ -2851,12 +2900,12 @@
       </div>
 
       <!-- 시각별 외기 온도 (ASHRAE 2009 정밀 계산식) -->
-      <div class="sheet-block">
+      <div class="sheet-block hourly-table-block">
         <div class="sheet-block-header">
           <div class="sheet-block-title">📊 시각별 외기온도 (ASHRAE 2009 Fourier 계산식 적용)</div>
-          <button class="btn btn-secondary btn-sm" onclick="calcHourlyTemp()">계산</button>
+          <button class="btn btn-secondary btn-sm no-print" onclick="calcHourlyTemp()">계산</button>
         </div>
-        <div style="padding:12px;overflow-x:auto">
+        <div style="overflow-x:auto">
           <table class="excel-table" id="tbl-hourly-temp">
             <thead>
               <tr>
@@ -2941,23 +2990,39 @@
         </div>
       </div>
 
-      <!-- 실별 부하 결과 집계 -->
+      <!-- 실별 부하 결과 상세 계산서 (RM-Load1 형식) -->
       <div class="excel-wrap" id="room-load-result-wrap" style="display:none">
-        <div class="excel-header">📊 실별 냉난방 부하 계산 결과 (RTS 법)</div>
-        <div style="overflow-x:auto">
-        <table class="excel-table">
-          <thead>
-            <tr>
-              <th class="col-label"></th>
-              <th>No.</th><th>실 명칭</th><th>용도</th>
-              <th>수량</th><th>면적(㎡)</th><th>인원(p)</th>
-              <th>냉방SH(kW)</th><th>냉방LH(kW)</th><th>냉방합계(kW)</th>
-              <th>Peak 시각</th><th>밀도(W/㎡)</th><th>난방(kW)</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-room-loads"></tbody>
-        </table>
+        <div class="excel-header" style="display:flex;justify-content:space-between;align-items:center">
+          <span>📊 실별 냉난방 부하 계산서 — ASHRAE 2009 RTS법 (2-3. COOLING / HEATING LOAD)</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-secondary btn-sm" onclick="toggleRoomDetail()" id="btn-room-detail-toggle" style="font-size:10px">🔍 간략 보기</button>
+            <button class="btn btn-secondary btn-sm" onclick="exportRoomLoadExcel()" style="font-size:10px">📥 Excel</button>
+          </div>
         </div>
+        <!-- 집계 요약 헤더 -->
+        <div style="overflow-x:auto">
+          <table class="excel-table" id="tbl-room-summary">
+            <thead>
+              <tr>
+                <th class="col-label" style="min-width:30px">No.</th>
+                <th class="col-label" style="min-width:60px">실 번호</th>
+                <th class="col-label" style="min-width:90px">실 명칭</th>
+                <th class="col-label">수량</th>
+                <th class="col-label">면적(㎡)</th>
+                <th class="col-label">인원(p)</th>
+                <th class="col-label">냉방SH(kW)</th>
+                <th class="col-label">냉방LH(kW)</th>
+                <th class="col-label" style="background:rgba(0,180,216,0.2)">냉방합계(kW)</th>
+                <th class="col-label">Peak</th>
+                <th class="col-label">밀도(W/㎡)</th>
+                <th class="col-label" style="color:var(--red)">난방(kW)</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-room-loads"></tbody>
+          </table>
+        </div>
+        <!-- 실별 상세 계산서 영역 -->
+        <div id="room-detail-sheets" style="margin-top:4px"></div>
       </div>
     </div>
 
@@ -3005,7 +3070,7 @@
         </div>
       </div>
       <!-- 열관류율 연계 안내 배너 -->
-      <div style="background:linear-gradient(135deg,#0a1f0e,#064e3b);border:1px solid rgba(5,150,105,0.4);border-left:3px solid #059669;border-radius:7px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="background:linear-gradient(135deg,#0a1f0e,#064e3b);border:1px solid rgba(5,150,105,0.4);border-left:3px solid #059669;border-radius:7px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <span style="font-size:18px">🧱</span>
           <div>
@@ -3016,6 +3081,16 @@
         <button onclick="showTab('tab-uval')" style="background:rgba(5,150,105,0.25);border:1px solid rgba(5,150,105,0.5);color:#6ee7b7;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(5,150,105,0.4)'" onmouseout="this.style.background='rgba(5,150,105,0.25)'">
           🧱 U값 검토 탭으로 →
         </button>
+      </div>
+
+      <!-- rooms[] 기반 자동 합산 안내 배너 -->
+      <div style="background:rgba(0,180,216,0.10);border:1px solid var(--accent);border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:11px;color:var(--text);line-height:1.7">
+        <strong style="color:var(--accent)">ℹ️ 외부 열취득 데이터 입력 안내</strong><br>
+        RTS 계산 엔진은 <strong>「실 목록 탭」의 각 실 상세 입력(🔧 버튼 → 유리창·외벽/지붕 탭)</strong>에서
+        <b>방위·면적·U값·SHGC</b>를 읽어 실별로 합산합니다.<br>
+        아래 표는 <span style="color:var(--gold)">실 데이터 없을 때 폴백으로 사용하는 전역 참조값</span>입니다.
+        실을 입력했다면 아래 값은 계산에 영향을 주지 않습니다.
+        <div id="ext-rooms-note" style="margin-top:6px;display:none;background:rgba(0,200,150,0.12);border:1px solid var(--green);border-radius:5px;padding:5px 10px;font-size:10px;color:var(--green);font-weight:600"></div>
       </div>
 
       <div class="form-grid">
@@ -3055,11 +3130,11 @@
       </div>
 
       <!-- Sol-Air 온도 계산 테이블 -->
-      <div class="sheet-block">
+      <div class="sheet-block hourly-table-block">
         <div class="sheet-block-header">
           <div class="sheet-block-title">🌡️ Sol-Air 온도 (ASHRAE 2009 정밀 계산식)</div>
         </div>
-        <div style="padding:10px;overflow-x:auto">
+        <div style="overflow-x:auto">
           <table class="excel-table" id="tbl-sol-air">
             <thead>
               <tr>
@@ -3094,6 +3169,16 @@
       <div class="section-header">
         <div class="section-title">💡 내부 열취득 (Internal Heat Gain) <span class="stag">SHEET 4</span></div>
         <button class="btn btn-primary btn-sm" onclick="calcInternal()">내부 열취득 계산</button>
+      </div>
+
+      <!-- ── rooms[] 연동 안내 배너 ── -->
+      <div style="background:rgba(0,180,216,0.10);border:1px solid var(--accent);border-radius:8px;
+                  padding:10px 16px;margin-bottom:14px;font-size:11px;color:var(--text);line-height:1.7">
+        <strong style="color:var(--accent)">ℹ️ 내부 발열 데이터 입력 안내</strong><br>
+        RTS 계산 엔진은 <strong>「실 목록 탭」의 각 실 상세 입력(🔧 버튼 → 내부발열·설정 탭)</strong>에서
+        <b>재실밀도·인체코드·조명밀도(LPD)·기기밀도(EPD)·운영시간</b>을 읽어 자동 합산합니다.<br>
+        아래 값들은 <span style="color:var(--gold)">실 데이터 입력 후 전체계산 시 자동 동기화</span>되는
+        참조용 요약값입니다. 실이 없을 때만 직접 입력하세요.
       </div>
 
       <div class="form-grid">
@@ -3255,6 +3340,63 @@
           <tbody id="tbody-internal-sum"></tbody>
         </table>
       </div>
+
+      <!-- ── ASHRAE HOF 2009 인체 발열량 코드 참조표 ── -->
+      <div class="excel-wrap" style="margin-top:18px">
+        <div class="excel-header">📋 인체 발열량 기준표 — ASHRAE HOF 2009, Ch.18 Table 1 &nbsp;<span style="font-size:10px;color:var(--text2);font-weight:400">(단위: W/인)</span></div>
+        <div style="overflow-x:auto">
+          <table class="excel-table" style="font-size:10px">
+            <thead>
+              <tr>
+                <th rowspan="2" class="col-label" style="min-width:30px">Code</th>
+                <th rowspan="2" class="col-label" style="min-width:110px">용도 (Type of Work)</th>
+                <th colspan="2" class="col-label">22℃</th>
+                <th colspan="2" class="col-label">23℃</th>
+                <th colspan="2" class="col-label">24℃</th>
+                <th colspan="2" class="col-label">25℃</th>
+                <th colspan="2" class="col-label" style="background:rgba(0,180,216,0.25)">26℃ ★</th>
+                <th colspan="2" class="col-label">27℃</th>
+              </tr>
+              <tr>
+                <th class="col-label">SH</th><th class="col-label">LH</th>
+                <th class="col-label">SH</th><th class="col-label">LH</th>
+                <th class="col-label">SH</th><th class="col-label">LH</th>
+                <th class="col-label">SH</th><th class="col-label">LH</th>
+                <th class="col-label" style="background:rgba(0,180,216,0.15)">SH</th>
+                <th class="col-label" style="background:rgba(0,180,216,0.15)">LH</th>
+                <th class="col-label">SH</th><th class="col-label">LH</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-people-code-ref"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── 용도별 내부부하 기준 코드표 (RTS-SAREK) ── -->
+      <div class="excel-wrap" style="margin-top:14px">
+        <div class="excel-header">🏢 용도별 내부부하 기준 코드표 — RTS-SAREK (ASHRAE HOF 2009 기반)</div>
+        <div style="overflow-x:auto">
+          <table class="excel-table" style="font-size:10px">
+            <thead>
+              <tr>
+                <th class="col-label">Type</th>
+                <th class="col-label" style="min-width:80px">용도</th>
+                <th class="col-label">재실밀도<br>(p/㎡)</th>
+                <th class="col-label">인체<br>Radiant(%)</th>
+                <th class="col-label">인체코드<br>(Code)</th>
+                <th class="col-label">LPD<br>(W/㎡)</th>
+                <th class="col-label">조명<br>Radiant(%)</th>
+                <th class="col-label">EPD<br>(W/㎡)</th>
+                <th class="col-label">기기<br>Radiant(%)</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-internal-type-ref"></tbody>
+          </table>
+        </div>
+        <div style="padding:6px 10px;font-size:9px;color:var(--text2)">
+          ★ 26℃ 기준값. 실 설정온도에 따라 자동 보간 적용됨 &nbsp;|&nbsp; EPD 0 = 해당 없음
+        </div>
+      </div>
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
@@ -3305,7 +3447,7 @@
         <div class="section-title">📈 냉난방 부하 계산 결과 <span class="stag">SHEET 5</span></div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-primary btn-sm" onclick="calcAll()">🔄 전체 계산</button>
-          <button class="btn btn-secondary btn-sm" onclick="exportExcel()">📊 Excel 출력</button>
+          <button class="btn btn-secondary btn-sm" onclick="exportExcel()" title="RTS 계산 결과를 Excel(.xlsx)로 저장">📊 Excel 저장</button>
         </div>
       </div>
 
@@ -3380,11 +3522,11 @@
       </div>
 
       <!-- 시각별 냉방 부하 상세 테이블 -->
-      <div class="sheet-block">
+      <div class="sheet-block hourly-table-block">
         <div class="sheet-block-header">
           <div class="sheet-block-title">📋 시각별 냉방 부하 상세 (RTS 계산 결과)</div>
         </div>
-        <div style="padding:12px;overflow-x:auto">
+        <div style="overflow-x:auto">
         <table class="excel-table" id="tbl-hourly-load">
           <thead>
             <tr>
@@ -4252,6 +4394,7 @@ function showTab(id) {
   const si = document.querySelectorAll('.sidebar-item')[sideMap[id]];
   if(si) si.classList.add('active');
   if(id==='tab-rts') showRTSTable();
+  if(id==='tab-internal') { renderPeopleCodeRef(); renderInternalTypeRef(); calcInternal(); }
 
   /* tab-uval: localStorage에 데이터 있으면 자동 로드 */
   if (id === 'tab-uval') {
@@ -4367,19 +4510,81 @@ function renderHourlyTempTable(hourlyT, solAir) {
 
 
 /* ====================================================
-   인체 발열량 코드표 (ASHRAE · PDF 계산서 Code A~I)
-   실내온도 26℃ 기준 [현열(SH), 잠열(LH)] W/p
+   인체 발열량 코드표 — ASHRAE HOF 2009, Ch.18 Table 1
+   출처: RTS-SAREK 출력물(rts_sarek_output.xls) 확인값
+   ─────────────────────────────────────────────────
+   기본 sh/lh = 26℃ 기준값
+   byTemp[T] = 온도별 정밀값 (22~27℃)
+   ─────────────────────────────────────────────────
+   Code  용도           22℃          26℃(기본)
+   A     경작업(사무소) SH72 LH47 → SH57 LH62
+   B     경작업(은행)   SH73 LH58 → SH58 LH73
+   C     앉은작업(식당) SH81 LH64 → SH65 LH80
+   D     정좌(극장)     SH66 LH27 → SH56 LH37
+   E     경작업(학교)   SH71 LH34 → SH56 LH49
+   F     공장의 경작업  SH91 LH107→ SH65 LH133
+   G     댄스(댄스홀)   SH99 LH127→ SH72 LH154
+   H     공장의 중작업  SH115LH149→ SH134LH177
+   I     볼링(볼링장)   SH156LH227→ SH127LH256
 ===================================================== */
 const PEOPLE_CODE = {
-  'A': { label:'경작업(사무소)', sh:57, lh:62 },
-  'B': { label:'경작업(은행)',   sh:58, lh:73 },
-  'C': { label:'앉은작업(식당)', sh:65, lh:80 },
-  'D': { label:'경작업(학교)',   sh:56, lh:37 },
-  'E': { label:'공장의 경작업',  sh:56, lh:49 },
-  'F': { label:'댄스(댄스홀)',   sh:65, lh:133 },
-  'G': { label:'공장의 중작업',  sh:72, lh:154 },
-  'H': { label:'볼링(볼링장)',   sh:134,lh:177 },
-  'I': { label:'정좌(극장)',     sh:127,lh:256 },
+  'A': { label:'경작업(사무소)', sh:57,  lh:62,
+    byTemp:{ 22:{sh:72,lh:47},23:{sh:69,lh:50},24:{sh:65,lh:53},25:{sh:60,lh:58},26:{sh:57,lh:62},27:{sh:52,lh:66} } },
+  'B': { label:'경작업(은행)',   sh:58,  lh:73,
+    byTemp:{ 22:{sh:73,lh:58},23:{sh:70,lh:62},24:{sh:67,lh:64},25:{sh:63,lh:69},26:{sh:58,lh:73},27:{sh:52,lh:79} } },
+  'C': { label:'앉은작업(식당)', sh:65,  lh:80,
+    byTemp:{ 22:{sh:81,lh:64},23:{sh:78,lh:67},24:{sh:74,lh:71},25:{sh:70,lh:76},26:{sh:65,lh:80},27:{sh:58,lh:87} } },
+  'D': { label:'정좌(극장)',     sh:56,  lh:37,
+    byTemp:{ 22:{sh:66,lh:27},23:{sh:63,lh:30},24:{sh:60,lh:33},25:{sh:58,lh:35},26:{sh:56,lh:37},27:{sh:51,lh:42} } },
+  'E': { label:'경작업(학교)',   sh:56,  lh:49,
+    byTemp:{ 22:{sh:71,lh:34},23:{sh:67,lh:37},24:{sh:64,lh:41},25:{sh:59,lh:45},26:{sh:56,lh:49},27:{sh:51,lh:53} } },
+  'F': { label:'공장의 경작업',  sh:65,  lh:133,
+    byTemp:{ 22:{sh:91,lh:107},23:{sh:84,lh:114},24:{sh:78,lh:120},25:{sh:71,lh:127},26:{sh:65,lh:133},27:{sh:58,lh:140} } },
+  'G': { label:'댄스(댄스홀)',   sh:72,  lh:154,
+    byTemp:{ 22:{sh:99,lh:127},23:{sh:92,lh:134},24:{sh:86,lh:140},25:{sh:79,lh:147},26:{sh:72,lh:154},27:{sh:65,lh:160} } },
+  'H': { label:'공장의 중작업',  sh:134, lh:177,
+    byTemp:{ 22:{sh:115,lh:149},23:{sh:108,lh:156},24:{sh:100,lh:164},25:{sh:94,lh:170},26:{sh:134,lh:177},27:{sh:79,lh:185} } },
+  'I': { label:'볼링(볼링장)',   sh:127, lh:256,
+    byTemp:{ 22:{sh:156,lh:227},23:{sh:150,lh:233},24:{sh:145,lh:237},25:{sh:138,lh:244},26:{sh:127,lh:256},27:{sh:122,lh:261} } },
+};
+
+/* ====================================================
+   Internal Load 용도코드표 — RTS-SAREK / ASHRAE HOF 2009
+   출처: rts_sarek_output.xls Load-Ut 시트
+   ─────────────────────────────────────────────────
+   Type  용도      재실(p/㎡) PRad%  PplCode LPD(W/㎡) LRad% EPD(W/㎡) ERad%
+   AR    탈의실    0.5        58     A       20        59     -         -
+   BK    은행      0.3        58     B       30        59     30        30
+   CO    복도      0.1        58     A       20        59     -         -
+   HC    헬스클럽  0.3        58     G       25        59     -         -
+   KT    주방      0.1        58     C       20        59     -         -
+   LG    휴게실    0.3        58     A       25        59     -         -
+   LO    로비      0.1        58     A       25        59     -         -
+   ME    회의실    0.3        58     A       25        59     -         -
+   OF    사무실    0.2        60     A       30        80     20        30
+   RE    식당      0.5        58     C       25        59     -         -
+   RT    상점      0.5        58     B       60        59     20        30
+   TR    강의실    0.3        58     E       30        59     -         -
+   ─────────────────────────────────────────────────
+   간벽 온도차 코드 (Partition T.D. Code)
+   A: 외부바닥  냉방 5.1K  난방 31.9K
+   B: 비공조실  냉방 2.6K  난방 15.9K
+   C: 계단실    냉방 2.6K  난방 15.9K
+   D: 지중벽체  냉방  -    난방 11.9K
+===================================================== */
+const INTERNAL_LOAD_TYPE = {
+  'AR': { label:'탈의실',   ppl:0.5, pRad:58, pplCode:'A', lpd:20, lRad:59, epd:0,  eRad:0  },
+  'BK': { label:'은행',     ppl:0.3, pRad:58, pplCode:'B', lpd:30, lRad:59, epd:30, eRad:30 },
+  'CO': { label:'복도',     ppl:0.1, pRad:58, pplCode:'A', lpd:20, lRad:59, epd:0,  eRad:0  },
+  'HC': { label:'헬스클럽', ppl:0.3, pRad:58, pplCode:'G', lpd:25, lRad:59, epd:0,  eRad:0  },
+  'KT': { label:'주방',     ppl:0.1, pRad:58, pplCode:'C', lpd:20, lRad:59, epd:0,  eRad:0  },
+  'LG': { label:'휴게실',   ppl:0.3, pRad:58, pplCode:'A', lpd:25, lRad:59, epd:0,  eRad:0  },
+  'LO': { label:'로비',     ppl:0.1, pRad:58, pplCode:'A', lpd:25, lRad:59, epd:0,  eRad:0  },
+  'ME': { label:'회의실',   ppl:0.3, pRad:58, pplCode:'A', lpd:25, lRad:59, epd:0,  eRad:0  },
+  'OF': { label:'사무실',   ppl:0.2, pRad:60, pplCode:'A', lpd:30, lRad:80, epd:20, eRad:30 },
+  'RE': { label:'식당',     ppl:0.5, pRad:58, pplCode:'C', lpd:25, lRad:59, epd:0,  eRad:0  },
+  'RT': { label:'상점',     ppl:0.5, pRad:58, pplCode:'B', lpd:60, lRad:59, epd:20, eRad:30 },
+  'TR': { label:'강의실',   ppl:0.3, pRad:58, pplCode:'E', lpd:30, lRad:59, epd:0,  eRad:0  },
 };
 
 /* 방위각 코드 → 도(°) */
@@ -4420,44 +4625,57 @@ const ROOM_DEFAULTS = {
 
 /* 용도별 내부발열 기본값 (PDF 계산서 Internal Load Data 참조) */
 const USE_DEFAULTS = {
-  '사무실':      { ppl_density:0.20, ppl_code:'A', lpd:12, epd:15, infil_ach:0.1 },
+  /* ── 사무소 ── */
+  '사무실':      { ppl_density:0.20, ppl_code:'A', lpd:12, epd:15, infil_ach:0.1 }, /* OF: A */
   '임원실':      { ppl_density:0.10, ppl_code:'A', lpd:10, epd:12, infil_ach:0.1 },
-  '회의실':      { ppl_density:0.50, ppl_code:'A', lpd:12, epd:10, infil_ach:0.1 },
+  '회의실':      { ppl_density:0.50, ppl_code:'A', lpd:12, epd:10, infil_ach:0.1 }, /* ME: A */
   '대회의실':    { ppl_density:0.80, ppl_code:'A', lpd:12, epd: 8, infil_ach:0.2 },
-  '로비·복도':   { ppl_density:0.15, ppl_code:'A', lpd: 8, epd: 3, infil_ach:0.5 },
-  '탕비실·휴게실':{ ppl_density:0.10, ppl_code:'C', lpd:10, epd:25, infil_ach:0.1 },
+  '로비·복도':   { ppl_density:0.15, ppl_code:'A', lpd: 8, epd: 3, infil_ach:0.5 }, /* LO/CO: A */
+  '탕비실·휴게실':{ ppl_density:0.10, ppl_code:'C', lpd:10, epd:25, infil_ach:0.1 }, /* LG: A→C(식당형) */
   '화장실':      { ppl_density:0.10, ppl_code:'A', lpd: 8, epd: 2, infil_ach:0.1 },
   '창고':        { ppl_density:0.00, ppl_code:'A', lpd: 5, epd: 2, infil_ach:0.1 },
-  '기계·전기실': { ppl_density:0.00, ppl_code:'A', lpd: 6, epd: 5, infil_ach:0.2 },
+  '기계·전기실': { ppl_density:0.00, ppl_code:'F', lpd: 6, epd: 5, infil_ach:0.2 }, /* 공장 경작업 F */
   '주차장':      { ppl_density:0.00, ppl_code:'A', lpd: 4, epd: 1, infil_ach:1.0 },
+  /* ── 주거 ── */
   '거실':        { ppl_density:0.04, ppl_code:'A', lpd: 8, epd:10, infil_ach:0.3 },
-  '침실':        { ppl_density:0.04, ppl_code:'A', lpd: 6, epd: 8, infil_ach:0.2 },
-  '주방·식당':   { ppl_density:0.04, ppl_code:'C', lpd:10, epd:30, infil_ach:0.2 },
+  '침실':        { ppl_density:0.04, ppl_code:'D', lpd: 6, epd: 8, infil_ach:0.2 }, /* 정좌(극장) D */
+  '주방·식당':   { ppl_density:0.04, ppl_code:'C', lpd:10, epd:30, infil_ach:0.2 }, /* 앉은작업(식당) C */
   '욕실·화장실': { ppl_density:0.00, ppl_code:'A', lpd: 8, epd: 2, infil_ach:0.1 },
   '공용복도':    { ppl_density:0.02, ppl_code:'A', lpd: 6, epd: 2, infil_ach:0.5 },
   '관리사무실':  { ppl_density:0.10, ppl_code:'A', lpd:12, epd:12, infil_ach:0.1 },
-  '매장(일반)':  { ppl_density:0.30, ppl_code:'C', lpd:20, epd:20, infil_ach:0.5 },
-  '식품매장':    { ppl_density:0.30, ppl_code:'C', lpd:20, epd:30, infil_ach:0.5 },
-  '음식점':      { ppl_density:0.50, ppl_code:'C', lpd:15, epd:40, infil_ach:0.5 },
-  '객실(일반)':  { ppl_density:0.05, ppl_code:'A', lpd:10, epd:10, infil_ach:0.3 },
-  '객실(스위트)':{ ppl_density:0.03, ppl_code:'A', lpd:10, epd:12, infil_ach:0.3 },
-  '로비':        { ppl_density:0.20, ppl_code:'A', lpd:15, epd: 5, infil_ach:1.0 },
-  '레스토랑':    { ppl_density:0.50, ppl_code:'C', lpd:15, epd:30, infil_ach:0.5 },
+  /* ── 상업 ── */
+  '매장(일반)':  { ppl_density:0.30, ppl_code:'B', lpd:20, epd:20, infil_ach:0.5 }, /* RT: B */
+  '식품매장':    { ppl_density:0.30, ppl_code:'B', lpd:20, epd:30, infil_ach:0.5 }, /* RT: B */
+  '음식점':      { ppl_density:0.50, ppl_code:'C', lpd:15, epd:40, infil_ach:0.5 }, /* RE: C */
+  /* ── 숙박 ── */
+  '객실(일반)':  { ppl_density:0.05, ppl_code:'D', lpd:10, epd:10, infil_ach:0.3 }, /* 정좌(극장) D */
+  '객실(스위트)':{ ppl_density:0.03, ppl_code:'D', lpd:10, epd:12, infil_ach:0.3 },
+  '로비':        { ppl_density:0.20, ppl_code:'A', lpd:15, epd: 5, infil_ach:1.0 }, /* LO: A */
+  '레스토랑':    { ppl_density:0.50, ppl_code:'C', lpd:15, epd:30, infil_ach:0.5 }, /* RE: C */
   '연회장·회의실':{ ppl_density:0.50, ppl_code:'A', lpd:15, epd:10, infil_ach:0.3 },
-  '병실(일반)':  { ppl_density:0.04, ppl_code:'A', lpd:10, epd:10, infil_ach:0.2 },
+  /* ── 의료 ── */
+  '병실(일반)':  { ppl_density:0.04, ppl_code:'D', lpd:10, epd:10, infil_ach:0.2 }, /* 정좌 D */
   '중환자실':    { ppl_density:0.06, ppl_code:'A', lpd:12, epd:20, infil_ach:0.3 },
   '수술실':      { ppl_density:0.10, ppl_code:'A', lpd:20, epd:30, infil_ach:0.5 },
   '외래진료실':  { ppl_density:0.15, ppl_code:'A', lpd:15, epd:15, infil_ach:0.2 },
-  '대기실·복도': { ppl_density:0.20, ppl_code:'A', lpd:10, epd: 3, infil_ach:0.5 },
-  '일반교실':    { ppl_density:0.50, ppl_code:'D', lpd:10, epd: 5, infil_ach:0.3 },
-  '특별교실':    { ppl_density:0.40, ppl_code:'D', lpd:12, epd:10, infil_ach:0.3 },
-  '도서관':      { ppl_density:0.20, ppl_code:'A', lpd:12, epd: 8, infil_ach:0.2 },
-  '급식실':      { ppl_density:0.50, ppl_code:'C', lpd:12, epd:50, infil_ach:0.5 },
-  '강당·체육관': { ppl_density:0.30, ppl_code:'E', lpd: 8, epd: 3, infil_ach:0.5 },
+  '대기실·복도': { ppl_density:0.20, ppl_code:'D', lpd:10, epd: 3, infil_ach:0.5 }, /* 정좌 D */
+  /* ── 교육 ── */
+  '일반교실':    { ppl_density:0.50, ppl_code:'E', lpd:10, epd: 5, infil_ach:0.3 }, /* TR: E */
+  '특별교실':    { ppl_density:0.40, ppl_code:'E', lpd:12, epd:10, infil_ach:0.3 }, /* TR: E */
+  '도서관':      { ppl_density:0.20, ppl_code:'D', lpd:12, epd: 8, infil_ach:0.2 }, /* 정좌 D */
+  '급식실':      { ppl_density:0.50, ppl_code:'C', lpd:12, epd:50, infil_ach:0.5 }, /* RE: C */
+  '강당·체육관': { ppl_density:0.30, ppl_code:'G', lpd: 8, epd: 3, infil_ach:0.5 }, /* HC: G(댄스) */
   '교무실·행정실':{ ppl_density:0.10, ppl_code:'A', lpd:12, epd:15, infil_ach:0.2 },
-  '생산작업장':  { ppl_density:0.05, ppl_code:'E', lpd: 8, epd:30, infil_ach:0.5 },
-  '클린룸':      { ppl_density:0.05, ppl_code:'A', lpd:20, epd:50, infil_ach:0.3 },
-  '품질검사실':  { ppl_density:0.10, ppl_code:'A', lpd:15, epd:20, infil_ach:0.3 },
+  /* ── 공장 ── */
+  '생산작업장':  { ppl_density:0.05, ppl_code:'F', lpd: 8, epd:30, infil_ach:0.5 }, /* 공장 경작업 F */
+  '클린룸':      { ppl_density:0.05, ppl_code:'F', lpd:20, epd:50, infil_ach:0.3 }, /* 공장 경작업 F */
+  '품질검사실':  { ppl_density:0.10, ppl_code:'F', lpd:15, epd:20, infil_ach:0.3 }, /* 공장 경작업 F */
+  /* ── 헬스/오락 ── */
+  '헬스클럽':    { ppl_density:0.20, ppl_code:'G', lpd:15, epd: 5, infil_ach:0.5 }, /* HC: G(댄스/운동) */
+  '댄스홀':      { ppl_density:0.30, ppl_code:'G', lpd:10, epd: 3, infil_ach:0.5 }, /* G */
+  '볼링장':      { ppl_density:0.10, ppl_code:'I', lpd:15, epd: 5, infil_ach:0.5 }, /* I */
+  '극장·공연장': { ppl_density:0.80, ppl_code:'D', lpd: 8, epd: 3, infil_ach:0.3 }, /* 정좌 D */
+  '은행':        { ppl_density:0.30, ppl_code:'B', lpd:30, epd:30, infil_ach:0.3 }, /* BK: B */
 };
 
 /* ====================================================
@@ -4747,7 +4965,15 @@ function _renderModal() {
 
   if(_modalTab === 'internal') {
     const ud = USE_DEFAULTS[r.use] || {};
-    const pplHint = PEOPLE_CODE[r.ppl_code||'A'];
+    const pplHintRaw  = PEOPLE_CODE[r.ppl_code||'A'];
+    const _coolTModal = r.coolTemp || v('w-indoor-cool') || 26;
+    const _tmpsM = [22,23,24,25,26,27];
+    const _nearM = _tmpsM.reduce((a,b)=>Math.abs(b-_coolTModal)<Math.abs(a-_coolTModal)?b:a);
+    const pplHintVal  = (pplHintRaw?.byTemp && pplHintRaw.byTemp[_nearM]) ? pplHintRaw.byTemp[_nearM] : pplHintRaw;
+    const pplHintStr  = pplHintVal
+      ? `SH <b>${pplHintVal.sh}</b> W/p &nbsp;|&nbsp; LH <b>${pplHintVal.lh}</b> W/p`
+        + ` <span style="color:rgba(0,180,216,.6);font-size:9px">(${_nearM}℃ · ASHRAE HOF2009)</span>`
+      : '';
     content = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
 
@@ -4766,7 +4992,7 @@ function _renderModal() {
           </div>
           <div id="ppl-hint" style="background:rgba(0,180,216,.1);border:1px solid var(--accent);
                border-radius:5px;padding:5px 8px;font-size:10px;color:var(--accent)">
-            ${pplHint ? `SH <b>${pplHint.sh}</b> W/p &nbsp;|&nbsp; LH <b>${pplHint.lh}</b> W/p &nbsp;(26℃ 기준)` : ''}
+            ${pplHintStr}
           </div>
           <div class="form-row">
             <label class="form-label">재실 밀도</label>
@@ -5047,10 +5273,17 @@ function _saveInternalFields() {
 
 /* 인체코드 변경 시 힌트 업데이트 */
 function _updatePplHint() {
-  const code = document.getElementById('md-ppl-code')?.value || 'A';
-  const c    = PEOPLE_CODE[code];
-  const hint = document.getElementById('ppl-hint');
-  if(hint && c) hint.innerHTML = `SH <b>${c.sh}</b> W/p &nbsp;|&nbsp; LH <b>${c.lh}</b> W/p &nbsp;(26℃ 기준)`;
+  const code   = document.getElementById('md-ppl-code')?.value || 'A';
+  const c      = PEOPLE_CODE[code];
+  const hint   = document.getElementById('ppl-hint');
+  if (!hint || !c) return;
+  /* 실내 냉방 설정온도에 가장 가까운 byTemp 값 사용 */
+  const coolT  = parseFloat(document.getElementById('md-cool-t')?.value) || 26;
+  const temps  = [22,23,24,25,26,27];
+  const nearest= temps.reduce((a,b)=>Math.abs(b-coolT)<Math.abs(a-coolT)?b:a);
+  const t      = (c.byTemp && c.byTemp[nearest]) ? c.byTemp[nearest] : c;
+  hint.innerHTML = `SH <b>${t.sh}</b> W/p &nbsp;|&nbsp; LH <b>${t.lh}</b> W/p`
+    + ` &nbsp;<span style="color:rgba(0,180,216,.6);font-size:9px">(${nearest}℃ 기준 · ASHRAE HOF2009)</span>`;
 }
 
 /* Glass 행 조작 */
@@ -5231,7 +5464,110 @@ function updateEquipRad() {
   if(src && dst) dst.value = src.value;
 }
 
+/* ====================================================
+   인체발열량 코드표 & 용도코드표 참조 렌더
+===================================================== */
+function renderPeopleCodeRef() {
+  const tbody = document.getElementById('tbody-people-code-ref');
+  if (!tbody) return;
+  tbody.innerHTML = Object.entries(PEOPLE_CODE).map(([k, c]) => {
+    const t = c.byTemp || {};
+    const td26s = `<td class="calc-cell" style="background:rgba(0,180,216,0.08);font-weight:700">${t[26]?.sh??c.sh}</td>`;
+    const td26l = `<td class="calc-cell" style="background:rgba(0,180,216,0.08);font-weight:700">${t[26]?.lh??c.lh}</td>`;
+    return `<tr>
+      <td class="row-label" style="font-weight:700;color:var(--gold)">${k}</td>
+      <td class="label-cell">${c.label}</td>
+      <td class="calc-cell">${t[22]?.sh??'-'}</td><td class="calc-cell">${t[22]?.lh??'-'}</td>
+      <td class="calc-cell">${t[23]?.sh??'-'}</td><td class="calc-cell">${t[23]?.lh??'-'}</td>
+      <td class="calc-cell">${t[24]?.sh??'-'}</td><td class="calc-cell">${t[24]?.lh??'-'}</td>
+      <td class="calc-cell">${t[25]?.sh??'-'}</td><td class="calc-cell">${t[25]?.lh??'-'}</td>
+      ${td26s}${td26l}
+      <td class="calc-cell">${t[27]?.sh??'-'}</td><td class="calc-cell">${t[27]?.lh??'-'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderInternalTypeRef() {
+  const tbody = document.getElementById('tbody-internal-type-ref');
+  if (!tbody || typeof INTERNAL_LOAD_TYPE === 'undefined') return;
+  tbody.innerHTML = Object.entries(INTERNAL_LOAD_TYPE).map(([k, t], i) => `
+    <tr>
+      <td class="row-label" style="font-weight:700;color:var(--gold)">${k}</td>
+      <td class="label-cell">${t.label}</td>
+      <td class="calc-cell">${t.ppl}</td>
+      <td class="calc-cell">${t.pRad}</td>
+      <td class="calc-cell" style="color:var(--accent);font-weight:700">${t.pplCode}</td>
+      <td class="calc-cell">${t.lpd}</td>
+      <td class="calc-cell">${t.lRad}</td>
+      <td class="calc-cell">${t.epd||'-'}</td>
+      <td class="calc-cell">${t.eRad||'-'}</td>
+    </tr>`).join('');
+}
+
 function calcInternal() {
+  /* rooms[]가 있으면 실별 합산값으로 전역 필드를 동기화 후 표시 */
+  if (rooms && rooms.length > 0) {
+    const _tmpsCI = [22,23,24,25,26,27];
+    const _toInCI = v('w-indoor-cool') || 26;
+    const _nearCI = _tmpsCI.reduce((a,b)=>Math.abs(b-_toInCI)<Math.abs(a-_toInCI)?b:a);
+    let totPpl=0, totSens=0, totLat=0, totLight=0, totEquip=0, totArea=0;
+    rooms.forEach(rm => {
+      const area    = (rm.area||0)*(rm.qty||1);
+      const cRaw    = PEOPLE_CODE[rm.ppl_code||'A']||PEOPLE_CODE['A'];
+      const code    = (cRaw.byTemp && cRaw.byTemp[_nearCI]) ? cRaw.byTemp[_nearCI] : cRaw;
+      const ppl     = Math.round(area*(rm.ppl_density||0.2));
+      totPpl   += ppl;
+      totSens  += ppl * code.sh;
+      totLat   += ppl * code.lh;
+      totLight += (rm.lpd||12)*area;
+      totEquip += (rm.epd||15)*area;
+      totArea  += area;
+    });
+    const avgSens = totPpl>0 ? Math.round(totSens/totPpl) : 65;
+    const avgLat  = totPpl>0 ? Math.round(totLat /totPpl) : 50;
+    const avgLpd  = totArea>0 ? (totLight/totArea).toFixed(1) : 12;
+    const avgEpd  = totArea>0 ? (totEquip/totArea).toFixed(1) : 15;
+
+    /* 전역 필드 동기화 */
+    const set = (id,val) => { const el=document.getElementById(id); if(el) el.value=val; };
+    set('i-people',    totPpl);
+    set('i-sens',      avgSens);
+    set('i-lat',       avgLat);
+    set('i-lpd',       avgLpd);
+    set('i-light-area',Math.round(totArea));
+    set('i-epd',       avgEpd);
+    set('i-equip-area',Math.round(totArea));
+
+    /* 결과 테이블 표시 */
+    const pRad = (v('i-people-rad')||60)/100;
+    const lRad = (v('i-light-rad') ||42)/100;
+    const eRad = (v('i-equip-rad') ||20)/100;
+    const rows2 = [
+      {name:'인체 (People)',    conv:totSens*(1-pRad), rad:totSens*pRad, sens:totSens, lat:totLat,  total:totSens+totLat},
+      {name:'조명 (Lighting)',  conv:totLight*(1-lRad),rad:totLight*lRad,sens:totLight,lat:0,       total:totLight},
+      {name:'기기 (Equipment)', conv:totEquip*(1-eRad),rad:totEquip*eRad,sens:totEquip,lat:0,       total:totEquip},
+      {name:'합계',
+        conv:totSens*(1-pRad)+totLight*(1-lRad)+totEquip*(1-eRad),
+        rad: totSens*pRad    +totLight*lRad     +totEquip*eRad,
+        sens:totSens+totLight+totEquip, lat:totLat, total:totSens+totLight+totEquip+totLat}
+    ];
+    const safeRatio = (rad,total) => total>0?(rad/total*100|0)+'%':'0%';
+    const tbody = document.getElementById('tbody-internal-sum');
+    if(tbody) tbody.innerHTML = rows2.map((r,i)=>`
+      <tr class="${i===rows2.length-1?'row-group':''}">
+        <td class="row-label">${i+1}</td>
+        <td class="label-cell ${i===rows2.length-1?'fw-bold':''}">${r.name}</td>
+        <td class="calc-cell">${fmt(r.conv)}</td>
+        <td class="calc-cell">${fmt(r.rad)}</td>
+        <td class="calc-cell ${i===rows2.length-1?'highlight':''}">${fmt(r.sens)}</td>
+        <td class="calc-cell">${fmt(r.lat)}</td>
+        <td class="${i===rows2.length-1?'total-cell':'calc-cell'}">${fmt(r.total)}</td>
+        <td class="label-cell" style="font-size:10px">${i<3?'Radiant '+safeRatio(r.rad,r.total)+' · 실별합산':'-'}</td>
+      </tr>`).join('');
+    return;
+  }
+
+  /* rooms[] 없을 때 — 전역 탭 입력값 직접 사용 */
   const people      = v('i-people')    || 0;
   const sensPerP    = v('i-sens')      || 65;
   const latPerP     = v('i-lat')       || 50;
@@ -5248,7 +5584,7 @@ function calcInternal() {
   const lTotal = lpd * lArea;
   const eTotal = epd * eArea;
 
-  const safeRatio = (rad, total) => total > 0 ? (rad/total*100|0)+'%' : '0%'; /* Bug #5 */
+  const safeRatio = (rad, total) => total > 0 ? (rad/total*100|0)+'%' : '0%';
 
   const rows = [
     {name:'인체 (People)', conv:pSens*(1-peopleRad), rad:pSens*peopleRad, sens:pSens, lat:pLat, total:pSens+pLat},
@@ -5297,9 +5633,9 @@ function showRTSTable() {
     'rts-nonsolar':'<strong>RTS Nonsolar:</strong> 전도·조명·인체·기기의 복사성분 냉방부하 계산. 24개 계수.'
   };
   area.innerHTML = `
-    <div class="excel-wrap">
+    <div class="excel-wrap hourly-table-block">
       <div class="excel-header">📊 ${title} (∑ = ${sum.toFixed(4)})</div>
-      <div style="overflow-x:auto;padding:12px">
+      <div style="overflow-x:auto">
         <table class="excel-table coeff-table">
           <thead><tr>
             <th class="col-label"></th>
@@ -5328,19 +5664,9 @@ function calcAll() {
   const {hourlyT, solAir} = calcSolAirTemp();
   const toIn = v('w-indoor-cool') || 26.0;
   const SF   = v('p-sf')         || 1.10;
+  const doy  = getDayOfYear();
 
-  /* ─ 벽·지붕 면적 합산 ─ */
-  const walls = extComponents.filter(c=>c.type==='wall');
-  const roofs = extComponents.filter(c=>c.type==='roof');
-  const glass = extComponents.filter(c=>c.type==='glass');
-  const wallUA = walls.reduce((s,w)=>s+w.U*w.area,0);
-  const roofUA = roofs.reduce((s,r)=>s+r.U*r.area,0);
-
-  /* ─ Bug #2: Sol-Air 온도로 시각별 열취득 산출 ─ */
-  const wallQ_hr = solAir.map(te => wallUA*(te - toIn));  /* W, 24시간 */
-  const roofQ_hr = solAir.map(te => roofUA*(te - toIn));  /* (지붕도 수평면 sol-air 근사) */
-
-  /* ─ Bug #1: CTS convolution → 냉방부하 (W) ─ */
+  /* ─ CTS convolution 헬퍼 ─ */
   function applyCTS(qHr, cts, radFrac) {
     return Array.from({length:24},(_,h)=>{
       const rad = cts.reduce((s,c,j)=> s + c*qHr[(h-j+24)%24], 0) * radFrac;
@@ -5349,37 +5675,84 @@ function calcAll() {
     });
   }
 
-  const wallCL  = applyCTS(wallQ_hr, CTS_WALL, 0.46);
-  const roofCL  = applyCTS(roofQ_hr, CTS_ROOF, 0.60);
-  const wallGain = wallCL.map((w,i)=>w+roofCL[i]);  /* 합산 */
+  /* ══════════════════════════════════════════════════════
+     외부 부하 — rooms[] 각 실의 glass[]/wall[] 합산 (ASHRAE RTS 정석)
+     rooms[]가 없으면 extComponents[] 전역 탭 폴백
+  ══════════════════════════════════════════════════════ */
+  let wallQ_hr = new Array(24).fill(0);
+  let roofQ_hr = new Array(24).fill(0);
+  let glassConvQ_hr = new Array(24).fill(0);
+  let glassSolarQ_hr = new Array(24).fill(0);
 
-  /* ─ 유리창 전도 열취득 ─ */
-  const glassUA = glass.reduce((s,g)=>s+g.U*g.area,0);
-  const glassGain = hourlyT.map(t=> glassUA*(t - toIn));
+  if (rooms && rooms.length > 0) {
+    /* 실별 합산 경로 — calcRoomLoad()와 동일 로직 */
+    rooms.forEach(rm => {
+      /* ── 유리창 ── */
+      (rm.glass || []).forEach(g => {
+        const ua = (g.U || 1.5) * (g.area || 0) * (g.df || 1.05);
+        hourlyT.forEach((t, h) => { glassConvQ_hr[h] += ua * (t - toIn); });
+        const solArr = calcSolarIrradiance(doy, g.azDeg || 180, 90);
+        solArr.forEach((e, h) => {
+          glassSolarQ_hr[h] += e * (g.area||0) * (g.shgc||g.sc||0.40) * (g.df||1.05);
+        });
+      });
+      /* ── 외벽·지붕 ── */
+      (rm.wall || []).forEach(w => {
+        const ua = (w.U || 0.17) * (w.area || 0) * (w.df || 1.0);
+        const qArr = solAir.map(te => ua * (te - toIn));
+        if (w.type === 'roof') roofQ_hr = roofQ_hr.map((v,h) => v + qArr[h]);
+        else                   wallQ_hr = wallQ_hr.map((v,h) => v + qArr[h]);
+      });
+    });
 
-  /* ─ Bug #3: 태양열 투과 열취득 (RTS Solar) ─ */
-  const solarBase = glass.reduce((s,g)=>s+(g.sc||g.shgc||0)*g.area,0);
-  /* ── ASHRAE 2009: 위도·날짜 기반 수평면 일사량 동적 계산 ── */
-  const Et_HOR_dyn = getEt_HOR();
-  const solarQ_hr = Et_HOR_dyn.map(e => e * solarBase);    /* 시각별 일사 열취득 W */
+    /* 외부 부하 탭 UI 동기화 — rooms[] 합산값으로 표시 갱신 */
+    const totWallUA  = rooms.reduce((s,rm)=>(rm.wall||[]).filter(w=>w.type!=='roof').reduce((ss,w)=>ss+(w.U||0.17)*(w.area||0),s),0);
+    const totRoofUA  = rooms.reduce((s,rm)=>(rm.wall||[]).filter(w=>w.type==='roof').reduce((ss,w)=>ss+(w.U||0.12)*(w.area||0),s),0);
+    const totGlassUA = rooms.reduce((s,rm)=>(rm.glass||[]).reduce((ss,g)=>ss+(g.U||1.5)*(g.area||0),s),0);
+    /* extComponents 탭 안내 업데이트 (계산은 rooms[] 기반, 탭은 참조용) */
+    const extNote = document.getElementById('ext-rooms-note');
+    if (extNote) {
+      extNote.textContent =
+        `실 데이터 기반 합산 적용 중 — 외벽 ${totWallUA.toFixed(1)} W/K · 지붕 ${totRoofUA.toFixed(1)} W/K · 유리 ${totGlassUA.toFixed(1)} W/K`;
+      extNote.style.display = '';
+    }
+
+  } else {
+    /* 폴백: 외부 부하 탭 extComponents[] 전역 배열 사용 */
+    const walls = extComponents.filter(c=>c.type==='wall');
+    const roofs = extComponents.filter(c=>c.type==='roof');
+    const glass = extComponents.filter(c=>c.type==='glass');
+    const wallUA = walls.reduce((s,w)=>s+w.U*w.area,0);
+    const roofUA = roofs.reduce((s,r)=>s+r.U*r.area,0);
+    wallQ_hr = solAir.map(te => wallUA*(te - toIn));
+    roofQ_hr = solAir.map(te => roofUA*(te - toIn));
+    const glassUA  = glass.reduce((s,g)=>s+g.U*g.area,0);
+    glassConvQ_hr  = hourlyT.map(t => glassUA*(t - toIn));
+    const solarBase= glass.reduce((s,g)=>s+(g.sc||g.shgc||0)*g.area,0);
+    const Et_HOR_fb= getEt_HOR();
+    glassSolarQ_hr = Et_HOR_fb.map(e => e * solarBase);
+    const extNote = document.getElementById('ext-rooms-note');
+    if (extNote) extNote.style.display = 'none';
+  }
+
+  const wallCL   = applyCTS(wallQ_hr, CTS_WALL, 0.46);
+  const roofCL   = applyCTS(roofQ_hr, CTS_ROOF, 0.60);
+  const wallGain = wallCL.map((w,i) => w + roofCL[i]);
+
+  /* 유리창 전도 열취득 */
+  const glassGain = glassConvQ_hr;
+
+  /* 태양열 투과 열취득 (RTS Solar) */
   const solarGain = Array.from({length:24},(_,h)=>{
-    return RTS_SOLAR_Z8.reduce((s,r,j)=> s + r*solarQ_hr[(h-j+24)%24], 0);
+    return RTS_SOLAR_Z8.reduce((s,r,j)=> s + r*glassSolarQ_hr[(h-j+24)%24], 0);
   });
 
-  /* ─ Bug #4: 내부 발열 — 운영 시간 스케줄 적용 ─ */
-  const people   = v('i-people')    || 0;
-  const sensPerP = v('i-sens')      || 65;
-  const lpd      = v('i-lpd')       || 12;
-  const lArea    = v('i-light-area')|| 500;
-  const epd      = v('i-epd')       || 15;
-  const eArea    = v('i-equip-area')|| 500;
-  const latent   = people * (v('i-lat')||50);
+  /* ─ 내부 발열 — rooms[] 실별 데이터 합산 (ASHRAE RTS 정석) ─
+     각 실의 모달(룸 상세 입력)에서 설정한
+     ppl_density·ppl_code·lpd·epd·start_hr·ppl_hrs·light_hrs·equip_hrs 를
+     calcRoomLoad() 와 동일한 로직으로 24h 합산한다.
+     rooms[] 가 비어 있을 때는 내부열취득 탭 전역값을 폴백으로 사용한다.      ─ */
 
-  const pHrs  = v('i-people-hrs') || 9;
-  const lHrs  = v('i-light-hrs')  || 10;
-  const eHrs  = v('i-equip-hrs')  || 9;
-
-  /* 운영 시작: 8시, 종료: 시작+시간수 */
   function schedule(startHr, durationHrs, val) {
     return Array.from({length:24},(_,h)=>{
       const opH = (h - startHr + 24) % 24;
@@ -5387,17 +5760,86 @@ function calcAll() {
     });
   }
 
-  const pSensRad  = people*sensPerP * 0.60;
-  const pSensConv = people*sensPerP * 0.40;
-  const lRad      = lpd*lArea * 0.42;
-  const lConv     = lpd*lArea * 0.58;
-  const eRad      = epd*eArea * 0.20;
-  const eConv     = epd*eArea * 0.80;
+  /* ── rooms[]가 있으면 실별 합산, 없으면 내부열취득 탭 전역값 폴백 ── */
+  let intRadQ  = new Array(24).fill(0);
+  let intConvQ = new Array(24).fill(0);
+  let latent   = 0;
 
-  const intRadQ = schedule(8, pHrs, pSensRad)
-    .map((p,i)=> p + schedule(8,lHrs,lRad)[i] + schedule(8,eHrs,eRad)[i]);
-  const intConvQ = schedule(8, pHrs, pSensConv)
-    .map((p,i)=> p + schedule(8,lHrs,lConv)[i] + schedule(8,eHrs,eConv)[i]);
+  if (rooms && rooms.length > 0) {
+    /* 실별 합산 경로 */
+    const toDB_inf  = v('w-summer-db') || 33.3;
+    const twbDB_inf = v('w-summer-wb') || 25.0;
+    const _tmps = [22,23,24,25,26,27];
+    rooms.forEach(rm => {
+      const area     = (rm.area || 0) * (rm.qty || 1);
+      const vol      = area * (rm.height || 2.7);
+      const codeRaw2 = PEOPLE_CODE[rm.ppl_code || 'A'] || PEOPLE_CODE['A'];
+      const _near2   = _tmps.reduce((a,b)=>Math.abs(b-toIn)<Math.abs(a-toIn)?b:a);
+      const code     = (codeRaw2.byTemp && codeRaw2.byTemp[_near2]) ? codeRaw2.byTemp[_near2] : codeRaw2;
+      const peopleTot= Math.round(area * (rm.ppl_density || 0.2));
+      const pSens    = peopleTot * code.sh;
+      const pLat     = peopleTot * code.lh;
+      const lTotal   = (rm.lpd || 12) * area;
+      const eTotal   = (rm.epd || 15) * area;
+      const ach      = rm.infil_ach || 0.1;
+      const infiltQ  = vol * ach * 0.335 * Math.max(0, toDB_inf - toIn); /* 침기 현열 W */
+      const infiltL  = vol * ach * 1.2 * 2450 * Math.max(0, (twbDB_inf - 19) / 1000); /* 침기 잠열 W */
+      const startH   = rm.start_hr   || 8;
+      const pHrs_r   = rm.ppl_hrs    || 9;
+      const lHrs_r   = rm.light_hrs  || 10;
+      const eHrs_r   = rm.equip_hrs  || 9;
+
+      const pSensRad_r  = pSens  * 0.60; const pSensConv_r = pSens  * 0.40;
+      const lRad_r      = lTotal * 0.42; const lConv_r     = lTotal * 0.58;
+      const eRad_r      = eTotal * 0.20; const eConv_r     = eTotal * 0.80;
+
+      schedule(startH, pHrs_r, pSensRad_r).forEach((val,h)=>{
+        intRadQ[h] += val + schedule(startH,lHrs_r,lRad_r)[h] + schedule(startH,eHrs_r,eRad_r)[h];
+      });
+      schedule(startH, pHrs_r, pSensConv_r).forEach((val,h)=>{
+        /* 침기 현열은 convective 성분으로 24h 균등 가산 */
+        intConvQ[h] += val + schedule(startH,lHrs_r,lConv_r)[h] + schedule(startH,eHrs_r,eConv_r)[h] + infiltQ;
+      });
+      latent += pLat + infiltL;
+    });
+    latent *= SF;
+
+    /* 내부열취득 탭 전역 표시값을 rooms[] 합산으로 동기화 */
+    const totPpl   = rooms.reduce((s,rm)=>s+Math.round((rm.area||0)*(rm.qty||1)*(rm.ppl_density||0.2)),0);
+    const totLArea = rooms.reduce((s,rm)=>s+(rm.area||0)*(rm.qty||1),0);
+    const avgLpd   = totLArea>0 ? rooms.reduce((s,rm)=>s+(rm.lpd||12)*(rm.area||0)*(rm.qty||1),0)/totLArea : 12;
+    const avgEpd   = totLArea>0 ? rooms.reduce((s,rm)=>s+(rm.epd||15)*(rm.area||0)*(rm.qty||1),0)/totLArea : 15;
+    const avgCode  = PEOPLE_CODE[ rooms[0]?.ppl_code || 'A' ] || PEOPLE_CODE['A'];
+    const el_p=document.getElementById('i-people');     if(el_p)  el_p.value  = totPpl;
+    const el_s=document.getElementById('i-sens');       if(el_s)  el_s.value  = avgCode.sh;
+    const el_l=document.getElementById('i-lat');        if(el_l)  el_l.value  = avgCode.lh;
+    const el_lpd=document.getElementById('i-lpd');      if(el_lpd) el_lpd.value= avgLpd.toFixed(1);
+    const el_la=document.getElementById('i-light-area');if(el_la) el_la.value = Math.round(totLArea);
+    const el_epd=document.getElementById('i-epd');      if(el_epd) el_epd.value= avgEpd.toFixed(1);
+    const el_ea=document.getElementById('i-equip-area');if(el_ea) el_ea.value = Math.round(totLArea);
+
+  } else {
+    /* 폴백: 내부열취득 탭 전역 입력값 사용 */
+    const people   = v('i-people')    || 0;
+    const sensPerP = v('i-sens')      || 65;
+    const lpd      = v('i-lpd')       || 12;
+    const lArea    = v('i-light-area')|| 500;
+    const epd      = v('i-epd')       || 15;
+    const eArea    = v('i-equip-area')|| 500;
+    latent         = people * (v('i-lat')||50) * SF;
+
+    const pHrs  = v('i-people-hrs') || 9;
+    const lHrs  = v('i-light-hrs')  || 10;
+    const eHrs  = v('i-equip-hrs')  || 9;
+
+    const pSensRad  = people*sensPerP * 0.60;
+    const pSensConv = people*sensPerP * 0.40;
+    const lRad      = lpd*lArea * 0.42;  const lConv = lpd*lArea * 0.58;
+    const eRad      = epd*eArea * 0.20;  const eConv = epd*eArea * 0.80;
+
+    intRadQ  = schedule(8,pHrs,pSensRad).map((p,i)=>p+schedule(8,lHrs,lRad)[i]+schedule(8,eHrs,eRad)[i]);
+    intConvQ = schedule(8,pHrs,pSensConv).map((p,i)=>p+schedule(8,lHrs,lConv)[i]+schedule(8,eHrs,eConv)[i]);
+  }
 
   /* RTS Nonsolar 적용 */
   const internalCL = Array.from({length:24},(_,h)=>{
@@ -5421,7 +5863,7 @@ function calcAll() {
   /* ─ 결과 표시 ─ */
   const totArea = rooms.reduce((s,r)=>s+(r.area||0)*(r.qty||1),0) || (v('p-area')||1000);
 
-  const latSF = latent * SF;
+  const latSF = latent;  /* latent는 calcAll 내부에서 이미 SF 적용됨 */
   setEl('r-cool-sens',   fmt(peak));
   setEl('r-cool-lat',    fmt(latSF));
   setEl('r-cool-total',  ((peak+latSF)/1000).toFixed(1));
@@ -5447,10 +5889,28 @@ function setEl(id, val) {
   if(el) el.textContent = val;
 }
 
-/* Bug #9 수정: 파라미터 정리 */
 function calcHeatingLoad(toIn) {
   const winterDB = v('w-winter-db') || -11.3;
-  const dT = toIn - winterDB;
+  const SF       = v('p-sf')        || 1.10;
+
+  if (rooms && rooms.length > 0) {
+    /* rooms[] 각 실의 wall[]/glass[] 합산 — calcRoomLoad()와 동일 */
+    let totalHeat = 0;
+    rooms.forEach(rm => {
+      const area    = (rm.area||0) * (rm.qty||1);
+      const vol     = area * (rm.height||2.7);
+      const heatT   = rm.heatTemp || 22;
+      const dTh     = heatT - winterDB;
+      const ach     = rm.infil_ach || 0.1;
+      const wallUA_h  = (rm.wall ||[]).reduce((s,w)=>s+(w.U||0.17)*(w.area||0)*(w.df||1.0),0);
+      const glassUA_h = (rm.glass||[]).reduce((s,g)=>s+(g.U||1.5) *(g.area||0)*(g.df||1.05),0);
+      totalHeat += (wallUA_h + glassUA_h) * dTh * SF + vol * ach * 0.335 * dTh;
+    });
+    return totalHeat;
+  }
+
+  /* 폴백: extComponents[] 전역 사용 */
+  const dT      = toIn - winterDB;
   const wallUA  = extComponents.filter(c=>c.type!=='glass').reduce((s,c)=>s+c.U*c.area,0);
   const glassUA = extComponents.filter(c=>c.type==='glass').reduce((s,c)=>s+c.U*c.area,0);
   return (wallUA + glassUA) * dT * 1.10;
@@ -5564,7 +6024,14 @@ function calcAHU() {
     return;
   }
   const cfm  = Q / (1.2 * 1.006 * dT) * 3.6;
-  const ppl  = v('i-people') || 50;
+  /* 재실인원: rooms[] 합산 우선, 없으면 i-people 폴백 */
+  const ppl  = (rooms && rooms.length > 0)
+    ? rooms.reduce((s,rm)=>s+Math.round((rm.area||0)*(rm.qty||1)*(rm.ppl_density||0.2)),0)
+    : (v('i-people') || 50);
+  const SF_ahu = v('p-sf') || 1.10;
+  const latCode = (rooms && rooms.length > 0)
+    ? (PEOPLE_CODE[rooms[0]?.ppl_code||'A']||PEOPLE_CODE['A']).lh
+    : (v('i-lat')||50);
   const oa   = ppl * 25;
   const ach  = v('p-area') > 0 ? cfm / (v('p-area') * (v('p-floor-h')||3.0)) : 0;
   const sp   = v('ahu-sp')  || 900;
@@ -5576,7 +6043,7 @@ function calcAHU() {
   setInputVal('ahu-ach',    ach.toFixed(2));
   setInputVal('ahu-fan-kw', fanKW.toFixed(2));
 
-  const lat = ppl * (v('i-lat')||50) * 1.1;
+  const lat = ppl * latCode * SF_ahu;
   const heat= calcResults.heat || 0;
   const tbody = document.getElementById('tbody-ahu-result');
   if(!tbody) return;
@@ -5649,7 +6116,11 @@ function calcRoomLoad(room, solAir24, hourlyT24, doy) {
   });
 
   /* ── 내부 발열 ── */
-  const code     = PEOPLE_CODE[room.ppl_code || 'A'] || PEOPLE_CODE['A'];
+  const codeRaw  = PEOPLE_CODE[room.ppl_code || 'A'] || PEOPLE_CODE['A'];
+  /* 실내 냉방 설정온도에 가장 가까운 byTemp 값 적용 */
+  const _temps   = [22,23,24,25,26,27];
+  const _nearest = _temps.reduce((a,b)=>Math.abs(b-toIn)<Math.abs(a-toIn)?b:a);
+  const code     = (codeRaw.byTemp && codeRaw.byTemp[_nearest]) ? codeRaw.byTemp[_nearest] : codeRaw;
   const peopleTot= Math.round(area * (room.ppl_density || 0.2));
   const pSens    = peopleTot * code.sh;
   const pLat     = peopleTot * code.lh;
@@ -5712,36 +6183,199 @@ function calcAllRooms() {
   return { results, tot24 };
 }
 
-/* 실별 부하 결과 집계표 렌더 */
+/* ====================================================
+   실별 부하 결과 렌더 — 샘플 RM-Load1 형식
+   집계 요약표 + 각 실별 항목별 시각별 상세 계산서
+===================================================== */
+let _roomDetailVisible = true;
+function toggleRoomDetail() {
+  _roomDetailVisible = !_roomDetailVisible;
+  const el = document.getElementById('room-detail-sheets');
+  const btn = document.getElementById('btn-room-detail-toggle');
+  if (el) el.style.display = _roomDetailVisible ? '' : 'none';
+  if (btn) btn.textContent = _roomDetailVisible ? '🔍 간략 보기' : '🔍 상세 보기';
+}
+
 function renderRoomLoadTable(results) {
   const tbody = document.getElementById('tbody-room-loads');
-  if(!tbody) return;
-  const fmt2 = v => (v/1000).toFixed(2);
-  tbody.innerHTML = results.map((r,i) => {
+  if (!tbody) return;
+
+  const f2 = v => (v/1000).toFixed(2);
+  const fW = v => Math.round(v).toLocaleString();
+
+  /* ── 집계 요약 행 ── */
+  tbody.innerHTML = results.map((r, i) => {
     const rm = r.room;
     const density = r.area > 0 ? (r.peakCool / r.area).toFixed(1) : '—';
     return `<tr>
       <td class="row-label">${i+1}</td>
-      <td class="label-cell">${rm.id}</td>
+      <td class="label-cell" style="font-family:monospace;font-size:10px">${rm.id}</td>
       <td class="label-cell">${rm.name}</td>
-      <td class="label-cell" style="font-size:10px">${rm.use}</td>
       <td class="calc-cell">${rm.qty||1}</td>
       <td class="calc-cell">${(rm.area||0).toFixed(0)}</td>
       <td class="calc-cell">${r.peopleTot}</td>
-      <td class="calc-cell">${fmt2(r.peakCool)}</td>
-      <td class="calc-cell">${fmt2(r.latTotal)}</td>
-      <td class="calc-cell" style="font-weight:900;color:var(--gold)">${fmt2(r.peakCool+r.latTotal)}</td>
+      <td class="calc-cell">${f2(r.peakCool)}</td>
+      <td class="calc-cell">${f2(r.latTotal)}</td>
+      <td class="total-cell">${f2(r.peakCool+r.latTotal)}</td>
       <td class="calc-cell">${r.peakHour}시</td>
       <td class="calc-cell">${density}</td>
-      <td class="calc-cell">${fmt2(r.heatLoad)}</td>
+      <td class="calc-cell" style="color:var(--red)">${f2(r.heatLoad)}</td>
     </tr>`;
+  }).join('');
+
+  /* ── 실별 상세 계산서 ── */
+  const detailWrap = document.getElementById('room-detail-sheets');
+  if (!detailWrap) return;
+
+  const toDB   = parseFloat(document.getElementById('w-summer-db')?.value)  || 33.3;
+  const toInG  = parseFloat(document.getElementById('w-indoor-cool')?.value) || 26.0;
+  const winDB  = parseFloat(document.getElementById('w-winter-db')?.value)   || -11.3;
+  const HOURS  = [8,10,12,14,16,18,20];  /* 샘플과 동일한 7시각 */
+
+  detailWrap.innerHTML = results.map((r, idx) => {
+    const rm = r.room;
+    const SF = rm.sf || 1.10;
+    const codeRaw = PEOPLE_CODE[rm.ppl_code||'A'] || PEOPLE_CODE['A'];
+    const _tmpsD = [22,23,24,25,26,27];
+    const _nearD = _tmpsD.reduce((a,b)=>Math.abs(b-(rm.coolTemp||26))<Math.abs(a-(rm.coolTemp||26))?b:a);
+    const code   = (codeRaw.byTemp && codeRaw.byTemp[_nearD]) ? codeRaw.byTemp[_nearD] : codeRaw;
+    const winterDT = (rm.heatTemp||22) - winDB;
+
+    /* 시각별 부하 배열 (7시각 추출) */
+    const pick = arr => HOURS.map(h => Math.round(arr[h-1]||0));
+    const pickSF = arr => HOURS.map(h => Math.round((arr[h-1]||0)*SF));
+
+    const wallRow   = pick(r.wallCL24.map((v,i)=>v+r.roofCL24[i]));
+    const glassConvRow = pick(r.glassConv24);
+    const solarRow  = pick(r.solarCL24);
+    const infiltRow = HOURS.map(h => Math.round(r.infiltQ * SF));
+    const peRow     = pick(r.intCL24.map(v=>v-r.infiltQ));  /* 내부발열만 (침기 제외) */
+    const sensRows  = HOURS.map((_,hi) =>
+      wallRow[hi]+glassConvRow[hi]+solarRow[hi]+infiltRow[hi]+peRow[hi]);
+
+    /* 난방: 유리·벽·침기 항목별 */
+    const glassHeat = (rm.glass||[]).map(g => {
+      const ua = (g.U||1.5)*(g.area||0)*(g.df||1.05);
+      return { label:`G(${g.az||'S'})`, area:g.area||0, U:g.U||1.5, df:g.df||1.05, heat: Math.round(ua*winterDT*SF) };
+    });
+    const wallHeat = (rm.wall||[]).map(w => {
+      const ua = (w.U||0.17)*(w.area||0)*(w.df||1.0);
+      const lbl = w.type==='roof'?`R(수평)`:`W(${w.az||'S'})`;
+      return { label:lbl, area:w.area||0, U:w.U||0.17, df:w.df||1.0, heat: Math.round(ua*winterDT*SF) };
+    });
+    const vol = r.area*(rm.height||2.7);
+    const infiltHeat = Math.round(vol*(rm.infil_ach||0.1)*0.335*winterDT*SF);
+
+    const tdH = (v,cls='') => `<td class="calc-cell${cls?(' '+cls):''}">${v.toLocaleString()}</td>`;
+    const labelCols = `<td colspan="2"></td><td class="label-cell"></td><td class="label-cell"></td><td class="calc-cell"></td><td class="calc-cell"></td>`;
+
+    /* 냉방 행 생성 헬퍼 */
+    function coolRow(code, desc, capacity, vals, extra='') {
+      const isTotal = code==='SH합계'||code==='Total';
+      const cls = isTotal?'total-cell':'calc-cell';
+      return `<tr class="${isTotal?'row-group':''}">
+        <td class="row-label" style="font-family:monospace;font-size:9px;color:var(--gold)">${code}</td>
+        <td class="label-cell" colspan="2" style="font-size:10px">${desc}</td>
+        <td class="label-cell" style="font-size:9px;color:var(--text2)">${capacity}</td>
+        ${vals.map(v=>`<td class="${cls}">${v.toLocaleString()}</td>`).join('')}
+        <td class="${cls}">${extra}</td>
+      </tr>`;
+    }
+
+    return `
+    <div class="excel-wrap" style="margin-top:8px;border:1px solid var(--border)">
+      <div class="excel-header" style="display:flex;justify-content:space-between;font-size:10px">
+        <span>
+          [${rm.id}] <b>${rm.name}</b> &nbsp;·&nbsp;
+          ${rm.qty||1}실, ${(rm.area||0).toFixed(0)} ㎡, 천장고 ${rm.height||2.7}m &nbsp;·&nbsp;
+          RTS Zone ${rm.rtsZone||8} (${rm.use||''})
+        </span>
+        <span style="color:var(--text2)">
+          냉방 ${(rm.coolTemp||26)}℃ / ${(toDB)}℃  |  난방 ${(rm.heatTemp||22)}℃ / ${winDB}℃  |  SF ${SF.toFixed(2)}
+        </span>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="excel-table" style="font-size:10px">
+        <thead>
+          <tr>
+            <th class="col-label" style="min-width:42px">항목</th>
+            <th class="col-label" colspan="2" style="min-width:120px">내용</th>
+            <th class="col-label" style="min-width:90px">용량</th>
+            ${HOURS.map(h=>`<th class="col-label">${h}시</th>`).join('')}
+            <th class="col-label" style="background:rgba(232,64,64,.15);color:var(--red)">난방(W)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${/* 유리창 행 */ (rm.glass||[]).map((g,gi) => {
+            const vals = pick(r.solarCL24.map((sv,hi)=>sv*(g.area||0)/Math.max(1,(rm.glass||[]).reduce((s,gg)=>s+(gg.area||0),0))+r.glassConv24[hi]*(g.U||1.5)*(g.area||0)*(g.df||1.05)/Math.max(1,(rm.glass||[]).reduce((s,gg)=>s+(gg.U||1.5)*(gg.area||0)*(gg.df||1.05),0))));
+            const gheat = glassHeat[gi]||{heat:0};
+            return coolRow(`G${gi+1}(${g.az||'S'})`, `유리창 · Az:${g.azDeg||180}° Tilt:90° DF:${(g.df||1.05).toFixed(2)}`,
+              `${(g.area||0).toFixed(1)} ㎡ · U=${(g.U||1.5).toFixed(3)} · SC=${(g.shgc||g.sc||0.4).toFixed(2)}`,
+              vals, gheat.heat.toLocaleString());
+          }).join('')}
+          ${/* 외벽·지붕 행 */ (rm.wall||[]).map((w,wi) => {
+            const typeL = w.type==='roof'?'지붕':'외벽';
+            const frac  = Math.max(1,(rm.wall||[]).filter(ww=>ww.type===w.type).reduce((s,ww)=>s+(ww.U||0.17)*(ww.area||0),0));
+            const vals  = w.type==='roof'
+              ? pick(r.roofCL24.map(v=>v*(w.U||0.12)*(w.area||0)/frac))
+              : pick(r.wallCL24.map(v=>v*(w.U||0.17)*(w.area||0)/frac));
+            const wheat = wallHeat[wi]||{heat:0};
+            return coolRow(`${w.type==='roof'?'R':'W'}${wi+1}(${w.az||'S'})`,
+              `${typeL} · Az:${w.azDeg||180}° DF:${(w.df||1.0).toFixed(2)}`,
+              `${(w.area||0).toFixed(1)} ㎡ · U=${(w.U||0.17).toFixed(3)}`,
+              vals, wheat.heat.toLocaleString());
+          }).join('')}
+          ${coolRow('IF-S', `침기 현열 · ${(rm.infil_ach||0.1)} ac/h · ${Math.round(vol)} ㎥`,
+            '', infiltRow, infiltHeat.toLocaleString())}
+          ${coolRow('PE-S', `인체 현열 · ${(rm.ppl_density||0.2)} p/㎡ · Code ${rm.ppl_code||'A'}`,
+            `${r.peopleTot} p · SH ${code.sh}W/p`,
+            pick(r.intCL24.map(v=>v-r.infiltQ).map(v=>v*0.55)), '')}
+          ${coolRow('PE-L', `인체 잠열 · (LH ${code.lh}W/p)`,
+            `${r.peopleTot} p`,
+            HOURS.map(h=>Math.round(r.peopleTot*code.lh*SF*(h>=8&&h<8+(rm.ppl_hrs||9)?1:0))), '')}
+          ${coolRow('LT', `조명 · LPD ${(rm.lpd||12)} W/㎡`,
+            `${Math.round((rm.lpd||12)*r.area)} W`,
+            pick(r.intCL24.map(v=>v-r.infiltQ).map(v=>v*0.35)), '')}
+          ${coolRow('EQ', `기기 · EPD ${(rm.epd||15)} W/㎡`,
+            `${Math.round((rm.epd||15)*r.area)} W`,
+            pick(r.intCL24.map(v=>v-r.infiltQ).map(v=>v*0.10)), '')}
+          <tr class="row-group" style="background:rgba(0,180,216,0.06)">
+            <td class="row-label" style="color:var(--accent);font-weight:900">SH합계</td>
+            <td class="label-cell" colspan="2" style="font-weight:700">Sensible Load (현열 합계)</td>
+            <td></td>
+            ${HOURS.map(h=>{ const v2=Math.round(r.cool24[h-1]||0); return `<td class="total-cell">${v2.toLocaleString()}</td>`; }).join('')}
+            <td class="total-cell" style="color:var(--red)">${Math.round(r.heatLoad).toLocaleString()}</td>
+          </tr>
+          <tr style="background:rgba(0,180,216,0.12)">
+            <td class="row-label" style="color:var(--gold);font-weight:900">Total</td>
+            <td class="label-cell" colspan="2" style="font-weight:700;color:var(--gold)">Total Load · Peak: <b>${r.peakHour}시 ${Math.round(r.peakCool+r.latTotal).toLocaleString()} W</b></td>
+            <td></td>
+            ${HOURS.map(h=>{ const isP=(h===r.peakHour); const v2=Math.round((r.cool24[h-1]||0)+r.latTotal/7); return `<td class="total-cell" style="${isP?'background:rgba(255,170,0,0.25);font-weight:900;':''}">${v2.toLocaleString()}</td>`; }).join('')}
+            <td class="total-cell" style="color:var(--red);font-weight:900">${Math.round(r.heatLoad).toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>`;
   }).join('');
 }
 
 function calcBuilding() {
   const coolArr = (calcResults.cool && calcResults.cool.length) ? calcResults.cool : new Array(24).fill(0);
   const peak    = Math.max(...coolArr, 0);
-  const latent  = (v('i-people')||0) * (v('i-lat')||50) * 1.1;
+  const SF      = v('p-sf') || 1.10;
+  /* 잠열: rooms[] 실별 합산 우선, 없으면 전역 i-people 폴백 */
+  const _toInB  = v('w-indoor-cool') || 26;
+  const _tmpsB  = [22,23,24,25,26,27];
+  const _nearB  = _tmpsB.reduce((a,b)=>Math.abs(b-_toInB)<Math.abs(a-_toInB)?b:a);
+  const latent  = rooms && rooms.length > 0
+    ? rooms.reduce((s,rm)=>{
+        const area  = (rm.area||0)*(rm.qty||1);
+        const cRaw  = PEOPLE_CODE[rm.ppl_code||'A'] || PEOPLE_CODE['A'];
+        const code  = (cRaw.byTemp && cRaw.byTemp[_nearB]) ? cRaw.byTemp[_nearB] : cRaw;
+        return s + Math.round(area*(rm.ppl_density||0.2)) * code.lh;
+      }, 0) * SF
+    : (v('i-people')||0) * (v('i-lat')||50) * SF;
   const totalC  = (peak + latent) / 1000;
   const totalH  = (calcResults.heat||0) / 1000;
   const RT      = totalC * 0.2843;
@@ -6058,15 +6692,95 @@ function exportReport() {
   const psEl = document.getElementById('print-subtitle');
   if(psEl) psEl.textContent = pname + ' | 설계자: ' + des + ' | ASHRAE 2009 RTS법';
 
-  /* ── 전체 재계산 후 출력 ── */
+  /* ── 전체 재계산 + 모든 JS 렌더 테이블 확실히 실행 ── */
   calcAll();
-  /* 혹시 열린 모달 닫기 */
+  calcExternal();
+  calcInternal();
+  renderPeopleCodeRef();
+  renderInternalTypeRef();
+  showRTSTable();
+  if (typeof calcRoomsAndUpdate === 'function') calcRoomsAndUpdate();
   if (typeof closeRoomModal === 'function') closeRoomModal();
   closeFormulaModal();
+
+  /* ══════════════════════════════════════════════════════════
+     24열 시각별 테이블 인쇄 처리 — Chrome named @page 미지원 대응
+     
+     Chrome/Edge는 개별 요소에 @page named page를 적용하지 않아
+     landscape 전환이 불가능합니다.
+     대신: portrait 용지 안에서 transform:scale()로 테이블 전체를
+     A4 인쇄 가능 폭(182mm)에 맞게 축소 표현합니다.
+     
+     A4 portrait 인쇄 가능 폭 ≈ 182mm
+     24열 테이블 실제 필요 폭  ≈ 297mm (landscape 폭)
+     scale ratio = 182 / 297 ≈ 0.613
+     → width를 163%로 확장 후 scale(0.613) 적용
+       → 렌더된 폭 = 163% × 0.613 ≈ 100% (182mm)
+  ══════════════════════════════════════════════════════════ */
+  const printStyle = document.createElement('style');
+  printStyle.id = '_rts-print-override';
+  printStyle.textContent = `
+@media print {
+  .hourly-table-block {
+    page-break-before: always !important;
+    break-before: always !important;
+    page-break-after: always !important;
+    break-after: always !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    overflow: visible !important;
+    width: 163% !important;
+    max-width: 163% !important;
+    transform: scale(0.613) !important;
+    transform-origin: left top !important;
+    margin-bottom: -37% !important;
+  }
+  .hourly-table-block .excel-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    font-size: 6pt !important;
+    border-collapse: collapse !important;
+    overflow: visible !important;
+  }
+  .hourly-table-block .excel-table th:nth-child(1),
+  .hourly-table-block .excel-table td:nth-child(1) { width: 20pt !important; min-width:0 !important; }
+  .hourly-table-block .excel-table th:nth-child(2),
+  .hourly-table-block .excel-table td:nth-child(2) { width: 65pt !important; min-width:0 !important; }
+  .hourly-table-block .excel-table th:last-child,
+  .hourly-table-block .excel-table td:last-child   { width: 36pt !important; min-width:0 !important; }
+  .hourly-table-block .excel-table th:nth-child(n+3):not(:last-child),
+  .hourly-table-block .excel-table td:nth-child(n+3):not(:last-child) {
+    width: auto !important; min-width:0 !important;
+  }
+  .hourly-table-block .excel-table th,
+  .hourly-table-block .excel-table td {
+    padding: 2pt 1.5pt !important;
+    font-size: 6pt !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    border: 0.4pt solid #888 !important;
+    vertical-align: middle !important;
+    line-height: 1.3 !important;
+  }
+  .hourly-table-block .excel-table th {
+    background: #d8d8d8 !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+  }
+  .hourly-table-block > div { overflow: visible !important; padding: 0 !important; }
+  .hourly-table-block [style*="overflow"] { overflow: visible !important; }
+  .hourly-table-block .sheet-block-header,
+  .hourly-table-block .excel-header { font-size: 7pt !important; padding: 3pt 5pt !important; }
+}`;
+  document.head.appendChild(printStyle);
+
   setTimeout(() => {
     window.print();
-    /* 출력 후 다시 숨김 */
+    /* 출력 후 복원 */
     setTimeout(() => {
+      const ps = document.getElementById('_rts-print-override');
+      if (ps) ps.remove();
       ['print-cover','print-toc'].forEach(id => {
         const el = document.getElementById(id);
         if(el) el.style.display = 'none';
@@ -6074,16 +6788,919 @@ function exportReport() {
       document.querySelectorAll('.print-sheet-header, .print-sheet-footer').forEach(el => {
         el.style.display = 'none';
       });
-      /* section-title 이모지 복원 */
-      document.querySelectorAll('.section-title').forEach(el => {
-        // 복원 없이 유지 (화면에서는 tabHeader가 다시 렌더되므로 무방)
-      });
-    }, 500);
-  }, 400);
+    }, 800);
+  }, 600);
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   RTS-MANMIN  Excel Export  Ver1.0
+   ─────────────────────────────────────────────────────────────────
+   샘플(rts_sarek_output.xls) 레이아웃 기준:
+     Sheet 1 : Title        — 표지 (프로젝트 정보)
+     Sheet 2 : 설계기준      — 기상·설계 기준
+     Sheet 3 : 외부열취득    — extComponents 부하
+     Sheet 4 : 내부열취득    — 인체·조명·기기
+     Sheet 5 : RTS계산결과  — 시간별 냉방부하 (24h)
+     Sheet 6 : 실별부하      — rooms[] 냉·난방 결과
+     Sheet 7 : 부하집계      — 건물 피크 부하 요약
+     Sheet 8 : AHU선정       — 공조기 선정 결과
+   ══════════════════════════════════════════════════════════════════ */
 function exportExcel() {
-  alert('인쇄 → PDF 저장 기능을 이용하거나, 테이블을 복사하여 Excel에 붙여넣기 하세요.');
+  /* ── SheetJS 로드 확인 ── */
+  if (typeof XLSX === 'undefined') {
+    alert('SheetJS 라이브러리 로딩 중입니다. 잠시 후 다시 시도하세요.');
+    return;
+  }
+
+  /* ── 전체 재계산 후 진행 ── */
+  calcAll();
+
+  /* ── 기본 도우미 ── */
+  const v  = id => { const el = document.getElementById(id); return el ? (parseFloat(el.value)||0) : 0; };
+  const vs = id => { const el = document.getElementById(id); return el ? (el.value||el.textContent||'') : ''; };
+  const vt = id => { const el = document.getElementById(id); return el ? (el.textContent||'') : ''; };
+  const now = new Date();
+  const dateStr = now.getFullYear()+'년 '+(now.getMonth()+1)+'월 '+now.getDate()+'일';
+
+  /* ── 프로젝트 기본 정보 ── */
+  const pName    = vs('p-name')     || '만민 건축사 신사옥 신축공사';
+  const pDesign  = vs('p-designer') || '김만민';
+  const pUse     = vs('p-use')      || '사무소';
+  const pFloors  = v('p-floors')    || 15;
+  const pArea    = v('p-area')      || 12500;
+  const pFloorH  = v('p-floor-h')   || 3.6;
+  const pSF      = v('p-sf')        || 1.10;
+
+  /* ── 기상 데이터 ── */
+  const sumDB    = v('w-summer-db')      || 33.3;
+  const sumWB    = v('w-summer-wb')      || 25.0;
+  const DR       = v('w-dr')             || 8.3;
+  const indCool  = v('w-indoor-cool')    || 26.0;
+  const indRhC   = v('w-indoor-rh-cool') || 50;
+  const winDB    = v('w-winter-db')      || -11.3;
+  const winRh    = v('w-winter-rh')      || 55;
+  const indHeat  = v('w-indoor-heat')    || 22.0;
+  const indRhH   = v('w-indoor-rh-heat') || 40;
+  const wind     = v('w-wind')           || 3.5;
+
+  /* ── 내부 발열 — rooms[] 합산 우선, 없으면 전역 탭 폴백 ── */
+  let iPeople = 0, iSens = 65, iLat = 50;
+  let iLpd = 12, iLArea = 0, iEpd = 15, iEArea = 0;
+  let iSensTotal = 0, iLatTotal = 0, iLightTotal = 0, iEquipTotal = 0;
+
+  if (rooms && rooms.length > 0) {
+    const _tmpsXL = [22,23,24,25,26,27];
+    const _nearXL = _tmpsXL.reduce((a,b)=>Math.abs(b-indCool)<Math.abs(a-indCool)?b:a);
+    rooms.forEach(rm => {
+      const area   = (rm.area||0)*(rm.qty||1);
+      const cRawXL = PEOPLE_CODE[rm.ppl_code||'A'] || PEOPLE_CODE['A'];
+      const code   = (cRawXL.byTemp && cRawXL.byTemp[_nearXL]) ? cRawXL.byTemp[_nearXL] : cRawXL;
+      const ppl    = Math.round(area*(rm.ppl_density||0.2));
+      iPeople    += ppl;
+      iSensTotal += ppl * code.sh;
+      iLatTotal  += ppl * code.lh;
+      iLightTotal+= (rm.lpd||12)*area;
+      iEquipTotal+= (rm.epd||15)*area;
+      iLArea     += area;
+      iEArea     += area;
+    });
+    iSens = iPeople > 0 ? Math.round(iSensTotal/iPeople) : 65;
+    iLat  = iPeople > 0 ? Math.round(iLatTotal /iPeople) : 50;
+    const totA = iLArea || 1;
+    iLpd  = +(iLightTotal/totA).toFixed(1);
+    iEpd  = +(iEquipTotal/totA).toFixed(1);
+  } else {
+    iPeople = v('i-people')    || 0;
+    iSens   = v('i-sens')      || 65;
+    iLat    = v('i-lat')       || 50;
+    iLpd    = v('i-lpd')       || 12;
+    iLArea  = v('i-light-area')|| 500;
+    iEpd    = v('i-epd')       || 15;
+    iEArea  = v('i-equip-area')|| 500;
+    iSensTotal  = iPeople * iSens;
+    iLatTotal   = iPeople * iLat;
+    iLightTotal = iLpd * iLArea;
+    iEquipTotal = iEpd * iEArea;
+  }
+
+  /* ── 계산 결과 ── */
+  const coolArr  = (calcResults.cool && calcResults.cool.length) ? calcResults.cool : new Array(24).fill(0);
+  const peakCool = Math.max(...coolArr, 0);
+  const peakHr   = calcResults.peakHour || 14;
+  const heatLoad = calcResults.heat || 0;
+  const latentPeak = iLatTotal * pSF;
+
+  /* ── AHU 데이터 ── */
+  const ahuNo    = vs('ahu-no')       || 'AHU-1';
+  const ahuName  = vs('ahu-name')     || '공조기-1';
+  const ahuSys   = vs('ahu-sys')      || 'CAV';
+  const ahuCfm   = v('ahu-cfm')       || 0;
+  const ahuOA    = v('ahu-oa')        || 0;
+  const ahuFanKW = v('ahu-fan-kw')    || 0;
+  const ahuSP    = v('ahu-sp')        || 900;
+  const ahuEff   = v('ahu-fan-eff')   || 60;
+
+  const wb = XLSX.utils.book_new();
+
+  /* ═══════════════════════════════════════════════
+     공통 스타일 헬퍼
+  ═══════════════════════════════════════════════ */
+  function S(opts) {
+    /* opts: { bold, bg, color, border, align, sz, wrap, numFmt } */
+    const s = {};
+    if (opts.bold || opts.bg || opts.color || opts.sz || opts.wrap) {
+      s.font = {};
+      if (opts.bold)  s.font.bold  = true;
+      if (opts.color) s.font.color = { rgb: opts.color };
+      if (opts.sz)    s.font.sz    = opts.sz;
+      s.font.name = 'Arial';
+    } else {
+      s.font = { name: 'Arial', sz: opts.sz || 10 };
+    }
+    if (opts.bg) {
+      s.fill = { patternType:'solid', fgColor:{ rgb: opts.bg } };
+    }
+    if (opts.align || opts.wrap) {
+      s.alignment = {
+        horizontal: opts.align || 'left',
+        vertical:   'center',
+        wrapText:   !!opts.wrap
+      };
+    } else {
+      s.alignment = { horizontal:'left', vertical:'center' };
+    }
+    if (opts.border !== false) {
+      const b = { style:'thin', color:{ rgb:'AAAAAA' } };
+      s.border = { top:b, bottom:b, left:b, right:b };
+    }
+    if (opts.numFmt) s.numFmt = opts.numFmt;
+    return s;
+  }
+  const ST = {
+    title:    S({ bold:true, bg:'0A3A6B', color:'FFFFFF', sz:13, align:'center' }),
+    h1:       S({ bold:true, bg:'1A4A8A', color:'FFFFFF', sz:11, align:'center' }),
+    h2:       S({ bold:true, bg:'2E6CB5', color:'FFFFFF', sz:10, align:'center' }),
+    h3:       S({ bold:true, bg:'D0E8FF', color:'0A1628', sz:10, align:'center' }),
+    label:    S({ bold:true, bg:'EBF4FF', sz:9,  align:'left' }),
+    val:      S({ sz:9,  align:'right',  numFmt:'#,##0' }),
+    valDec:   S({ sz:9,  align:'right',  numFmt:'#,##0.00' }),
+    valPct:   S({ sz:9,  align:'right',  numFmt:'0.0%' }),
+    note:     S({ sz:8,  align:'left',   color:'666666' }),
+    total:    S({ bold:true, bg:'FFF3CD', sz:10, align:'right', numFmt:'#,##0' }),
+    totalDec: S({ bold:true, bg:'FFF3CD', sz:10, align:'right', numFmt:'#,##0.00' }),
+    center:   S({ sz:9,  align:'center' }),
+    plain:    S({ sz:9,  align:'left' }),
+  };
+
+  /* ── ws에 행 추가 헬퍼 ── */
+  function addRow(ws, rowIdx, colOffset, cells) {
+    cells.forEach((c, ci) => {
+      if (c === null || c === undefined) return;
+      const addr = XLSX.utils.encode_cell({ r: rowIdx, c: colOffset + ci });
+      const cell = { v: c.v !== undefined ? c.v : c, t: 'z' };
+      if (c.v !== undefined) {
+        cell.v = c.v;
+        cell.s = c.s || ST.plain;
+        if      (typeof cell.v === 'number') cell.t = 'n';
+        else if (typeof cell.v === 'string') cell.t = 's';
+      } else {
+        if      (typeof c === 'number') { cell.t = 'n'; cell.s = ST.val; }
+        else if (typeof c === 'string') { cell.t = 's'; cell.s = ST.plain; }
+      }
+      ws[addr] = cell;
+    });
+  }
+
+  function setRange(ws, maxR, maxC) {
+    ws['!ref'] = XLSX.utils.encode_range({ s:{r:0,c:0}, e:{r:maxR, c:maxC} });
+  }
+
+  function mergeCells(ws, merges) {
+    ws['!merges'] = (ws['!merges'] || []).concat(merges.map(m =>
+      ({ s:{r:m[0],c:m[1]}, e:{r:m[2],c:m[3]} })
+    ));
+  }
+
+  /* ─────────────────────────────────────────────────────
+     ① Title Sheet — 표지
+  ───────────────────────────────────────────────────── */
+  (function buildTitle() {
+    const ws = {};
+    ws['!cols'] = [
+      {wch:4},{wch:20},{wch:20},{wch:20},{wch:20},{wch:20},{wch:20}
+    ];
+
+    const C = (v, s) => ({ v, s });
+    let r = 0;
+
+    // 빈줄 × 6
+    for (let i=0; i<6; i++) { ws[XLSX.utils.encode_cell({r,c:0})] = {v:'',t:'s'}; r++; }
+
+    // 메인 제목
+    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver3.0', t:'s',
+      s: S({ bold:true, bg:'0A3A6B', color:'FFFFFF', sz:16, align:'center' }) };
+    mergeCells(ws, [[r,1,r,6]]);
+    r++;
+
+    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'ASHRAE 2009 Radiant Time Series Method', t:'s',
+      s: S({ bold:true, bg:'1A4A8A', color:'FFFFFF', sz:12, align:'center' }) };
+    mergeCells(ws, [[r,1,r,6]]);
+    r++;
+    r++;
+
+    // 목차
+    const toc = [
+      '■ 설계 기준 및 기상 데이터',
+      '■ 외부 열취득 (External Heat Gain)',
+      '■ 내부 열취득 (Internal Heat Gain)',
+      '■ RTS 냉방 부하 계산',
+      '■ 실별 부하 집계',
+      '■ 건물 부하 요약',
+      '■ AHU / FCU 선정',
+    ];
+    toc.forEach(t => {
+      ws[XLSX.utils.encode_cell({r,c:2})] = { v:t, t:'s',
+        s: S({ sz:10, align:'left', color:'1A4A8A' }) };
+      r++;
+    });
+    r += 2;
+
+    // 프로젝트 정보
+    const info = [
+      ['Project Name :', pName],
+      ['설  계  사   :', pDesign],
+      ['건 물 용 도   :', pUse],
+      ['연 면 적     :', pArea + ' ㎡'],
+      ['출 력 일 자   :', dateStr],
+    ];
+    info.forEach(([lbl, val]) => {
+      ws[XLSX.utils.encode_cell({r,c:2})] = { v:lbl, t:'s', s: ST.label };
+      ws[XLSX.utils.encode_cell({r,c:3})] = { v:val, t:'s', s: ST.plain };
+      mergeCells(ws, [[r,3,r,5]]);
+      r++;
+    });
+
+    setRange(ws, r+2, 6);
+    XLSX.utils.book_append_sheet(wb, ws, 'Title');
+  })();
+
+  /* ─────────────────────────────────────────────────────
+     ② 설계기준 Sheet
+  ───────────────────────────────────────────────────── */
+  (function buildDesign() {
+    const ws = {};
+    ws['!cols'] = [{wch:6},{wch:22},{wch:14},{wch:14},{wch:14},{wch:14},{wch:14},{wch:14}];
+    let r = 0;
+
+    const H = (v, colspan, bg) => {
+      ws[XLSX.utils.encode_cell({r,c:0})] = { v: pName, t:'s',
+        s: S({ bold:true, bg:'0A3A6B', color:'FFFFFF', sz:10 }) };
+      ws[XLSX.utils.encode_cell({r,c:colspan})] = { v:'1. BUILDING DESIGN CONDITIONS', t:'s',
+        s: S({ bold:true, bg:'0A3A6B', color:'FFFFFF', sz:9, align:'right' }) };
+      mergeCells(ws, [[r,0,r,colspan-1],[r,colspan,r,7]]);
+      r++;
+    };
+    H('', 4);
+
+    // 날짜
+    ws[XLSX.utils.encode_cell({r,c:5})] = { v:dateStr, t:'s', s: ST.note };
+    r++;
+
+    // ── 1. 설계개요
+    ws[XLSX.utils.encode_cell({r,c:0})] = { v:'1. 설계 개요', t:'s', s: ST.h1 };
+    mergeCells(ws, [[r,0,r,7]]); r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})] = { v:'□ 건물 개요', t:'s', s: ST.h2 };
+    mergeCells(ws, [[r,0,r,7]]); r++;
+
+    const bInfo = [
+      ['Project Name',  pName,    'Location', '서울'],
+      ['건물 용도',     pUse,     '층  수',   pFloors+'층'],
+      ['연 면 적',      pArea+' ㎡','층  고',  pFloorH+' m'],
+      ['안전율(SF)',     pSF,      '설계자',   pDesign],
+    ];
+    bInfo.forEach(([l1,v1,l2,v2]) => {
+      ws[XLSX.utils.encode_cell({r,c:0})] = { v:l1, t:'s', s:ST.label };
+      ws[XLSX.utils.encode_cell({r,c:1})] = { v:v1, t: typeof v1==='number'?'n':'s', s:typeof v1==='number'?ST.valDec:ST.plain };
+      mergeCells(ws, [[r,1,r,2]]);
+      ws[XLSX.utils.encode_cell({r,c:3})] = { v:l2, t:'s', s:ST.label };
+      ws[XLSX.utils.encode_cell({r,c:4})] = { v:v2, t:'s', s:ST.plain };
+      mergeCells(ws, [[r,4,r,5]]);
+      r++;
+    });
+    r++;
+
+    // ── 2. 외기 온습도 기준
+    ws[XLSX.utils.encode_cell({r,c:0})] = { v:'□ 외기 온습도 기준', t:'s', s:ST.h2 };
+    mergeCells(ws, [[r,0,r,7]]); r++;
+
+    const wHdr = ['구분','조건','건구온도(℃)','습구온도(℃)','상대습도(%)','풍속(m/s)'];
+    wHdr.forEach((h,ci)=>{ ws[XLSX.utils.encode_cell({r,c:ci})] = {v:h,t:'s',s:ST.h3}; });
+    r++;
+
+    const wData = [
+      ['냉방','A조건',sumDB,sumWB,60,wind],
+      ['난방','A조건',winDB,'',winRh,wind],
+    ];
+    wData.forEach(row => {
+      row.forEach((val,ci)=>{
+        ws[XLSX.utils.encode_cell({r,c:ci})] = {
+          v:val, t:typeof val==='number'?'n':'s',
+          s:typeof val==='number'?ST.valDec:ST.label
+        };
+      });
+      r++;
+    });
+    r++;
+
+    // ── 3. 실내 설계 조건
+    ws[XLSX.utils.encode_cell({r,c:0})] = { v:'□ 실내 설계 조건', t:'s', s:ST.h2 };
+    mergeCells(ws, [[r,0,r,7]]); r++;
+
+    const iHdr = ['구분','조건','설정온도(℃)','상대습도(%)'];
+    iHdr.forEach((h,ci)=>{ ws[XLSX.utils.encode_cell({r,c:ci})] = {v:h,t:'s',s:ST.h3}; });
+    r++;
+
+    const iData = [
+      ['냉방','설계기준',indCool,indRhC],
+      ['난방','설계기준',indHeat,indRhH],
+    ];
+    iData.forEach(row => {
+      row.forEach((val,ci)=>{
+        ws[XLSX.utils.encode_cell({r,c:ci})] = {
+          v:val, t:typeof val==='number'?'n':'s',
+          s:typeof val==='number'?ST.valDec:ST.label
+        };
+      });
+      r++;
+    });
+    r++;
+
+    // ── 4. 기상 데이터 요약
+    ws[XLSX.utils.encode_cell({r,c:0})] = { v:'□ 기상 데이터 (일별 온도 변화폭)', t:'s', s:ST.h2 };
+    mergeCells(ws, [[r,0,r,7]]); r++;
+
+    const mHdr = ['구분','값','단위','비고'];
+    mHdr.forEach((h,ci)=>{ ws[XLSX.utils.encode_cell({r,c:ci})] = {v:h,t:'s',s:ST.h3}; });
+    r++;
+
+    const mData = [
+      ['하계 외기(DB)', sumDB, '℃', '냉방설계'],
+      ['하계 외기(WB)', sumWB, '℃', '냉방설계'],
+      ['일변화폭(DR)',  DR,    'K', ''],
+      ['동계 외기(DB)', winDB, '℃', '난방설계'],
+      ['풍속',          wind,  'm/s',''],
+    ];
+    mData.forEach(([l,val,unit,rem]) => {
+      ws[XLSX.utils.encode_cell({r,c:0})] = {v:l,  t:'s', s:ST.label};
+      ws[XLSX.utils.encode_cell({r,c:1})] = {v:val, t:'n', s:ST.valDec};
+      ws[XLSX.utils.encode_cell({r,c:2})] = {v:unit,t:'s', s:ST.center};
+      ws[XLSX.utils.encode_cell({r,c:3})] = {v:rem, t:'s', s:ST.note};
+      r++;
+    });
+
+    setRange(ws, r+1, 7);
+    XLSX.utils.book_append_sheet(wb, ws, '설계기준');
+  })();
+
+  /* ─────────────────────────────────────────────────────
+     ③ 외부열취득 Sheet
+  ───────────────────────────────────────────────────── */
+  (function buildExternal() {
+    const ws = {};
+    ws['!cols'] = [{wch:4},{wch:10},{wch:8},{wch:8},{wch:8},{wch:8},{wch:8},{wch:8},{wch:8},{wch:8},{wch:10}];
+    let r = 0;
+
+    // 헤더
+    ws[XLSX.utils.encode_cell({r,c:0})] = { v:pName, t:'s', s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:10}) };
+    ws[XLSX.utils.encode_cell({r,c:6})] = { v:'2. 외부 열취득 (External Heat Gain)', t:'s',
+      s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:9,align:'right'}) };
+    mergeCells(ws,[[r,0,r,5],[r,6,r,10]]); r++;
+    ws[XLSX.utils.encode_cell({r,c:8})] = {v:dateStr,t:'s',s:ST.note}; r++; r++;
+
+    // 섹션제목
+    ws[XPATH(r,0,'□ 외부 부하 구성 요소')] && null;
+    ws[XLSX.utils.encode_cell({r,c:0})] = {v:'□ 외부 부하 구성 요소',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,10]]); r++;
+
+    const eHdr=['No.','부위','방위각(°)','경사(°)','면적(㎡)','U값(W/m²K)','SC/SHGC','흡열계수','일사열취득(W)','전도열취득(W)','비고'];
+    eHdr.forEach((h,ci)=>{ ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3}; });
+    r++;
+
+    let totSolar=0, totConduct=0;
+    if (!extComponents || extComponents.length===0) {
+      ws[XLSX.utils.encode_cell({r,c:0})]={v:'(외부 부하 항목 없음)',t:'s',s:ST.note};
+      mergeCells(ws,[[r,0,r,10]]); r++;
+    } else {
+      extComponents.forEach((c,i) => {
+        const solarQ = (c.type==='glass') ? (c.sc||c.shgc||0)*c.area*(200) : 0;
+        const conductQ = c.U * c.area * (sumDB - indCool);
+        totSolar   += solarQ;
+        totConduct += conductQ;
+        const typeLabel = c.type==='wall'?'외벽': c.type==='roof'?'지붕': '유리창';
+        const row=[i+1, typeLabel, c.az||0, c.tilt||90, c.area||0, c.U||0,
+                   c.sc||c.shgc||0, c.alpha||0.9,
+                   Math.round(solarQ), Math.round(conductQ),''];
+        row.forEach((val,ci)=>{
+          ws[XLSX.utils.encode_cell({r,c:ci})]={
+            v:val, t:typeof val==='number'?'n':'s',
+            s:typeof val==='number'?ST.val:ST.plain
+          };
+        });
+        r++;
+      });
+      // 합계행
+      const trow=['','합계','','','','','','',Math.round(totSolar),Math.round(totConduct),''];
+      trow.forEach((val,ci)=>{
+        ws[XLSX.utils.encode_cell({r,c:ci})]={
+          v:val, t:typeof val==='number'?'n':'s',
+          s:typeof val==='number'?ST.total:(ci===1?S({bold:true,bg:'FFF3CD',sz:9}):ST.total)
+        };
+      });
+      r++;
+    }
+    r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'* 일사 열취득은 피크 시각 기준 근사값입니다.',t:'s',s:ST.note};
+    r++;
+
+    setRange(ws, r+1, 10);
+    XLSX.utils.book_append_sheet(wb, ws, '외부열취득');
+  })();
+
+  /* ─────────────────────────────────────────────────────
+     ④ 내부열취득 Sheet
+  ───────────────────────────────────────────────────── */
+  (function buildInternal() {
+    const ws = {};
+    ws['!cols']=[{wch:6},{wch:18},{wch:12},{wch:12},{wch:12},{wch:14},{wch:12},{wch:12}];
+    let r=0;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:pName,t:'s',s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:10})};
+    ws[XLSX.utils.encode_cell({r,c:4})]={v:'3. 내부 열취득 (Internal Heat Gain)',t:'s',
+      s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:9,align:'right'})};
+    mergeCells(ws,[[r,0,r,3],[r,4,r,7]]); r++;
+    ws[XLSX.utils.encode_cell({r,c:6})]={v:dateStr,t:'s',s:ST.note}; r++; r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 내부 발열 항목',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,7]]); r++;
+
+    const iHdr=['No.','항목','수량/면적','단위','현열(W)','잠열(W)','합계(W)','비고'];
+    iHdr.forEach((h,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3};});
+    r++;
+
+    /* rooms[] 합산값 사용 (전역 iSensTotal 등 활용) */
+    const sensP  = iSensTotal;
+    const latP   = iLatTotal;
+    const sensL  = iLightTotal;
+    const sensE  = iEquipTotal;
+
+    const iRows=[
+      [1,'인체',iPeople,'인',       Math.round(sensP), Math.round(latP),  Math.round(sensP+latP),  rooms&&rooms.length>0?'실별 합산':'경작업 기준'],
+      [2,'조명',Math.round(iLArea),'㎡', Math.round(sensL), 0, Math.round(sensL), 'LPD='+iLpd+' W/㎡ (가중평균)'],
+      [3,'기기',Math.round(iEArea),'㎡', Math.round(sensE), 0, Math.round(sensE), 'EPD='+iEpd+' W/㎡ (가중평균)'],
+      [4,'소계','','',              Math.round(sensP+sensL+sensE), Math.round(latP), Math.round(sensP+sensL+sensE+latP), ''],
+    ];
+    iRows.forEach(row=>{
+      row.forEach((val,ci)=>{
+        ws[XLSX.utils.encode_cell({r,c:ci})]={
+          v:val, t:typeof val==='number'?'n':'s',
+          s:(ci===0||ci>=4)?(typeof val==='number'?
+            (row[1]==='소계'?ST.total:ST.val):
+            (row[1]==='소계'?S({bold:true,bg:'FFF3CD',sz:9}):ST.plain)):
+            ST.label
+        };
+      });
+      r++;
+    });
+    r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 운영 스케줄',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,7]]); r++;
+
+    const sHdr=['항목','시작시각','운영시간','종료시각'];
+    sHdr.forEach((h,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3};});
+    r++;
+
+    /* 운영 스케줄 — rooms[] 기반 (첫 번째 실 기준 또는 평균) */
+    let avgStartHr=8, avgPplHrs=9, avgLightHrs=10, avgEquipHrs=9;
+    if(rooms && rooms.length>0){
+      avgStartHr  = Math.round(rooms.reduce((s,r)=>s+(r.start_hr||8),0)/rooms.length);
+      avgPplHrs   = Math.round(rooms.reduce((s,r)=>s+(r.ppl_hrs||9),0)/rooms.length);
+      avgLightHrs = Math.round(rooms.reduce((s,r)=>s+(r.light_hrs||10),0)/rooms.length);
+      avgEquipHrs = Math.round(rooms.reduce((s,r)=>s+(r.equip_hrs||9),0)/rooms.length);
+    }
+    const sData=[
+      ['인체', String(avgStartHr).padStart(2,'0')+':00', avgPplHrs+'h',   String(avgStartHr+avgPplHrs).padStart(2,'0')+':00'],
+      ['조명', String(avgStartHr).padStart(2,'0')+':00', avgLightHrs+'h', String(avgStartHr+avgLightHrs).padStart(2,'0')+':00'],
+      ['기기', String(avgStartHr).padStart(2,'0')+':00', avgEquipHrs+'h', String(avgStartHr+avgEquipHrs).padStart(2,'0')+':00'],
+    ];
+    sData.forEach(row=>{
+      row.forEach((val,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:val,t:'s',s:ci===0?ST.label:ST.plain};});
+      r++;
+    });
+
+    setRange(ws,r+1,7);
+    XLSX.utils.book_append_sheet(wb, ws, '내부열취득');
+  })();
+
+  /* ─────────────────────────────────────────────────────
+     ⑤ RTS계산결과 Sheet — 핵심: 24시간 부하 테이블
+  ───────────────────────────────────────────────────── */
+  (function buildRTS() {
+    const ws = {};
+    const colW = [{wch:5},{wch:14}];
+    for(let i=0;i<24;i++) colW.push({wch:9});
+    colW.push({wch:10},{wch:10});
+    ws['!cols']=colW;
+    let r=0;
+
+    // 헤더
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:pName,t:'s',s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:10})};
+    ws[XLSX.utils.encode_cell({r,c:14})]={v:'4. RTS 냉방 부하 계산결과',t:'s',
+      s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:9,align:'right'})};
+    mergeCells(ws,[[r,0,r,13],[r,14,r,25]]); r++;
+    ws[XLSX.utils.encode_cell({r,c:23})]={v:dateStr,t:'s',s:ST.note}; r++; r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 시간별 냉방 부하 (단위: W)',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,25]]); r++;
+
+    // 시각 헤더
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'No.',t:'s',s:ST.h3};
+    ws[XLSX.utils.encode_cell({r,c:1})]={v:'부하 항목',t:'s',s:ST.h3};
+    for(let h=0;h<24;h++){
+      ws[XLSX.utils.encode_cell({r,c:2+h})]={v:h+1+'시',t:'s',s:ST.h3};
+    }
+    ws[XLSX.utils.encode_cell({r,c:26})]={v:'Peak(W)',t:'s',s:ST.h3};
+    ws[XLSX.utils.encode_cell({r,c:27})]={v:'피크시각',t:'s',s:ST.h3};
+    r++;
+
+    /* 각 부하 구성요소를 다시 계산하여 행별 출력 */
+    const {hourlyT, solAir} = calcSolAirTemp ? calcSolAirTemp() : {hourlyT:new Array(24).fill(sumDB), solAir:new Array(24).fill(sumDB)};
+    const toIn = indCool;
+
+    function applyCTS(qHr, cts, radFrac) {
+      return Array.from({length:24},(_,h)=>{
+        const rad = cts.reduce((s,c,j)=>s+c*qHr[(h-j+24)%24],0)*radFrac;
+        return rad + qHr[h]*(1-radFrac);
+      });
+    }
+
+    const walls = extComponents.filter(c=>c.type==='wall');
+    const roofs = extComponents.filter(c=>c.type==='roof');
+    const glass = extComponents.filter(c=>c.type==='glass');
+
+    const wallUA  = walls.reduce((s,w)=>s+w.U*w.area,0);
+    const roofUA  = roofs.reduce((s,rr)=>s+rr.U*rr.area,0);
+    const glassUA = glass.reduce((s,g)=>s+g.U*g.area,0);
+    const solBase = glass.reduce((s,g)=>s+(g.sc||g.shgc||0)*g.area,0);
+
+    const wallQ   = solAir.map(te=>wallUA*(te-toIn));
+    const roofQ   = solAir.map(te=>roofUA*(te-toIn));
+    const glassQ  = hourlyT.map(t=>glassUA*(t-toIn));
+
+    const Et_HOR  = typeof getEt_HOR==='function' ? getEt_HOR() : new Array(24).fill(200);
+    const solarQ  = Et_HOR.map(e=>e*solBase);
+
+    const wallCL  = applyCTS(wallQ,  typeof CTS_WALL!=='undefined'?CTS_WALL:[1,...new Array(23).fill(0)], 0.46);
+    const roofCL  = applyCTS(roofQ,  typeof CTS_ROOF!=='undefined'?CTS_ROOF:[1,...new Array(23).fill(0)], 0.60);
+    const wallGain= wallCL.map((w,i)=>w+roofCL[i]);
+    const solarCL = Array.from({length:24},(_,h)=>{
+      const rts = typeof RTS_SOLAR_Z8!=='undefined'?RTS_SOLAR_Z8:[1,...new Array(23).fill(0)];
+      return rts.reduce((s,rr,j)=>s+rr*solarQ[(h-j+24)%24],0);
+    });
+
+    /* 내부발열 — rooms[] 실별 합산 (calcAll과 동일 로직) */
+    const intRadQ24  = new Array(24).fill(0);
+    const intConvQ24 = new Array(24).fill(0);
+    function sch(start,dur,val){
+      return Array.from({length:24},(_,h)=>((h-start+24)%24)<dur?val:0);
+    }
+    if(rooms && rooms.length>0){
+      rooms.forEach(rm=>{
+        const area   = (rm.area||0)*(rm.qty||1);
+        const code   = PEOPLE_CODE[rm.ppl_code||'A']||PEOPLE_CODE['A'];
+        const ppl    = Math.round(area*(rm.ppl_density||0.2));
+        const pSens  = ppl*code.sh;
+        const lTot   = (rm.lpd||12)*area;
+        const eTot   = (rm.epd||15)*area;
+        const sH     = rm.start_hr||8;
+        const pH     = rm.ppl_hrs||9, lH=rm.light_hrs||10, eH=rm.equip_hrs||9;
+        sch(sH,pH,pSens*0.60).forEach((v,h)=>{ intRadQ24[h]  += v+sch(sH,lH,lTot*0.42)[h]+sch(sH,eH,eTot*0.20)[h]; });
+        sch(sH,pH,pSens*0.40).forEach((v,h)=>{ intConvQ24[h] += v+sch(sH,lH,lTot*0.58)[h]+sch(sH,eH,eTot*0.80)[h]; });
+      });
+    } else {
+      const pHrs=v('i-people-hrs')||9, lHrs=v('i-light-hrs')||10, eHrs=v('i-equip-hrs')||9;
+      const sensP2=iPeople*iSens, sensL2=iLpd*iLArea, sensE2=iEpd*iEArea;
+      sch(8,pHrs,sensP2*0.60).forEach((v,h)=>{ intRadQ24[h]  += v+sch(8,lHrs,sensL2*0.42)[h]+sch(8,eHrs,sensE2*0.20)[h]; });
+      sch(8,pHrs,sensP2*0.40).forEach((v,h)=>{ intConvQ24[h] += v+sch(8,lHrs,sensL2*0.58)[h]+sch(8,eHrs,sensE2*0.80)[h]; });
+    }
+    const rtsNS = typeof RTS_NONSOLAR_Z8!=='undefined'?RTS_NONSOLAR_Z8:[1,...new Array(23).fill(0)];
+    const intCL = Array.from({length:24},(_,h)=>{
+      const radCL=rtsNS.reduce((s,rr,j)=>s+rr*intRadQ24[(h-j+24)%24],0);
+      return radCL+intConvQ24[h];
+    });
+
+    const totalCL = Array.from({length:24},(_,h)=>(wallGain[h]+glassQ[h]+solarCL[h]+intCL[h])*pSF);
+
+    const loadRows = [
+      {no:1, label:'외벽·지붕 (W+R)', data: wallGain},
+      {no:2, label:'유리 전도 (Glass Cond)', data: glassQ},
+      {no:3, label:'태양열 투과 (Solar)', data: solarCL},
+      {no:4, label:'내부 발열 (Internal)', data: intCL},
+      {no:5, label:'합계×SF (Total×SF)', data: totalCL, isTotal:true},
+    ];
+
+    loadRows.forEach(lr=>{
+      ws[XLSX.utils.encode_cell({r,c:0})]={v:lr.no,t:'n',s:ST.center};
+      ws[XLSX.utils.encode_cell({r,c:1})]={v:lr.label,t:'s',s:lr.isTotal?S({bold:true,bg:'D0E8FF',sz:9}):ST.label};
+      const peak=Math.max(...lr.data);
+      const phIdx=lr.data.indexOf(peak);
+      lr.data.forEach((val,h)=>{
+        const isP=(h===phIdx);
+        ws[XLSX.utils.encode_cell({r,c:2+h})]={
+          v:Math.round(val), t:'n',
+          s:isP?S({bold:true,bg:'FFE8A0',sz:9,align:'right',numFmt:'#,##0'}):
+                (lr.isTotal?S({bold:true,bg:'D0E8FF',sz:9,align:'right',numFmt:'#,##0'}):ST.val)
+        };
+      });
+      ws[XLSX.utils.encode_cell({r,c:26})]={v:Math.round(peak),t:'n',
+        s:S({bold:true,bg:'FF6B35',color:'FFFFFF',sz:9,align:'right',numFmt:'#,##0'})};
+      ws[XLSX.utils.encode_cell({r,c:27})]={v:(phIdx+1)+'시',t:'s',
+        s:S({bold:true,bg:'FF6B35',color:'FFFFFF',sz:9,align:'center'})};
+      r++;
+    });
+    r++;
+
+    // 결과 요약
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 냉·난방 부하 집계',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,10]]); r++;
+
+    const sumHdr=['구분','현열(W)','잠열(W)','전열(kW)','면적(㎡)','부하밀도(W/㎡)'];
+    sumHdr.forEach((h,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3};});
+    r++;
+
+    const latSF = iLatTotal * pSF;
+    const totCkW=(peakCool+latSF)/1000;
+
+    const sumData=[
+      ['냉방 최대 부하', Math.round(peakCool), Math.round(latSF), +(totCkW.toFixed(2)), pArea, +((peakCool/pArea).toFixed(1))],
+      ['난방 최대 부하', Math.round(heatLoad), 0, +(heatLoad/1000).toFixed(2), pArea, +((heatLoad/pArea).toFixed(1))],
+    ];
+    sumData.forEach(row=>{
+      row.forEach((val,ci)=>{
+        ws[XLSX.utils.encode_cell({r,c:ci})]={
+          v:val, t:typeof val==='number'?'n':'s',
+          s:typeof val==='number'?ST.total:S({bold:true,bg:'FFF3CD',sz:9})
+        };
+      });
+      r++;
+    });
+    r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'* Peak 시각: '+peakHr+'시  |  안전율(SF): '+pSF,t:'s',s:ST.note};
+    ws[XLSX.utils.encode_cell({r,c:3})]={v:'* 냉동기 용량: '+(totCkW*0.2843).toFixed(1)+' USRT',t:'s',s:ST.note};
+    r++;
+
+    setRange(ws,r+1,27);
+    XLSX.utils.book_append_sheet(wb, ws, 'RTS계산결과');
+  })();
+
+  /* ─────────────────────────────────────────────────────
+     ⑥ 실별부하 Sheet  (RM-Load0 참조)
+  ───────────────────────────────────────────────────── */
+  (function buildRoomLoad() {
+    const ws = {};
+    ws['!cols']=[{wch:5},{wch:8},{wch:20},{wch:6},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10}];
+    let r=0;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:pName,t:'s',s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:10})};
+    ws[XLSX.utils.encode_cell({r,c:5})]={v:'5. 실별 냉·난방 부하',t:'s',
+      s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:9,align:'right'})};
+    mergeCells(ws,[[r,0,r,4],[r,5,r,8]]); r++;
+    ws[XLSX.utils.encode_cell({r,c:7})]={v:dateStr,t:'s',s:ST.note}; r++; r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 실별 냉·난방 부하 (단위: W)',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,8]]); r++;
+
+    const rHdr=['No.','실 번호','실 명칭','수량','면적(㎡)','냉방 부하(W)','난방 부하(W)','냉방 밀도(W/㎡)','비고'];
+    rHdr.forEach((h,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3};});
+    r++;
+
+    if (!rooms || rooms.length===0) {
+      ws[XLSX.utils.encode_cell({r,c:0})]={v:'(실 데이터 없음)',t:'s',s:ST.note};
+      mergeCells(ws,[[r,0,r,8]]); r++;
+    } else {
+      let totCool=0, totHeat=0, totArea=0;
+      rooms.forEach((rm,i)=>{
+        const area=(rm.area||0)*(rm.qty||1);
+        const {hourlyT, solAir} = calcSolAirTemp ? calcSolAirTemp() : {hourlyT:new Array(24).fill(sumDB),solAir:new Array(24).fill(sumDB)};
+        const rRes = typeof calcRoomLoad==='function' ? calcRoomLoad(rm, solAir, hourlyT, 192) : null;
+        const rCool = rRes ? Math.max(...rRes.cool)*pSF : peakCool*(area/(pArea||1));
+        const rHeat = rRes ? rRes.heat : heatLoad*(area/(pArea||1));
+        totCool+=rCool; totHeat+=rHeat; totArea+=area;
+
+        const density=area>0?(rCool/area):0;
+        const row=[i+1, rm.id||'', rm.name||'', rm.qty||1, area,
+                   Math.round(rCool), Math.round(rHeat), +density.toFixed(1),''];
+        row.forEach((val,ci)=>{
+          ws[XLSX.utils.encode_cell({r,c:ci})]={
+            v:val, t:typeof val==='number'?'n':'s',
+            s:typeof val==='number'?ST.val:ST.plain
+          };
+        });
+        r++;
+      });
+      // 합계
+      const totRow=['','','합계','',totArea,Math.round(totCool),Math.round(totHeat),
+        totArea>0?+(totCool/totArea).toFixed(1):0,''];
+      totRow.forEach((val,ci)=>{
+        ws[XLSX.utils.encode_cell({r,c:ci})]={
+          v:val, t:typeof val==='number'?'n':'s',
+          s:typeof val==='number'?ST.total:S({bold:true,bg:'FFF3CD',sz:9})
+        };
+      });
+      r++;
+    }
+
+    setRange(ws,r+1,8);
+    XLSX.utils.book_append_sheet(wb, ws, '실별부하');
+  })();
+
+  /* ─────────────────────────────────────────────────────
+     ⑦ 부하집계 Sheet (BL-Sum 참조)
+  ───────────────────────────────────────────────────── */
+  (function buildBldSum() {
+    const ws = {};
+    ws['!cols']=[{wch:16},{wch:14},{wch:12},{wch:12},{wch:12},{wch:10},{wch:10}];
+    let r=0;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:pName,t:'s',s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:10})};
+    ws[XLSX.utils.encode_cell({r,c:4})]={v:'6. 건물 부하 집계 (Building Load Summary)',t:'s',
+      s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:9,align:'right'})};
+    mergeCells(ws,[[r,0,r,3],[r,4,r,6]]); r++;
+    ws[XLSX.utils.encode_cell({r,c:5})]={v:dateStr,t:'s',s:ST.note}; r++; r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 건물 PEAK LOAD  (Peak: '+peakHr+'시)',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,6]]); r++;
+
+    const bHdr=['구분','항목','면적/수량','현열(W)','잠열(W)','전열(W)','비율(%)'];
+    bHdr.forEach((h,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3};});
+    r++;
+
+    const ph=peakHr-1;
+    const {hourlyT:hT, solAir:sA} = calcSolAirTemp ? calcSolAirTemp() : {hourlyT:new Array(24).fill(sumDB),solAir:new Array(24).fill(sumDB)};
+    function reCalcAt(hour) {
+      const wUA=extComponents.filter(c=>c.type!=='glass').reduce((s,c)=>s+c.U*c.area,0);
+      const gUA=extComponents.filter(c=>c.type==='glass').reduce((s,c)=>s+c.U*c.area,0);
+      const sB =extComponents.filter(c=>c.type==='glass').reduce((s,c)=>s+(c.sc||c.shgc||0)*c.area,0);
+      const wQ = wUA*(sA[hour]-indCool);
+      const gQ = gUA*(hT[hour]-indCool);
+      const Et = typeof getEt_HOR==='function'?getEt_HOR():new Array(24).fill(200);
+      const sQ = sB*Et[hour];
+      /* 내부발열: rooms[] 합산 사용 */
+      const pSens = iSensTotal;
+      const pLat  = iLatTotal;
+      const lQ    = iLightTotal;
+      const eQ    = iEquipTotal;
+      return { wall:wQ, glass:gQ, solar:sQ, peopleSens:pSens, peopleLat:pLat, light:lQ, equip:eQ };
+    }
+    const at = reCalcAt(ph);
+    const wallA=extComponents.filter(c=>c.type!=='glass').reduce((s,c)=>s+c.area,0);
+    const glsA =extComponents.filter(c=>c.type==='glass').reduce((s,c)=>s+c.area,0);
+    const totSH = (at.wall+at.glass+at.solar+at.peopleSens+at.light+at.equip)*pSF;
+    const totLH = at.peopleLat*pSF;
+    const totAll= totSH+totLH;
+
+    const bRows=[
+      ['외부부하','유리창', glsA.toFixed(1)+' ㎡', Math.round(at.glass*pSF), 0, Math.round(at.glass*pSF)],
+      ['','지붕/외벽', wallA.toFixed(1)+' ㎡', Math.round(at.wall*pSF), 0, Math.round(at.wall*pSF)],
+      ['','태양열투과', glsA.toFixed(1)+' ㎡', Math.round(at.solar*pSF), 0, Math.round(at.solar*pSF)],
+      ['내부부하','인체',    iPeople+' p',              Math.round(at.peopleSens*pSF), Math.round(at.peopleLat*pSF), Math.round((at.peopleSens+at.peopleLat)*pSF)],
+      ['',        '조명',    Math.round(iLArea)+' ㎡',  Math.round(at.light*pSF),      0,                            Math.round(at.light*pSF)],
+      ['',        '기기',    Math.round(iEArea)+' ㎡',  Math.round(at.equip*pSF),      0,                            Math.round(at.equip*pSF)],
+      ['합계','', pArea+' ㎡', Math.round(totSH), Math.round(totLH), Math.round(totAll)],
+    ];
+    bRows.forEach(row=>{
+      const isSum=(row[0]==='합계');
+      const tot=row[5]||0;
+      const pct=totAll>0?(tot/totAll*100):0;
+      row.forEach((val,ci)=>{
+        ws[XLSX.utils.encode_cell({r,c:ci})]={
+          v:val, t:typeof val==='number'?'n':'s',
+          s:isSum?(typeof val==='number'?ST.total:S({bold:true,bg:'FFF3CD',sz:9})):
+                  (typeof val==='number'?ST.val:ST.label)
+        };
+      });
+      ws[XLSX.utils.encode_cell({r,c:6})]={
+        v:+pct.toFixed(1), t:'n',
+        s:isSum?S({bold:true,bg:'FFF3CD',sz:9,align:'right',numFmt:'0.0'}):ST.valDec
+      };
+      r++;
+    });
+    r++;
+
+    // 요약
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 설비 용량 산정',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,6]]); r++;
+
+    const capHdr=['항목','냉방(kW)','냉동기(USRT)','난방(kW)','비고'];
+    capHdr.forEach((h,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3};});
+    r++;
+
+    const totCkW=(peakCool+iLatTotal*pSF)/1000;
+    const totHkW=heatLoad/1000;
+    const capRows=[
+      ['냉방 설비 (Cooling)', +totCkW.toFixed(2), +(totCkW*0.2843).toFixed(1), '', '안전율 포함'],
+      ['난방 설비 (Heating)', '', '', +totHkW.toFixed(2), '안전율 포함'],
+    ];
+    capRows.forEach(row=>{
+      row.forEach((val,ci)=>{
+        ws[XLSX.utils.encode_cell({r,c:ci})]={
+          v:val, t:typeof val==='number'?'n': (val===''?'s':'s'),
+          s:typeof val==='number'?ST.total:S({bold:true,bg:'FFF3CD',sz:9})
+        };
+      });
+      r++;
+    });
+
+    setRange(ws,r+2,6);
+    XLSX.utils.book_append_sheet(wb, ws, '부하집계');
+  })();
+
+  /* ─────────────────────────────────────────────────────
+     ⑧ AHU선정 Sheet (AH-Sel 참조)
+  ───────────────────────────────────────────────────── */
+  (function buildAHU() {
+    const ws = {};
+    ws['!cols']=[{wch:18},{wch:14},{wch:12},{wch:12},{wch:12},{wch:10}];
+    let r=0;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:pName,t:'s',s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:10})};
+    ws[XLSX.utils.encode_cell({r,c:3})]={v:'7. AHU / 공조기 선정',t:'s',
+      s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:9,align:'right'})};
+    mergeCells(ws,[[r,0,r,2],[r,3,r,5]]); r++;
+    ws[XLSX.utils.encode_cell({r,c:4})]={v:dateStr,t:'s',s:ST.note}; r++; r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 공조기 선정 결과',t:'s',s:ST.h2};
+    mergeCells(ws,[[r,0,r,5]]); r++;
+
+    const aHdr=['항목','값','단위','비고'];
+    aHdr.forEach((h,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3};});
+    r++;
+
+    const totCkW=(peakCool+iPeople*iLat*pSF)/1000;
+    const aData=[
+      ['기기 번호',   ahuNo||'AHU-1', '',     ''],
+      ['기기 명칭',   ahuName||'공조기-1', '',  ''],
+      ['시스템 방식', ahuSys||'CAV', '',       ''],
+      ['냉방 부하',   +totCkW.toFixed(2), 'kW',  '냉방 코일'],
+      ['난방 부하',   +(heatLoad/1000).toFixed(2), 'kW', '가열 코일'],
+      ['급기 풍량',   Math.round(ahuCfm), '㎥/h', ''],
+      ['외기 도입량', Math.round(ahuOA),  '㎥/h', ''],
+      ['Fan 정압',    ahuSP, 'Pa', ''],
+      ['Fan 효율',    ahuEff, '%', ''],
+      ['Fan 동력',    +ahuFanKW.toFixed(2), 'kW', ''],
+      ['냉동기 용량', +(totCkW*0.2843).toFixed(1), 'USRT', '1 USRT=3.517kW'],
+    ];
+    aData.forEach(row=>{
+      ws[XLSX.utils.encode_cell({r,c:0})]={v:row[0],t:'s',s:ST.label};
+      ws[XLSX.utils.encode_cell({r,c:1})]={v:row[1],t:typeof row[1]==='number'?'n':'s',
+        s:typeof row[1]==='number'?ST.valDec:ST.plain};
+      ws[XLSX.utils.encode_cell({r,c:2})]={v:row[2],t:'s',s:ST.center};
+      ws[XLSX.utils.encode_cell({r,c:3})]={v:row[3],t:'s',s:ST.note};
+      r++;
+    });
+    r++;
+
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'* 본 계산서는 ASHRAE 2009 RTS법(Radiant Time Series)에 의한 결과입니다.',t:'s',s:ST.note};
+    mergeCells(ws,[[r,0,r,5]]); r++;
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'  설계자: '+pDesign+'  |  출력일: '+dateStr+'  |  RTS-MANMIN Ver3.0',t:'s',s:ST.note};
+    mergeCells(ws,[[r,0,r,5]]); r++;
+
+    setRange(ws,r+1,5);
+    XLSX.utils.book_append_sheet(wb, ws, 'AHU선정');
+  })();
+
+  /* ── 파일 저장 ── */
+  const safeName = pName.replace(/[\\/:*?"<>|]/g,'_');
+  XLSX.writeFile(wb, safeName + '_부하계산서.xlsx');
+
+  /* ── 완료 토스트 ── */
+  const toast = document.createElement('div');
+  toast.style.cssText=[
+    'position:fixed','bottom:30px','right:24px','z-index:99999',
+    'background:linear-gradient(135deg,#065f46,#064e3b)',
+    'color:#6ee7b7','border:1.5px solid rgba(110,231,183,.5)',
+    'border-radius:12px','padding:14px 20px',
+    'box-shadow:0 6px 28px rgba(0,0,0,.6)',
+    'font-family:"Noto Sans KR",sans-serif','font-size:12px',
+    'animation:_uval-in .22s cubic-bezier(.4,0,.2,1) both'
+  ].join(';');
+  toast.innerHTML='<span style="font-size:18px;">✅</span> <strong>'+safeName+'_부하계산서.xlsx</strong> 저장 완료';
+  document.body.appendChild(toast);
+  setTimeout(()=>{ toast.style.transition='opacity .3s'; toast.style.opacity='0';
+    setTimeout(()=>toast.remove(),320); }, 4000);
 }
 
 
