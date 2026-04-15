@@ -1,117 +1,35 @@
-/* =====================================================
-   RTS-MANMIN Service Worker  Ver 3.0
-   ASHRAE 2009 RTS 건축물 부하계산서 PWA
-   ===================================================== */
-
-const CACHE_NAME    = 'rts-manmin-v3.0.0';
-const STATIC_ASSETS = [
+// RTS-MANMIN Service Worker Ver3.0
+// 오프라인 캐시 + PWA 설치 지원
+const CACHE_NAME = 'rts-manmin-v3';
+const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icons/icon-192x192.png',
-  './icons/icon-512x512.png',
-  './icons/apple-touch-icon.png',
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap'
 ];
 
-/* ── Install : 정적 자산 캐시 ── */
-self.addEventListener('install', event => {
-  console.log('[SW] Installing RTS-MANMIN v3.0.0...');
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      console.log('[SW] Caching static assets');
-      return Promise.allSettled(
-        STATIC_ASSETS.map(url =>
-          cache.add(url).catch(err => console.warn('[SW] Cache miss:', url, err))
-        )
-      );
-    }).then(() => self.skipWaiting())
+// 설치: 핵심 파일 캐시
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
+  self.skipWaiting();
 });
 
-/* ── Activate : 구버전 캐시 정리 ── */
-self.addEventListener('activate', event => {
-  console.log('[SW] Activating...');
-  event.waitUntil(
+// 활성화: 이전 캐시 삭제
+self.addEventListener('activate', e => {
+  e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => {
-            console.log('[SW] Deleting old cache:', key);
-            return caches.delete(key);
-          })
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
       )
-    ).then(() => self.clients.claim())
+    )
+  );
+  self.clients.claim();
+});
+
+// 요청 처리: 캐시 우선, 없으면 네트워크
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(cached => cached || fetch(e.request))
   );
 });
-
-/* ── Fetch : Cache-First + Network Fallback ── */
-self.addEventListener('fetch', event => {
-  const { request } = event;
-  const url = new URL(request.url);
-
-  /* Google Fonts → Network First (폰트는 온라인 우선) */
-  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
-    event.respondWith(
-      fetch(request)
-        .then(resp => {
-          const clone = resp.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
-          return resp;
-        })
-        .catch(() => caches.match(request))
-    );
-    return;
-  }
-
-  /* 나머지 → Cache First */
-  event.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) return cached;
-
-      return fetch(request)
-        .then(resp => {
-          if (!resp || resp.status !== 200 || resp.type === 'opaque') return resp;
-          const clone = resp.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
-          return resp;
-        })
-        .catch(() => {
-          /* 오프라인 & 미캐시 → index.html 반환 */
-          if (request.destination === 'document') {
-            return caches.match('./index.html');
-          }
-        });
-    })
-  );
-});
-
-/* ── Background Sync (계산 결과 자동 저장용) ── */
-self.addEventListener('sync', event => {
-  if (event.tag === 'sync-calc-data') {
-    console.log('[SW] Background sync: calc-data');
-  }
-});
-
-/* ── Push Notification (업데이트 알림 예비) ── */
-self.addEventListener('push', event => {
-  if (!event.data) return;
-  const data = event.data.json();
-  self.registration.showNotification(data.title || 'RTS-MANMIN', {
-    body:    data.body    || '새 업데이트가 있습니다.',
-    icon:    './icons/icon-192x192.png',
-    badge:   './icons/icon-72x72.png',
-    vibrate: [200, 100, 200],
-    data:    { url: data.url || './' }
-  });
-});
-
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  event.waitUntil(
-    clients.openWindow(event.notification.data?.url || './')
-  );
-});
-
-console.log('[SW] RTS-MANMIN Service Worker loaded.');

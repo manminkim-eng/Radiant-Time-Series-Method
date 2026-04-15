@@ -1,88 +1,18 @@
 {
   "name": "RTS-MANMIN 건축물 부하계산서",
   "short_name": "RTS-MANMIN",
-  "description": "ASHRAE 2009 RTS법 기반 건축물 냉난방 부하계산 전문 도구 Ver3.0 by MANMIN",
-  "start_url": "./index.html",
-  "scope": "./",
+  "description": "ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver3.0",
+  "start_url": "./",
   "display": "standalone",
-  "orientation": "landscape",
   "background_color": "#0a1628",
   "theme_color": "#00b4d8",
-  "lang": "ko",
-  "dir": "ltr",
-  "categories": ["productivity", "utilities", "engineering"],
+  "orientation": "any",
   "icons": [
-    {
-      "src": "icons/icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [],
-  "shortcuts": [
-    {
-      "name": "냉방 부하계산",
-      "short_name": "냉방계산",
-      "description": "냉방 부하 계산 탭으로 바로 이동",
-      "url": "./index.html#cooling",
-      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "외부 부하",
-      "short_name": "외부부하",
-      "description": "외부 부하 계산 탭으로 바로 이동",
-      "url": "./index.html#external",
-      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "결과 요약",
-      "short_name": "결과",
-      "description": "계산 결과 요약 탭으로 바로 이동",
-      "url": "./index.html#result",
-      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
-    }
+    { "src": "icons/icon-144x144.png", "sizes": "144x144", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-152x152.png", "sizes": "152x152", "type": "image/png" },
+    { "src": "icons/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icons/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "icons/favicon-16x16.png", "sizes": "16x16", "type": "image/png" }
   ]
 }
