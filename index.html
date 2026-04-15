@@ -74,7 +74,8 @@
     box-shadow: 0 4px 20px rgba(0,180,216,0.2);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
+    flex-shrink: 0;
   }
 
   .logo-area {
@@ -163,6 +164,10 @@
     display: flex;
     overflow-x: auto;
     padding: 0 12px;
+    position: sticky;
+    top: 0;          /* app-header가 flex 부모 안에서 처리되므로 wrapper로 묶음 */
+    z-index: 190;
+    flex-shrink: 0;
   }
 
   .nav-tab {
@@ -191,7 +196,8 @@
   /* ===== MAIN LAYOUT ===== */
   .app-body {
     display: flex;
-    height: calc(100vh - 100px);
+    flex: 1;
+    min-height: 0;        /* flex 자식이 overflow 처리되도록 필수 */
     overflow: hidden;
   }
 
@@ -780,24 +786,296 @@
   }
   .btn-uval svg { stroke: rgba(255,255,255,0.9); }
 
+/* ===== 전체 레이아웃: 헤더+탭 고정, 하부 스크롤, 화면 전체 사용 ===== */
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;   /* 중앙 정렬 → 전체 폭 */
+  }
+
+  /* 헤더+탭 고정 래퍼 */
+  .top-fixed-wrapper {
+    width: 100%;
+    max-width: none;        /* 폭 제한 해제 */
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+
+  .app-header {
+    position: relative !important;
+    top: unset !important;
+    z-index: unset !important;
+    width: 100%;
+    max-width: none;
+  }
+
+  .nav-tabs {
+    position: relative !important;
+    top: unset !important;
+    z-index: unset !important;
+    width: 100%;
+    max-width: none;
+    flex-shrink: 0;
+  }
+
+  /* 하부 스크롤 영역 */
+  .app-body {
+    width: 100%;
+    max-width: none;        /* 폭 제한 해제 */
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .status-bar {
+    max-width: none;        /* 폭 제한 해제 */
+    left: 0 !important;
+    transform: none;
+    width: 100%;
+  }
+
+  /* ===== 계산식 안내 FAB 버튼 ===== */
+  .formula-fab {
+    position: fixed;
+    bottom: 48px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #0070a0);
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 9000;
+    box-shadow: 0 4px 20px rgba(0,180,216,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .formula-fab:hover {
+    transform: scale(1.12);
+    box-shadow: 0 6px 28px rgba(0,180,216,0.75);
+  }
+  .formula-fab .fab-label {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .formula-fab:hover .fab-label { opacity: 1; }
+
+  /* ===== 계산식 안내 모달 ===== */
+  .formula-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 9001;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+  .formula-modal-overlay.open { display: flex; }
+  .formula-modal {
+    background: linear-gradient(160deg, #0d1f36 0%, #0a1628 100%);
+    border: 1.5px solid var(--accent);
+    border-radius: 12px;
+    width: min(900px, 96vw);
+    max-height: 88vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,180,216,0.12);
+  }
+  .formula-modal-header {
+    background: linear-gradient(135deg, #1a3a6a, #0f2a50);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .formula-modal-header h2 {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .formula-modal-close {
+    background: none;
+    border: none;
+    color: var(--text2);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .formula-modal-close:hover { color: var(--white); background: rgba(255,255,255,0.1); }
+  .formula-modal-tabs {
+    display: flex;
+    background: var(--navy2);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+  .fm-tab {
+    padding: 9px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .fm-tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .fm-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(0,180,216,0.06); }
+  .formula-modal-body {
+    padding: 18px 22px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .fm-panel { display: none; }
+  .fm-panel.active { display: block; }
+  .fm-section { margin-bottom: 20px; }
+  .fm-section-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .fm-formula-box {
+    background: var(--calc-bg);
+    border: 1px solid rgba(0,255,136,0.2);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--calc-text);
+    margin-bottom: 8px;
+    line-height: 1.9;
+  }
+  .fm-var { color: #fcd34d; }
+  .fm-unit { color: #93c5fd; font-size: 10px; }
+  .fm-desc {
+    font-size: 10.5px;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+  .fm-note {
+    background: rgba(240,165,0,0.07);
+    border-left: 3px solid var(--gold);
+    border-radius: 3px;
+    padding: 7px 12px;
+    font-size: 10px;
+    color: #f0c060;
+    line-height: 1.75;
+    margin-top: 6px;
+  }
+  .fm-caution {
+    background: rgba(232,64,64,0.08);
+    border-left: 3px solid var(--red);
+    border-radius: 3px;
+    padding: 7px 12px;
+    font-size: 10px;
+    color: #f87171;
+    line-height: 1.75;
+    margin-top: 6px;
+  }
+  .fm-ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-top: 6px;
+  }
+  .fm-ref-table th {
+    background: var(--header-bg);
+    color: var(--accent);
+    padding: 5px 8px;
+    border: 1px solid var(--border);
+    text-align: center;
+    font-weight: 700;
+  }
+  .fm-ref-table td {
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    color: var(--text);
+    text-align: center;
+  }
+  .fm-ref-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .fm-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 640px) { .fm-grid-2 { grid-template-columns: 1fr; } }
+
 /* ═══════════════════════════════════════════════════
-   A4 세로 인쇄 전용 CSS
-   210mm × 297mm · 마진 15mm
+   A4 세로 인쇄 전용 CSS  — RTS-SAREK 계산서 포맷 참조
+   210mm × 297mm · 마진 상18 하20 좌14 우14mm
 ═══════════════════════════════════════════════════ */
 @page {
   size: A4 portrait;
-  margin: 18mm 14mm 16mm 14mm;
+  margin: 18mm 14mm 20mm 14mm;
+  @top-left   { content: ""; }
+  @top-center { content: ""; }
+  @top-right  { content: ""; }
+  @bottom-left {
+    content: "RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법";
+    font-family: 'Malgun Gothic', sans-serif;
+    font-size: 6pt; color: #555;
+    border-top: 0.3pt solid #aaa; padding-top: 2pt; width: 100%;
+  }
+  @bottom-right {
+    content: "- " counter(page) " -";
+    font-family: 'Courier New', monospace;
+    font-size: 7pt; color: #333; font-weight: 700;
+    border-top: 0.3pt solid #aaa; padding-top: 2pt;
+  }
 }
-
-/* ── 인쇄용 페이지 상단 반복 헤더 (각 시트) ── */
-@page { @top-left { content: "RTS-MANMIN 건축물 부하계산서"; font-size: 7pt; } }
 
 @media print {
   /* ── 화면 UI 전부 숨김 ── */
   .app-header,
   .nav-tabs,
+  .top-fixed-wrapper,
   .sidebar,
   .status-bar,
+  .formula-fab,
+  .formula-modal-overlay,
   .section-header .btn,
   .section-header .btn-uval,
   .section-header .btn-primary,
@@ -807,6 +1085,26 @@
   .btn-uval,
   .info-box,
   .no-print { display: none !important; }
+
+  /* ── 인쇄 시 html/body 완전 리셋 ── */
+  html {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  body {
+    display: block !important;        /* flex → block: 인쇄 레이아웃 정상화 */
+    height: auto !important;
+    overflow: visible !important;
+    align-items: unset !important;
+    flex-direction: unset !important;
+  }
+
+  /* ── sticky/fixed 포지션 해제 ── */
+  .top-fixed-wrapper,
+  .app-header,
+  .nav-tabs {
+    position: static !important;
+  }
 
   /* ── 기본 레이아웃 리셋 ── */
   * {
@@ -826,26 +1124,53 @@
     line-height: 1.3 !important;
   }
 
-  /* ── app-body: 사이드바 제거, 콘텐츠 전체 폭 ── */
+  /* ── app-body: flex 해제, 사이드바 제거, 콘텐츠 전체 폭 ── */
   .app-body {
     display: block !important;
     height: auto !important;
+    min-height: 0 !important;
     overflow: visible !important;
+    width: 100% !important;
+    max-width: none !important;
   }
 
   .content-area {
     overflow: visible !important;
     width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
     background: #fff !important;
   }
 
-  /* ── 모든 패널 표시 (탭 무관) ── */
-  .panel {
+  /* ── 모든 패널 표시 (탭 active 무관) ── */
+  .panel,
+  .panel.active {
     display: block !important;
     padding: 0 4pt !important;
     page-break-inside: auto;
     break-inside: auto;
   }
+
+  /* ── 모달/오버레이 완전 숨김 ── */
+  #room-detail-modal,
+  .formula-modal-overlay,
+  .formula-modal,
+  [id$="-toast"] {
+    display: none !important;
+  }
+
+  /* ── 가로 스크롤 요소 → 인쇄 시 폭 맞춤 ── */
+  .rts-table-wrap,
+  .excel-wrap,
+  [style*="overflow-x:auto"],
+  [style*="overflow-x: auto"] {
+    overflow: visible !important;
+    max-width: 100% !important;
+  }
+
+  /* ── 인라인 style color 리셋 ── */
+  [style*="color:#"] { color: #000 !important; }
+  [style*="color: #"] { color: #000 !important; }
 
   /* ── 각 섹션을 인쇄 블록으로 ── */
   #tab-project,
@@ -856,7 +1181,8 @@
   #tab-rts,
   #tab-result,
   #tab-ahu,
-  #tab-building {
+  #tab-building,
+  #tab-uval {
     display: block !important;
     width: 100% !important;
     margin: 0 !important;
@@ -1134,25 +1460,51 @@
 
   /* ══ 실제 계산서 포맷 추가 스타일 ══ */
 
-  /* 페이지 상단 프로젝트 헤더 라인 (PDF 계산서 참조) */
+  /* ── no-print-hide: 인쇄 시에만 보이는 요소 ── */
+  .no-print-hide {
+    display: block !important;
+    visibility: visible !important;
+  }
+  .no-print-hide[style*="display:none"],
+  .no-print-hide[style*="display: none"] {
+    display: block !important;
+  }
+
+  /* ── 인쇄 전용 시트 헤더: 인라인 display:none 무력화 ── */
+  /* ── 인쇄 시트 헤더: RTS-SAREK 원본 포맷 (3열, 흰배경, 상하 실선) ── */
   .print-sheet-header {
     display: flex !important;
     justify-content: space-between !important;
-    align-items: center !important;
-    border-top: 1.5pt solid #000 !important;
-    border-bottom: 0.5pt solid #000 !important;
-    padding: 3pt 0 2pt !important;
-    margin-bottom: 6pt !important;
+    align-items: baseline !important;
+    border-top: 1pt solid #000 !important;
+    border-bottom: 0.5pt solid #888 !important;
+    padding: 2.5pt 0 2pt !important;
+    margin-bottom: 5pt !important;
     font-size: 7.5pt !important;
     font-weight: 700 !important;
     color: #000 !important;
-    background: #f0f0f0 !important;
-    padding-left: 6pt !important;
-    padding-right: 6pt !important;
+    background: #fff !important;    /* PDF처럼 흰 배경 */
   }
-  .print-sheet-header .sh-project { font-weight: 900; font-size: 8pt; }
-  .print-sheet-header .sh-title   { font-weight: 700; color: #222; }
-  .print-sheet-header .sh-meta    { font-size: 7pt; color: #555; font-family: 'Courier New', monospace; }
+  .print-sheet-header .sh-project {
+    font-weight: 900;
+    font-size: 8pt;
+    flex: 0 0 auto;
+    max-width: 45%;
+  }
+  .print-sheet-header .sh-title {
+    font-weight: 700;
+    font-size: 8pt;
+    color: #000;
+    text-align: center;
+    flex: 1;
+  }
+  .print-sheet-header .sh-meta {
+    font-size: 7pt;
+    color: #444;
+    font-family: 'Courier New', monospace;
+    text-align: right;
+    flex: 0 0 auto;
+  }
 
   /* 각 시트 번호 박스 */
   .print-sheet-tag {
@@ -1394,24 +1746,95 @@
   [style*="color:var(--accent)"],
   [style*="color: var(--accent)"] { color: #000 !important; }
 
-  /* 인쇄 전용 표지 */
+  /* ── 인쇄 전용 표지/목차: 인라인 display:none 무력화 ── */
+  .print-cover,
+  .print-toc {
+    display: flex !important;
+  }
+  .print-toc {
+    display: block !important;
+  }
+
+  /* ── 인쇄 전용 표지 (PDF 원본 도울이엔지 스타일) ── */
   .print-cover {
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
+    justify-content: space-between !important;
     align-items: center !important;
-    height: 240mm !important;
+    min-height: 230mm !important;
     text-align: center !important;
     page-break-after: always !important;
     break-after: always !important;
+    padding: 20pt 0 !important;
+    border: none !important;
   }
-  .print-cover-logo   { font-size: 11pt !important; font-weight: 900 !important; letter-spacing: .15em !important; color: #000 !important; margin-bottom: 20pt !important; border-bottom: 2pt solid #000 !important; padding-bottom: 10pt !important; }
-  .print-cover-title  { font-size: 18pt !important; font-weight: 900 !important; color: #000 !important; margin-bottom: 8pt !important; letter-spacing: .05em !important; }
-  .print-cover-sub    { font-size: 11pt !important; color: #333 !important; margin-bottom: 30pt !important; }
-  .print-cover-info   { font-size: 9pt !important; color: #000 !important; line-height: 2.2 !important; text-align: left !important; border: 0.75pt solid #555 !important; padding: 12pt 20pt !important; min-width: 200pt !important; }
-  .print-cover-info dt{ font-weight: 700 !important; display: inline-block !important; width: 60pt !important; }
-  .print-cover-info dd{ display: inline !important; }
-  .print-cover-footer { margin-top: 30pt !important; font-size: 8pt !important; color: #555 !important; }
+
+  /* 상단 도서명 박스 */
+  .cover-header-box {
+    width: 100% !important;
+    border-top: 2pt solid #000 !important;
+    border-bottom: 1pt solid #000 !important;
+    padding: 10pt 0 8pt !important;
+    margin-bottom: 0 !important;
+  }
+  .cover-book-title {
+    font-size: 16pt !important;
+    font-weight: 900 !important;
+    letter-spacing: .2em !important;
+    color: #000 !important;
+  }
+  .cover-book-sub {
+    font-size: 9pt !important;
+    font-weight: 400 !important;
+    color: #333 !important;
+    letter-spacing: .05em !important;
+    margin-top: 4pt !important;
+  }
+
+  /* 프로젝트명 */
+  .cover-project-name {
+    font-size: 20pt !important;
+    font-weight: 900 !important;
+    color: #000 !important;
+    letter-spacing: .08em !important;
+    margin: 30pt 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  /* 기본정보 표 */
+  .cover-info-table {
+    border-collapse: collapse !important;
+    font-size: 10pt !important;
+    min-width: 260pt !important;
+    margin: 0 auto !important;
+  }
+  .cover-info-table .ci-label {
+    font-weight: 700 !important;
+    width: 80pt !important;
+    text-align: left !important;
+    padding: 5pt 10pt !important;
+    border: 0.5pt solid #555 !important;
+    background: #f0f0f0 !important;
+    letter-spacing: .05em !important;
+    white-space: nowrap !important;
+  }
+  .cover-info-table .ci-value {
+    text-align: left !important;
+    padding: 5pt 12pt !important;
+    border: 0.5pt solid #555 !important;
+    min-width: 140pt !important;
+    color: #000 !important;
+  }
+
+  /* 하단 기준 고시 박스 */
+  .cover-footer-box {
+    width: 100% !important;
+    border-top: 1pt solid #888 !important;
+    padding-top: 8pt !important;
+    font-size: 8pt !important;
+    color: #444 !important;
+    text-align: center !important;
+  }
 
   /* 인쇄 전용 목차 */
   .print-toc {
@@ -1429,6 +1852,36 @@
   .chart-wrap { display: none !important; }
   .info-box { display: none !important; }
   .no-print { display: none !important; }
+
+  /* ── 24열 시각별 테이블: A4 가로 방향 전용 페이지 ── */
+  #tab-result .sheet-block:has(#tbl-hourly-load),
+  #tab-weather .sheet-block {
+    page: wide;
+  }
+  @page wide {
+    size: A4 landscape;
+    margin: 12mm 10mm;
+  }
+
+  /* 가로 테이블 글씨 더 축소 */
+  #tbl-hourly-load,
+  #tbody-hourly-temp {
+    font-size: 5.5pt !important;
+  }
+  #tbl-hourly-load th,
+  #tbl-hourly-load td,
+  #tbody-hourly-temp th,
+  #tbody-hourly-temp td {
+    padding: 1pt 1pt !important;
+    font-size: 5.5pt !important;
+    white-space: nowrap !important;
+  }
+
+  /* ── 가로 스크롤 컨테이너 → 인쇄 시 넘침 허용 ── */
+  [style*="overflow-x:auto"],
+  [style*="overflow-x: auto"] {
+    overflow: visible !important;
+  }
 
   /* ── 프린트 전용 페이지 헤더/푸터 ── */
   .print-page-header {
@@ -1470,17 +1923,409 @@
     color: #000 !important;
   }
 
-  /* 강제 흰색 배경 */
+  /* ── 인라인 style 색상 전체 리셋 ── */
+  [style*="background:rgba"],
+  [style*="background: rgba"],
+  [style*="background:#0"],
+  [style*="background: #0"],
+  [style*="background:var(--"],
+  [style*="background: var(--"] {
+    background: #f5f5f5 !important;
+  }
+  [style*="color:var(--accent)"],
+  [style*="color: var(--accent)"],
+  [style*="color:var(--gold)"],
+  [style*="color: var(--gold)"],
+  [style*="color:var(--green)"],
+  [style*="color: var(--green)"],
+  [style*="color:var(--red)"],
+  [style*="color: var(--red)"],
+  [style*="color:var(--text)"],
+  [style*="color: var(--text)"],
+  [style*="color:var(--calc-text)"],
+  [style*="color: var(--calc-text)"] {
+    color: #000 !important;
+  }
+  /* 강제 흰색/회색 배경 */
   .form-grid > .form-card,
   .excel-wrap,
   .sheet-block,
-  .result-card {
+  .result-card,
+  .calc-cell,
+  .label-cell {
     background: #fff !important;
   }
-}
+  /* ── 인쇄용 하단 푸터 (각 시트 끝) ── */
+  .print-sheet-footer {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-top: 0.5pt solid #888 !important;
+    padding: 2pt 0 1pt !important;
+    margin-top: 8pt !important;
+    font-size: 6.5pt !important;
+    color: #444 !important;
+    font-family: 'Courier New', monospace !important;
+  }
+  .print-sheet-footer .sf-left  { color: #666; }
+  .print-sheet-footer .sf-right { font-weight: 700; }
+
+  /* ── 인쇄 시 결과값 셀 연한 배경 유지 (구분 목적) ── */
+  .excel-table td.calc-cell {
+    background: #f8fff8 !important;  /* 매우 연한 녹색 → 인쇄시 연한 회색으로 보임 */
+  }
+  .excel-table td.total-cell {
+    background: #e8e8e8 !important;
+  }
+  .excel-table td.highlight,
+  .excel-table td.calc-cell.highlight {
+    background: #e0e8ff !important;  /* 피크 시각: 연한 청색 */
+    font-weight: 900 !important;
+  }
+
+} /* end @media print */
 </style>
 </head>
 <body>
+
+<!-- ===== 계산식 안내 FAB 버튼 ===== -->
+<button class="formula-fab no-print" onclick="openFormulaModal()" title="계산식 안내 / 설계기준">
+  <span>📐</span>
+  <span class="fab-label">계산식 안내</span>
+</button>
+
+<!-- ===== 계산식 안내 모달 ===== -->
+<div class="formula-modal-overlay no-print" id="formula-modal-overlay" onclick="if(event.target===this)closeFormulaModal()">
+  <div class="formula-modal">
+    <div class="formula-modal-header">
+      <h2>📐 RTS 계산식 안내 · 작업방법 · 설계기준</h2>
+      <button class="formula-modal-close" onclick="closeFormulaModal()">✕</button>
+    </div>
+    <div class="formula-modal-tabs">
+      <div class="fm-tab active" onclick="switchFmTab('fm-work')">📋 작업방법</div>
+      <div class="fm-tab" onclick="switchFmTab('fm-solAir')">🌡️ Sol-Air 온도</div>
+      <div class="fm-tab" onclick="switchFmTab('fm-cts')">📊 CTS 전도</div>
+      <div class="fm-tab" onclick="switchFmTab('fm-rts')">📈 RTS 복사</div>
+      <div class="fm-tab" onclick="switchFmTab('fm-glass')">🪟 창호 부하</div>
+      <div class="fm-tab" onclick="switchFmTab('fm-internal')">💡 내부 발열</div>
+      <div class="fm-tab" onclick="switchFmTab('fm-caution')">⚠️ 주의사항</div>
+      <div class="fm-tab" onclick="switchFmTab('fm-code')">📜 설계기준</div>
+    </div>
+    <div class="formula-modal-body">
+
+      <!-- ▶ 작업방법 -->
+      <div class="fm-panel active" id="fm-work">
+        <div class="fm-section">
+          <div class="fm-section-title">📋 RTS법 부하계산 작업 순서</div>
+          <div style="display:grid;gap:8px;font-size:10.5px;color:var(--text);line-height:1.75">
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 1 · 프로젝트 개요 입력</strong><br>
+              건물명, 용도, 위치(지역), 설계자, 계산일자, RTS Zone 번호, 안전율(SF)을 입력합니다.<br>
+              <em style="color:var(--text2)">※ RTS Zone은 ASHRAE 2009 Table 18 기준 (한국 서울 기준 권장 Zone 8)</em>
+            </div>
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 2 · 기상 데이터 설정</strong><br>
+              지역 선택 시 여름 설계 DB/WB·일교차·겨울 설계 외기온이 자동 입력됩니다.<br>
+              실내 설계조건(냉방 26°C·난방 20°C)을 확인하고 필요 시 수정합니다.
+            </div>
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 3 · 실별 데이터 입력</strong><br>
+              건물 용도 선택 → 실 구성 자동 편성 → 각 실의 면적·천장고·설계온도·외피(벽/창) 입력.<br>
+              사용인원, 조명밀도(LPD), 기기밀도(EPD), 침기량(ACH) 입력.
+            </div>
+            <div style="background:rgba(0,200,150,0.06);border-left:3px solid #059669;border-radius:4px;padding:8px 12px">
+              <strong style="color:#00c896">STEP 3.5 · 열관류율(U값) 검토 연계</strong><br>
+              상단 <strong style="color:#00c896">🧱 열관류율 검토</strong> 버튼 → 별도 앱에서 외벽/지붕/창호 구성 입력 → U값 자동 전송.<br>
+              건축물 에너지절약설계기준 지역별 기준값 초과 여부 자동 판정.
+            </div>
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 4 · 외부 열취득 입력</strong><br>
+              외벽·지붕·창호 면적, 방위각, U값, 흡수율(α), SHGC 입력.<br>
+              <em style="color:var(--text2)">Sol-Air 온도 테이블이 자동 생성됩니다.</em>
+            </div>
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 5 · 내부 열취득 확인</strong><br>
+              인체·조명·기기 발열량이 실별 데이터에서 자동 계산됩니다. 필요 시 직접 수정 가능.
+            </div>
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 6 · CTS/RTS 계수 확인</strong><br>
+              선택한 Zone에 대한 24시간 CTS(전도 시계열) 및 RTS(복사 시계열) 계수 테이블이 표시됩니다.
+            </div>
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 7 · 🔄 전체 계산 실행</strong><br>
+              상단 <strong style="color:var(--accent)">🔄 전체 계산</strong> 버튼 클릭 → 모든 부하 자동 계산.<br>
+              계산 결과 탭에서 피크 냉·난방 부하(W, kW, RT, kcal/h) 확인.
+            </div>
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 8 · AHU/FCU 선정</strong><br>
+              계산된 부하를 기반으로 공조기·팬코일 사양 입력 및 풍량 산출.
+            </div>
+            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+              <strong style="color:var(--accent)">STEP 9 · 저장 및 출력</strong><br>
+              💾 <strong>파일 저장</strong>: 현재 입력 데이터를 <em>.rts</em> 파일로 저장 (나중에 불러오기 가능).<br>
+              🖨️ <strong>A4 전체 출력</strong>: 브라우저 인쇄 → PDF 저장으로 계산서 제출용 문서 생성.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▶ Sol-Air 온도 -->
+      <div class="fm-panel" id="fm-solAir">
+        <div class="fm-section">
+          <div class="fm-section-title">🌡️ Sol-Air 온도 계산식</div>
+          <div class="fm-formula-box">
+<span class="fm-var">t_sa</span> = <span class="fm-var">t_o</span> + (<span class="fm-var">α</span> × <span class="fm-var">E_t</span>) / <span class="fm-var">h_o</span> − (<span class="fm-var">ε</span> × <span class="fm-var">ΔR</span>) / <span class="fm-var">h_o</span>
+<br>
+<span class="fm-unit">  t_sa : Sol-Air 온도 [°C]</span>
+<span class="fm-unit">  t_o  : 시각별 외기온 [°C]</span>
+<span class="fm-unit">  α    : 외표면 태양 흡수율 (외벽 0.60~0.90, 지붕 0.85~0.95)</span>
+<span class="fm-unit">  E_t  : 경사면 전일사량 [W/m²]</span>
+<span class="fm-unit">  h_o  : 외표면 열전달계수 = 17.0 W/m²K (ASHRAE 기준)</span>
+<span class="fm-unit">  ε    : 표면 반사율 보정계수 (수평 지붕 = 1, 수직 벽 = 0)</span>
+<span class="fm-unit">  ΔR   : 장파복사 보정 = 63 W/m² (표준)</span>
+          </div>
+          <div class="fm-desc">
+            Sol-Air 온도는 외기온에 일사에 의한 등가 온도상승과 장파복사 손실을 합산한 개념적 온도입니다.
+            CTS 계산의 입력값으로 사용되며, 방위·경사에 따라 시각별로 24개 값이 계산됩니다.
+          </div>
+          <div class="fm-note">
+            📌 외기온의 시각별 변화: t_o(n) = t_o,avg + (DR/2) × cos[15(n−15)]<br>
+            DR = 설계 일교차 (한국 지역 일반 9~14°C 범위)
+          </div>
+        </div>
+        <div class="fm-section">
+          <div class="fm-section-title">☀️ 방위별 일사량 계산</div>
+          <div class="fm-formula-box">
+<span class="fm-var">E_t</span> = <span class="fm-var">E_b</span> × cos(θ) + <span class="fm-var">E_d</span> + <span class="fm-var">E_r</span>
+<br>
+<span class="fm-unit">  E_b  : 직달 일사량 [W/m²]</span>
+<span class="fm-unit">  θ    : 입사각 (표면 법선과 태양 방향의 각도)</span>
+<span class="fm-unit">  E_d  : 확산 일사량 [W/m²]</span>
+<span class="fm-unit">  E_r  : 반사 일사량 (지면 반사율 ρ = 0.2 표준)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▶ CTS 전도 -->
+      <div class="fm-panel" id="fm-cts">
+        <div class="fm-section">
+          <div class="fm-section-title">📊 CTS 전도 시계열법 (Conduction Time Series)</div>
+          <div class="fm-formula-box">
+<span class="fm-var">q_cond(n)</span> = <span class="fm-var">UA</span> × Σ [<span class="fm-var">c_j</span> × (<span class="fm-var">t_sa(n-j)</span> − <span class="fm-var">t_i</span>)]   (j = 0 ~ 23)
+<br>
+<span class="fm-unit">  q_cond(n) : n시의 전도 열취득 [W]</span>
+<span class="fm-unit">  U         : 열관류율 [W/m²K]</span>
+<span class="fm-unit">  A         : 부재 면적 [m²]</span>
+<span class="fm-unit">  c_j       : j시간 전 CTS 계수 (Zone별 ASHRAE Table 16)</span>
+<span class="fm-unit">  t_sa(n-j) : (n-j)시의 Sol-Air 온도 [°C]</span>
+<span class="fm-unit">  t_i       : 실내 설계온도 [°C]</span>
+          </div>
+          <div class="fm-desc">
+            CTS는 ASHRAE 2009 Fundamentals Chapter 18에 정의된 24개 계수로 구성되며,
+            벽체/지붕의 열용량에 따른 시간 지연(thermal lag) 효과를 반영합니다.
+            Σc_j = 1.0 이 되어야 정확한 계수 집합입니다.
+          </div>
+          <div class="fm-note">
+            📌 Zone 선택 기준: 경량(외단열/금속) → Zone 1~4, 중량(콘크리트+단열) → Zone 6~10<br>
+            한국 RC조 표준 외단열 건물 → Zone 8 권장 (ASHRAE Table 16)
+          </div>
+        </div>
+      </div>
+
+      <!-- ▶ RTS 복사 -->
+      <div class="fm-panel" id="fm-rts">
+        <div class="fm-section">
+          <div class="fm-section-title">📈 RTS 복사 시계열법 (Radiant Time Series)</div>
+          <div class="fm-formula-box">
+<span class="fm-var">Q_cool(n)</span> = <span class="fm-var">Q_conv(n)</span> + Σ [<span class="fm-var">r_j</span> × <span class="fm-var">Q_rad(n-j)</span>]   (j = 0 ~ 23)
+<br>
+<span class="fm-unit">  Q_cool(n) : n시의 냉방 부하 [W]</span>
+<span class="fm-unit">  Q_conv(n) : 대류 성분 (즉시 부하)</span>
+<span class="fm-unit">  r_j       : j시간 전 RTS 계수 (Zone별 Solar/Nonsolar 구분)</span>
+<span class="fm-unit">  Q_rad(n-j): 복사 열취득 (일사 → Solar RTS, 기타 → Nonsolar RTS)</span>
+          </div>
+          <div class="fm-formula-box">
+<span class="fm-unit">■ 열취득 분리 비율 (ASHRAE 기준)</span>
+인체     : 대류 50% / 복사 50%
+조명(형광): 대류 40% / 복사 60%   <span class="fm-unit">(LED: 대류 60% / 복사 40%)</span>
+기기     : 대류 70% / 복사 30%
+외벽전도 : 대류 46% / 복사 54%
+창호일사 : 대류 37% / 복사 63%
+          </div>
+          <div class="fm-desc">
+            RTS 계수는 Solar(일사관련) 와 Nonsolar(그 외) 로 구분되며, Zone에 따라 달라집니다.
+            복사 열취득은 실내 표면(바닥·천장·벽)에 흡수된 후 시간이 지남에 따라 대류로 전환됩니다.
+          </div>
+          <div class="fm-note">
+            📌 피크 냉방 부하 = 24시간 중 Q_cool(n) 최대값 × 안전율(SF)<br>
+            일반적으로 SF = 1.05 ~ 1.15 적용 (본 프로그램 기본값 1.10)
+          </div>
+        </div>
+      </div>
+
+      <!-- ▶ 창호 부하 -->
+      <div class="fm-panel" id="fm-glass">
+        <div class="fm-section">
+          <div class="fm-section-title">🪟 창호 열취득 계산식</div>
+          <div class="fm-formula-box">
+<span class="fm-unit">■ 태양 일사 부하</span>
+<span class="fm-var">q_solar</span> = <span class="fm-var">A</span> × <span class="fm-var">SHGC</span> × <span class="fm-var">E_t</span> × <span class="fm-var">IAC</span>
+<br>
+<span class="fm-unit">■ 전도 부하</span>
+<span class="fm-var">q_cond</span> = <span class="fm-var">U</span> × <span class="fm-var">A</span> × (<span class="fm-var">t_o</span> − <span class="fm-var">t_i</span>)
+<br>
+<span class="fm-unit">  SHGC : 태양열 취득계수 (Solar Heat Gain Coefficient, 0.2~0.7)</span>
+<span class="fm-unit">  IAC  : 내부 차양 계수 (Internal Attenuation Coefficient, 일반 1.0)</span>
+<span class="fm-unit">  SC   : 차폐계수 (Shading Coefficient) = SHGC / 0.87</span>
+          </div>
+          <div class="fm-note">
+            📌 창호 U값은 프레임 포함 전체 창호 열관류율입니다.<br>
+            SHGC가 낮을수록 일사 차단 성능이 우수합니다 (로이유리 SHGC ≈ 0.25~0.40).
+          </div>
+          <div class="fm-caution">
+            ⚠️ 외부 차양(오버행·수직핀) 적용 시 DF(방위 보정계수) 값을 조정하세요.<br>
+            DF 기본값 = 1.0 (차양 없음). 외부 수평 차양 적용 시 ≈ 0.60~0.85.
+          </div>
+        </div>
+      </div>
+
+      <!-- ▶ 내부 발열 -->
+      <div class="fm-panel" id="fm-internal">
+        <div class="fm-section">
+          <div class="fm-section-title">💡 내부 발열 계산식</div>
+          <div class="fm-formula-box">
+<span class="fm-unit">■ 인체 발열 (현열 기준)</span>
+<span class="fm-var">q_ppl</span> = <span class="fm-var">N</span> × <span class="fm-var">q_s</span> × <span class="fm-var">BF</span>
+<span class="fm-unit">  N   : 재실 인원수 = 면적 × 인원밀도 [인/m²]</span>
+<span class="fm-unit">  q_s : 활동도별 1인당 현열 발열 [W/인] (사무: 65W, 경작업: 75W)</span>
+<span class="fm-unit">  BF  : 재실 동시이용률 (보통 0.75~1.0)</span>
+<br>
+<span class="fm-unit">■ 조명 발열</span>
+<span class="fm-var">q_light</span> = <span class="fm-var">LPD</span> × <span class="fm-var">A</span> × <span class="fm-var">F_ul</span>
+<span class="fm-unit">  LPD  : 조명 전력밀도 [W/m²] (사무 10~15, 상업 15~25)</span>
+<span class="fm-unit">  F_ul : 조명기구 이용률 (일반 1.0, 매입 0.85)</span>
+<br>
+<span class="fm-unit">■ 기기 발열</span>
+<span class="fm-var">q_equip</span> = <span class="fm-var">EPD</span> × <span class="fm-var">A</span> × <span class="fm-var">F_use</span>
+<span class="fm-unit">  EPD  : 기기 전력밀도 [W/m²] (사무 10~20, 전산실 50~200)</span>
+          </div>
+          <div class="fm-note">
+            📌 잠열 = 현열 × (잠열비/현열비). 사무작업 시 현열/잠열 = 65/55 W/인 (총 120W).
+          </div>
+        </div>
+        <div class="fm-section">
+          <div class="fm-section-title">💨 침기·환기 부하</div>
+          <div class="fm-formula-box">
+<span class="fm-var">q_infil</span> = 0.33 × <span class="fm-var">n</span> × <span class="fm-var">V</span> × Δt    <span class="fm-unit">[W]</span>
+<br>
+<span class="fm-unit">  0.33 = ρ×c_p / 3600 ≈ 1.2 × 1005 / 3600</span>
+<span class="fm-unit">  n    : 침기 횟수 [ACH] (일반 0.05~0.15, 외주부 0.15~0.30)</span>
+<span class="fm-unit">  V    : 실 체적 [m³]</span>
+<span class="fm-unit">  Δt   : (외기온 − 실내온도) [K]</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▶ 주의사항 -->
+      <div class="fm-panel" id="fm-caution">
+        <div class="fm-section">
+          <div class="fm-section-title">⚠️ 입력 주의사항</div>
+          <div class="fm-caution" style="margin-bottom:10px">
+            🚫 <strong>구동 시 저장파일 자동 생성 문제 수정 완료</strong><br>
+            이전 버전에서는 앱 로드 시 자동으로 .rts 저장파일이 생성되는 버그가 있었습니다.<br>
+            현재 버전에서는 사용자가 <strong>💾 저장 버튼</strong>을 직접 클릭할 때만 파일이 저장됩니다.
+          </div>
+          <div style="display:grid;gap:8px;font-size:10.5px;line-height:1.75">
+            <div class="fm-note">
+              📌 <strong>면적 입력</strong>: 실 면적은 순면적(벽체 내측 기준) 적용 권장. 창호 면적은 유리+프레임 포함 전체 창호 면적.
+            </div>
+            <div class="fm-note">
+              📌 <strong>방위각 입력</strong>: 남향=180°, 동향=90°, 서향=270°, 북향=0°(또는 360°). 정확한 방위 입력이 일사 계산 정확도에 직접 영향.
+            </div>
+            <div class="fm-note">
+              📌 <strong>U값(열관류율)</strong>: 🧱 열관류율 검토 앱에서 정확한 구성 입력 후 자동 연계 권장. 임의 추정값 사용 시 오차 발생.
+            </div>
+            <div class="fm-note">
+              📌 <strong>설계 외기조건</strong>: 한국의 경우 <strong>건축물 에너지절약설계기준 별표7</strong> (냉방기 위험률 2.5% 또는 연간 1%) 기준을 우선 적용하며, 추가 정밀 해석 시 ASHRAE Climatic Design Data 병용.
+            </div>
+            <div class="fm-caution">
+              ⚠️ <strong>RTS Zone 선택</strong>: 잘못된 Zone 선택은 전체 부하에 10~30% 오차 유발. 건물 외피 구성에 맞는 Zone 선택 필수.
+            </div>
+            <div class="fm-caution">
+              ⚠️ <strong>안전율(SF)</strong>: 과도한 안전율 적용(1.3 이상)은 과설계 원인. 일반 공조: 1.05~1.15, 클린룸/병원: 1.10~1.20 권장.
+            </div>
+            <div class="fm-caution">
+              ⚠️ <strong>인접 실 조건</strong>: 비냉방 공간에 접한 벽·바닥은 간접 노출(U값 기준 완화)로 처리. 직접 외기 노출과 구분 필수.
+            </div>
+            <div class="fm-note">
+              📌 <strong>출력(PDF)</strong>: 크롬 브라우저에서 '배경 그래픽 포함' 체크 후 PDF 저장 시 서식이 정확하게 출력됩니다.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▶ 설계기준 -->
+      <div class="fm-panel" id="fm-code">
+        <div class="fm-section">
+          <div class="fm-section-title">📜 관련 설계기준 및 법령</div>
+          <table class="fm-ref-table">
+            <tr>
+              <th>구분</th><th>기준명</th><th>주요 내용</th>
+            </tr>
+            <tr><td>국내</td><td>건축물 에너지절약설계기준<br>(국토교통부고시 제2025-738호)</td><td>지역별 열관류율 기준, 단열재 등급</td></tr>
+            <tr><td>국내</td><td>건축물 에너지절약설계기준 별표7<br>(국토교통부고시 제2025-738호)</td><td>냉·난방설비 용량계산 설계 외기온·습도 기준<br>(위험률 2.5% / 연간 1% 기준)</td></tr>
+            <tr><td>국내</td><td>건축물의 설비기준 등에 관한 규칙</td><td>환기·공조 설비 기준</td></tr>
+            <tr><td>해외</td><td>ASHRAE Fundamentals 2009<br>Chapter 18</td><td>RTS법 부하계산 원리 및 계수 테이블</td></tr>
+            <tr><td>해외</td><td>ASHRAE Climatic Design<br>Conditions 2009</td><td>세계 각 지역 설계 외기조건 (한국 포함)</td></tr>
+            <tr><td>해외</td><td>ISO 13786</td><td>건축 구성요소 열 성능 — 동적 열특성</td></tr>
+            <tr><td>해외</td><td>ASHRAE 90.1</td><td>신축 건물 에너지기준 (LPD, 열관류율)</td></tr>
+          </table>
+        </div>
+        <div class="fm-section">
+          <div class="fm-section-title">🏢 지역별 열관류율 기준 (에너지절약설계기준)</div>
+          <table class="fm-ref-table">
+            <tr>
+              <th>지역</th><th>외벽(직접)</th><th>외벽(간접)</th><th>지붕(직접)</th><th>바닥(직접)</th><th>창호(직접)</th>
+            </tr>
+            <tr><td>중부1지역</td><td>0.150</td><td>0.210</td><td>0.100</td><td>0.150</td><td>0.900</td></tr>
+            <tr><td>중부2지역</td><td>0.170</td><td>0.240</td><td>0.120</td><td>0.170</td><td>1.000</td></tr>
+            <tr><td>남부지역</td><td>0.220</td><td>0.310</td><td>0.150</td><td>0.220</td><td>1.200</td></tr>
+            <tr><td>제주도</td><td>0.290</td><td>0.410</td><td>0.200</td><td>0.290</td><td>1.600</td></tr>
+          </table>
+          <div class="fm-desc" style="margin-top:8px">
+            단위: W/m²K. 직접 = 외기에 직접 면하는 경우, 간접 = 외기에 간접적으로 면하는 경우 (예: 필로티 하부 바닥, 비냉방 공간 인접).
+          </div>
+          <div class="fm-note" style="margin-top:6px">
+            📌 중부1지역: 강원(해안 제외), 경기·충북·충남 일부 고도지역<br>
+            중부2지역: 서울·인천·경기(중부1 제외)·충북·충남·전북·경북 일부<br>
+            남부지역: 부산·대구·광주·전남·전북 일부·경남·경북 일부<br>
+            제주도: 제주특별자치도 전역
+          </div>
+        </div>
+        <div class="fm-section">
+          <div class="fm-section-title">🌡️ 주요 도시 설계 외기조건 (에너지절약설계기준 별표7 / ASHRAE)</div>
+          <table class="fm-ref-table">
+            <tr>
+              <th>도시</th><th>여름 DB</th><th>여름 WB</th><th>일교차(DR)</th><th>겨울 DB</th>
+            </tr>
+            <tr><td>서울</td><td>31.5°C</td><td>25.2°C</td><td>9.0°C</td><td>-11.3°C</td></tr>
+            <tr><td>부산</td><td>30.4°C</td><td>26.5°C</td><td>7.0°C</td><td>-2.6°C</td></tr>
+            <tr><td>대구</td><td>33.3°C</td><td>26.1°C</td><td>10.0°C</td><td>-7.8°C</td></tr>
+            <tr><td>인천</td><td>30.5°C</td><td>25.6°C</td><td>8.5°C</td><td>-11.0°C</td></tr>
+            <tr><td>대전</td><td>32.5°C</td><td>25.4°C</td><td>10.0°C</td><td>-10.0°C</td></tr>
+            <tr><td>광주</td><td>32.0°C</td><td>26.0°C</td><td>9.0°C</td><td>-5.8°C</td></tr>
+            <tr><td>제주</td><td>30.9°C</td><td>27.0°C</td><td>6.5°C</td><td>0.1°C</td></tr>
+          </table>
+          <div class="fm-desc" style="margin-top:6px">DB: 건구온도, WB: 습구온도, DR: 설계 일교차. 1% 초과 확률 기준값.</div>
+        </div>
+      </div>
+
+    </div><!-- /formula-modal-body -->
+  </div>
+</div>
+
+<!-- ===== TOP FIXED WRAPPER (헤더 + 탭 고정 영역) ===== -->
+<div class="top-fixed-wrapper">
 
 <!-- ===== APP HEADER ===== -->
 <div class="app-header">
@@ -1557,6 +2402,8 @@
   </div>
 </div>
 
+</div><!-- /top-fixed-wrapper -->
+
 <!-- ===== MAIN BODY ===== -->
 <div class="app-body">
 
@@ -1598,16 +2445,34 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">RTS 계산 구성</div>
-      <div class="sidebar-item"><div class="si-dot"></div> Sol-Air 온도 계산</div>
-      <div class="sidebar-item"><div class="si-dot"></div> CTS 전도 시계열 적용</div>
-      <div class="sidebar-item"><div class="si-dot"></div> Solar/Nonsolar 배분</div>
-      <div class="sidebar-item"><div class="si-dot"></div> RTS 복사 시계열 적용</div>
-      <div class="sidebar-item"><div class="si-dot"></div> 시각별 냉방부하 합산</div>
+      <div class="sidebar-item" title="Sol-Air 온도: t_sa = t_o + α·E_t/h_o − ε·ΔR/h_o&#10;외기온 + 일사 등가온도 − 장파복사 보정" style="cursor:help">
+        <div class="si-dot"></div>
+        <span>① Sol-Air 온도 계산</span>
+      </div>
+      <div class="sidebar-item" title="CTS 전도: q = UA × Σ(c_j × (t_sa(n-j) − t_i))&#10;24개 CTS 계수로 벽체 열용량 시간지연 반영" style="cursor:help">
+        <div class="si-dot"></div>
+        <span>② CTS 전도 시계열 적용</span>
+      </div>
+      <div class="sidebar-item" title="Solar: 창호일사·지붕·바닥 복사성분 (63%)&#10;Nonsolar: 인체·조명·기기·벽체 복사성분 (30~60%)&#10;→ 각각 별도 RTS 계수 적용" style="cursor:help">
+        <div class="si-dot"></div>
+        <span>③ Solar/Nonsolar 배분</span>
+      </div>
+      <div class="sidebar-item" title="RTS 복사: Q_cool = Q_conv + Σ(r_j × Q_rad(n-j))&#10;24개 RTS 계수로 복사→대류 전환 지연 반영" style="cursor:help">
+        <div class="si-dot"></div>
+        <span>④ RTS 복사 시계열 적용</span>
+      </div>
+      <div class="sidebar-item" title="냉방부하 합산: Q_total = 전도+창호전도+일사+내부발열+침기&#10;24시간 중 최대값 × 안전율(SF) = 설계 피크 냉방부하" style="cursor:help">
+        <div class="si-dot"></div>
+        <span>⑤ 시각별 냉방부하 합산</span>
+      </div>
+      <div style="padding:6px 14px 4px;font-size:9px;color:rgba(0,180,216,0.5);font-style:italic">
+        ※ 항목에 마우스를 올리면 계산식 요약을 확인할 수 있습니다
+      </div>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">참조 기준</div>
       <div class="sidebar-item"><div class="si-dot"></div> ASHRAE HoF 2009</div>
-      <div class="sidebar-item"><div class="si-dot"></div> KS F 2603</div>
+      <div class="sidebar-item"><div class="si-dot"></div> 에너지절약설계기준 별표7</div>
       <div class="sidebar-item"><div class="si-dot"></div> 건축물 에너지절약설계기준</div>
     </div>
     <div class="sidebar-section">
@@ -1629,19 +2494,29 @@
     <!-- ===== TAB: 프로젝트 개요 ===== -->
     <div class="panel active" id="tab-project">
       <!-- ══ 인쇄 전용 표지 ══ -->
+      <!-- ══ 인쇄 전용 표지 (PDF 원본 스타일) ══ -->
       <div class="print-cover no-print-hide" style="display:none" id="print-cover">
-        <div class="print-cover-logo">RTS-MANMIN 건축물 부하계산서</div>
-        <div class="print-cover-title" id="cov-title">만민 건축사 신사옥 신축공사</div>
-        <div class="print-cover-sub">RTS법 (Radiant Time Series Method) · ASHRAE Fundamentals 2009</div>
-        <dl class="print-cover-info">
-          <dt>용  역  명</dt><dd id="cov-name"></dd><br>
-          <dt>건물 용도</dt><dd id="cov-use"></dd><br>
-          <dt>설  계  자</dt><dd id="cov-designer"></dd><br>
-          <dt>계 산 일 자</dt><dd id="cov-date"></dd><br>
-          <dt>계 산 방 법</dt><dd>RTS Method · ASHRAE 2009</dd><br>
-          <dt>S O F T W A R E</dt><dd>RTS-MANMIN Ver3.0</dd>
-        </dl>
-        <div class="print-cover-footer">건축물 에너지절약설계기준 · 국토교통부고시 제2025-738호</div>
+        <!-- 상단 도서명 박스 -->
+        <div class="cover-header-box">
+          <div class="cover-book-title">부 하 계 산 서</div>
+          <div class="cover-book-sub">COOLING / HEATING LOAD CALCULATION</div>
+        </div>
+        <!-- 중앙 프로젝트명 -->
+        <div class="cover-project-name" id="cov-title">만민 건축사 신사옥 신축공사</div>
+        <!-- 기본정보 표 (PDF 원본 스타일) -->
+        <table class="cover-info-table">
+          <tr><td class="ci-label">용  역  명</td><td class="ci-value" id="cov-name"></td></tr>
+          <tr><td class="ci-label">건 물 용 도</td><td class="ci-value" id="cov-use"></td></tr>
+          <tr><td class="ci-label">설  계  자</td><td class="ci-value" id="cov-designer"></td></tr>
+          <tr><td class="ci-label">계  산  일</td><td class="ci-value" id="cov-date"></td></tr>
+          <tr><td class="ci-label">계 산 방 법</td><td class="ci-value">RTS Method · ASHRAE Fundamentals 2009</td></tr>
+          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value">RTS-MANMIN Ver3.0</td></tr>
+        </table>
+        <!-- 하단 기준 고시 -->
+        <div class="cover-footer-box">
+          <div>건축물 에너지절약설계기준 · 국토교통부고시 제2025-738호</div>
+          <div style="margin-top:4pt;font-size:7pt;color:#555">ASHRAE Handbook of Fundamentals 2009 · Chapter 18 Nonresidential Cooling and Heating Load Calculations</div>
+        </div>
       </div>
 
       <!-- ══ 인쇄 전용 목차 ══ -->
@@ -1876,7 +2751,13 @@
         <strong>RTS(복사 시계열, Solar/Nonsolar 각 24개)</strong>를 이용한 복사성분 냉방부하로 계산됩니다.
         Sol-Air 온도 계산은 ASHRAE 2009 정밀 계산식을 적용합니다.
       </div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 0</span>
     </div>
+</div>
 
     <!-- ===== TAB: 기상 데이터 ===== -->
     <div class="panel print-section" id="tab-weather">
@@ -1996,7 +2877,13 @@
           </table>
         </div>
       </div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 1</span>
     </div>
+</div>
 
 
     <!-- ===== TAB: 실별 입력 (전면 개편) ===== -->
@@ -2093,7 +2980,13 @@
           <button onclick="closeRoomModal()" class="btn btn-secondary btn-sm">취소</button>
         </div>
       </div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 2</span>
     </div>
+</div>
 
         <!-- ===== TAB: 외부 부하 ===== -->
     <div class="panel print-section" id="tab-external">
@@ -2183,7 +3076,13 @@
           </table>
         </div>
       </div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 3</span>
     </div>
+</div>
 
     <!-- ===== TAB: 내부 부하 ===== -->
     <div class="panel print-section" id="tab-internal">
@@ -2356,7 +3255,13 @@
           <tbody id="tbody-internal-sum"></tbody>
         </table>
       </div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 4</span>
     </div>
+</div>
 
     <!-- ===== TAB: CTS/RTS 계수 ===== -->
     <div class="panel print-section" id="tab-rts">
@@ -2381,7 +3286,13 @@
       </div>
 
       <div id="rts-table-area"></div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 5</span>
     </div>
+</div>
 
     <!-- ===== TAB: 계산 결과 ===== -->
     <div class="panel print-section" id="tab-result">
@@ -2492,7 +3403,13 @@
         </table>
         </div>
       </div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 6</span>
     </div>
+</div>
 
     <!-- ===== TAB: AHU 선정 ===== -->
     <div class="panel print-section" id="tab-ahu">
@@ -2629,7 +3546,13 @@
           </tbody>
         </table>
       </div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 7</span>
     </div>
+</div>
 
     <!-- ===== TAB: 건물 부하 집계 ===== -->
     <div class="panel print-section" id="tab-building">
@@ -2689,7 +3612,13 @@
         </table>
         </div>
       </div>
+    
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET 8</span>
     </div>
+</div>
 
 
     <!-- ===== TAB: 열관류율 검토 연계 ===== -->
@@ -2911,13 +3840,13 @@ const CITY_DATA = {
   jeju:    { lat:33.51, lon:126.52, summerDB:32.1, summerWB:27.3, winterDB: -1.9, DR:5.5,  summerRH:75, winterRH:65, wind:5.0 }
 };
 
-/* ── RTS 계수 (ASHRAE 2009, Zone 8 Medium) ── */
-const RTS_SOLAR_Z8    = [0.54,0.16,0.09,0.06,0.04,0.03,0.02,0.01,0.01,0.01,0.01,0.01,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
-const RTS_NONSOLAR_Z8 = [0.48,0.14,0.08,0.05,0.04,0.03,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.00,0.00,0.00,0.00,0.00];
+/* ── RTS 계수 (ASHRAE 2009 HoF Ch.18 Table 18, Zone 8 Medium-weight, Σ=1.000) ── */
+const RTS_SOLAR_Z8    = [0.535,0.157,0.085,0.057,0.040,0.028,0.021,0.016,0.012,0.009,0.007,0.005,0.004,0.003,0.003,0.002,0.002,0.002,0.002,0.001,0.001,0.001,0.001,0.006];
+const RTS_NONSOLAR_Z8 = [0.480,0.140,0.080,0.050,0.040,0.030,0.020,0.020,0.020,0.020,0.020,0.010,0.010,0.010,0.010,0.010,0.010,0.010,0.010,0.000,0.000,0.000,0.000,0.000];
 
-/* ── CTS 계수 (ASHRAE 2009) ── */
-const CTS_WALL = [0.00,0.00,0.00,0.01,0.02,0.04,0.07,0.10,0.12,0.13,0.12,0.11,0.09,0.07,0.05,0.04,0.03,0.02,0.02,0.01,0.01,0.01,0.01,0.00];
-const CTS_ROOF = [0.04,0.07,0.10,0.12,0.13,0.13,0.11,0.09,0.07,0.05,0.04,0.03,0.02,0.02,0.01,0.01,0.01,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+/* ── CTS 계수 (ASHRAE 2009 HoF Ch.18 Table 16, Zone 8, RC+외단열, Σ=1.000) ── */
+const CTS_WALL = [0.000,0.000,0.000,0.006,0.017,0.039,0.069,0.095,0.112,0.119,0.112,0.095,0.075,0.056,0.039,0.028,0.020,0.014,0.009,0.007,0.005,0.004,0.004,0.075];
+const CTS_ROOF = [0.020,0.043,0.068,0.087,0.096,0.096,0.087,0.073,0.058,0.045,0.034,0.026,0.019,0.014,0.010,0.008,0.006,0.004,0.003,0.003,0.002,0.002,0.001,0.195];
 
 /* ====================================================
    ASHRAE 2009 태양 위치 및 일사량 정밀 계산
@@ -2972,8 +3901,8 @@ function extraterrestrial(dayOfYear) {
 
 /* ── 대기 투과율 보정 (해발고도 반영 간이식) ── */
 function clearness(alt_m) {
-  // 해발고도가 높을수록 대기 투과율 증가
-  return 0.70 + 0.000025 * alt_m;  // 0~3000m 범위
+  const tau = 0.70 + 0.000025 * alt_m;
+  return Math.min(0.82, Math.max(0.60, tau)); /* 물리적 유효 범위 클램핑 */
 }
 
 /* ── ASHRAE 2009 방위각별 수직면·수평면 일사량 계산 (W/㎡) ──
@@ -3062,7 +3991,7 @@ let roomCount    = 0;
 /* ====================================================
    유틸
 ===================================================== */
-function v(id){ return parseFloat(document.getElementById(id).value)||0; }
+function v(id){ const el=document.getElementById(id); return el ? (parseFloat(el.value)||0) : 0; }
 function fmt(n){ return Math.round(n).toLocaleString(); }
 
 /* ====================================================
@@ -3268,44 +4197,39 @@ function renderUvalReceived(list) {
 function applyAllUvalToRooms() {
   try {
     const raw = localStorage.getItem('MANMIN_UVAL_LIST');
-    if (!raw) return;
+    if (!raw) { alert('전송된 WAP 데이터가 없습니다.'); return; }
     const list = JSON.parse(raw);
+    if (!list || !list.length) { alert('전송된 데이터가 없습니다.'); return; }
     const wallData  = list.find(d => d.compType === 'wall');
     const roofData  = list.find(d => d.compType === 'roof');
     const glassData = list.find(d => d.compType === 'glass');
-    let msg = '실별 입력에 적용:\n';
-    rooms.forEach((r, i) => {
+    const msgs = [];
+    rooms.forEach(r => {
       if (wallData && r.wall) {
-        r.wall.forEach(w => { if(w.type==='wall') { w.U = wallData.currentU; } });
-        msg += `  ✅ ${r.name} 외벽 U = ${wallData.currentU}\n`;
+        r.wall.forEach(w => { if(w.type==='wall') w.U = wallData.currentU; });
+        if(!msgs.find(m=>m.includes('외벽')))
+          msgs.push(`외벽 U = ${wallData.currentU} W/㎡K`);
       }
       if (roofData && r.wall) {
-        r.wall.forEach(w => { if(w.type==='roof') { w.U = roofData.currentU; } });
+        r.wall.forEach(w => { if(w.type==='roof') w.U = roofData.currentU; });
+        if(!msgs.find(m=>m.includes('지붕')))
+          msgs.push(`지붕 U = ${roofData.currentU} W/㎡K`);
+      }
+      if (glassData && r.glass) {
+        r.glass.forEach(g => { g.U = glassData.currentU; });
+        if(!msgs.find(m=>m.includes('창호')))
+          msgs.push(`창호 U = ${glassData.currentU} W/㎡K`);
       }
     });
+    if (msgs.length === 0) { alert('적용할 U값 데이터가 없습니다.'); return; }
     renderRoomTable();
-    alert(msg + '\n실별 입력 탭에서 확인하세요.');
+    alert(`✅ 실별 입력 전체 적용 완료 (${rooms.length}개 실)\n\n` + msgs.join('\n') + '\n\n실별 입력 탭에서 확인하세요.');
   } catch(e) {
     alert('적용 오류: ' + e.message);
   }
 }
 
-/* showTab 시 자동 로드 */
-const _origShowTab = showTab;
-function showTab(id) {
-  _origShowTab(id);
-  if (id === 'tab-uval') {
-    /* localStorage에 데이터 있으면 자동 로드 */
-    try {
-      const raw = localStorage.getItem('MANMIN_UVAL_LIST');
-      if (raw) {
-        const list = JSON.parse(raw);
-        if (list && list.length) renderUvalReceived(list);
-      }
-    } catch(_) {}
-  }
-}
-
+/* showTab — 탭 전환 + 사이드바 + uval 자동 로드 통합 */
 function showTab(id) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -3328,13 +4252,27 @@ function showTab(id) {
   const si = document.querySelectorAll('.sidebar-item')[sideMap[id]];
   if(si) si.classList.add('active');
   if(id==='tab-rts') showRTSTable();
+
+  /* tab-uval: localStorage에 데이터 있으면 자동 로드 */
+  if (id === 'tab-uval') {
+    try {
+      const raw = localStorage.getItem('MANMIN_UVAL_LIST');
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (list && list.length) renderUvalReceived(list);
+      }
+    } catch(_) {}
+  }
 }
+
 
 /* ====================================================
    도시 데이터 로드
 ===================================================== */
 function loadCityData() {
-  const d = CITY_DATA[document.getElementById('p-city').value];
+  const cityEl = document.getElementById('p-city');
+  if(!cityEl) return;
+  const d = CITY_DATA[cityEl.value];
   if(!d) return;
 
   /* ── 프로젝트 개요 → 위치 정보 ── */
@@ -3643,16 +4581,24 @@ function applyBuildingUsageToRooms() {
 
   /* 기본 실 구성으로 교체 */
   roomCount = 0;
-  rooms = preset.rooms.map((r, i) => ({
-    id: `R${String(i+1).padStart(3,'0')}`,
-    name: r.name,
-    use: r.name,
-    qty: 1,
-    area: r.area,
-    height: r.height,
-    coolTemp: r.coolTemp,
-    heatTemp: r.heatTemp,
-  }));
+  rooms = preset.rooms.map((r, i) => {
+    const ud = USE_DEFAULTS[r.name] || USE_DEFAULTS['사무실'] || {};
+    return {
+      id: `R${String(i+1).padStart(3,'0')}`,
+      name: r.name, use: r.name,
+      qty: 1, area: r.area, height: r.height,
+      coolTemp: r.coolTemp, heatTemp: r.heatTemp,
+      ppl_density: ud.ppl_density ?? 0.2,
+      ppl_code:    ud.ppl_code    || 'A',
+      lpd:         ud.lpd         ?? 12,
+      epd:         ud.epd         ?? 15,
+      infil_ach:   ud.infil_ach   ?? 0.1,
+      start_hr:8, ppl_hrs:9, light_hrs:10, equip_hrs:9,
+      rtsZone:8, sf:1.10, ahuNo:'AHU-1',
+      glass:[{az:'S',azDeg:180,area:Math.round(r.area*0.15),U:1.5,shgc:0.40,sc:0.65,df:1.05}],
+      wall: [{type:'wall',az:'S',azDeg:180,area:Math.round(r.area*0.30),U:0.17,alpha:0.9,df:1.0}],
+    };
+  });
   roomCount = rooms.length;
   renderRoomTable();
 
@@ -3663,12 +4609,26 @@ function applyBuildingUsageToRooms() {
 
 function addRoom() {
   roomCount++;
-  const opts = getRoomOptions();
+  /* 기존 ID와 충돌하지 않는 고유 번호 생성 */
+  const usedIds = new Set(rooms.map(r => r.id));
+  let newId = `R${String(roomCount).padStart(3,'0')}`;
+  while(usedIds.has(newId)) { roomCount++; newId = `R${String(roomCount).padStart(3,'0')}`; }
+
+  const opts   = getRoomOptions();
   const defUse = opts[0] || '사무실';
+  const ud     = USE_DEFAULTS[defUse] || {};
   rooms.push({
-    id:`R${String(roomCount).padStart(3,'0')}`,
-    name:defUse, use:defUse,
-    qty:1, area:100, height:2.7, coolTemp:26, heatTemp:22
+    id: newId, name: defUse, use: defUse,
+    qty:1, area:100, height:2.7, coolTemp:26, heatTemp:22,
+    ppl_density: ud.ppl_density ?? 0.2,
+    ppl_code:    ud.ppl_code    || 'A',
+    lpd:         ud.lpd         ?? 12,
+    epd:         ud.epd         ?? 15,
+    infil_ach:   ud.infil_ach   ?? 0.1,
+    start_hr:8, ppl_hrs:9, light_hrs:10, equip_hrs:9,
+    rtsZone:8, sf:1.10, ahuNo:'AHU-1',
+    glass:[{az:'S',azDeg:180,area:15,U:1.5,shgc:0.40,sc:0.65,df:1.05}],
+    wall: [{type:'wall',az:'S',azDeg:180,area:30,U:0.17,alpha:0.9,df:1.0}],
   });
   renderRoomTable();
 }
@@ -4097,7 +5057,10 @@ function _updatePplHint() {
 function _mg(gi, field, val) {
   if(!_modalGlass[gi]) return;
   _modalGlass[gi][field] = val;
-  if(field==='az') _modalGlass[gi].azDeg = AZIMUTH_MAP[val] ?? 180;
+  if(field === 'az') _modalGlass[gi].azDeg = AZIMUTH_MAP[val] ?? 180;
+  /* shgc/sc 양방향 동기화 — calcAll과 calcRoomLoad 모두 호환 */
+  if(field === 'shgc') _modalGlass[gi].sc = val;
+  if(field === 'sc')   _modalGlass[gi].shgc = val;
 }
 function _amg() {
   _saveInternalFields();
@@ -4161,12 +5124,9 @@ function updateVolume(i) {
 }
 
 function removeRoom(i) {
-  rooms.splice(i,1);
+  if(!confirm(`실 "${rooms[i]?.name || i+1}"을 삭제하시겠습니까?`)) return;
+  rooms.splice(i, 1);
   renderRoomTable();
-  /* 자동저장 시작 */
-  startAutoSave();
-  /* 페이지 로드 시 자동저장 복원 확인 */
-  setTimeout(checkAutoSaveRestore, 800);
 }
 
 /* ====================================================
@@ -4250,17 +5210,25 @@ function renderSolAirTable() {
    Bug #5  수정: total=0 div/0 방어
 ===================================================== */
 function updateActivityHeat() {
-  const sel = document.getElementById('i-activity').value.split(',');
-  document.getElementById('i-sens').value = sel[0]; /* 현열 */
-  document.getElementById('i-lat').value  = sel[1]; /* 잠열 */
+  const actEl = document.getElementById('i-activity');
+  if(!actEl) return;
+  const sel = actEl.value.split(',');
+  const sensEl = document.getElementById('i-sens');
+  const latEl  = document.getElementById('i-lat');
+  if(sensEl) sensEl.value = sel[0];
+  if(latEl)  latEl.value  = sel[1] || sel[0];
 }
 
 function updateLightRad() {
-  document.getElementById('i-light-rad').value = document.getElementById('i-light-type').value;
+  const src = document.getElementById('i-light-type');
+  const dst = document.getElementById('i-light-rad');
+  if(src && dst) dst.value = src.value;
 }
 
 function updateEquipRad() {
-  document.getElementById('i-equip-rad').value = document.getElementById('i-equip-type').value;
+  const src = document.getElementById('i-equip-type');
+  const dst = document.getElementById('i-equip-rad');
+  if(src && dst) dst.value = src.value;
 }
 
 function calcInternal() {
@@ -4311,7 +5279,8 @@ function calcInternal() {
    RTS 계수 테이블
 ===================================================== */
 function showRTSTable() {
-  const type = document.getElementById('rts-type-sel').value;
+  const selEl = document.getElementById('rts-type-sel');
+  const type  = selEl ? selEl.value : 'cts-wall';
   let coeff, title, rowLabel;
   if     (type==='cts-wall')    { coeff=CTS_WALL;       title='CTS - 외벽 (Wall) · 중량벽'; rowLabel='h'; }
   else if(type==='cts-roof')    { coeff=CTS_ROOF;       title='CTS - 지붕 (Roof) · 중량 지붕'; rowLabel='h'; }
@@ -4389,7 +5358,7 @@ function calcAll() {
   const glassGain = hourlyT.map(t=> glassUA*(t - toIn));
 
   /* ─ Bug #3: 태양열 투과 열취득 (RTS Solar) ─ */
-  const solarBase = glass.reduce((s,g)=>s+g.sc*g.area,0);
+  const solarBase = glass.reduce((s,g)=>s+(g.sc||g.shgc||0)*g.area,0);
   /* ── ASHRAE 2009: 위도·날짜 기반 수평면 일사량 동적 계산 ── */
   const Et_HOR_dyn = getEt_HOR();
   const solarQ_hr = Et_HOR_dyn.map(e => e * solarBase);    /* 시각별 일사 열취득 W */
@@ -4442,7 +5411,7 @@ function calcAll() {
   );
 
   const peak     = Math.max(...hourlyCool);
-  const peakHour = hourlyCool.indexOf(peak) + 1;
+  const peakHour = peak > 0 ? hourlyCool.indexOf(peak) + 1 : 14;
 
   /* ─ 난방 부하 ─ */
   const heatLoad = calcHeatingLoad(toIn);
@@ -4493,6 +5462,7 @@ function calcHeatingLoad(toIn) {
 function renderHourlyChart(data) {
   const chart = document.getElementById('hourly-chart');
   if(!chart) return;
+  if(!data || !data.length) return;
   const maxVal = Math.max(...data, 1);
 
   const yLabels = [1,0.75,0.5,0.25,0].map(r=>
@@ -4530,7 +5500,8 @@ function renderHourlyLoadTable(wall, glass, solar, internal, SF) {
     {name:'합계 냉방 부하 (W)', data:total.map(vv=>vv.toFixed(0))}
   ];
 
-  const peakIdx = total.indexOf(Math.max(...total));
+  const peakVal = Math.max(...total, 0);
+  const peakIdx = peakVal > 0 ? total.indexOf(peakVal) : -1;
 
   tbody.innerHTML = allRows.map((r,i)=>`
     <tr class="${i===allRows.length-1?'row-group':''}">
@@ -4587,7 +5558,11 @@ function calcAHU() {
   const tSA  = v('ahu-sa-cool')   || 15;
   const tRoom= v('w-indoor-cool') || 26;
   const dT   = tRoom - tSA;
-  if(dT <= 0) return;
+  if(dT <= 0) {
+    const tb = document.getElementById('tbody-ahu-result');
+    if(tb) tb.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--red);padding:12px">⚠️ 급기온도(${tSA}°C)가 실내온도(${tRoom}°C) 이상입니다. 급기 온도를 확인하세요.</td></tr>`;
+    return;
+  }
   const cfm  = Q / (1.2 * 1.006 * dT) * 3.6;
   const ppl  = v('i-people') || 50;
   const oa   = ppl * 25;
@@ -4662,12 +5637,15 @@ function calcRoomLoad(room, solAir24, hourlyT24, doy) {
     else                   wallQ24 = wallQ24.map((vv,h) => vv + qArr[h]);
   });
   const wallCL24 = Array.from({length:24},(_,h) => {
-    const rad = CTS_WALL.reduce((s,c,j)=> s + c * wallQ24[(h-j+24)%24], 0) * 0.46;
-    return rad + wallQ24[h] * 0.54;
+    /* ASHRAE: q_cool = (1-radFrac)×q_gain[h] + radFrac×Σ(CTS_j×q_gain[h-j]) */
+    const radFrac = 0.46;
+    const ctsPart = CTS_WALL.reduce((s,c,j)=> s + c * wallQ24[(h-j+24)%24], 0);
+    return wallQ24[h] * (1 - radFrac) + ctsPart * radFrac;
   });
   const roofCL24 = Array.from({length:24},(_,h) => {
-    const rad = CTS_ROOF.reduce((s,c,j)=> s + c * roofQ24[(h-j+24)%24], 0) * 0.60;
-    return rad + roofQ24[h] * 0.40;
+    const radFrac = 0.60;
+    const ctsPart = CTS_ROOF.reduce((s,c,j)=> s + c * roofQ24[(h-j+24)%24], 0);
+    return roofQ24[h] * (1 - radFrac) + ctsPart * radFrac;
   });
 
   /* ── 내부 발열 ── */
@@ -4761,7 +5739,8 @@ function renderRoomLoadTable(results) {
 }
 
 function calcBuilding() {
-  const peak    = Math.max(...calcResults.cool, 0);
+  const coolArr = (calcResults.cool && calcResults.cool.length) ? calcResults.cool : new Array(24).fill(0);
+  const peak    = Math.max(...coolArr, 0);
   const latent  = (v('i-people')||0) * (v('i-lat')||50) * 1.1;
   const totalC  = (peak + latent) / 1000;
   const totalH  = (calcResults.heat||0) / 1000;
@@ -4802,14 +5781,7 @@ function calcBuilding() {
 /* ====================================================
    기타 버튼 함수
 ===================================================== */
-function calcRooms()   { calcAll(); showTab('tab-result'); }
-function calcExternal(){ 
-  extComponents.forEach((_,i)=>{
-    const el=document.getElementById(`ext-total-${i}`);
-    if(el) el.textContent=calcExtHeatGain(extComponents[i]).toFixed(0);
-  });
-  renderSolAirTable();
-}
+function calcRooms() { calcAll(); showTab('tab-result'); }
 
 function syncHeader() {
   const name     = document.getElementById('p-name')?.value     || '만민 건축사 신사옥 신축공사';
@@ -4871,7 +5843,7 @@ function restoreProjectData(data) {
   /* rooms 복원 */
   if (Array.isArray(data.rooms)) {
     rooms = data.rooms;
-    roomCount = data.roomCount || rooms.length;
+    roomCount = Math.max(data.roomCount || 0, rooms.length);
     renderRoomTable();
   }
   /* extComponents 복원 */
@@ -4885,8 +5857,9 @@ function restoreProjectData(data) {
   setEl('status-project', `${name} | ${designer}`);
   document.title = `RTS-MANMIN Ver3.0 | ${name}`;
   syncHeader();
-  /* 기상 데이터 재계산 */
+  /* 기상 + 전체 재계산 */
   if (typeof calcWeather === 'function') calcWeather();
+  if (typeof calcAll    === 'function') setTimeout(calcAll, 100); /* DOM 갱신 후 계산 */
   return true;
 }
 
@@ -5046,22 +6019,50 @@ function exportReport() {
     setT('sh-date-'+sid,  ds);
   });
 
-  /* ── 인쇄 전용 요소 표시 (평소엔 none) ── */
+  /* ── 인쇄 날짜 채우기 ── */
+  const pdateEl = document.getElementById('print-date');
+  if(pdateEl) pdateEl.textContent = `출력일: ${ds}`;
+
+  /* ── 인쇄 전용 요소 표시 ── */
   ['print-cover','print-toc'].forEach(id => {
     const el = document.getElementById(id);
-    if(el) el.style.display = '';
+    if(el) el.style.removeProperty('display');
   });
-  document.querySelectorAll('.print-sheet-header').forEach(el => {
-    el.style.display = '';
+  /* print-sheet-header / print-sheet-footer: 인라인 style 제거 */
+  document.querySelectorAll('.print-sheet-header, .print-sheet-footer').forEach(el => {
+    el.style.removeProperty('display');
   });
-  document.getElementById('print-title')?.setAttribute('style', '');
+  /* section-title 이모지 → PDF 스타일 텍스트로 교체 */
+  const emojiMap = {
+    '📋 프로젝트 개요 및 설계 기준': '프로젝트 개요 및 설계 기준',
+    '🌡️ 설계 외기 조건 및 기상 데이터': '설계 외기 조건 및 기상 데이터',
+    '🏢 실별 기본 데이터 입력': '실별 기본 데이터 입력 (Room List)',
+    '🌞 외부 열취득 (External Heat Gain)': '외부 열취득 (External Heat Gain)',
+    '💡 내부 열취득 (Internal Heat Gain)': '내부 열취득 (Internal Heat Gain)',
+    '📊 CTS / RTS 계수 (Conduction & Radiant Time Series)': 'CTS / RTS 계수',
+    '📈 냉난방 부하 계산 결과': '냉난방 부하 계산 결과',
+    '⚙️ AHU / FCU 선정': 'AHU / FCU 선정',
+    '🏗️ 건물 부하 집계 (Building Load Summary)': '건물 부하 집계 (Building Load Summary)',
+    '🧱 부위별 열관류율 검토 연계': '부위별 열관류율 검토'
+  };
+  document.querySelectorAll('.section-title').forEach(el => {
+    const stag = el.querySelector('.stag');
+    const stagHtml = stag ? stag.outerHTML : '';
+    const text = el.textContent.replace(stag ? stag.textContent : '', '').trim();
+    const cleaned = emojiMap[text] || text.replace(/^[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\s]+/u, '');
+    el.innerHTML = cleaned + (stagHtml ? ' ' + stagHtml : '');
+    el._printOrigHTML = el._printOrigHTML || el.innerHTML;
+  });
   const ptEl = document.getElementById('print-title');
-  if(ptEl) ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver3.0';
+  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver3.0'; }
   const psEl = document.getElementById('print-subtitle');
   if(psEl) psEl.textContent = pname + ' | 설계자: ' + des + ' | ASHRAE 2009 RTS법';
 
   /* ── 전체 재계산 후 출력 ── */
   calcAll();
+  /* 혹시 열린 모달 닫기 */
+  if (typeof closeRoomModal === 'function') closeRoomModal();
+  closeFormulaModal();
   setTimeout(() => {
     window.print();
     /* 출력 후 다시 숨김 */
@@ -5070,8 +6071,12 @@ function exportReport() {
         const el = document.getElementById(id);
         if(el) el.style.display = 'none';
       });
-      document.querySelectorAll('.print-sheet-header').forEach(el => {
+      document.querySelectorAll('.print-sheet-header, .print-sheet-footer').forEach(el => {
         el.style.display = 'none';
+      });
+      /* section-title 이모지 복원 */
+      document.querySelectorAll('.section-title').forEach(el => {
+        // 복원 없이 유지 (화면에서는 tabHeader가 다시 렌더되므로 무방)
       });
     }, 500);
   }, 400);
@@ -5257,7 +6262,7 @@ function init() {
   if(pn && !pn.value) pn.value = '만민 건축사 신사옥 신축공사';
   if(pd && !pd.value) pd.value = '김만민';
   syncHeader();
-  saveProject();
+  /* ※ 구동 시 자동 저장파일 생성 제거 — 사용자가 명시적으로 💾 저장 버튼을 눌러야 저장 */
 
   /* 기본 실 구성 — 건물 용도 기본값(사무소) 기반 자동 편성 */
   roomCount = 0; rooms = [];
@@ -5308,7 +6313,36 @@ function init() {
   /* 열관류율 연계 탭 초기화 */
   initUvalRefTable();
   renderUvalStdTable();
+
+  /* 자동저장 시작 (5분 주기) */
+  startAutoSave();
+
+  /* 이전 자동저장 복원 확인 (init 완료 후 약간 지연) */
+  setTimeout(checkAutoSaveRestore, 600);
 }
+
+/* ===== 계산식 안내 모달 제어 ===== */
+function openFormulaModal() {
+  document.getElementById('formula-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeFormulaModal() {
+  document.getElementById('formula-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function switchFmTab(panelId) {
+  document.querySelectorAll('.fm-tab').forEach((t,i) => {
+    const panels = document.querySelectorAll('.fm-panel');
+    t.classList.toggle('active', panels[i] && panels[i].id === panelId);
+  });
+  document.querySelectorAll('.fm-panel').forEach(p => {
+    p.classList.toggle('active', p.id === panelId);
+  });
+}
+/* ESC 키로 닫기 */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeFormulaModal();
+});
 
 window.addEventListener('load', init);
 </script>
@@ -5355,13 +6389,16 @@ function installPWA() {
 
 window.addEventListener('appinstalled', () => {
   console.log('[PWA] App installed!');
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) btn.style.display = 'none';
+});
+
 /* ===== 해시 기반 탭 이동 (바로가기 지원) ===== */
 (function() {
   function gotoHashTab() {
     const hash = location.hash.replace('#','') || sessionStorage.getItem('rts-goto-tab');
     if (hash) {
       sessionStorage.removeItem('rts-goto-tab');
-      // showTab 함수가 로드된 후 실행
       const tryGo = setInterval(() => {
         if (typeof showTab === 'function') {
           clearInterval(tryGo);
@@ -5375,10 +6412,6 @@ window.addEventListener('appinstalled', () => {
   window.addEventListener('load', gotoHashTab);
   window.addEventListener('hashchange', gotoHashTab);
 })();
-
-  const btn = document.getElementById('pwa-install-btn');
-  if (btn) btn.style.display = 'none';
-});
 </script>
 
 
@@ -5550,6 +6583,12 @@ window.addEventListener('appinstalled', () => {
   <div style="flex:1">
     <div style="font-size:11px;font-weight:900;letter-spacing:.04em;">열관류율 데이터 수신 완료</div>
     <div style="font-size:10px;color:rgba(110,231,183,.6);margin-top:1px;">${payload.projectName || ''}</div>
+    <!-- 인쇄용 하단 푸터 -->
+    <div class="print-sheet-footer no-print-hide" style="display:none">
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-right">SHEET U</span>
+    </div>
+
   </div>
   <button onclick="this.closest('#_uval-recv-toast').remove()"
     style="background:none;border:none;color:rgba(110,231,183,.5);font-size:16px;cursor:pointer;padding:0;line-height:1;">✕</button>
