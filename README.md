@@ -1,7 +1,22 @@
-# RTS-MANMIN 건축물 부하계산서 Ver 3.0 — PWA 패키지
+# RTS-MANMIN 건축물 부하계산서 Ver 4.0 — PWA 패키지
 
-> ASHRAE 2009 RTS법 기반 건축물 냉난방 부하계산 전문 도구  
+> ASHRAE Handbook of Fundamentals Ch.18 RTS법 기반 건축물 냉난방 부하계산 전문 도구
 > by **ENGINEER KIM MANMIN** · 만민건축사사무소 · Iksan, Jeollabuk-do
+
+---
+
+## 🆕 Ver 4.0 주요 변경 (2026.07)
+
+| 구분 | 내용 |
+|------|------|
+| 🏢 실 관리 그리드 | 22컬럼 인라인 편집 + 체크박스 다중 선택 → **복사 ×N·일괄변경·일괄삭제**, 실번호·실명 검색 + 층 필터, 최대 500실 |
+| 🗂️ 조닝·장비 | AHU/RTU/FCU/PAC 등록(CAV/VAV·외기량·취출온도차), 실→장비 배정 보드, 실 AHU값 자동 장비 생성 |
+| 📊 동시각 합산 피크 | 장비별 소속 실 24시간 부하를 **동일 시각끼리 합산 후 최대값** 선정(Block Load) + 외기부하(현열 0.335·V·Δt, 잠열 834·V·Δx) 장비 레벨 가산 |
+| 🗓️ 운영 조닝 | 존(주말/평일/24시간) 등록 → 장비 배정 → 존별·건물 집계(냉난방 코일·가습량·급기량·USRT) |
+| 🖨️ A4 / Excel | 조닝·장비 시트가 A4 출력(SHEET 2-1)과 Excel(조닝장비집계 시트)에 통합 |
+| 💾 .rts v4 | schemaVersion 4 — 장비·존 저장, **v3 파일 자동 마이그레이션** 지원 |
+| 📜 법령 갱신 | 건축물의 에너지절약설계기준 **국토교통부고시 제2026-360호(2026.7.8. 시행)** 반영 (별표1·별표7 수치는 종전과 동일 — 타법개정으로 부처명만 변경) |
+| ✅ 벤치마크 검증 | 이리신광교회 신축공사(실 352·장비 40·존 3, MIRAE98 2005) 대조 — 냉방 총부하 편차 **-2.7%** |
 
 ---
 
@@ -9,82 +24,53 @@
 
 ```
 pwa-rts-manmin/
-├── index.html          ← 메인 계산서 (PWA 태그 포함)
-├── shortcut.html       ← 바로가기 & 설치 안내 페이지
-├── manifest.json       ← PWA 매니페스트
-├── sw.js               ← Service Worker (오프라인 캐싱)
-├── README.md           ← 이 파일
-└── icons/
-    ├── icon-72x72.png
-    ├── icon-96x96.png
-    ├── icon-128x128.png
-    ├── icon-144x144.png
-    ├── icon-152x152.png
-    ├── icon-192x192.png   ← Android 홈 화면 아이콘
-    ├── icon-384x384.png
-    ├── icon-512x512.png   ← Splash Screen 아이콘
-    ├── favicon-16x16.png
-    ├── favicon-32x32.png
-    └── apple-touch-icon.png  ← iOS Safari 홈 화면 아이콘
+├── index.html                    ← 메인 계산서 (단일 파일, PWA 태그 포함)
+├── shortcut.html                 ← 바로가기 & 설치 안내 페이지
+├── manifest.json                 ← PWA 매니페스트
+├── sw.js                         ← Service Worker (캐시 v4.3.0)
+├── 벤치마크_이리신광교회.rts      ← 352실 샘플 프로젝트 (📂 불러오기로 로드)
+├── README.md                     ← 이 파일
+└── icons/                        ← PWA 아이콘 (72~512px, favicon, apple-touch)
 ```
+
+`.rts` 파일은 본 앱 전용 프로젝트 파일(JSON)입니다. 앱의 **📂 불러오기** 버튼으로 열어 주세요.
 
 ---
 
 ## 🚀 GitHub Pages 배포 방법
 
-1. `manminkim-eng.github.io` 저장소에 이 파일들을 **루트 또는 서브폴더**에 업로드
-2. GitHub Settings → Pages → Source: `main` 브랜치 선택
-3. HTTPS로 자동 서빙 → PWA 완전 활성화
+1. `manminkim-eng` 계정 저장소에 파일 업로드 (index.html · sw.js · manifest.json 교체가 기본)
+2. 배포 시 `sw.js`의 `CACHE_NAME` 버전을 올리면 사용자 캐시가 자동 갱신됩니다
+3. HTTPS 자동 서빙 → PWA 완전 활성화
 
-### 서브폴더 배포 시 (`/rts/`)
-
-`manifest.json`의 `start_url`과 `scope`를 수정:
-```json
-"start_url": "/rts/index.html",
-"scope": "/rts/"
-```
-
-`sw.js`의 `STATIC_ASSETS` 경로도 `/rts/` 프리픽스 추가.
-
----
-
-## 📱 PWA 설치 방법
+## 📱 PWA 설치
 
 | 플랫폼 | 방법 |
 |--------|------|
-| **Android Chrome** | 주소창 오른쪽 ⋮ → **앱 설치** 또는 하단 배너 탭 |
-| **iPhone Safari** | 하단 공유(□↑) → **홈 화면에 추가** |
-| **PC Chrome** | 주소창 우측 설치 아이콘 클릭 |
-| **PC Edge** | ··· → 앱 → 이 사이트를 앱으로 설치 |
+| Android Chrome | 주소창 ⋮ → **앱 설치** |
+| iPhone Safari | 공유(□↑) → **홈 화면에 추가** |
+| PC Chrome/Edge | 주소창 우측 설치 아이콘 |
 
 ---
 
-## ⚡ PWA 기능
+## 🔗 연계 도구
 
-- ✅ **오프라인 지원** — Service Worker 캐시로 인터넷 없이 사용
-- ✅ **홈 화면 설치** — 네이티브 앱처럼 독립 실행
-- ✅ **앱 바로가기** — 각 탭으로 직접 진입
-- ✅ **자동 업데이트** — 새 버전 배포 시 자동 캐시 갱신
-- ✅ **Landscape 최적화** — 가로 모드 기본 설정
-- ✅ **테마 컬러** — 브라우저 UI에 MANMIN 네이비/시안 적용
+- **열관류율 검토 WAP** (`manminkim-eng.github.io/u-value-app-/`) — U값을 postMessage/localStorage로 자동 수신, 실별 외피에 일괄 적용
 
----
+## 📜 적용 기준
 
-## 🔧 커스터마이징
+- ASHRAE Handbook of Fundamentals Ch.18 — RTS법 (2009 제정 계수, 2025판 동일 방법)
+- 건축물의 에너지절약설계기준 (국토교통부고시 제2026-360호, 2026.7.8. 시행) — 제8조 설계용 외기조건·별표7
+- 건축물의 설비기준 등에 관한 규칙 (국토교통부령 제1531호, 2025.10.31. 시행)
+- KDS 31 25 05 :2021 공기조화설비 일반사항 (국가건설기준센터)
 
-### 프로젝트명 기본값 변경
-`index.html` 하단 `init()` 함수:
-```javascript
-if(pn && !pn.value) pn.value = '새 프로젝트명';
-if(pd && !pd.value) pd.value = '설계자명';
-```
+## 🕘 버전 이력
 
-### 캐시 버전 업데이트
-`sw.js` 상단:
-```javascript
-const CACHE_NAME = 'rts-manmin-v3.0.1'; // 버전 번호 증가
-```
+| 버전 | 일자 | 내용 |
+|------|------|------|
+| 4.0 | 2026.07 | 실 대량관리·조닝/장비·동시각 합산 피크·존/건물 집계·벤치마크 검증 |
+| 3.x | 2025 | RTS 엔진·실별 모달·U값 연계·A4/Excel 출력·PWA |
 
 ---
 
-© 2025 만민건축사사무소 · ENGINEER KIM MANMIN
+© 2026 만민건축사사무소 · ENGINEER KIM MANMIN
