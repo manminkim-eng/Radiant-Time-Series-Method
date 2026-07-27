@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#00b4d8">
 <meta name="msapplication-TileColor" content="#0a1628">
 <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
-<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver3.0 by MANMIN">
+<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver4.0 by MANMIN">
 
 <!-- SheetJS Excel Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 <!-- ======================== -->
 
-<title>RTS-MANMIN 건축물 부하계산서 Ver3.0 | 만민 건축사 신사옥 신축공사</title>
+<title>RTS-MANMIN 건축물 부하계산서 Ver4.0 | 만민 건축사 신사옥 신축공사</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
 
@@ -1062,7 +1062,7 @@
   @top-center { content: ""; }
   @top-right  { content: ""; }
   @bottom-left {
-    content: "RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법";
+    content: "RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법";
     font-family: 'Malgun Gothic', sans-serif;
     font-size: 6pt; color: #555;
     border-top: 0.3pt solid #aaa; padding-top: 2pt; width: 100%;
@@ -2321,8 +2321,8 @@
             <tr>
               <th>구분</th><th>기준명</th><th>주요 내용</th>
             </tr>
-            <tr><td>국내</td><td>건축물 에너지절약설계기준<br>(국토교통부고시 제2025-738호)</td><td>지역별 열관류율 기준, 단열재 등급</td></tr>
-            <tr><td>국내</td><td>건축물 에너지절약설계기준 별표7<br>(국토교통부고시 제2025-738호)</td><td>냉·난방설비 용량계산 설계 외기온·습도 기준<br>(위험률 2.5% / 연간 1% 기준)</td></tr>
+            <tr><td>국내</td><td>건축물 에너지절약설계기준<br>(국토교통부고시 제2026-360호)</td><td>지역별 열관류율 기준, 단열재 등급</td></tr>
+            <tr><td>국내</td><td>건축물 에너지절약설계기준 별표7<br>(국토교통부고시 제2026-360호)</td><td>냉·난방설비 용량계산 설계 외기온·습도 기준<br>(위험률 2.5% / 연간 1% 기준)</td></tr>
             <tr><td>국내</td><td>건축물의 설비기준 등에 관한 규칙</td><td>환기·공조 설비 기준</td></tr>
             <tr><td>해외</td><td>ASHRAE Fundamentals 2009<br>Chapter 18</td><td>RTS법 부하계산 원리 및 계수 테이블</td></tr>
             <tr><td>해외</td><td>ASHRAE Climatic Design<br>Conditions 2009</td><td>세계 각 지역 설계 외기조건 (한국 포함)</td></tr>
@@ -2379,9 +2379,9 @@
 <!-- ===== APP HEADER ===== -->
 <div class="app-header">
   <div class="logo-area">
-    <div class="logo-icon" style="font-size:18px;letter-spacing:-1px;">RM</div>
+    <div class="logo-icon" style="background:none;text-shadow:none;overflow:hidden;"><img src="data:image/png;base64,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" alt="ENGINEER KIM MANMIN" style="width:44px;height:44px;border-radius:8px;display:block;" onerror="this.parentNode.textContent='RM';this.parentNode.style.background='linear-gradient(135deg,var(--accent),var(--blue))'"></div>
     <div class="logo-text">
-      <h1>RTS-MANMIN 건축물 부하계산서<span class="manmin-badge">Ver 3.0</span></h1>
+      <h1>RTS-MANMIN 건축물 부하계산서<span class="manmin-badge">Ver 4.0</span></h1>
       <p>Radiant Time Series Method · ASHRAE Fundamentals 2009</p>
       <div class="logo-designer" id="hdr-designer-line">설계자: 김만민 &nbsp;|&nbsp; 만민 건축사 신사옥 신축공사</div>
     </div>
@@ -2559,11 +2559,11 @@
           <tr><td class="ci-label">설  계  자</td><td class="ci-value" id="cov-designer"></td></tr>
           <tr><td class="ci-label">계  산  일</td><td class="ci-value" id="cov-date"></td></tr>
           <tr><td class="ci-label">계 산 방 법</td><td class="ci-value">RTS Method · ASHRAE Fundamentals 2009</td></tr>
-          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value">RTS-MANMIN Ver3.0</td></tr>
+          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value">RTS-MANMIN Ver4.0</td></tr>
         </table>
         <!-- 하단 기준 고시 -->
         <div class="cover-footer-box">
-          <div>건축물 에너지절약설계기준 · 국토교통부고시 제2025-738호</div>
+          <div>건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호</div>
           <div style="margin-top:4pt;font-size:7pt;color:#555">ASHRAE Handbook of Fundamentals 2009 · Chapter 18 Nonresidential Cooling and Heating Load Calculations</div>
         </div>
       </div>
@@ -2585,7 +2585,7 @@
       <!-- 인쇄용 문서 헤더 (화면에서는 숨김) -->
       <div class="print-page-header" style="display:none">
         <div>
-          <div class="print-page-header-title" id="print-title">RTS-MANMIN 건축물 부하계산서 Ver3.0</div>
+          <div class="print-page-header-title" id="print-title">RTS-MANMIN 건축물 부하계산서 Ver4.0</div>
           <div style="font-size:7pt;color:#333;margin-top:2pt;" id="print-subtitle">만민 건축사 신사옥 신축공사 &nbsp;|&nbsp; 설계자: 김만민 &nbsp;|&nbsp; RTS법 (ASHRAE 2009)</div>
         </div>
         <div style="text-align:right;font-size:7pt;color:#555;" id="print-date"></div>
@@ -2803,7 +2803,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 0</span>
     </div>
 </div>
@@ -2813,7 +2813,7 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-w"></span>
         <span class="sh-title">SHEET 1 · 설계 외기 조건 및 기상 데이터</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-w"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-w"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🌡️ 설계 외기 조건 및 기상 데이터 <span class="stag">SHEET 1</span></div>
@@ -2929,7 +2929,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 1</span>
     </div>
 </div>
@@ -2940,7 +2940,7 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-r"></span>
         <span class="sh-title">SHEET 2 · 실별 기본 데이터 입력</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-r"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-r"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🏢 실별 기본 데이터 입력 <span class="stag">SHEET 2</span></div>
@@ -2953,8 +2953,29 @@
 
       <div class="info-box" style="border-color:var(--gold);background:rgba(240,165,0,0.07)">
         <strong>📋 입력 방법:</strong>
-        실 목록에서 각 실의 기본 정보를 입력하고 <strong>「▶ 상세 입력」</strong> 버튼으로 유리창·외벽·내부발열을 실별로 설정하세요.
-        용도 선택 시 내부발열 기본값이 자동 적용됩니다. | 최대 200실
+        표에서 직접 수정하거나, 좌측 체크박스로 여러 실을 선택해 <strong>복사·삭제·일괄변경</strong>하세요.
+        <strong>「▶ 상세」</strong>로 유리창·외벽·내부발열을 실별 설정합니다. 용도 선택 시 내부발열 기본값 자동 적용 | 최대 500실
+      </div>
+
+      <!-- ═══ Ver4.0: 실 관리 도구모음 (검색·필터·대량편집) ═══ -->
+      <div class="excel-wrap" style="padding:8px 10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <input class="form-input" id="room-search" placeholder="🔍 실번호·실명 검색" style="width:150px" oninput="setRoomFilter()">
+        <select class="form-select" id="room-floor-filter" style="width:82px" onchange="setRoomFilter()"><option value="">전층</option></select>
+        <span style="border-left:1px solid var(--border);height:20px;margin:0 2px"></span>
+        <button class="btn btn-secondary btn-sm" onclick="duplicateSelectedRooms()">⧉ 선택 복사</button>
+        <button class="btn btn-danger btn-sm" onclick="removeSelectedRooms()">✕ 선택 삭제</button>
+        <span style="border-left:1px solid var(--border);height:20px;margin:0 2px"></span>
+        <select class="form-select" id="bulk-field" style="width:98px" title="일괄변경 항목">
+          <option value="floor">층</option>
+          <option value="use">용도</option>
+          <option value="ahuNo">AHU No.</option>
+          <option value="sf">SF</option>
+          <option value="coolTemp">냉방℃</option>
+          <option value="heatTemp">난방℃</option>
+          <option value="loadMode">부하구분(CH/C/H)</option>
+        </select>
+        <input class="form-input" id="bulk-value" placeholder="값" style="width:76px">
+        <button class="btn btn-primary btn-sm" onclick="bulkApplyRooms()">선택 일괄변경</button>
       </div>
 
       <!-- 실 목록 (기본 정보) -->
@@ -2964,9 +2985,11 @@
         <table class="excel-table" id="tbl-rooms">
           <thead>
             <tr>
-              <th class="col-label"></th>
+              <th class="col-label" style="width:26px"><input type="checkbox" title="표시된 실 전체선택" onclick="toggleRoomSelAll(this.checked)"></th>
+              <th class="col-label" style="width:28px">No</th>
               <th style="min-width:65px">실 번호</th>
               <th style="min-width:90px">실 명칭</th>
+              <th style="min-width:46px">층</th>
               <th style="min-width:90px">용도</th>
               <th style="min-width:40px">수량</th>
               <th style="min-width:65px">면적(㎡)</th>
@@ -2974,13 +2997,15 @@
               <th style="min-width:60px">체적(㎥)</th>
               <th style="min-width:50px">냉방℃</th>
               <th style="min-width:50px">난방℃</th>
-              <th style="min-width:55px">인원(p)</th>
+              <th style="min-width:50px">인원(p)</th>
               <th style="min-width:50px">조명(W/㎡)</th>
               <th style="min-width:50px">기기(W/㎡)</th>
               <th style="min-width:55px">침기(ac/h)</th>
-              <th style="min-width:50px">AHU No.</th>
-              <th style="min-width:55px">SF</th>
-              <th style="min-width:60px">상세 입력</th>
+              <th style="min-width:55px">AHU No.</th>
+              <th style="min-width:46px">SF</th>
+              <th style="min-width:56px">부하구분</th>
+              <th style="min-width:52px">상태</th>
+              <th style="min-width:50px">상세</th>
               <th style="min-width:30px">삭제</th>
             </tr>
           </thead>
@@ -3048,7 +3073,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 2</span>
     </div>
 </div>
@@ -3058,7 +3083,7 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-e"></span>
         <span class="sh-title">SHEET 3 · 외부 열취득 (External Heat Gain)</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-e"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-e"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🌞 외부 열취득 (External Heat Gain) <span class="stag">SHEET 3</span></div>
@@ -3075,7 +3100,7 @@
           <span style="font-size:18px">🧱</span>
           <div>
             <div style="font-size:11px;font-weight:700;color:#6ee7b7;">열관류율 U값 → 외부 부하 직접 연계</div>
-            <div style="font-size:10px;color:rgba(110,231,183,0.65);margin-top:2px;">「열관류율 검토 연계」 탭에서 부위별 U값을 확인하고 아래 표에 입력하세요. | 국토교통부고시 제2025-738호</div>
+            <div style="font-size:10px;color:rgba(110,231,183,0.65);margin-top:2px;">「열관류율 검토 연계」 탭에서 부위별 U값을 확인하고 아래 표에 입력하세요. | 국토교통부고시 제2026-360호</div>
           </div>
         </div>
         <button onclick="showTab('tab-uval')" style="background:rgba(5,150,105,0.25);border:1px solid rgba(5,150,105,0.5);color:#6ee7b7;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(5,150,105,0.4)'" onmouseout="this.style.background='rgba(5,150,105,0.25)'">
@@ -3154,7 +3179,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 3</span>
     </div>
 </div>
@@ -3164,7 +3189,7 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-i"></span>
         <span class="sh-title">SHEET 4 · 내부 열취득 (Internal Heat Gain)</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-i"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-i"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">💡 내부 열취득 (Internal Heat Gain) <span class="stag">SHEET 4</span></div>
@@ -3400,7 +3425,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 4</span>
     </div>
 </div>
@@ -3410,7 +3435,7 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-rts"></span>
         <span class="sh-title">SHEET 5 · CTS / RTS 계수</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-rts"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-rts"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">📊 CTS / RTS 계수 (Conduction & Radiant Time Series) <span class="stag">ASHRAE 2009</span></div>
@@ -3431,7 +3456,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 5</span>
     </div>
 </div>
@@ -3441,7 +3466,7 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-res"></span>
         <span class="sh-title">SHEET 6 · 냉난방 부하 계산 결과</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-res"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-res"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">📈 냉난방 부하 계산 결과 <span class="stag">SHEET 5</span></div>
@@ -3548,7 +3573,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 6</span>
     </div>
 </div>
@@ -3558,7 +3583,7 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-ahu"></span>
         <span class="sh-title">SHEET 7 · AHU / FCU 선정</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-ahu"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-ahu"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">⚙️ AHU / FCU 선정 <span class="stag">SHEET 6</span></div>
@@ -3691,7 +3716,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 7</span>
     </div>
 </div>
@@ -3701,7 +3726,7 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-bld"></span>
         <span class="sh-title">SHEET 8 · 건물 부하 집계</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-bld"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-bld"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🏗️ 건물 부하 집계 (Building Load Summary) <span class="stag">SHEET 7</span></div>
@@ -3757,7 +3782,7 @@
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 8</span>
     </div>
 </div>
@@ -3768,10 +3793,10 @@
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-uval"></span>
         <span class="sh-title">SHEET 1-2 · T.D &amp; Glass / Wall / Roof Data</span>
-        <span class="sh-meta">RTS-MANMIN Ver3.0 &nbsp;|&nbsp; <span id="sh-date-uval"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-uval"></span></span>
       </div>
       <div class="section-header">
-        <div class="section-title">🧱 부위별 열관류율 검토 연계 <span class="stag">RTS-MANMIN Ver3.0</span></div>
+        <div class="section-title">🧱 부위별 열관류율 검토 연계 <span class="stag">RTS-MANMIN Ver4.0</span></div>
         <div style="display:flex;gap:8px;align-items:center">
           <button class="btn btn-primary btn-sm" onclick="loadAndRenderUvalData()" style="background:linear-gradient(135deg,#059669,#065f46);border:none;">
             🔄 전송 데이터 불러오기
@@ -3813,9 +3838,9 @@
           <div style="flex:1;min-width:0;">
             <div style="color:#fff;font-size:14px;font-weight:900;margin-bottom:3px;display:flex;align-items:center;gap:8px;">
               열관류율 종합 검토 시스템
-              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver3.0</span>
+              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver4.0</span>
             </div>
-            <div style="color:rgba(110,231,183,0.75);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">건축물 에너지절약설계기준 · 국토교통부고시 제2025-738호</div>
+            <div style="color:rgba(110,231,183,0.75);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호</div>
           </div>
           <button onclick="window.open('https://manminkim-eng.github.io/u-value-app-/','_blank')"
             style="background:rgba(255,255,255,0.12);border:1px solid rgba(110,231,183,0.35);color:#6ee7b7;border-radius:8px;padding:10px 18px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;transition:all .2s;display:flex;align-items:center;gap:7px;"
@@ -3923,7 +3948,7 @@
           </table>
           <div style="margin-top:10px;font-size:10px;color:var(--text2);line-height:1.8;">
             ※ <strong style="color:var(--accent)">설계 U값</strong> 란에 열관류율 WAP에서 산출한 값을 직접 입력하세요.<br>
-            ※ 법적 기준은 건축물 에너지절약설계기준 (제2025-738호) 기준값입니다. 지역·용도 변경 시 수동 수정하세요.<br>
+            ※ 법적 기준은 건축물 에너지절약설계기준 (제2026-360호) 기준값입니다. 지역·용도 변경 시 수동 수정하세요.<br>
             ※ 입력된 U값은 <strong style="color:var(--gold)">외부 부하 탭</strong>의 열관류율 컬럼에 그대로 사용합니다.
           </div>
         </div>
@@ -3932,7 +3957,7 @@
       <!-- 중부2지역 공동주택 기준 U값 빠른 참조표 -->
       <div class="sheet-block">
         <div class="sheet-block-header">
-          <div class="sheet-block-title">📋 법적 기준 U값 빠른 참조 (국토교통부고시 제2025-738호 · 별표1)</div>
+          <div class="sheet-block-title">📋 법적 기준 U값 빠른 참조 (국토교통부고시 제2026-360호 · 별표1)</div>
           <select id="uval-region-sel" class="form-select" style="width:130px;font-size:11px" onchange="renderUvalStdTable()">
             <option value="중부1지역">중부1지역</option>
             <option value="중부2지역" selected>중부2지역</option>
@@ -3961,13 +3986,13 @@
     <span id="status-rooms">실 수: 0</span>
     <span id="status-cool">냉방: 0 kW</span>
     <span id="status-heat">난방: 0 kW</span>
-    <span style="color:var(--text2)">© RTS-MANMIN 부하계산 WAP &nbsp;|&nbsp; <span style="color:rgba(147,197,253,0.8);font-weight:700;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver3.0</span></span>
+    <span style="color:var(--text2)">© RTS-MANMIN 부하계산 WAP &nbsp;|&nbsp; <span style="color:rgba(147,197,253,0.8);font-weight:700;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver4.0</span></span>
   </div>
 </div>
 
 <script>
 // =====================================================
-//  RTS-MANMIN WAP — ASHRAE 2009  [RTS-MANMIN Ver3.0] 버그수정 완전판
+//  RTS-MANMIN WAP — ASHRAE 2009  [RTS-MANMIN Ver4.0] 버그수정 완전판
 // =====================================================
 
 /* ── 도시 기상 데이터 (ASHRAE/기상청 기준) ── */
@@ -4129,6 +4154,10 @@ let rooms        = [];
 let extComponents= [];
 let calcResults  = { cool: new Array(24).fill(0), heat:0, peakHour:14 };
 let roomCount    = 0;
+/* ── Ver4.0 확장 상태 ── */
+let equipment    = [];                 /* 공조 장비(AHU/RTU/FCU) 목록 — Phase 2 */
+let zones        = [];                 /* 운영 조닝(스케줄 그룹) — Phase 2 */
+let _roomFilter  = { q:'', floor:'' }; /* 실 그리드 검색·층 필터 */
 
 /* ====================================================
    유틸
@@ -4318,7 +4347,7 @@ function renderUvalReceived(list) {
   <!-- 1-2 시트 헤더 (성락교회 PDF 형식) -->
   <div style="background:var(--cell-bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:10px;color:var(--text2);">
     <strong style="color:var(--accent);font-size:11px;">□ 1-2. T.D &amp; Glass / Wall / Roof Data</strong>
-    <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver3.0</span>
+    <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver4.0</span>
   </div>`;
 
   /* 부위 순서: Wall → Roof → Floor → Glass */
@@ -4812,7 +4841,7 @@ function applyBuildingUsageToRooms() {
       epd:         ud.epd         ?? 15,
       infil_ach:   ud.infil_ach   ?? 0.1,
       start_hr:8, ppl_hrs:9, light_hrs:10, equip_hrs:9,
-      rtsZone:8, sf:1.10, ahuNo:'AHU-1',
+      rtsZone:8, sf:1.10, ahuNo:'AHU-1', floor:'1F', loadMode:'CH',
       glass:[{az:'S',azDeg:180,area:Math.round(r.area*0.15),U:1.5,shgc:0.40,sc:0.65,df:1.05}],
       wall: [{type:'wall',az:'S',azDeg:180,area:Math.round(r.area*0.30),U:0.17,alpha:0.9,df:1.0}],
     };
@@ -4844,28 +4873,58 @@ function addRoom() {
     epd:         ud.epd         ?? 15,
     infil_ach:   ud.infil_ach   ?? 0.1,
     start_hr:8, ppl_hrs:9, light_hrs:10, equip_hrs:9,
-    rtsZone:8, sf:1.10, ahuNo:'AHU-1',
+    rtsZone:8, sf:1.10, ahuNo:'AHU-1', floor:'1F', loadMode:'CH',
     glass:[{az:'S',azDeg:180,area:15,U:1.5,shgc:0.40,sc:0.65,df:1.05}],
     wall: [{type:'wall',az:'S',azDeg:180,area:30,U:0.17,alpha:0.9,df:1.0}],
   });
   renderRoomTable();
 }
 
+/* ═══════════════════════════════════════════════════
+   Ver4.0 실 관리 그리드 — 필터·선택·대량편집
+═══════════════════════════════════════════════════ */
+function _roomMatchesFilter(r){
+  if(_roomFilter.floor && (r.floor||'1F') !== _roomFilter.floor) return false;
+  const q=(_roomFilter.q||'').toLowerCase();
+  if(q && !(String(r.id||'').toLowerCase().includes(q) || String(r.name||'').toLowerCase().includes(q))) return false;
+  return true;
+}
+function getFloorList(){
+  return [...new Set(rooms.map(r=>r.floor||'1F'))].sort();
+}
+function setRoomFilter(){
+  _roomFilter.q     = document.getElementById('room-search')?.value || '';
+  _roomFilter.floor = document.getElementById('room-floor-filter')?.value || '';
+  renderRoomTable();
+}
 function renderRoomTable() {
   const tbody = document.getElementById('tbody-rooms');
   if(!tbody) return;
+  /* 층 필터 옵션 동기화 (선택 유지) */
+  const ff = document.getElementById('room-floor-filter');
+  if(ff){
+    const cur = _roomFilter.floor;
+    ff.innerHTML = '<option value="">전층</option>' +
+      getFloorList().map(f=>`<option value="${f}"${f===cur?' selected':''}>${f}</option>`).join('');
+  }
+  let shown = 0;
   tbody.innerHTML = rooms.map((r,i)=> {
+    if(!_roomMatchesFilter(r)) return '';
+    shown++;
     const ud = USE_DEFAULTS[r.use] || USE_DEFAULTS['사무실'] || {};
     const lpd = r.lpd ?? ud.lpd ?? 12;
     const epd = r.epd ?? ud.epd ?? 15;
     const ach = r.infil_ach ?? ud.infil_ach ?? 0.1;
     const pplDen = r.ppl_density ?? ud.ppl_density ?? 0.2;
     const ppl = Math.round((r.area||0)*(r.qty||1)*pplDen);
+    const lm  = r.loadMode || 'CH';
     return `
     <tr>
+      <td style="text-align:center"><input type="checkbox" ${r._sel?'checked':''} onchange="toggleRoomSel(${i},this.checked)"></td>
       <td class="row-label">${i+1}</td>
       <td><input class="form-input" value="${r.id}" style="width:62px" onchange="rooms[${i}].id=this.value"></td>
       <td><input class="form-input" value="${r.name}" style="width:90px" onchange="rooms[${i}].name=this.value"></td>
+      <td><input class="form-input" value="${r.floor||'1F'}" style="width:42px" onchange="rooms[${i}].floor=this.value"></td>
       <td>
         <select class="form-select" style="width:90px" onchange="rooms[${i}].use=this.value;applyUseDefault(${i})">
           ${getRoomOptions().map(o=>`<option${o===r.use?' selected':''} value="${o}">${o}</option>`).join('')}
@@ -4883,6 +4942,14 @@ function renderRoomTable() {
       <td><input class="form-input" type="number" value="${ach}" style="width:50px" step="0.05" onchange="rooms[${i}].infil_ach=+this.value"></td>
       <td><input class="form-input" value="${r.ahuNo||'AHU-1'}" style="width:52px" onchange="rooms[${i}].ahuNo=this.value"></td>
       <td><input class="form-input" type="number" value="${r.sf||1.10}" style="width:46px" step="0.01" onchange="rooms[${i}].sf=+this.value"></td>
+      <td>
+        <select class="form-select" style="width:54px" onchange="rooms[${i}].loadMode=this.value">
+          <option value="CH"${lm==='CH'?' selected':''}>냉난</option>
+          <option value="C"${lm==='C'?' selected':''}>냉방</option>
+          <option value="H"${lm==='H'?' selected':''}>난방</option>
+        </select>
+      </td>
+      <td class="calc-cell" style="font-size:9px;white-space:nowrap">🪟${(r.glass||[]).length} 🧱${(r.wall||[]).length}</td>
       <td style="text-align:center">
         <button class="btn btn-secondary btn-sm" style="font-size:9px;padding:3px 7px;white-space:nowrap"
           onclick="openRoomModal(${i})">▶ 상세</button>
@@ -4890,8 +4957,83 @@ function renderRoomTable() {
       <td><button class="btn btn-danger btn-sm" onclick="removeRoom(${i})">✕</button></td>
     </tr>`;
   }).join('');
+  _updRoomSelStatus(shown);
+}
+function _updRoomSelStatus(shown){
   const st = document.getElementById('status-rooms');
-  if(st) st.textContent = `실 수: ${rooms.length}`;
+  if(!st) return;
+  const n = rooms.filter(r=>r._sel).length;
+  let txt = `실 수: ${rooms.length}`;
+  if(shown !== undefined && shown !== rooms.length) txt += ` (표시 ${shown})`;
+  if(n) txt += ` · 선택 ${n}`;
+  st.textContent = txt;
+}
+function toggleRoomSel(i,on){ if(rooms[i]) rooms[i]._sel = on; _updRoomSelStatus(); }
+function toggleRoomSelAll(on){
+  rooms.forEach(r=>{ if(_roomMatchesFilter(r)) r._sel = on; });
+  renderRoomTable();
+}
+function _selRooms(){ return rooms.map((r,i)=>r._sel?i:-1).filter(i=>i>=0); }
+
+/* 선택 실 복사 증식 (×N) — MIRAE98 다실 입력 대응 */
+function duplicateSelectedRooms(){
+  const sel = _selRooms();
+  if(!sel.length){ alert('복사할 실을 좌측 체크박스로 선택하세요.'); return; }
+  const n = parseInt(prompt(`선택한 ${sel.length}개 실을 몇 회 복사할까요? (1~50)`,'1'),10);
+  if(!n || n<1 || n>50) return;
+  if(rooms.length + sel.length*n > 500){ alert('최대 500실을 초과합니다.'); return; }
+  const usedIds = new Set(rooms.map(r=>r.id));
+  sel.forEach(idx=>{
+    for(let k=0;k<n;k++){
+      const c = JSON.parse(JSON.stringify(rooms[idx]));
+      c._sel = false;
+      const m = String(c.id||'R').match(/^(.*?)(\d+)$/);
+      let base = m ? m[1] : (c.id||'R')+'-';
+      let num  = m ? parseInt(m[2],10) : 0;
+      const pad = m ? m[2].length : 3;
+      do { num++; c.id = base + String(num).padStart(pad,'0'); } while(usedIds.has(c.id));
+      usedIds.add(c.id);
+      rooms.push(c);
+    }
+  });
+  roomCount = rooms.length;
+  renderRoomTable();
+  showToast(`⧉ ${sel.length}개 실 × ${n}회 복사 완료 — 총 ${rooms.length}실`);
+}
+
+/* 선택 실 일괄 삭제 */
+function removeSelectedRooms(){
+  const sel = _selRooms();
+  if(!sel.length){ alert('삭제할 실을 좌측 체크박스로 선택하세요.'); return; }
+  if(!confirm(`선택한 ${sel.length}개 실을 삭제하시겠습니까?`)) return;
+  rooms = rooms.filter(r=>!r._sel);
+  renderRoomTable();
+  showToast(`✕ ${sel.length}개 실 삭제 완료 — 남은 실 ${rooms.length}개`);
+}
+
+/* 선택 실 일괄변경 (층·용도·AHU·SF·설계온도·부하구분) */
+function bulkApplyRooms(){
+  const field = document.getElementById('bulk-field')?.value;
+  const val   = document.getElementById('bulk-value')?.value;
+  const sel   = _selRooms();
+  if(!sel.length){ alert('일괄변경할 실을 좌측 체크박스로 선택하세요.'); return; }
+  if(val === '' || val == null){ alert('적용할 값을 입력하세요.'); return; }
+  const numFields = { sf:1, coolTemp:1, heatTemp:1 };
+  sel.forEach(i=>{
+    rooms[i][field] = numFields[field] ? (parseFloat(val)||0) : val;
+    if(field === 'use') _applyUseDefaultSilent(i);
+  });
+  renderRoomTable();
+  showToast(`✏️ ${sel.length}개 실 「${field}」 일괄변경 완료`);
+}
+function _applyUseDefaultSilent(i){
+  const ud = USE_DEFAULTS[rooms[i].use];
+  if(!ud) return;
+  rooms[i].ppl_density = ud.ppl_density;
+  rooms[i].ppl_code    = ud.ppl_code || 'A';
+  rooms[i].lpd         = ud.lpd;
+  rooms[i].epd         = ud.epd;
+  rooms[i].infil_ach   = ud.infil_ach;
 }
 
 /* 용도 변경 시 내부발열 기본값 자동 적용 */
@@ -6451,12 +6593,15 @@ function collectProjectData() {
   });
 
   return {
-    _ver:    '3.0',
+    _ver:    '4.0',
+    schemaVersion: 4,
     _saved:  new Date().toISOString(),
     _app:    'RTS-MANMIN 건축물 부하계산서',
     inputs,
-    rooms:         JSON.parse(JSON.stringify(rooms)),
+    rooms:         JSON.parse(JSON.stringify(rooms.map(r => { const c = Object.assign({}, r); delete c._sel; return c; }))),
     extComponents: JSON.parse(JSON.stringify(extComponents)),
+    equipment:     JSON.parse(JSON.stringify(equipment)),
+    zones:         JSON.parse(JSON.stringify(zones)),
     roomCount,
   };
 }
@@ -6477,9 +6622,18 @@ function restoreProjectData(data) {
   /* rooms 복원 */
   if (Array.isArray(data.rooms)) {
     rooms = data.rooms;
+    /* ── Ver4.0 스키마 마이그레이션: v3 파일(schemaVersion 없음) 자동 변환 ── */
+    rooms.forEach(r => {
+      if (r.floor    === undefined) r.floor    = '1F';
+      if (r.loadMode === undefined) r.loadMode = 'CH';
+      delete r._sel;
+    });
     roomCount = Math.max(data.roomCount || 0, rooms.length);
     renderRoomTable();
   }
+  /* Ver4.0: 장비·조닝 복원 (v3 파일이면 빈 배열) */
+  equipment = Array.isArray(data.equipment) ? data.equipment : [];
+  zones     = Array.isArray(data.zones)     ? data.zones     : [];
   /* extComponents 복원 */
   if (Array.isArray(data.extComponents)) {
     extComponents = data.extComponents;
@@ -6489,7 +6643,7 @@ function restoreProjectData(data) {
   const name     = document.getElementById('p-name')?.value     || '';
   const designer = document.getElementById('p-designer')?.value || '';
   setEl('status-project', `${name} | ${designer}`);
-  document.title = `RTS-MANMIN Ver3.0 | ${name}`;
+  document.title = `RTS-MANMIN Ver4.0 | ${name}`;
   syncHeader();
   /* 기상 + 전체 재계산 */
   if (typeof calcWeather === 'function') calcWeather();
@@ -6503,7 +6657,7 @@ function saveProjectFile() {
   const name     = document.getElementById('p-name')?.value     || '만민 건축사 신사옥 신축공사';
   const designer = document.getElementById('p-designer')?.value || '김만민';
   setEl('status-project', `${name} | ${designer}`);
-  document.title = `RTS-MANMIN Ver3.0 | ${name}`;
+  document.title = `RTS-MANMIN Ver4.0 | ${name}`;
   syncHeader();
 
   const data    = collectProjectData();
@@ -6688,7 +6842,7 @@ function exportReport() {
     el._printOrigHTML = el._printOrigHTML || el.innerHTML;
   });
   const ptEl = document.getElementById('print-title');
-  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver3.0'; }
+  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver4.0'; }
   const psEl = document.getElementById('print-subtitle');
   if(psEl) psEl.textContent = pname + ' | 설계자: ' + des + ' | ASHRAE 2009 RTS법';
 
@@ -6997,7 +7151,7 @@ function exportExcel() {
     for (let i=0; i<6; i++) { ws[XLSX.utils.encode_cell({r,c:0})] = {v:'',t:'s'}; r++; }
 
     // 메인 제목
-    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver3.0', t:'s',
+    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver4.0', t:'s',
       s: S({ bold:true, bg:'0A3A6B', color:'FFFFFF', sz:16, align:'center' }) };
     mergeCells(ws, [[r,1,r,6]]);
     r++;
@@ -7675,7 +7829,7 @@ function exportExcel() {
 
     ws[XLSX.utils.encode_cell({r,c:0})]={v:'* 본 계산서는 ASHRAE 2009 RTS법(Radiant Time Series)에 의한 결과입니다.',t:'s',s:ST.note};
     mergeCells(ws,[[r,0,r,5]]); r++;
-    ws[XLSX.utils.encode_cell({r,c:0})]={v:'  설계자: '+pDesign+'  |  출력일: '+dateStr+'  |  RTS-MANMIN Ver3.0',t:'s',s:ST.note};
+    ws[XLSX.utils.encode_cell({r,c:0})]={v:'  설계자: '+pDesign+'  |  출력일: '+dateStr+'  |  RTS-MANMIN Ver4.0',t:'s',s:ST.note};
     mergeCells(ws,[[r,0,r,5]]); r++;
 
     setRange(ws,r+1,5);
@@ -7855,7 +8009,7 @@ function renderUvalStdTable() {
       <tfoot>
         <tr>
           <td colspan="6" class="label-cell" style="font-size:10px;color:var(--text2);padding:8px;">
-            ※ 국토교통부고시 제2025-738호 별표1 기준 · <strong style="color:var(--accent)">${region}</strong> 적용
+            ※ 국토교통부고시 제2026-360호 별표1 기준 · <strong style="color:var(--accent)">${region}</strong> 적용
             (공동주택 U값은 근사치 — 정확한 값은 WAP에서 확인하세요)
           </td>
         </tr>
@@ -7899,7 +8053,7 @@ function init() {
       epd:         ud.epd         ?? 15,
       infil_ach:   ud.infil_ach   ?? 0.1,
       start_hr:8, ppl_hrs:9, light_hrs:10, equip_hrs:9,
-      rtsZone:8, sf:1.10, ahuNo:'AHU-1',
+      rtsZone:8, sf:1.10, ahuNo:'AHU-1', floor:'1F', loadMode:'CH',
       // 외피 (기본 남향 외벽 + 창호)
       glass:[{az:'S',azDeg:180,area:Math.round(r.area*0.15),U:1.5,shgc:0.40,sc:0.65,df:1.05}],
       wall:[{type:'wall',az:'S',azDeg:180,area:Math.round(r.area*0.30),U:0.17,alpha:0.9,df:1.0}],
@@ -8202,7 +8356,7 @@ window.addEventListener('appinstalled', () => {
     <div style="font-size:10px;color:rgba(110,231,183,.6);margin-top:1px;">${payload.projectName || ''}</div>
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver3.0  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET U</span>
     </div>
 

@@ -1,7 +1,7 @@
 {
   "name": "RTS-MANMIN 건축물 부하계산서",
   "short_name": "RTS-MANMIN",
-  "description": "ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver3.0",
+  "description": "ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver4.0",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#0a1628",
