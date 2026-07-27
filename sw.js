@@ -1,6 +1,6 @@
 // RTS-MANMIN Service Worker Ver3.0
 // 오프라인 캐시 + PWA 설치 지원
-const CACHE_NAME = 'rts-manmin-v4.1.0';
+const CACHE_NAME = 'rts-manmin-v4.2.0';
 const ASSETS = [
   './',
   './index.html',

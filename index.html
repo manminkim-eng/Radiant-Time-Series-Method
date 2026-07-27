@@ -2577,6 +2577,7 @@
         <div class="print-toc-item"><span class="toc-num">SHEET 0</span><span style="flex:1;padding:0 6pt">프로젝트 개요 및 설계 기준</span><span class="toc-page">— 1 —</span></div>
         <div class="print-toc-item"><span class="toc-num">SHEET 1</span><span style="flex:1;padding:0 6pt">설계 외기 조건 및 기상 데이터</span><span class="toc-page">— 2 —</span></div>
         <div class="print-toc-item"><span class="toc-num">SHEET 2</span><span style="flex:1;padding:0 6pt">실별 기본 데이터 입력 (Room List)</span><span class="toc-page">— 3 —</span></div>
+        <div class="print-toc-item"><span class="toc-num">SHEET 2-1</span><span style="flex:1;padding:0 6pt">조닝 · 장비 배정 및 장비별 부하 집계</span><span class="toc-page">— 3a —</span></div>
         <div class="print-toc-item"><span class="toc-num">SHEET 3</span><span style="flex:1;padding:0 6pt">외부 열취득 — External Heat Gain</span><span class="toc-page">— 4 —</span></div>
         <div class="print-toc-item"><span class="toc-num">SHEET 4</span><span style="flex:1;padding:0 6pt">내부 열취득 — Internal Heat Gain</span><span class="toc-page">— 5 —</span></div>
         <div class="print-toc-item"><span class="toc-num">SHEET 5</span><span style="flex:1;padding:0 6pt">CTS / RTS 계수 (ASHRAE 2009)</span><span class="toc-page">— 6 —</span></div>
@@ -3081,8 +3082,13 @@
     </div>
 </div>
 
-    <!-- ===== TAB: 조닝·장비 (Ver4.0 Phase 2) ===== -->
-    <div class="panel" id="tab-zoning">
+    <!-- ===== TAB: 조닝·장비 (Ver4.0 Phase 2·3) ===== -->
+    <div class="panel print-section" id="tab-zoning">
+      <div class="print-sheet-header no-print-hide" style="display:none">
+        <span class="sh-project" id="sh-pname-z"></span>
+        <span class="sh-title">SHEET 2-1 · 조닝 · 장비 배정 및 장비별 부하 집계</span>
+        <span class="sh-meta">RTS-MANMIN Ver4.0 &nbsp;|&nbsp; <span id="sh-date-z"></span></span>
+      </div>
       <div class="section-header">
         <div class="section-title">🗂️ 조닝 · 장비 배정 (Zoning &amp; Equipment) <span class="stag">Ver4.0</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -3099,6 +3105,27 @@
         외기부하는 장비 레벨에서 가산됩니다(침입외기는 실 레벨).
       </div>
 
+      <!-- 운영 조닝 (Phase 3) -->
+      <div class="excel-wrap">
+        <div class="excel-header" style="display:flex;justify-content:space-between;align-items:center">
+          <span>🗓️ 운영 조닝 (Operating Zones) — 스케줄 그룹</span>
+          <button class="btn btn-secondary btn-sm no-print-hide" onclick="addZone()">+ 존 추가</button>
+        </div>
+        <div style="overflow-x:auto">
+        <table class="excel-table">
+          <thead><tr>
+            <th class="col-label" style="width:28px">No</th>
+            <th style="min-width:90px">존 명칭</th>
+            <th style="min-width:80px">운영 유형</th>
+            <th style="min-width:140px">비고</th>
+            <th style="min-width:60px">담당 장비</th>
+            <th style="min-width:30px">삭제</th>
+          </tr></thead>
+          <tbody id="tbody-zones"></tbody>
+        </table>
+        </div>
+      </div>
+
       <!-- 장비 목록 -->
       <div class="excel-wrap">
         <div class="excel-header">⚙️ 장비 목록 (Equipment List)</div>
@@ -3113,6 +3140,7 @@
             <th style="min-width:80px">설치위치</th>
             <th style="min-width:78px">외기량(CMH)</th>
             <th style="min-width:70px">취출온도차(K)</th>
+            <th style="min-width:80px">운영 존</th>
             <th style="min-width:56px">담당 실</th>
             <th style="min-width:30px">삭제</th>
           </tr></thead>
@@ -3171,6 +3199,7 @@
               <th class="col-label" colspan="2" style="background:rgba(240,165,0,0.12)">외기부하(kW)</th>
               <th class="col-label" rowspan="2" style="background:rgba(0,180,216,0.25);min-width:70px">냉방코일(kW)</th>
               <th class="col-label" rowspan="2" style="color:var(--red);min-width:70px">난방코일(kW)</th>
+              <th class="col-label" rowspan="2" style="min-width:64px">가습량(kg/h)</th>
               <th class="col-label" rowspan="2" style="min-width:70px">급기량(CMH)</th>
             </tr>
             <tr>
@@ -3184,10 +3213,41 @@
         <div style="padding:6px 12px;font-size:9px;color:var(--text2)">
           ※ 실부하 현열 = 소속 실 시각별 부하의 <strong>동시각 합산 후 최대값</strong>(실별 피크 단순합이 아님) ·
           외기부하: 현열 q=0.335·V·Δt, 잠열 q=834·V·Δx (ASHRAE 습공기선도 기반) ·
-          급기량 = 실현열피크 / (0.335·취출온도차)
+          가습량 = 1.2·V·(x실내-x외기)겨울 · 급기량 = 실현열피크 / (0.335·취출온도차)
         </div>
       </div>
 
+      <!-- 존별·건물 집계 (Phase 3) -->
+      <div class="excel-wrap" id="zone-result-wrap" style="display:none;margin-top:12px">
+        <div class="excel-header">🗓️ 존별 · 건물 부하 집계 (Zone &amp; Building Summary)</div>
+        <div style="overflow-x:auto">
+        <table class="excel-table">
+          <thead><tr>
+            <th class="col-label" style="min-width:100px">운영 존</th>
+            <th class="col-label" style="min-width:70px">운영 유형</th>
+            <th class="col-label" style="min-width:56px">장비 수</th>
+            <th class="col-label" style="min-width:50px">담당실</th>
+            <th class="col-label" style="min-width:66px">면적(㎡)</th>
+            <th class="col-label" style="background:rgba(0,180,216,0.25);min-width:78px">냉방코일(kW)</th>
+            <th class="col-label" style="color:var(--red);min-width:78px">난방코일(kW)</th>
+            <th class="col-label" style="min-width:64px">가습(kg/h)</th>
+            <th class="col-label" style="min-width:74px">급기량(CMH)</th>
+            <th class="col-label" style="min-width:66px">냉동기(RT)</th>
+          </tr></thead>
+          <tbody id="tbody-zone-result"></tbody>
+        </table>
+        </div>
+        <div style="padding:6px 12px;font-size:9px;color:var(--text2)">
+          ※ 존 = 운영 스케줄 그룹(주말·평일 등). 열원 용량은 존별 동시 운전 조합을 검토하여 결정 ·
+          1 USRT = 3.517 kW
+        </div>
+      </div>
+
+      <!-- 인쇄용 하단 푸터 -->
+      <div class="print-sheet-footer no-print-hide" style="display:none">
+        <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver4.0  ·  ASHRAE 2009 RTS법</span>
+        <span class="sf-right">SHEET 2-1</span>
+      </div>
     </div>
 
         <!-- ===== TAB: 외부 부하 ===== -->
@@ -6496,6 +6556,10 @@ function renderEquipTable(){
       <td><input class="form-input" value="${e.loc||''}" style="width:74px" onchange="updateEquipField(${i},'loc',this.value)"></td>
       <td><input class="form-input" type="number" value="${e.oaCMH||0}" style="width:72px" step="100" onchange="updateEquipField(${i},'oaCMH',this.value)"></td>
       <td><input class="form-input" type="number" value="${e.supplyDT||10}" style="width:56px" step="0.5" onchange="updateEquipField(${i},'supplyDT',this.value)"></td>
+      <td><select class="form-select" style="width:78px" onchange="updateEquipField(${i},'zoneId',this.value||null)">
+        <option value="">미지정</option>
+        ${zones.map(z=>`<option value="${z.id}"${z.id===e.zoneId?' selected':''}>${z.name}</option>`).join('')}
+      </select></td>
       <td class="calc-cell">${cnt}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeEquipment(${i})">✕</button></td>
     </tr>`;
@@ -6528,7 +6592,37 @@ function renderZoningBoard(){
   if(sm) sm.innerHTML = `장비 <strong style="color:var(--accent)">${equipment.length}</strong>대 · 실 ${rooms.length}개<br>`+
     (un ? `⚠️ 미배정 실 <strong style="color:var(--gold)">${un}</strong>개` : `✅ 전체 실 배정 완료`);
 }
-function renderZoningAll(){ renderEquipTable(); renderZoningBoard(); }
+function renderZoningAll(){ renderZoneTable(); renderEquipTable(); renderZoningBoard(); }
+/* ── 운영 조닝 (Phase 3) ── */
+function addZone(){
+  zones.push({ id:'Z'+Date.now(), name:'ZONE'+String(zones.length+1).padStart(2,'0'),
+               scheduleType:'평일', remark:'' });
+  renderZoningAll();
+}
+function removeZone(i){
+  const z = zones[i]; if(!z) return;
+  const cnt = equipment.filter(e=>e.zoneId===z.id).length;
+  if(!confirm(`존 「${z.name}」을 삭제하시겠습니까?` + (cnt?`\n(장비 ${cnt}대는 존 미지정이 됩니다)`:''))) return;
+  equipment.forEach(e=>{ if(e.zoneId===z.id) e.zoneId=null; });
+  zones.splice(i,1); renderZoningAll();
+}
+function updateZoneField(i, field, val){ if(zones[i]) zones[i][field]=val; renderZoningAll(); }
+function renderZoneTable(){
+  const tbody = document.getElementById('tbody-zones'); if(!tbody) return;
+  tbody.innerHTML = zones.map((z,i)=>{
+    const cnt = equipment.filter(e=>e.zoneId===z.id).length;
+    return `<tr>
+      <td class="row-label">${i+1}</td>
+      <td><input class="form-input" value="${z.name}" style="width:86px" onchange="updateZoneField(${i},'name',this.value)"></td>
+      <td><select class="form-select" style="width:76px" onchange="updateZoneField(${i},'scheduleType',this.value)">
+        ${['평일','주말','24시간','사용자'].map(o=>`<option${o===z.scheduleType?' selected':''}>${o}</option>`).join('')}
+      </select></td>
+      <td><input class="form-input" value="${z.remark||''}" style="width:134px" onchange="updateZoneField(${i},'remark',this.value)"></td>
+      <td class="calc-cell">${cnt}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="removeZone(${i})">✕</button></td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="6" style="text-align:center;color:var(--text2);font-size:10px;padding:12px">운영 존이 없습니다 — 「+ 존 추가」 (예: 주말존·평일존)</td></tr>`;
+}
 function zbToggleAll(on){ rooms.forEach(r=>r._zbSel=on); renderZoningBoard(); }
 function assignRoomsToEquip(){
   const no = document.getElementById('zb-target')?.value;
@@ -6581,6 +6675,12 @@ function calcEquipLoads(){
     g.oaHeat = 0.335*oa*Math.max(0,tiH-winDB);
     g.coilC  = g.peak+g.lat+g.oaSH+g.oaLH;
     g.coilH  = g.heat+g.oaHeat;
+    /* 겨울 가습량 kg/h = ρ·V·Δx (실내 난방 습도 목표 - 겨울 외기 절대습도) */
+    const rhInH  = v('w-indoor-rh-heat')||40;
+    const rhOutW = v('w-winter-rh')||72;
+    const xInW   = _xFromDbRh(tiH, rhInH);
+    const xOutW  = _xFromDbRh(winDB, rhOutW);
+    g.humid  = Math.max(0, 1.2*oa*(xInW-xOutW));
     g.saCMH  = Math.round(g.peak/(0.335*(g.eq.supplyDT||10)));
   });
   window._equipResults = groups;   /* Phase 3(존·건물 집계) 확장 포인트 */
@@ -6600,6 +6700,7 @@ function calcEquipLoads(){
       <td class="calc-cell">${kw(g.oaLH)}</td>
       <td class="total-cell" style="color:var(--accent);font-weight:900">${kw(g.coilC)}</td>
       <td class="total-cell" style="color:var(--red);font-weight:900">${kw(g.coilH)}</td>
+      <td class="calc-cell">${g.humid.toFixed(1)}</td>
       <td class="calc-cell">${g.saCMH.toLocaleString()}</td>
     </tr>`;}).join('') + `<tr style="border-top:1.5px solid var(--text2)">
       <td class="total-cell" style="font-weight:900">합계</td>
@@ -6608,10 +6709,52 @@ function calcEquipLoads(){
       <td colspan="4"></td>
       <td class="total-cell" style="color:var(--accent);font-weight:900">${kw(tC)}</td>
       <td class="total-cell" style="color:var(--red);font-weight:900">${kw(tH)}</td>
+      <td class="total-cell">${groups.reduce((a,g)=>a+g.humid,0).toFixed(1)}</td>
       <td class="total-cell">${tSA.toLocaleString()}</td>
     </tr>`;
   }
   if(wrap) wrap.style.display='';
+  /* ── 존별·건물 집계 (Phase 3) ── */
+  const ztb = document.getElementById('tbody-zone-result');
+  const zwrap = document.getElementById('zone-result-wrap');
+  if(ztb){
+    const kw2 = x=>(x/1000).toFixed(1);
+    const zoneRows = [...zones.map(z=>({ z, gs:groups.filter(g=>g.eq.zoneId===z.id) })),
+                      { z:{name:'(존 미지정)', scheduleType:'—'}, gs:groups.filter(g=>!g.eq.zoneId || !zones.some(z=>z.id===g.eq.zoneId)) }]
+                     .filter(r=>r.gs.length);
+    const agg = gs => gs.reduce((a,g)=>({ n:a.n+1, cnt:a.cnt+g.cnt, area:a.area+g.area,
+                     c:a.c+g.coilC, h:a.h+g.coilH, hu:a.hu+g.humid, sa:a.sa+g.saCMH }),
+                     {n:0,cnt:0,area:0,c:0,h:0,hu:0,sa:0});
+    let bt = {n:0,cnt:0,area:0,c:0,h:0,hu:0,sa:0};
+    ztb.innerHTML = zoneRows.map(r=>{
+      const a = agg(r.gs);
+      bt = {n:bt.n+a.n,cnt:bt.cnt+a.cnt,area:bt.area+a.area,c:bt.c+a.c,h:bt.h+a.h,hu:bt.hu+a.hu,sa:bt.sa+a.sa};
+      return `<tr>
+        <td style="font-weight:700;color:var(--accent)">${r.z.name}</td>
+        <td class="calc-cell">${r.z.scheduleType}</td>
+        <td class="calc-cell">${a.n}</td>
+        <td class="calc-cell">${a.cnt}</td>
+        <td class="calc-cell">${a.area.toFixed(0)}</td>
+        <td class="total-cell" style="color:var(--accent);font-weight:900">${kw2(a.c)}</td>
+        <td class="total-cell" style="color:var(--red);font-weight:900">${kw2(a.h)}</td>
+        <td class="calc-cell">${a.hu.toFixed(1)}</td>
+        <td class="calc-cell">${a.sa.toLocaleString()}</td>
+        <td class="calc-cell">${(a.c/3517).toFixed(1)}</td>
+      </tr>`;
+    }).join('') + `<tr style="border-top:1.5px solid var(--text2)">
+      <td class="total-cell" style="font-weight:900">건물 합계</td><td></td>
+      <td class="total-cell">${bt.n}</td>
+      <td class="total-cell">${bt.cnt}</td>
+      <td class="total-cell">${bt.area.toFixed(0)}</td>
+      <td class="total-cell" style="color:var(--accent);font-weight:900">${kw2(bt.c)}</td>
+      <td class="total-cell" style="color:var(--red);font-weight:900">${kw2(bt.h)}</td>
+      <td class="total-cell">${bt.hu.toFixed(1)}</td>
+      <td class="total-cell">${bt.sa.toLocaleString()}</td>
+      <td class="total-cell" style="font-weight:900">${(bt.c/3517).toFixed(1)}</td>
+    </tr>`;
+    if(zwrap) zwrap.style.display='';
+    window._zoneResults = zoneRows; window._buildingTotal = bt;
+  }
   renderZoningAll();
   if(unassigned) showToast(`⚠️ 미배정 실 ${unassigned}개는 집계에서 제외되었습니다`);
   else showToast(`✅ 장비 ${groups.length}대 부하 집계 완료`);
@@ -7095,7 +7238,7 @@ function exportReport() {
   setT('cov-date',     pdate || ds);
 
   /* ── 각 시트 헤더 채우기 ── */
-  ['w','r','e','i','rts','res','ahu','bld','uval'].forEach(sid => {
+  ['w','r','e','i','rts','res','ahu','bld','uval','z'].forEach(sid => {
     setT('sh-pname-'+sid, pname);
     setT('sh-date-'+sid,  ds);
   });
@@ -7118,6 +7261,7 @@ function exportReport() {
     '📋 프로젝트 개요 및 설계 기준': '프로젝트 개요 및 설계 기준',
     '🌡️ 설계 외기 조건 및 기상 데이터': '설계 외기 조건 및 기상 데이터',
     '🏢 실별 기본 데이터 입력': '실별 기본 데이터 입력 (Room List)',
+    '🗂️ 조닝 · 장비 배정 (Zoning & Equipment)': '조닝 · 장비 배정 (Zoning & Equipment)',
     '🌞 외부 열취득 (External Heat Gain)': '외부 열취득 (External Heat Gain)',
     '💡 내부 열취득 (Internal Heat Gain)': '내부 열취득 (Internal Heat Gain)',
     '📊 CTS / RTS 계수 (Conduction & Radiant Time Series)': 'CTS / RTS 계수',
