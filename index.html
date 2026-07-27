@@ -8273,6 +8273,42 @@ function exportExcel() {
     XLSX.utils.book_append_sheet(wb, ws, 'AHU선정');
   })();
 
+  /* ─────────────────────────────────────────────────────
+     ⑨ 조닝·장비 집계 Sheet (Ver4.0 Phase 4)
+  ───────────────────────────────────────────────────── */
+  (function buildZoning(){
+    if(!equipment || !equipment.length) return;
+    let groups = window._equipResults;
+    try { groups = calcEquipLoads() || groups; } catch(_){}
+    if(!groups || !groups.length) return;
+    const zname = id => (zones.find(z=>z.id===id)||{}).name || '미지정';
+    const k = x => +(x/1000).toFixed(2);
+    const aoa = [
+      [pName, '', '', '8. 조닝 · 장비별 부하 집계 (동시각 합산 피크)'],
+      ['출력일', dateStr],
+      [],
+      ['□ 장비별 집계'],
+      ['장비번호','형식','방식','운영존','담당실','면적(㎡)','피크시각','실현열(kW)','실잠열(kW)','외기현열(kW)','외기잠열(kW)','냉방코일(kW)','난방코일(kW)','가습(kg/h)','급기량(CMH)','외기량(CMH)'],
+    ];
+    groups.forEach(g=>{
+      aoa.push([g.eq.no, g.eq.kind, g.eq.airType, zname(g.eq.zoneId), g.cnt, +g.area.toFixed(1),
+        g.cnt?g.peakH+'시':'—', k(g.peak), k(g.lat), k(g.oaSH), k(g.oaLH), k(g.coilC), k(g.coilH),
+        +g.humid.toFixed(1), g.saCMH, g.eq.oaCMH||0]);
+    });
+    aoa.push([]);
+    aoa.push(['□ 존별·건물 집계']);
+    aoa.push(['운영 존','운영유형','장비수','담당실','면적(㎡)','냉방코일(kW)','난방코일(kW)','가습(kg/h)','급기량(CMH)','냉동기(USRT)']);
+    (window._zoneResults||[]).forEach(rw=>{
+      const a = rw.gs.reduce((s2,g)=>({n:s2.n+1,cnt:s2.cnt+g.cnt,area:s2.area+g.area,c:s2.c+g.coilC,h:s2.h+g.coilH,hu:s2.hu+g.humid,sa:s2.sa+g.saCMH}),{n:0,cnt:0,area:0,c:0,h:0,hu:0,sa:0});
+      aoa.push([rw.z.name, rw.z.scheduleType, a.n, a.cnt, +a.area.toFixed(0), k(a.c), k(a.h), +a.hu.toFixed(1), a.sa, +(a.c/3517).toFixed(1)]);
+    });
+    const bt = window._buildingTotal;
+    if(bt) aoa.push(['건물 합계','',bt.n,bt.cnt,+bt.area.toFixed(0),k(bt.c),k(bt.h),+bt.hu.toFixed(1),bt.sa,+(bt.c/3517).toFixed(1)]);
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{wch:10},{wch:7},{wch:6},{wch:10},{wch:7},{wch:9},{wch:8},{wch:10},{wch:10},{wch:10},{wch:10},{wch:11},{wch:11},{wch:9},{wch:11},{wch:10}];
+    XLSX.utils.book_append_sheet(wb, ws, '조닝장비집계');
+  })();
+
   /* ── 파일 저장 ── */
   const safeName = pName.replace(/[\\/:*?"<>|]/g,'_');
   XLSX.writeFile(wb, safeName + '_부하계산서.xlsx');
