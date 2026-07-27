@@ -2428,6 +2428,9 @@
   <div class="nav-tab" onclick="showTab('tab-room')" id="t-room">
     <span class="tab-icon">🏢</span> 실별 입력
   </div>
+  <div class="nav-tab" onclick="showTab('tab-zoning');renderZoningAll()" id="t-zoning">
+    <span class="tab-icon">🗂️</span> 조닝·장비
+  </div>
   <div class="nav-tab" onclick="showTab('tab-external')" id="t-external">
     <span class="tab-icon">🌞</span> 외부 부하
   </div>
@@ -3077,6 +3080,115 @@
       <span class="sf-right">SHEET 2</span>
     </div>
 </div>
+
+    <!-- ===== TAB: 조닝·장비 (Ver4.0 Phase 2) ===== -->
+    <div class="panel" id="tab-zoning">
+      <div class="section-header">
+        <div class="section-title">🗂️ 조닝 · 장비 배정 (Zoning &amp; Equipment) <span class="stag">Ver4.0</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-secondary btn-sm" onclick="addEquipment()">+ 장비 추가</button>
+          <button class="btn btn-secondary btn-sm" onclick="autoGenEquipFromRooms()" title="실 목록의 AHU No. 고유값으로 장비 자동 등록">⚡ 실 AHU값 자동 생성</button>
+          <button class="btn btn-primary btn-sm" onclick="calcEquipLoads()">🔄 장비별 부하 집계</button>
+        </div>
+      </div>
+
+      <div class="info-box" style="border-color:var(--gold);background:rgba(240,165,0,0.07)">
+        <strong>📋 사용 방법:</strong>
+        ① 장비(AHU/RTU/FCU/PAC)를 등록 → ② 아래 배정 보드에서 실을 체크하고 대상 장비 선택 후 「→ 배정」 →
+        ③ 「🔄 장비별 부하 집계」로 <strong>동시각 합산 피크</strong>·외기부하·코일용량·급기량을 확인하세요.
+        외기부하는 장비 레벨에서 가산됩니다(침입외기는 실 레벨).
+      </div>
+
+      <!-- 장비 목록 -->
+      <div class="excel-wrap">
+        <div class="excel-header">⚙️ 장비 목록 (Equipment List)</div>
+        <div style="overflow-x:auto">
+        <table class="excel-table">
+          <thead><tr>
+            <th class="col-label" style="width:28px">No</th>
+            <th style="min-width:70px">장비번호</th>
+            <th style="min-width:110px">명칭 (용도)</th>
+            <th style="min-width:60px">형식</th>
+            <th style="min-width:58px">방식</th>
+            <th style="min-width:80px">설치위치</th>
+            <th style="min-width:78px">외기량(CMH)</th>
+            <th style="min-width:70px">취출온도차(K)</th>
+            <th style="min-width:56px">담당 실</th>
+            <th style="min-width:30px">삭제</th>
+          </tr></thead>
+          <tbody id="tbody-equip"></tbody>
+        </table>
+        </div>
+      </div>
+
+      <!-- 배정 보드 -->
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:12px;margin-top:12px;align-items:start">
+        <div class="excel-wrap" style="margin:0">
+          <div class="excel-header" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+            <span>🏢 실 배정 보드 (Room → Equipment)</span>
+            <label style="font-size:10px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer">
+              <input type="checkbox" id="zb-only-un" onchange="renderZoningBoard()"> 미배정 실만 보기
+            </label>
+          </div>
+          <div style="overflow-x:auto;max-height:340px;overflow-y:auto">
+          <table class="excel-table">
+            <thead><tr>
+              <th class="col-label" style="width:26px"><input type="checkbox" onclick="zbToggleAll(this.checked)"></th>
+              <th style="min-width:60px">실 번호</th>
+              <th style="min-width:100px">실 명칭</th>
+              <th style="min-width:42px">층</th>
+              <th style="min-width:60px">면적(㎡)</th>
+              <th style="min-width:70px">배정 장비</th>
+            </tr></thead>
+            <tbody id="tbody-zb-rooms"></tbody>
+          </table>
+          </div>
+        </div>
+        <div class="excel-wrap" style="margin:0">
+          <div class="excel-header">🎯 배정 실행</div>
+          <div style="padding:12px;display:flex;flex-direction:column;gap:10px">
+            <label style="font-size:10px;color:var(--text2)">대상 장비</label>
+            <select class="form-select" id="zb-target" style="width:100%"></select>
+            <button class="btn btn-primary btn-sm" onclick="assignRoomsToEquip()">→ 선택 실 배정</button>
+            <button class="btn btn-danger btn-sm" onclick="unassignRooms()">✕ 선택 실 배정 해제</button>
+            <div id="zb-summary" style="font-size:10px;color:var(--text2);line-height:1.8;border-top:1px solid var(--border);padding-top:8px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 장비별 집계 결과 -->
+      <div class="excel-wrap" id="equip-result-wrap" style="display:none;margin-top:12px">
+        <div class="excel-header">📊 장비별 부하 집계 — 동시각 합산 피크 (Block Load)</div>
+        <div style="overflow-x:auto">
+        <table class="excel-table">
+          <thead>
+            <tr>
+              <th class="col-label" rowspan="2" style="min-width:70px">장비번호</th>
+              <th class="col-label" rowspan="2" style="min-width:50px">담당실</th>
+              <th class="col-label" rowspan="2" style="min-width:64px">면적(㎡)</th>
+              <th class="col-label" rowspan="2" style="min-width:50px">피크시각</th>
+              <th class="col-label" colspan="2" style="background:rgba(0,180,216,0.15)">실부하(kW)</th>
+              <th class="col-label" colspan="2" style="background:rgba(240,165,0,0.12)">외기부하(kW)</th>
+              <th class="col-label" rowspan="2" style="background:rgba(0,180,216,0.25);min-width:70px">냉방코일(kW)</th>
+              <th class="col-label" rowspan="2" style="color:var(--red);min-width:70px">난방코일(kW)</th>
+              <th class="col-label" rowspan="2" style="min-width:70px">급기량(CMH)</th>
+            </tr>
+            <tr>
+              <th class="col-label">현열(피크)</th><th class="col-label">잠열</th>
+              <th class="col-label">현열</th><th class="col-label">잠열</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-equip-result"></tbody>
+        </table>
+        </div>
+        <div style="padding:6px 12px;font-size:9px;color:var(--text2)">
+          ※ 실부하 현열 = 소속 실 시각별 부하의 <strong>동시각 합산 후 최대값</strong>(실별 피크 단순합이 아님) ·
+          외기부하: 현열 q=0.335·V·Δt, 잠열 q=834·V·Δx (ASHRAE 습공기선도 기반) ·
+          급기량 = 실현열피크 / (0.335·취출온도차)
+        </div>
+      </div>
+
+    </div>
 
         <!-- ===== TAB: 외부 부하 ===== -->
     <div class="panel print-section" id="tab-external">
@@ -6323,6 +6435,187 @@ function calcAllRooms() {
   const tot24 = new Array(24).fill(0);
   results.forEach(r => r.cool24.forEach((vv,h) => tot24[h] += vv));
   return { results, tot24 };
+}
+
+/* ═══════════════════════════════════════════════════
+   Ver4.0 Phase 2 — 장비 등록·조닝 보드·장비별 집계
+═══════════════════════════════════════════════════ */
+function _newEquipNo(){
+  let n = equipment.length + 1, no;
+  const used = new Set(equipment.map(e=>e.no));
+  do { no = 'AHU-' + String(n).padStart(2,'0'); n++; } while(used.has(no));
+  return no;
+}
+function addEquipment(){
+  equipment.push({ id:'EQ'+Date.now(), no:_newEquipNo(), name:'', kind:'AHU',
+                   airType:'CAV', loc:'', oaCMH:0, supplyDT:10, zoneId:null });
+  renderZoningAll();
+}
+function removeEquipment(i){
+  const eq = equipment[i]; if(!eq) return;
+  const cnt = rooms.filter(r=>r.ahuNo===eq.no).length;
+  if(!confirm(`장비 「${eq.no}」를 삭제하시겠습니까?` + (cnt?`\n(배정된 실 ${cnt}개는 미배정 상태가 됩니다)`:''))) return;
+  rooms.forEach(r=>{ if(r.ahuNo===eq.no) r.ahuNo=''; });
+  equipment.splice(i,1);
+  renderZoningAll(); renderRoomTable();
+}
+function updateEquipField(i, field, val){
+  const eq = equipment[i]; if(!eq) return;
+  if(field==='no'){
+    const old = eq.no;
+    if(equipment.some((e,j)=>j!==i && e.no===val)){ alert('이미 존재하는 장비번호입니다.'); renderZoningAll(); return; }
+    eq.no = val;
+    rooms.forEach(r=>{ if(r.ahuNo===old) r.ahuNo=val; });  /* 배정 유지 재매핑 */
+    renderRoomTable();
+  } else if(field==='oaCMH'||field==='supplyDT'){ eq[field]=parseFloat(val)||0; }
+  else eq[field]=val;
+  renderZoningAll();
+}
+/* 실 목록의 AHU No. 고유값 → 장비 자동 등록 (v3 데이터 호환) */
+function autoGenEquipFromRooms(){
+  const used = new Set(equipment.map(e=>e.no));
+  let added = 0;
+  [...new Set(rooms.map(r=>(r.ahuNo||'').trim()).filter(x=>x))].forEach(no=>{
+    if(!used.has(no)){ equipment.push({ id:'EQ'+Date.now()+added, no, name:'', kind:/^FCU/i.test(no)?'FCU':/^RTU/i.test(no)?'RTU':/^PAC/i.test(no)?'PAC':'AHU', airType:'CAV', loc:'', oaCMH:0, supplyDT:10, zoneId:null }); added++; }
+  });
+  renderZoningAll();
+  showToast(added ? `⚡ 장비 ${added}대 자동 등록 완료` : '추가할 새 AHU No.가 없습니다.');
+}
+function renderEquipTable(){
+  const tbody = document.getElementById('tbody-equip'); if(!tbody) return;
+  tbody.innerHTML = equipment.map((e,i)=>{
+    const cnt = rooms.filter(r=>r.ahuNo===e.no).length;
+    const sel = (opts,cur,f)=>`<select class="form-select" style="width:100%" onchange="updateEquipField(${i},'${f}',this.value)">`+
+      opts.map(o=>`<option${o===cur?' selected':''}>${o}</option>`).join('')+`</select>`;
+    return `<tr>
+      <td class="row-label">${i+1}</td>
+      <td><input class="form-input" value="${e.no}" style="width:64px" onchange="updateEquipField(${i},'no',this.value)"></td>
+      <td><input class="form-input" value="${e.name||''}" style="width:104px" onchange="updateEquipField(${i},'name',this.value)"></td>
+      <td>${sel(['AHU','RTU','FCU','PAC'],e.kind,'kind')}</td>
+      <td>${sel(['CAV','VAV'],e.airType,'airType')}</td>
+      <td><input class="form-input" value="${e.loc||''}" style="width:74px" onchange="updateEquipField(${i},'loc',this.value)"></td>
+      <td><input class="form-input" type="number" value="${e.oaCMH||0}" style="width:72px" step="100" onchange="updateEquipField(${i},'oaCMH',this.value)"></td>
+      <td><input class="form-input" type="number" value="${e.supplyDT||10}" style="width:56px" step="0.5" onchange="updateEquipField(${i},'supplyDT',this.value)"></td>
+      <td class="calc-cell">${cnt}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="removeEquipment(${i})">✕</button></td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="10" style="text-align:center;color:var(--text2);font-size:10px;padding:14px">등록된 장비가 없습니다 — 「+ 장비 추가」 또는 「⚡ 실 AHU값 자동 생성」</td></tr>`;
+}
+function renderZoningBoard(){
+  const tbody = document.getElementById('tbody-zb-rooms'); if(!tbody) return;
+  const onlyUn = document.getElementById('zb-only-un')?.checked;
+  const eqNos  = new Set(equipment.map(e=>e.no));
+  tbody.innerHTML = rooms.map((r,i)=>{
+    const assigned = r.ahuNo && eqNos.has(r.ahuNo);
+    if(onlyUn && assigned) return '';
+    const badge = assigned
+      ? `<span style="color:var(--accent);font-weight:700">${r.ahuNo}</span>`
+      : `<span style="color:var(--gold)">${r.ahuNo?r.ahuNo+' (미등록)':'미배정'}</span>`;
+    return `<tr>
+      <td style="text-align:center"><input type="checkbox" class="zb-chk" data-i="${i}" ${r._zbSel?'checked':''} onchange="rooms[${i}]._zbSel=this.checked"></td>
+      <td>${r.id}</td><td>${r.name}</td><td>${r.floor||'1F'}</td>
+      <td class="calc-cell">${((r.area||0)*(r.qty||1)).toFixed(0)}</td>
+      <td style="font-size:10px">${badge}</td>
+    </tr>`;
+  }).join('');
+  /* 대상 장비 셀렉트 */
+  const tg = document.getElementById('zb-target');
+  if(tg) tg.innerHTML = equipment.map(e=>`<option value="${e.no}">${e.no}${e.name?' — '+e.name:''}</option>`).join('')
+                        || '<option value="">장비를 먼저 등록하세요</option>';
+  /* 요약 */
+  const un = rooms.filter(r=>!r.ahuNo || !eqNos.has(r.ahuNo)).length;
+  const sm = document.getElementById('zb-summary');
+  if(sm) sm.innerHTML = `장비 <strong style="color:var(--accent)">${equipment.length}</strong>대 · 실 ${rooms.length}개<br>`+
+    (un ? `⚠️ 미배정 실 <strong style="color:var(--gold)">${un}</strong>개` : `✅ 전체 실 배정 완료`);
+}
+function renderZoningAll(){ renderEquipTable(); renderZoningBoard(); }
+function zbToggleAll(on){ rooms.forEach(r=>r._zbSel=on); renderZoningBoard(); }
+function assignRoomsToEquip(){
+  const no = document.getElementById('zb-target')?.value;
+  if(!no){ alert('대상 장비를 선택하세요.'); return; }
+  const sel = rooms.filter(r=>r._zbSel);
+  if(!sel.length){ alert('배정할 실을 체크하세요.'); return; }
+  sel.forEach(r=>{ r.ahuNo=no; r._zbSel=false; });
+  renderZoningAll(); renderRoomTable();
+  showToast(`→ ${sel.length}개 실을 「${no}」에 배정했습니다`);
+}
+function unassignRooms(){
+  const sel = rooms.filter(r=>r._zbSel);
+  if(!sel.length){ alert('해제할 실을 체크하세요.'); return; }
+  sel.forEach(r=>{ r.ahuNo=''; r._zbSel=false; });
+  renderZoningAll(); renderRoomTable();
+}
+/* ── 습공기 헬퍼 (ASHRAE) ── */
+function _pws(t){ return 610.94*Math.exp(17.625*t/(243.04+t)); }               /* 포화수증기압 Pa */
+function _xFromDbRh(t,rh){ const pw=(rh/100)*_pws(t); return 0.622*pw/(101325-pw); }
+function _xFromDbWb(t,twb){
+  const xs=_xFromDbRh(twb,100);
+  return ((2501-2.326*twb)*xs-1.006*(t-twb))/(2501+1.86*t-4.186*twb);
+}
+/* ── 장비별 동시각 합산 집계 ── */
+function calcEquipLoads(){
+  if(!equipment.length){ alert('장비를 먼저 등록하세요.'); return; }
+  const {hourlyT, solAir} = calcSolAirTemp();
+  const doy  = getDayOfYear();
+  const toIn = v('w-indoor-cool')||26,  tiH  = v('w-indoor-heat')||22;
+  const toDB = v('w-summer-db')||33.3,  toWB = v('w-summer-wb')||25.0;
+  const rhIn = v('w-indoor-rh-cool')||50, winDB = v('w-winter-db')||-11.3;
+  const xOut = _xFromDbWb(toDB,toWB), xIn = _xFromDbRh(toIn,rhIn);
+
+  const groups = equipment.map(eq=>({ eq, cool24:new Array(24).fill(0), lat:0, heat:0, area:0, cnt:0 }));
+  const byNo = Object.fromEntries(groups.map(g=>[g.eq.no,g]));
+  let unassigned = 0;
+  rooms.forEach(room=>{
+    const res = calcRoomLoad(room, solAir, hourlyT, doy);
+    const g = byNo[room.ahuNo];
+    if(!g){ unassigned++; return; }
+    res.cool24.forEach((q,h)=>g.cool24[h]+=q);
+    g.lat += res.latTotal; g.heat += res.heatLoad; g.area += res.area; g.cnt++;
+  });
+  groups.forEach(g=>{
+    g.peak  = Math.max(...g.cool24);
+    g.peakH = g.cool24.indexOf(g.peak)+1;
+    const oa = g.eq.oaCMH||0;
+    g.oaSH   = 0.335*oa*Math.max(0,toDB-toIn);
+    g.oaLH   = 834*oa*Math.max(0,xOut-xIn);
+    g.oaHeat = 0.335*oa*Math.max(0,tiH-winDB);
+    g.coilC  = g.peak+g.lat+g.oaSH+g.oaLH;
+    g.coilH  = g.heat+g.oaHeat;
+    g.saCMH  = Math.round(g.peak/(0.335*(g.eq.supplyDT||10)));
+  });
+  window._equipResults = groups;   /* Phase 3(존·건물 집계) 확장 포인트 */
+  const tbody = document.getElementById('tbody-equip-result');
+  const wrap  = document.getElementById('equip-result-wrap');
+  if(tbody){
+    const kw = x=>(x/1000).toFixed(1);
+    let tC=0,tH=0,tSA=0;
+    tbody.innerHTML = groups.map(g=>{ tC+=g.coilC; tH+=g.coilH; tSA+=g.saCMH; return `<tr>
+      <td style="font-weight:700;color:var(--accent)">${g.eq.no}</td>
+      <td class="calc-cell">${g.cnt}</td>
+      <td class="calc-cell">${g.area.toFixed(0)}</td>
+      <td class="calc-cell">${g.cnt?g.peakH+'시':'—'}</td>
+      <td class="calc-cell">${kw(g.peak)}</td>
+      <td class="calc-cell">${kw(g.lat)}</td>
+      <td class="calc-cell">${kw(g.oaSH)}</td>
+      <td class="calc-cell">${kw(g.oaLH)}</td>
+      <td class="total-cell" style="color:var(--accent);font-weight:900">${kw(g.coilC)}</td>
+      <td class="total-cell" style="color:var(--red);font-weight:900">${kw(g.coilH)}</td>
+      <td class="calc-cell">${g.saCMH.toLocaleString()}</td>
+    </tr>`;}).join('') + `<tr style="border-top:1.5px solid var(--text2)">
+      <td class="total-cell" style="font-weight:900">합계</td>
+      <td class="total-cell">${groups.reduce((a,g)=>a+g.cnt,0)}</td>
+      <td class="total-cell">${groups.reduce((a,g)=>a+g.area,0).toFixed(0)}</td><td></td>
+      <td colspan="4"></td>
+      <td class="total-cell" style="color:var(--accent);font-weight:900">${kw(tC)}</td>
+      <td class="total-cell" style="color:var(--red);font-weight:900">${kw(tH)}</td>
+      <td class="total-cell">${tSA.toLocaleString()}</td>
+    </tr>`;
+  }
+  if(wrap) wrap.style.display='';
+  renderZoningAll();
+  if(unassigned) showToast(`⚠️ 미배정 실 ${unassigned}개는 집계에서 제외되었습니다`);
+  else showToast(`✅ 장비 ${groups.length}대 부하 집계 완료`);
+  return groups;
 }
 
 /* ====================================================
