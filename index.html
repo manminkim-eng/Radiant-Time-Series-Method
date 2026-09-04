@@ -2127,6 +2127,21 @@ body{background:var(--navy);color:var(--text);}
 .formula-modal-body strong[style*="color:#00c896"]{color:#15803d!important;}
 @media(max-width:540px){.formula-modal-overlay{padding:0;align-items:flex-end;}.formula-modal{border-radius:20px 20px 0 0;max-height:92vh;width:100%;}}
 </style>
+<style id="mm-v5-mobile">
+/* ══ v5.0 태블릿·모바일 — 헤더·탭 고정 해제 → 본문과 함께 스크롤 (2026-09-05 S12b · MIN 지시 · ≤1024 페이지 스크롤 · ≤768 사이드바 숨김(탭바와 중복) · 계산·HTML 무접촉) ══ */
+@media(max-width:1024px){
+  html,body{height:auto!important;overflow:visible!important;}
+  body{display:block!important;padding-bottom:36px;}
+  .top-fixed-wrapper,.app-header,.nav-tabs.tab-bar{position:static!important;}
+  .app-body{overflow:visible!important;min-height:0!important;align-items:stretch;}
+  .content-area,.sidebar{overflow:visible!important;}
+}
+@media(max-width:768px){
+  .app-body{display:block!important;}
+  .sidebar{display:none!important;}
+  .content-area{flex:none!important;}
+}
+</style>
 <style id="mm-v5-print">
 /* ══ v5.0 인쇄 규격 덧씌움 (§3-7 서체 · R24② mono · §20-1 각인 없음 · 신설 요소 숨김) — 시트 구조·@page 18/14/20/14·collapse 는 원형 유지(README 예외) ══ */
 @media print{
