@@ -1,18 +1,67 @@
 {
-  "name": "RTS-MANMIN 건축물 부하계산서",
+  "name": "RTS-MANMIN 건축물 부하계산서 · MANMIN Ver-5.0",
   "short_name": "RTS-MANMIN",
-  "description": "ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver4.0",
-  "start_url": "./",
+  "description": "ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 — MANMIN Ver-5.0 | ARCHITECT KIM MANMIN",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0a1628",
-  "theme_color": "#00b4d8",
+  "background_color": "#f4f6f9",
+  "theme_color": "#0e7490",
   "orientation": "any",
   "icons": [
-    { "src": "icons/icon-144x144.png", "sizes": "144x144", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-152x152.png", "sizes": "152x152", "type": "image/png" },
-    { "src": "icons/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
-    { "src": "icons/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
-    { "src": "icons/favicon-16x16.png", "sizes": "16x16", "type": "image/png" }
-  ]
+    {
+      "src": "icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "scope": "./",
+  "lang": "ko"
 }

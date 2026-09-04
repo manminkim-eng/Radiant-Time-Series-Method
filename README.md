@@ -1,3 +1,24 @@
+# RTS-MANMIN 건축물 부하계산서 · MANMIN Ver-5.0 — 디자인 통일 회차 (2026-09-05)
+
+> 계산 로직(RTS/CTS · Sol-Air · 실 그리드 · 조닝·장비 · AHU · 건물 집계 · Excel · `.rts` 저장/마이그레이션)은 **1바이트도 변경하지 않았다.** 이 회차는 v5.0 디자인 규격(작업지시서 v3 §3 · 규격표 §3 · 원장 R0~R28)만 적용했다.
+
+| 구분 | 기존 (Ver4.0) | v5.0 |
+|---|---|---|
+| 헤더 | 로고 이미지 + 15px 제목 · 남색 그라데이션 · 버튼 6개 | **3층 헤더**(eyebrow · 26px · 부제+설계자 줄+각인 `MANMIN · Ver-5.0`) · 기계설비 토큰(`#083344→#0e7490→#0891b2` · 강조 `#7dd3fc`) · 우측 근거 2줄 |
+| 헤더 버튼 | 설치·열관류율·저장·불러오기·전체계산·A4출력 | **6개 유지 — 규격 예외**(작업 흐름 진입점) · `.btn-g` 통일 · 상단 sticky 유지(그리드 편집 시 필요) |
+| 탭 | `.nav-tab` 11개 · 11px · 2px 바 | 클래스·`showTab` 무접촉 · CSS 규격(44px · 13px/700 · 활성 단색+3px 바) · 가로 스크롤 |
+| 요약 스트립 | 없음 | 실 수·장비·피크 냉방 현열(시각)·난방·냉방 총부하/USRT·원단위 — `calcAll`·`calcBuilding`·`onRtsFileSelected`·`renderRoomTable` 래핑(§19-5) |
+| 본문 | 다크(#0a1628 · 터미널풍 계산창) | **라이트**(§3-12) `:root` 토큰 재지정 + 오버라이드 1블록 · 계산창 `#f0fdf4/#14532d` · 입력 38px(그리드 셀은 밀도 유지) · FAB 68px·모달 §18-11 |
+| 인쇄 | RTS-SAREK 흑백 다중 시트 · `@page 18/14/20/14` · 가로표 scale 0.613 | **시트 구조·여백 유지(규격 예외 — 가로표 축소율·쪽나눔이 여백에 종속)** · 서체 Noto 우선 · mono 한글 폴백(R24②) · `@bottom-left` 각인 제거(§20-1) · R26 인쇄 제목 비움 · 표 collapse 유지(`.excel-wrap` 테두리가 외곽선 담당) |
+| sw.js | `rts-manmin-v4.3.0` · 문서 Cache-first · 전 origin 캐시 삭제 · addAll | `rts-v5.0.0` · PREFIX `rts-` · ORPHAN v4.3.0/v3.0 · `mmMatch` 자기 접두어(R25) · navigate Network-first · allSettled(R3) · `Response.error()`(R19) |
+| manifest | 아이콘 6종 · 배경 `#0a1628` | 아이콘 8종+180 · 배경 `#f4f6f9` · 테마 `#0e7490` · name Ver-5.0 · `orientation:any` 유지 |
+| 버전 표기 | Ver4.0 | HTML 텍스트 32곳 + 표시 문자열 리터럴 6줄(`document.title`·인쇄 제목·Excel 제목/주석) → `Ver-5.0`. 스크립트 주석·`.rts` schemaVersion 4 는 그대로 |
+| 기타 | — | R27 html2canvas 정화(현재 미사용 · 규격 동봉) · 미디어쿼리 640 1개 유지(데스크탑 그리드 도구) |
+
+원본(Ver4.0 배포본 `9d78fd96`)은 `버전s-4.0\pwa-rts-manmin\` 에 보존. 아래는 Ver4.0 README 원문.
+
+---
+
 # RTS-MANMIN 건축물 부하계산서 Ver 4.0 — PWA 패키지
 
 > ASHRAE Handbook of Fundamentals Ch.18 RTS법 기반 건축물 냉난방 부하계산 전문 도구
