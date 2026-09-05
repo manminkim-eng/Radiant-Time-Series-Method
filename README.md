@@ -95,3 +95,12 @@ pwa-rts-manmin/
 ---
 
 © 2026 만민건축사사무소 · ENGINEER KIM MANMIN
+
+## v5.0.2 (2026-09-05) — 모바일 가로 확장 · 하단 상태바 숨김 (MIN 지시)
+| 항목 | 기존 | 변경 |
+|---|---|---|
+| 하단 상태바 | 모바일에도 표시(계산 준비 완료·자동저장·실 수·냉난방·©) | ≤768px 숨김(`display:none`) · body 하단 여백 12px · FAB 20px |
+| 창 폭 | 뷰포트 고정 · 표는 내부 `overflow-x:auto` 스크롤 | ≤1024px: 활성 탭의 가장 넓은 표 폭만큼 `body` 폭 확장 → 헤더·탭·요약·본문이 함께 좌우 스크롤(`#mm-v5-mobile-fit` · `showTab` 래핑·resize·MutationObserver) |
+| 프로젝트 개요 | — | 표 없음 → 화면 폭 유지 |
+| 기상데이터 등 | 내부 스크롤 | 표 폭으로 확장(내부 `overflow-x` 해제) |
+| sw.js | rts-v5.0.1 | rts-v5.0.2 |

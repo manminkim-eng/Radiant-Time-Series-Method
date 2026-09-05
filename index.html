@@ -9006,5 +9006,41 @@ window.addEventListener('appinstalled', () => {
    처방: 캡처 직전 우리 문서의 light-DOM style/link 에 data-mm-own 을 찍고, 클론에서 표식 없는 style/link 를 제거한다.
    ② 라이브러리가 없으면(구 SW opaque 캐시 · CDN 차단) exportA4Jpg 가 ReferenceError 로 조용히 멈춘다(40 미리보기 미표시) → 지연 로더가 CDN 에서 받아 이어서 실행한다. 계산·출력 함수 무접촉(전역 html2canvas 래핑). */
 (function(){var CDN='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';var raw=window.html2canvas;var cur;function wrap(h){if(!h||h.__mm)return h;function p(el,opt){document.querySelectorAll('style,link[rel=stylesheet]').forEach(function(n){n.setAttribute('data-mm-own','1');});opt=Object.assign({},opt||{});var prev=opt.onclone;opt.onclone=function(doc,x){doc.querySelectorAll('style,link[rel=stylesheet]').forEach(function(n){if(!n.hasAttribute('data-mm-own')&&(n.textContent||'').indexOf('___html2canvas___')<0)n.remove();});return prev?prev(doc,x):undefined;};return h(el,opt);}p.__mm=1;try{Object.keys(h).forEach(function(k){p[k]=h[k];});}catch(e){}return p;}function lazy(el,opt){return new Promise(function(res,rej){var s=document.createElement('script');s.src=CDN;s.onload=function(){if(cur&&cur!==lazy)res(cur(el,opt));else rej(new Error('html2canvas 초기화 실패'));};s.onerror=function(){rej(new Error('html2canvas 로드 실패 — 네트워크·차단 확인'));};document.head.appendChild(s);});}cur=raw?wrap(raw):lazy;try{Object.defineProperty(window,'html2canvas',{configurable:true,get:function(){return cur;},set:function(v){cur=wrap(v);}});}catch(e){window.html2canvas=cur;}})();</script>
+<style id="mm-v5-mobile-fit">
+/* ══ v5.0.2 모바일·태블릿 가로 확장 (2026-09-05 · MIN 지시) — ① ≤768 하단 상태바 숨김(가독성) ② ≤1024 창 폭 고정 해제: 활성 탭의 가장 넓은 표 폭만큼 body 폭을 넓혀 헤더·탭·요약·본문이 함께 좌우 스크롤(프로젝트 개요 = 화면 폭 · 기상데이터 = 표 폭). 계산·HTML 무접촉 ══ */
+@media(max-width:1024px){
+  html{overflow-x:auto!important;}
+  body{min-width:100%;box-sizing:border-box;}
+  .top-fixed-wrapper,.app-header,.nav-tabs.tab-bar,.sum-bar-wrap,.app-body,.content-area{width:100%!important;max-width:none!important;}
+  .content-area{overflow:visible!important;}
+  .rts-table-wrap,.panel [style*="overflow-x:auto"],.panel [style*="overflow-x: auto"]{overflow-x:visible!important;}
+}
+@media(max-width:768px){
+  .status-bar{display:none!important;}
+  body{padding-bottom:12px!important;}
+  .formula-fab{bottom:20px;}
+}
+</style>
+<script id="mm-v5-mobile-fit">/* v5.0.2 — 활성 탭 표 폭 → body 폭 (≤1024). showTab 래핑 · resize · DOM 변경 감시. 계산 함수 무접촉 */
+(function(){
+  var MQ=window.matchMedia('(max-width:1024px)'), raf=0;
+  function fit(){
+    raf=0; var b=document.body; if(!MQ.matches){ b.style.width=''; return; }
+    b.style.width=''; var vw=document.documentElement.clientWidth, need=vw;
+    var panel=document.querySelector('.panel.active'); if(!panel) return;
+    panel.querySelectorAll('table').forEach(function(t){
+      if(!t.offsetParent) return; var r=t.getBoundingClientRect(); var w=Math.max(t.scrollWidth||0,r.width);
+      need=Math.max(need, r.left+window.scrollX+w+14);
+    });
+    if(need>vw+4) b.style.width=Math.ceil(need)+'px';
+  }
+  function req(){ if(!raf) raf=requestAnimationFrame(fit); }
+  window.mmFitWidth=fit;
+  var o=window.showTab; if(typeof o==='function'){ window.showTab=function(){ var r=o.apply(this,arguments); window.scrollTo({left:0}); setTimeout(fit,40); setTimeout(fit,400); return r; }; }
+  window.addEventListener('resize',req); window.addEventListener('orientationchange',function(){ setTimeout(fit,200); });
+  try{ new MutationObserver(function(){ req(); }).observe(document.querySelector('.content-area')||document.body,{childList:true,subtree:true}); }catch(e){}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(fit,100); }); else setTimeout(fit,100);
+  window.addEventListener('load',function(){ setTimeout(fit,300); });
+})();</script>
 </body>
 </html>
