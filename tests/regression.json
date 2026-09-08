@@ -1,0 +1,65 @@
+{
+ "_note": "runRegression() 케이스 목록. expect 는 regressionSnapshot() 출력(W·CMH 정수). tol ±1%. 전주컨벤션 .rts 등록 대기",
+ "tol": 0.01,
+ "cases": [
+  {
+   "name": "샘플 2실 (하네스 점검)",
+   "file": "tests/sample_2rooms.rts",
+   "expect": {
+    "app": "Ver-5.1.0",
+    "rooms": 2,
+    "equipment": 1,
+    "buildingCoolSens": 30518,
+    "buildingCoolLat": 10424,
+    "buildingHeat": 8583,
+    "peakHour": 14,
+    "roomSumCoolSens": 30518,
+    "roomSumCoolLat": 10424,
+    "roomSumHeat": 8583,
+    "equipCoilC": 65584,
+    "equipCoilH": 42050,
+    "equipSA": 9110
+   }
+  },
+  {
+   "name": "이리신광교회 (MIRAE98 InputData 재구성 · 337실 · 26장비)",
+   "file": "tests/benchmark_singwang.rts",
+   "expect": {
+    "app": "Ver-5.1.0",
+    "rooms": 337,
+    "equipment": 26,
+    "buildingCoolSens": 1828008,
+    "buildingCoolLat": 871651,
+    "buildingHeat": 408188,
+    "peakHour": 15,
+    "roomSumCoolSens": 1907249,
+    "roomSumCoolLat": 871651,
+    "roomSumHeat": 408188,
+    "equipCoilC": 4444892,
+    "equipCoilH": 2104658,
+    "equipSA": 534247
+   },
+   "note": "v5.0 기준값: {\"rooms\": 337, \"equipment\": 26, \"buildingCoolSens\": 2280802, \"buildingCoolLat\": 1187004, \"buildingHeat\": 506893, \"peakHour\": 15, \"roomSumCoolSens\": 2364780, \"roomSumCoolLat\": 1187004, \"roomSumHeat\": 506893, \"equipCoilC\": 5122540, \"equipCoilH\": 2196992, \"equipSA\": 653251} · MIRAE98 건물 피크 4,128,353 kcal/h(4,801 kW) · 설계값은 designRef(Ⅶ)에 수록"
+  },
+  {
+   "name": "벤치마크_이리신광교회 (저장소 원본 352실·40장비, schemaVersion 4 마이그레이션)",
+   "file": "벤치마크_이리신광교회.rts",
+   "expect": {
+    "app": "Ver-5.1.0",
+    "rooms": 352,
+    "equipment": 40,
+    "buildingCoolSens": 1914641,
+    "buildingCoolLat": 820779,
+    "buildingHeat": 282164,
+    "peakHour": 15,
+    "roomSumCoolSens": 2134162,
+    "roomSumCoolLat": 820779,
+    "roomSumHeat": 282164,
+    "equipCoilC": 3600018,
+    "equipCoilH": 1865196,
+    "equipSA": 485259
+   },
+   "note": "v5.0 기준값: {\"rooms\": 352, \"equipment\": 40, \"buildingCoolSens\": 2319417, \"buildingCoolLat\": 1177366, \"buildingHeat\": 383048, \"peakHour\": 15, \"roomSumCoolSens\": 2538361, \"roomSumCoolLat\": 1177366, \"roomSumHeat\": 383048, \"equipCoilC\": 4213205, \"equipCoilH\": 1934979, \"equipSA\": 585276} · 편차 원인: 침기 0 입력이 v5.0에서 0.1 ACH로 대체되던 폴백 제거 + 구 침기 잠열식"
+  }
+ ]
+}

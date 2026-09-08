@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   RTS-MANMIN — 건축물 부하계산서(RTS법)  MANMIN Ver-5.0
+   RTS-MANMIN — 건축물 부하계산서(RTS법)  MANMIN Ver-5.1.0
    Service Worker — 오프라인 캐시 + 버전 업데이트 · ARCHITECT KIM MANMIN
    기준: 지시서 v3 §11-3 · §17-1 · §21-1 R3·R19·R25 (2026-09-05 스킬 v5.0)
    v5.0.0 (2026-09-05) — v4.3.0 sw(문서 Cache-first · 전 origin 캐시 삭제 · addAll)를 규격으로 전면 교체
@@ -24,7 +24,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE = 'rts-v5.0.2';   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
+const CACHE = 'rts-v5.1.0';   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
 const ASSETS = [
   './',
   './index.html',
