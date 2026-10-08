@@ -1,65 +1,128 @@
 {
- "_note": "runRegression() 케이스 목록. expect 는 regressionSnapshot() 출력(W·CMH 정수). tol ±1%. 전주컨벤션 .rts 등록 대기",
+ "_note": "runRegression() 케이스 목록. expect 는 regressionSnapshot() 출력(W·CMH 정수). tol ±1%. Ver-5.2.0 기대값 갱신(원인 기록: CHANGELOG 「회귀 편차 원인 기록」). 하림 A안(T-3) 등록 대기",
  "tol": 0.01,
  "cases": [
   {
    "name": "샘플 2실 (하네스 점검)",
    "file": "tests/sample_2rooms.rts",
    "expect": {
-    "app": "Ver-5.1.0",
+    "app": "Ver-5.2.0",
     "rooms": 2,
     "equipment": 1,
-    "buildingCoolSens": 30518,
+    "buildingCoolSens": 29843,
     "buildingCoolLat": 10424,
     "buildingHeat": 8583,
     "peakHour": 14,
-    "roomSumCoolSens": 30518,
+    "roomSumCoolSens": 29843,
     "roomSumCoolLat": 10424,
     "roomSumHeat": 8583,
-    "equipCoilC": 65584,
+    "equipCoilC": 64909,
     "equipCoilH": 42050,
-    "equipSA": 9110
-   }
+    "equipSA": 8908
+   },
+   "note_v510": "{\"rooms\": 2, \"equipment\": 1, \"buildingCoolSens\": 30518, \"buildingCoolLat\": 10424, \"buildingHeat\": 8583, \"peakHour\": 14, \"roomSumCoolSens\": 30518, \"roomSumCoolLat\": 10424, \"roomSumHeat\": 8583, \"equipCoilC\": 65584, \"equipCoilH\": 42050, \"equipSA\": 9110}"
   },
   {
    "name": "이리신광교회 (MIRAE98 InputData 재구성 · 337실 · 26장비)",
    "file": "tests/benchmark_singwang.rts",
    "expect": {
-    "app": "Ver-5.1.0",
+    "app": "Ver-5.2.0",
     "rooms": 337,
     "equipment": 26,
-    "buildingCoolSens": 1828008,
+    "buildingCoolSens": 1774296,
     "buildingCoolLat": 871651,
     "buildingHeat": 408188,
-    "peakHour": 15,
-    "roomSumCoolSens": 1907249,
+    "peakHour": 18,
+    "roomSumCoolSens": 1833346,
     "roomSumCoolLat": 871651,
     "roomSumHeat": 408188,
-    "equipCoilC": 4444892,
+    "equipCoilC": 4384967,
     "equipCoilH": 2104658,
-    "equipSA": 534247
+    "equipSA": 516360
    },
-   "note": "v5.0 기준값: {\"rooms\": 337, \"equipment\": 26, \"buildingCoolSens\": 2280802, \"buildingCoolLat\": 1187004, \"buildingHeat\": 506893, \"peakHour\": 15, \"roomSumCoolSens\": 2364780, \"roomSumCoolLat\": 1187004, \"roomSumHeat\": 506893, \"equipCoilC\": 5122540, \"equipCoilH\": 2196992, \"equipSA\": 653251} · MIRAE98 건물 피크 4,128,353 kcal/h(4,801 kW) · 설계값은 designRef(Ⅶ)에 수록"
+   "note": "v5.0 기준값: {\"rooms\": 337, \"equipment\": 26, \"buildingCoolSens\": 2280802, \"buildingCoolLat\": 1187004, \"buildingHeat\": 506893, \"peakHour\": 15, \"roomSumCoolSens\": 2364780, \"roomSumCoolLat\": 1187004, \"roomSumHeat\": 506893, \"equipCoilC\": 5122540, \"equipCoilH\": 2196992, \"equipSA\": 653251} · MIRAE98 건물 피크 4,128,353 kcal/h(4,801 kW) · 설계값은 designRef(Ⅶ)에 수록",
+   "note_v510": "{\"rooms\": 337, \"equipment\": 26, \"buildingCoolSens\": 1828008, \"buildingCoolLat\": 871651, \"buildingHeat\": 408188, \"peakHour\": 15, \"roomSumCoolSens\": 1907249, \"roomSumCoolLat\": 871651, \"roomSumHeat\": 408188, \"equipCoilC\": 4444892, \"equipCoilH\": 2104658, \"equipSA\": 534247}"
   },
   {
    "name": "벤치마크_이리신광교회 (저장소 원본 352실·40장비, schemaVersion 4 마이그레이션)",
    "file": "벤치마크_이리신광교회.rts",
    "expect": {
-    "app": "Ver-5.1.0",
+    "app": "Ver-5.2.0",
     "rooms": 352,
     "equipment": 40,
-    "buildingCoolSens": 1914641,
+    "buildingCoolSens": 1906496,
     "buildingCoolLat": 820779,
     "buildingHeat": 282164,
-    "peakHour": 15,
-    "roomSumCoolSens": 2134162,
+    "peakHour": 16,
+    "roomSumCoolSens": 2088602,
     "roomSumCoolLat": 820779,
     "roomSumHeat": 282164,
-    "equipCoilC": 3600018,
+    "equipCoilC": 3569824,
     "equipCoilH": 1865196,
-    "equipSA": 485259
+    "equipSA": 476249
    },
-   "note": "v5.0 기준값: {\"rooms\": 352, \"equipment\": 40, \"buildingCoolSens\": 2319417, \"buildingCoolLat\": 1177366, \"buildingHeat\": 383048, \"peakHour\": 15, \"roomSumCoolSens\": 2538361, \"roomSumCoolLat\": 1177366, \"roomSumHeat\": 383048, \"equipCoilC\": 4213205, \"equipCoilH\": 1934979, \"equipSA\": 585276} · 편차 원인: 침기 0 입력이 v5.0에서 0.1 ACH로 대체되던 폴백 제거 + 구 침기 잠열식"
+   "note": "v5.0 기준값: {\"rooms\": 352, \"equipment\": 40, \"buildingCoolSens\": 2319417, \"buildingCoolLat\": 1177366, \"buildingHeat\": 383048, \"peakHour\": 15, \"roomSumCoolSens\": 2538361, \"roomSumCoolLat\": 1177366, \"roomSumHeat\": 383048, \"equipCoilC\": 4213205, \"equipCoilH\": 1934979, \"equipSA\": 585276} · 편차 원인: 침기 0 입력이 v5.0에서 0.1 ACH로 대체되던 폴백 제거 + 구 침기 잠열식",
+   "note_v510": "{\"rooms\": 352, \"equipment\": 40, \"buildingCoolSens\": 1914641, \"buildingCoolLat\": 820779, \"buildingHeat\": 282164, \"peakHour\": 15, \"roomSumCoolSens\": 2134162, \"roomSumCoolLat\": 820779, \"roomSumHeat\": 282164, \"equipCoilC\": 3600018, \"equipCoilH\": 1865196, \"equipSA\": 485259}"
+  },
+  {
+   "name": "T-4 동향 유리 단일실 (B-1 방위 — 실 피크 오전)",
+   "file": "tests/t4_east_1room.rts",
+   "expect": {
+    "app": "Ver-5.2.0",
+    "rooms": 1,
+    "equipment": 1,
+    "buildingCoolSens": 4151,
+    "buildingCoolLat": 0,
+    "buildingHeat": 999,
+    "peakHour": 10,
+    "roomSumCoolSens": 4151,
+    "roomSumCoolLat": 0,
+    "roomSumHeat": 999,
+    "equipCoilC": 4151,
+    "equipCoilH": 999,
+    "equipSA": 1239
+   },
+   "note": "7/21·위도 35.95° · 동향 유리 20㎡ · 내부발열 0 · 수용기준 peakHour 9~11"
+  },
+  {
+   "name": "T-5 지붕 단일실 (B-2 수평면 Sol-Air)",
+   "file": "tests/t5_roof_1room.rts",
+   "expect": {
+    "app": "Ver-5.2.0",
+    "rooms": 1,
+    "equipment": 1,
+    "buildingCoolSens": 418,
+    "buildingCoolLat": 0,
+    "buildingHeat": 666,
+    "peakHour": 18,
+    "roomSumCoolSens": 418,
+    "roomSumCoolLat": 0,
+    "roomSumHeat": 666,
+    "equipCoilC": 418,
+    "equipCoilH": 666,
+    "equipSA": 125
+   },
+   "note": "지붕 100㎡ U 0.2 · 수평 Sol-Air 최대 13시 69.18℃ > 남향 수직 47.65℃"
+  },
+  {
+   "name": "T-7 CTS 손계산 대조 (B-13)",
+   "file": "tests/t7_cts_wall.rts",
+   "expect": {
+    "app": "Ver-5.2.0",
+    "rooms": 1,
+    "equipment": 1,
+    "buildingCoolSens": 1160,
+    "buildingCoolLat": 0,
+    "buildingHeat": 3330,
+    "peakHour": 23,
+    "roomSumCoolSens": 1160,
+    "roomSumCoolLat": 0,
+    "roomSumHeat": 3330,
+    "equipCoilC": 1160,
+    "equipCoilH": 3330,
+    "equipSA": 346
+   },
+   "note": "남향 외벽 UA=100 · 독립 Python(ASHRAE 절차) 대조 24h 최대 상대편차 0.0000% · 피크 23시"
   }
  ]
 }
