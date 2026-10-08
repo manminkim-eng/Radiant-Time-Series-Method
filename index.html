@@ -2068,6 +2068,7 @@
 .hdr-btns{display:flex;gap:6px;flex-wrap:nowrap;justify-content:flex-end;}
 .hdr-btns .btn-g{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;padding:0 11px;height:30px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;box-shadow:none;letter-spacing:0;}
 .hdr-btns .btn-g:hover{background:#fff;color:var(--hdr-b);}
+.hdr-btns a.btn-g{box-sizing:border-box;text-decoration:none;line-height:1;}   /* Ver-5.2.1 보완: 매뉴얼 고정 링크(<a>)를 <button>과 동일 치수로 */
 .hdr-btns .btn-calc{background:var(--hdr-accent);border-color:var(--hdr-accent);color:#083344;}
 .hdr-btns .btn-uval{background:rgba(5,150,105,.35);border-color:rgba(110,231,183,.6);}
 .nav-tabs.tab-bar{background:transparent!important;border-bottom:0!important;padding:0!important;position:static!important;overflow:visible;display:block;}
@@ -2730,7 +2731,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="hdr-btns">
         <button id="pwa-install-btn" class="btn-g" onclick="installPWA()" style="display:none" title="앱 설치">📲 <span class="btn-txt">설치</span></button>
         <button class="btn-g btn-uval" onclick="window.open('https://manminkim-eng.github.io/u-value-app-/','_blank')" title="열관류율 종합 검토 시스템 열기">🧱 <span class="btn-txt">열관류율</span></button>
-        <button class="btn-g btn-manual" onclick="openRtsManual()" title="사용자 매뉴얼 — 새 창(온라인)">📘 <span class="btn-txt">매뉴얼</span></button>
+        <a class="btn-g btn-manual" href="https://manminkim-eng.github.io/Radiant-Time-Series-Method/manual/" target="_blank" rel="noopener" onclick="return openRtsManual(event)" title="사용자 매뉴얼 — 새 창(온라인)">📘 <span class="btn-txt">매뉴얼</span></a>
         <button class="btn-g" onclick="saveProjectFile()" title="현재 입력 데이터를 .rts 파일로 저장">💾 <span class="btn-txt">저장</span></button>
         <button class="btn-g" onclick="loadProjectFile()" title=".rts 파일 불러와서 이어 작업">📂 <span class="btn-txt">불러오기</span></button>
         <input type="file" id="rts-file-input" accept=".rts,.json" style="display:none" onchange="onRtsFileSelected(event)">
@@ -8441,12 +8442,17 @@ function fitRtsReportPreview(){
 window.addEventListener('resize',()=>{ if(document.getElementById('tab-report')?.classList.contains('active')) fitRtsReportPreview(); });
 
 /* ══ v5.1 C-2: 버전·법령 상수 단일 관리 — 표지·워터마크·근거 문구가 참조 ══ */
-/* Ver-5.2.1: 사용자 매뉴얼 열기 — GitHub Pages ./manual/index.html (새 창). 매뉴얼은 오프라인 캐시 대상이 아니므로 오프라인이면 안내만 */
-function openRtsManual(){
-  if (navigator.onLine === false) { if (typeof showToast==='function') showToast('📘 매뉴얼은 인터넷 연결 시 열립니다'); else alert('매뉴얼은 인터넷 연결 시 열립니다.'); return; }
-  window.open(new URL('manual/index.html', location.href).href, '_blank', 'noopener');
+/* Ver-5.2.1 보완: 사용자 매뉴얼 — 헤더 고정 링크 <a href="https://manminkim-eng.github.io/Radiant-Time-Series-Method/manual/" target=_blank>.
+   설치앱·로컬 사본 어디서 열어도 공개 매뉴얼로 연결. 매뉴얼은 오프라인 캐시 대상이 아니므로 오프라인이면 링크 이동을 막고 안내만 */
+function openRtsManual(e){
+  if (navigator.onLine === false) {
+    if (e) e.preventDefault();
+    if (typeof showToast==='function') showToast('📘 매뉴얼은 인터넷 연결 시 열립니다'); else alert('매뉴얼은 인터넷 연결 시 열립니다.');
+    return false;
+  }
+  return true;
 }
-const RTS_APP_VERSION = 'Ver-5.2.1';   /* C-2: 헤더 각인·표지·워터마크·.rts 저장·README와 한 쌍 (sw.js CACHE rts-v5.2.1) */
+const RTS_APP_VERSION = 'Ver-5.2.1';   /* C-2: 헤더 각인·표지·워터마크·.rts 저장·README와 한 쌍 (sw.js CACHE rts-v5.2.2 — 5.2.1 보완: 매뉴얼 고정 링크) */
 const RTS_LEGAL = {
   notice:    '건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호',
   effective: '2026. 7. 8.',

@@ -5,6 +5,19 @@
 
 ---
 
+## Ver-5.2.1 보완 (2026-10-08) — 매뉴얼 버튼 고정 링크 · sw rts-v5.2.2
+
+| 항목 | 위치 | 기존 | 변경 |
+|---|---|---|---|
+| 매뉴얼 버튼 | 헤더 `.hdr-btns` | `<button onclick="openRtsManual()">` → 상대경로 `./manual/index.html` 를 `window.open` | `<a class="btn-g btn-manual" href="https://manminkim-eng.github.io/Radiant-Time-Series-Method/manual/" target="_blank" rel="noopener">` 고정 링크 — 설치앱·로컬 사본(Z:)·file:// 어디서 열어도 공개 매뉴얼로 연결, 길게 눌러 링크 복사 가능 |
+| `openRtsManual(e)` | 스크립트 | 창 열기 담당 | 오프라인일 때만 링크 이동 차단 + 안내 토스트, 온라인이면 기본 링크 동작 |
+| CSS | `.hdr-btns a.btn-g` 신설 | — | `box-sizing:border-box; text-decoration:none; line-height:1` — `<button>` 과 동일 치수(30px)·밑줄 없음 |
+| sw.js | CACHE | rts-v5.2.1 | rts-v5.2.2 (index.html 변경 한 쌍 §11-3) |
+
+화면 버전 표기는 매뉴얼 판과 맞춰 **Ver-5.2.1 유지**(사용자 결정). 계산 로직 변경 없음.
+
+---
+
 ## Ver-5.2.1 (2026-10-08) — 사용자 매뉴얼 연결
 
 | 항목 | 위치 | 기존 | 변경 |

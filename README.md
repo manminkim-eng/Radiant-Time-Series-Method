@@ -140,3 +140,4 @@ pwa-rts-manmin/
 | 헤더 버튼 | — | 📘 매뉴얼 (새 창, 온라인) |
 | 매뉴얼 | — | `manual/index.html` — https://manminkim-eng.github.io/Radiant-Time-Series-Method/manual/ |
 | sw.js | rts-v5.2.0 | rts-v5.2.1 |
+| 매뉴얼 버튼 (5.2.1 보완) | 스크립트 window.open(상대경로) | 고정 링크 `<a href=…/manual/>` · sw rts-v5.2.2 |
