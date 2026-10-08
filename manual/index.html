@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RTS-MANMIN 사용자 매뉴얼 Ver-5.2.1</title>
+<meta name="description" content="RTS-MANMIN Ver-5.2.1 냉난방 부하계산 웹도구 사용자 매뉴얼 — 화면 기능, 기술기준(ASHRAE RTS법·에너지절약설계기준), 실무 작업 방법">
+<meta name="author" content="김만민 건축사 · ㈜대성건축사사무소">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;900&display=swap">
+<link rel="stylesheet" href="./assets/fonts/manmin-fonts.css">
+<style>
+:root{
+  --navy:#2D3A8C;--navy-d:#1F2A6B;--navy-l:#E9ECF8;--accent:#F4A261;--accent-d:#C97A3A;--accent-l:#FDF1E7;
+  --bg:#F8F9FA;--card:#FFFFFF;--text:#1A1A2E;--text2:#4A4F66;--line:#DDE1EA;--ok:#0F766E;--ng:#B42318;
+  --r:12px;--pad:24px;--shadow:0 4px 20px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:16px;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere}
+a{color:var(--navy)}a:hover{color:var(--accent-d)}
+code,kbd,.mono{font-family:var(--font-mono);font-size:.9em}
+code{background:var(--navy-l);color:var(--navy-d);padding:1px 6px;border-radius:5px}
+kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 6px;background:#fff}
+/* 상단 */
+.top{background:linear-gradient(135deg,var(--navy-d),var(--navy));color:#fff}
+.top-in{max-width:1240px;margin:0 auto;padding:44px 24px 36px}
+.eyebrow{font-family:var(--font-brand);font-weight:700;font-size:12px;letter-spacing:.18em;opacity:.85}
+.top h1{font-size:28px;font-weight:900;margin:8px 0 6px;line-height:1.35}
+.top .sub{opacity:.9;margin:0}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:4px 12px;font-size:13px}
+a.badge{color:#fff;text-decoration:none}a.badge:hover{background:rgba(255,255,255,.24);color:#fff}
+.badge.acc{background:var(--accent);border-color:var(--accent);color:#1A1A2E;font-weight:700}
+/* 레이아웃 */
+.wrap{max-width:1240px;margin:0 auto;padding:28px 24px 80px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:32px}
+nav.toc{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px 16px;font-size:14px}
+nav.toc h2{font-size:13px;letter-spacing:.12em;color:var(--text2);margin:0 0 8px}
+nav.toc ol{list-style:none;margin:0;padding:0}
+nav.toc li a{display:block;padding:5px 8px;border-radius:8px;text-decoration:none;color:var(--text)}
+nav.toc li a:hover,nav.toc li a.on{background:var(--navy-l);color:var(--navy)}
+nav.toc li.sub a{padding-left:20px;font-size:13px;color:var(--text2)}
+main{min-width:0}
+section.ch{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:var(--pad) calc(var(--pad) + 8px);margin-bottom:28px}
+section.ch>h2{font-size:24px;font-weight:700;color:var(--navy);margin:0 0 4px;display:flex;align-items:baseline;gap:10px}
+section.ch>h2 .n{font-family:var(--font-brand);font-weight:700;font-size:14px;color:#fff;background:var(--navy);border-radius:8px;padding:2px 9px}
+section.ch>.lead{color:var(--text2);margin:0 0 18px}
+h3{font-size:19px;color:var(--navy-d);margin:34px 0 10px;padding-top:6px;border-top:1px solid var(--line)}
+h3:first-of-type{border-top:0}
+h4{font-size:16px;margin:22px 0 8px}
+p{margin:8px 0}
+ul,ol{padding-left:22px}
+.note,.tip,.warn{border-radius:10px;padding:12px 16px;margin:14px 0;font-size:15px}
+.note{background:var(--navy-l);border-left:4px solid var(--navy)}
+.tip{background:var(--accent-l);border-left:4px solid var(--accent)}
+.warn{background:#FEF3F2;border-left:4px solid var(--ng)}
+.note b:first-child,.tip b:first-child,.warn b:first-child{margin-right:6px}
+/* 표 */
+.tbl{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px;background:#fff}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--navy-l);color:var(--navy-d);font-weight:700;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--font-mono);white-space:nowrap}
+.ok{color:var(--ok);font-weight:700}.ng{color:var(--ng);font-weight:700}
+/* 그림 */
+figure.shot{margin:18px 0 26px}
+figure.shot .frame{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;cursor:zoom-in}
+figure.shot img{display:block;width:100%;height:auto}
+figure.narrow{max-width:420px}
+.pin{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:var(--accent);color:#1A1A2E;font:700 13px/26px var(--font-mono);text-align:center;box-shadow:0 0 0 3px #fff,0 2px 8px rgba(0,0,0,.35);pointer-events:none}
+figcaption{font-size:14px;color:var(--text2);margin-top:8px}
+.fno{font-family:var(--font-mono);font-size:11px;background:var(--navy);color:#fff;border-radius:6px;padding:1px 7px;margin-right:8px}
+ol.legend{list-style:none;padding:0;margin:10px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px 16px;font-size:14px}
+ol.legend li{display:flex;gap:8px;align-items:flex-start}
+ol.legend b{flex:0 0 22px;height:22px;border-radius:50%;background:var(--accent);font:700 12px/22px var(--font-mono);text-align:center}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+/* 단계 */
+.steps{counter-reset:st;list-style:none;padding:0;margin:16px 0}
+.steps>li{counter-increment:st;position:relative;padding:4px 0 18px 54px;border-left:2px solid var(--line);margin-left:18px}
+.steps>li:last-child{border-left-color:transparent}
+.steps>li::before{content:counter(st);position:absolute;left:-19px;top:0;width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font:700 15px/36px var(--font-mono);text-align:center;box-shadow:0 0 0 4px var(--bg)}
+.steps>li>b.t{display:block;font-size:17px;color:var(--navy-d);margin-bottom:2px}
+/* 수식 */
+.eq{font-family:var(--font-mono);background:#0F1630;color:#E8ECFF;border-radius:10px;padding:14px 18px;margin:12px 0;overflow-x:auto;font-size:14px;line-height:1.9;white-space:pre}
+.eq .c{color:#9AA6D6}
+.svgbox{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin:14px 0;overflow-x:auto}
+.svgbox svg{display:block;width:100%;min-width:640px;height:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:14px 0}
+.card{border:1px solid var(--line);border-radius:var(--r);padding:16px;background:#fff}
+.card h5{margin:0 0 4px;font-size:15px;color:var(--navy)}
+.card p{margin:0;font-size:14px;color:var(--text2)}
+footer.foot{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--text2);font-size:13px}
+/* 라이트박스 */
+#lb{position:fixed;inset:0;background:rgba(10,14,30,.88);display:none;align-items:center;justify-content:center;z-index:99;cursor:zoom-out;padding:16px}
+#lb.open{display:flex}#lb img{max-width:100%;max-height:100%;border-radius:8px;background:#fff}
+.totop{position:fixed;right:18px;bottom:18px;width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;border:0;font-size:18px;box-shadow:var(--shadow);cursor:pointer}
+/* 반응형 5단계 */
+@media (max-width:1240px){.wrap{grid-template-columns:230px minmax(0,1fr);gap:24px}}
+@media (max-width:1024px){.wrap{grid-template-columns:1fr}nav.toc{position:static;max-height:none}nav.toc ol{columns:2}}
+@media (max-width:760px){.pair{grid-template-columns:1fr}section.ch{padding:20px 18px}.top h1{font-size:24px}}
+@media (max-width:640px){nav.toc ol{columns:1}body{font-size:15px}}
+@media (max-width:480px){.wrap,.top-in{padding-left:16px;padding-right:16px}.pin{width:22px;height:22px;font-size:11px;line-height:22px}}
+@media (max-width:400px){section.ch>h2{font-size:20px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* A4 인쇄 */
+@page{size:A4;margin:14mm 12mm 14mm}
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;font-size:10.5pt}
+  nav.toc,.totop,#lb{display:none!important}
+  .wrap{display:block;padding:0}
+  section.ch{box-shadow:none;padding:0 0 8mm;margin:0;break-before:page}
+  main{padding-bottom:8mm}
+  section.ch:first-of-type{break-before:auto}
+  figure.shot,.tbl,.eq,.svgbox,.note,.tip,.warn,.steps>li{break-inside:avoid}
+  h3,h4{break-after:avoid}
+  .top{border-radius:0}
+  .pfoot{position:fixed;bottom:0;left:0;right:0;height:6mm;background:#fff;font-size:8pt;color:#666;border-top:1px solid #ccc;padding-top:1.5mm;display:flex;justify-content:space-between}
+}
+.pfoot{display:none}
+@media print{.pfoot{display:flex}}
+</style>
+</head><body>
+<header class="top"><div class="top-in">
+<div class="eyebrow">RADIANT TIME SERIES · USER MANUAL</div>
+<h1>RTS-MANMIN 건축물 부하계산 사용자 매뉴얼</h1>
+<p class="sub">웹 기능 · 기술기준 · 작업 방법 — 일반 기술자용 안내서</p>
+<div class="badges"><span class="badge acc">매뉴얼 <span style="font-family:var(--font-brand)">Ver-5.2.1</span></span><a class="badge" href="../index.html">▶ RTS-MANMIN 열기</a><a class="badge" href="RTS-MANMIN_사용자매뉴얼_Ver-5.2.1.pdf" download>⤓ PDF</a><span class="badge">2026-10-08</span><span class="badge">김만민 건축사 · ㈜대성건축사사무소</span></div>
+</div></header>
+<div class="wrap"><nav class="toc" aria-label="목차"><h2>목차</h2><ol><li><a href="#ch0">0. 이 매뉴얼에 대하여</a></li><li><a href="#ch1">1. RTS-MANMIN 한눈에 보기</a></li><li class="sub"><a href="#s1-1">화면 구성</a></li><li class="sub"><a href="#s1-2">헤더 버튼</a></li><li class="sub"><a href="#s1-3">설치·저장·불러오기</a></li><li><a href="#ch2">2. 10분 따라하기</a></li><li><a href="#ch3">3. 탭별 기능 상세</a></li><li class="sub"><a href="#s3-1">프로젝트 개요</a></li><li class="sub"><a href="#s3-2">기상 데이터</a></li><li class="sub"><a href="#s3-3">실별 입력</a></li><li class="sub"><a href="#s3-4">실 상세 모달</a></li><li class="sub"><a href="#s3-5">CSV·입력 검증</a></li><li class="sub"><a href="#s3-6">조닝·장비</a></li><li class="sub"><a href="#s3-7">외부·내부 부하</a></li><li class="sub"><a href="#s3-8">CTS/RTS 계수</a></li><li class="sub"><a href="#s3-9">계산 결과</a></li><li class="sub"><a href="#s3-10">AHU·건물 집계</a></li><li class="sub"><a href="#s3-11">산출서·출력</a></li><li class="sub"><a href="#s3-12">모바일</a></li><li><a href="#ch4">4. 기술기준 해설</a></li><li class="sub"><a href="#s4-1">RTS법 원리</a></li><li class="sub"><a href="#s4-2">태양 위치·일사</a></li><li class="sub"><a href="#s4-3">상당외기온도</a></li><li class="sub"><a href="#s4-4">전도(CTS)</a></li><li class="sub"><a href="#s4-5">유리 일사</a></li><li class="sub"><a href="#s4-6">내부발열·침기</a></li><li class="sub"><a href="#s4-7">안전율·동시부하</a></li><li class="sub"><a href="#s4-8">국내 기준</a></li><li><a href="#ch5">5. 실무 작업 방법</a></li><li class="sub"><a href="#s5-1">설계 단계 절차</a></li><li class="sub"><a href="#s5-2">타 프로그램 대조</a></li><li class="sub"><a href="#s5-3">하림 검증 사례</a></li><li class="sub"><a href="#s5-4">회귀 시험</a></li><li><a href="#ch6">6. 문제 해결·FAQ</a></li><li><a href="#ch7">부록</a></li><li class="sub"><a href="#a1">입력값 기본값·근거</a></li><li class="sub"><a href="#a2">버전 변경 내역</a></li><li class="sub"><a href="#a3">용어</a></li></ol></nav><main><section class="ch" id="ch0"><h2><span class="n">00</span>이 매뉴얼에 대하여</h2>
+<p class="lead">RTS-MANMIN은 ASHRAE RTS법(Radiant Time Series)으로 건축물 냉·난방 부하를 실별·장비별·건물별로 산정하고 A4 산출서와 Excel로 출력하는 웹 계산도구입니다. 이 매뉴얼은 처음 쓰는 설비·건축 기술자가 화면 순서대로 따라 하며 결과를 읽고 검토할 수 있도록 작성했습니다.</p>
+<div class="tbl"><table><thead><tr><th class="">항목</th><th class="">내용</th></tr></thead><tbody><tr><td class="">대상 프로그램</td><td class="">RTS-MANMIN <b>Ver-5.2.1</b> (2026-10-08 배포) — 앱 헤더 「📘 매뉴얼」 버튼으로 이 문서가 열립니다</td></tr><tr><td class="">접속 주소</td><td class=""><a href="https://manminkim-eng.github.io/Radiant-Time-Series-Method/index.html" target="_blank" rel="noopener">manminkim-eng.github.io/Radiant-Time-Series-Method</a></td></tr><tr><td class="">매뉴얼 판</td><td class=""><b>Ver-5.2.1</b> (프로그램과 같은 판 번호, 초판) · 2026-10-08 · 작성 김만민 건축사(㈜대성건축사사무소)</td></tr><tr><td class="">내려받기</td><td class=""><a href="RTS-MANMIN_사용자매뉴얼_Ver-5.2.1.pdf" download>PDF(A4)</a> · <a href="../index.html">RTS-MANMIN 열기</a></td></tr><tr><td class="">예제 파일</td><td class=""><a href="sample/manual_example_6rooms.rts" download>manual_example_6rooms.rts</a> — 본문 그림은 모두 이 파일로 캡처 · <a href="sample/sample_2rooms.rts" download>sample_2rooms.rts</a>(회귀 시험용 2실)</td></tr><tr><td class="">읽는 순서</td><td class="">처음이면 1장 → 2장(따라하기) → 필요할 때 3장(탭별 상세). 결과 검토·보고서 작성은 4장(기술기준)·5장(작업 방법)</td></tr></tbody></table></div>
+<div class="note"><b>표기</b>그림 위 주황색 번호(①②…)는 그림 아래 범례 번호와 같습니다. 그림을 누르면 크게 볼 수 있습니다. 버튼 이름은 「전체 계산」처럼 낫표로, 입력란은 <code>p-sf</code>처럼 화면 요소 ID를 함께 적었습니다.</div>
+<div class="warn"><b>책임 한계</b>본 도구는 설계용 부하 산정 보조 프로그램입니다. 입력값(외피 성능·재실·스케줄·외기조건)과 결과의 적정성은 담당 기술자가 검토·확인해야 하며, 장비 선정 시 여유율·배관·덕트 손실은 별도로 반영합니다.</div>
+</section>
+<section class="ch" id="ch1"><h2><span class="n">01</span>RTS-MANMIN 한눈에 보기</h2>
+<p class="lead">설치 없이 브라우저에서 바로 실행되는 단일 페이지 앱(PWA)입니다. 입력은 모두 내 PC 브라우저 안에서 처리되며 서버로 전송되지 않습니다.</p>
+<div class="cards">
+<div class="card"><h5>무엇을 계산하나</h5><p>실별 24시간 냉방 현열·잠열, 난방부하, 장비(AHU·FCU)별 동시 피크·코일부하·급기량, 건물 동시 피크</p></div>
+<div class="card"><h5>계산 방법</h5><p>ASHRAE Fundamentals 18장 RTS법 — Sol-Air·CTS 전도, Solar/Non-solar RTS 복사 시간지연</p></div>
+<div class="card"><h5>국내 기준 연계</h5><p>에너지절약설계기준(고시 제2026-360호) 별표7 설계 외기조건 17개 도시, 별표1 열관류율 기준 대조</p></div>
+<div class="card"><h5>출력</h5><p>A4 산출서(표지~Ⅶ·부록)·PDF, Excel 9개 시트, 프로젝트 파일 .rts</p></div>
+</div>
+<h3 id="s1-1">1-1. 화면 구성</h3>
+<figure class="shot" id="fig-s01_overview"><div class="frame"><img src="images/s01_overview.webp" width="1440" height="900" loading="lazy" alt="전체 화면 — 헤더·작업 탭·요약 스트립·계산 단계 메뉴"><span class="pin" style="left:55.52%;top:7.80%">1</span><span class="pin" style="left:1.50%;top:15.38%">2</span><span class="pin" style="left:2.07%;top:21.93%">3</span><span class="pin" style="left:1.50%;top:27.24%">4</span></div><figcaption><span class="fno">S01</span>전체 화면 — 헤더·작업 탭·요약 스트립·계산 단계 메뉴</figcaption><ol class="legend"><li><b>1</b><span>헤더 버튼: 저장·불러오기·전체 계산·출력</span></li><li><b>2</b><span>작업 탭 12개: 왼쪽에서 오른쪽 순서가 작업 순서</span></li><li><b>3</b><span>요약 스트립: 실 수·장비 수·피크 냉방·난방·총부하·원단위가 계산 때마다 갱신</span></li><li><b>4</b><span>계산 단계 메뉴: 탭과 같은 곳으로 이동, 아래쪽은 RTS 계산 구성 설명</span></li></ol></figure>
+<div class="tbl"><table><thead><tr><th class="">탭</th><th class="">하는 일</th><th class="">본문</th></tr></thead><tbody><tr><td class="">📋 프로젝트 개요</td><td class="">건물명·용도·위치(위도·경도)·계산월일·안전율</td><td class="">3-1</td></tr><tr><td class="">🌡️ 기상 데이터</td><td class="">냉·난방 설계 외기온·습도, 일교차, 실내조건, Sol-Air 표</td><td class="">3-2</td></tr><tr><td class="">🏢 실별 입력</td><td class="">실 목록 그리드, 실 상세(내부발열·유리·외벽/지붕)</td><td class="">3-3·3-4</td></tr><tr><td class="">🗂️ 조닝·장비</td><td class="">존·장비 등록, 실 배정, 외기량, 장비별 집계</td><td class="">3-6</td></tr><tr><td class="">🌞 외부 부하 / 💡 내부 부하</td><td class="">실 데이터 합산 결과 확인(실이 없을 때만 직접 입력)</td><td class="">3-7</td></tr><tr><td class="">📊 CTS/RTS 계수</td><td class="">적용 중인 계수표 확인</td><td class="">3-8</td></tr><tr><td class="">📈 계산 결과</td><td class="">시각별 냉방부하 차트·표, 항목별 분석, 실별 결과</td><td class="">3-9</td></tr><tr><td class="">⚙️ AHU 선정 / 🏗️ 건물 부하 집계</td><td class="">급기량·팬 동력 간이 산정, 건물 집계</td><td class="">3-10</td></tr><tr><td class="">📄 산출서</td><td class="">A4 계산서 조립·미리보기·PDF</td><td class="">3-11</td></tr><tr><td class="">🧱 열관류율</td><td class="">열관류율 WAP 결과 연계(U값 일괄 적용)</td><td class="">3-7</td></tr></tbody></table></div>
+<h3 id="s1-2">1-2. 헤더 버튼</h3>
+<figure class="shot" id="fig-s02_hdrbtns"><div class="frame"><img src="images/s02_hdrbtns.webp" width="638" height="89" loading="lazy" alt="헤더 버튼 묶음"><span class="pin" style="left:34.43%;top:67.61%">1</span><span class="pin" style="left:45.73%;top:67.61%">2</span><span class="pin" style="left:60.48%;top:67.61%">3</span><span class="pin" style="left:75.65%;top:67.61%">4</span><span class="pin" style="left:89.68%;top:67.61%">5</span><span class="pin" style="left:6.66%;top:67.61%">6</span><span class="pin" style="left:16.40%;top:60.30%">7</span></div><figcaption><span class="fno">S02</span>헤더 버튼 묶음</figcaption><ol class="legend"><li><b>1</b><span>저장 — 현재 입력 전체를 .rts 파일로 내려받기</span></li><li><b>2</b><span>불러오기 — .rts 파일을 열어 이어서 작업</span></li><li><b>3</b><span>전체 계산 — 입력 검증 후 모든 부하 재계산</span></li><li><b>4</b><span>A4 출력 — 산출서 인쇄</span></li><li><b>5</b><span>PDF 저장 — 파일명 RTS_부하계산서_{프로젝트}_{날짜}</span></li><li><b>6</b><span>열관류율 — 열관류율 종합검토 WAP 새 창</span></li><li><b>7</b><span>매뉴얼 — 이 사용자 매뉴얼을 새 창으로 열기(Ver-5.2.1 신설, 인터넷 연결 필요)</span></li></ol></figure>
+<h3 id="s1-3">1-3. 설치·저장·불러오기</h3>
+<ul>
+<li><b>앱 설치(PWA)</b> — Edge·Chrome 주소창 오른쪽의 설치 아이콘 또는 헤더 「📲 설치」. 설치 후에는 오프라인에서도 실행됩니다.</li>
+<li><b>업데이트</b> — 새 버전이 배포되면 앱을 한 번 닫았다 열거나 <kbd>Ctrl</kbd>+<kbd>F5</kbd>. 헤더의 버전 표기(예: <code>MANMIN · Ver-5.2.1</code>)로 확인합니다.</li>
+<li><b>저장 파일(.rts)</b> — JSON 형식. 이전 판(스키마 4·5)에서 저장한 파일도 그대로 열립니다. 새 항목(θ별 SHGC·IAC 등)은 비어 있는 상태로 열리며 이전과 같은 결과를 냅니다.</li>
+<li><b>매뉴얼</b> — 헤더 「📘 매뉴얼」 버튼을 누르면 이 문서가 새 창으로 열립니다. 주소: <a href="https://manminkim-eng.github.io/Radiant-Time-Series-Method/manual/" target="_blank" rel="noopener">manminkim-eng.github.io/Radiant-Time-Series-Method/manual/</a> — 매뉴얼은 오프라인 저장 대상이 아니어서 인터넷이 끊기면 열리지 않는다는 안내만 표시됩니다.</li>
+<li><b>자동 저장 없음</b> — 작업 중간중간 「💾 저장」을 눌러 파일로 보관하십시오. 브라우저 기록 삭제 시 화면 입력은 사라집니다.</li>
+</ul>
+</section>
+<section class="ch" id="ch2"><h2><span class="n">02</span>10분 따라하기</h2>
+<p class="lead">예제 파일(6실·장비 2대)을 열어 계산하고 산출서까지 뽑아 봅니다. 새 프로젝트도 같은 순서로 입력합니다.</p>
+<ol class="steps">
+<li><b class="t">예제 파일 열기</b>매뉴얼 폴더의 <code>sample/manual_example_6rooms.rts</code>를 「📂 불러오기」로 엽니다. 요약 스트립에 「실 6실 · 장비 2대」가 표시되면 정상입니다.</li>
+<li><b class="t">프로젝트 개요 확인</b>지역(도시)을 고르면 위도·경도·설계 외기조건이 자동 입력됩니다. 냉방 계산월·일(기본 8월 21일)과 안전율(SF 1.10)을 확인합니다. → <a href="#s3-1">3-1</a></li>
+<li><b class="t">기상 데이터 확인</b>냉방 건구·습구온도, 일교차, 난방 외기온, 실내 설정조건을 확인합니다. 지역 선택값은 별표7 원문 값입니다. → <a href="#s3-2">3-2</a></li>
+<li><b class="t">실 입력</b>실별 입력 탭에서 실 번호·면적·천장고·용도·인원밀도·조명/기기 밀도·침기·장비 번호를 입력하고, 각 행의 「▶ 상세」에서 유리창·외벽/지붕을 방위별로 넣습니다. → <a href="#s3-3">3-3</a></li>
+<li><b class="t">장비 배정</b>조닝·장비 탭에서 공조기를 등록하고 실을 배정합니다. 외기량은 인원·면적·직접 3가지 방식 중 선택합니다. → <a href="#s3-6">3-6</a></li>
+<li><b class="t">전체 계산</b>헤더 「🔄 전체 계산」. 입력 검증 창에 누락·이상치가 나오면 확인 후 계속합니다. 예제의 결과는 건물 냉방 현열 <b>45,166 W(15시)</b>, 잠열 13,843 W, 난방 17,864 W입니다.</li>
+<li><b class="t">결과 검토</b>계산 결과 탭에서 시각별 차트와 항목별 분석을 보고, 「✔ 검증 · 항목 합계 = 피크 현열」 표시를 확인합니다. → <a href="#s3-9">3-9</a></li>
+<li><b class="t">산출서·저장</b>산출서 탭에서 A4 미리보기를 확인하고 「📄 PDF 저장」, 마지막으로 「💾 저장」으로 .rts를 보관합니다. → <a href="#s3-11">3-11</a></li>
+</ol>
+<div class="tip"><b>요령</b>실이 많으면 3-5의 CSV 템플릿으로 한 번에 가져오고, 실 목록에서 여러 행을 체크해 「선택 일괄변경」으로 같은 값을 넣으면 빠릅니다.</div>
+</section>
+<section class="ch" id="ch3"><h2><span class="n">03</span>탭별 기능 상세</h2>
+<p class="lead">각 탭의 입력란과 버튼, 계산에 쓰이는 방식을 화면 순서대로 설명합니다.</p>
+<h3 id="s3-1">3-1. 프로젝트 개요</h3>
+<figure class="shot" id="fig-s03_project"><div class="frame"><img src="images/s03_project.webp" width="1236" height="714" loading="lazy" alt="프로젝트 개요 탭"><span class="pin" style="left:15.37%;top:45.17%">1</span><span class="pin" style="left:39.64%;top:47.41%">2</span><span class="pin" style="left:39.64%;top:53.30%">3</span><span class="pin" style="left:63.91%;top:45.17%">4</span><span class="pin" style="left:63.91%;top:56.94%">5</span></div><figcaption><span class="fno">S03</span>프로젝트 개요 탭</figcaption><ol class="legend"><li><b>1</b><span>프로젝트명·용도·설계자 — 산출서 표지와 머리말에 표시</span></li><li><b>2</b><span>지역 — 선택 시 위도·경도·표고와 별표7 설계 외기조건 자동 입력</span></li><li><b>3</b><span>위도·경도·표준경도·표고 — 태양 위치 계산에 직접 사용</span></li><li><b>4</b><span>냉방 계산월·일 — 이 날짜의 태양 위치로 일사 계산</span></li><li><b>5</b><span>안전율(SF) — 표시·산출서 기준값(실별 SF가 계산에 우선)</span></li></ol></figure>
+<div class="note"><b>참고값</b>「Wall/Roof Radiant 비율」과 「RTS Zone 유형」 입력란은 현재(Ver-5.2.1) 저장·표시만 되고 계산에는 고정값(벽 46%·지붕 60%·Zone 8)이 쓰입니다. Ver-5.3.0에서 계산에 연결될 예정입니다.</div>
+<h3 id="s3-2">3-2. 기상 데이터</h3>
+<figure class="shot" id="fig-s04_weather"><div class="frame"><img src="images/s04_weather.webp" width="1236" height="650" loading="lazy" alt="설계 외기조건과 실내조건"><span class="pin" style="left:15.37%;top:29.88%">1</span><span class="pin" style="left:15.37%;top:36.34%">2</span><span class="pin" style="left:15.37%;top:42.80%">3</span><span class="pin" style="left:63.91%;top:29.88%">4</span><span class="pin" style="left:15.37%;top:49.26%">5</span><span class="pin" style="left:63.91%;top:62.18%">6</span></div><figcaption><span class="fno">S04</span>설계 외기조건과 실내조건</figcaption><ol class="legend"><li><b>1</b><span>냉방 설계 건구온도(℃)</span></li><li><b>2</b><span>냉방 설계 습구온도(℃)</span></li><li><b>3</b><span>일교차(℃) — 시각별 외기온 곡선의 진폭</span></li><li><b>4</b><span>난방 설계 외기온(℃)</span></li><li><b>5</b><span>실내 냉방 설정온도(℃)</span></li><li><b>6</b><span>외표면 열전달률 h<sub>o</sub>(W/㎡K, Ver-5.2.0 신설) — Sol-Air 계산용</span></li></ol></figure>
+<figure class="shot" id="fig-s05_hourlytemp"><div class="frame"><img src="images/s05_hourlytemp.webp" width="1204" height="156" loading="lazy" alt="시각별 외기온도와 Sol-Air 온도(남향 수직면 대표값) — 「Sol-Air 계산」 버튼으로 갱신"></div><figcaption><span class="fno">S05</span>시각별 외기온도와 Sol-Air 온도(남향 수직면 대표값) — 「Sol-Air 계산」 버튼으로 갱신</figcaption></figure>
+<p>시각별 외기온은 최고온도와 일교차로 만든 24시간 곡선입니다. 표의 Sol-Air는 남향 수직면 대표값이며, 실제 계산은 부위별 방위·경사·흡수율로 따로 구합니다(<a href="#s4-3">4-3</a>).</p>
+<h3 id="s3-3">3-3. 실별 입력</h3>
+<figure class="shot" id="fig-s06_rooms"><div class="frame"><img src="images/s06_rooms.webp" width="1236" height="522" loading="lazy" alt="실 목록 그리드"><span class="pin" style="left:74.79%;top:5.40%">1</span><span class="pin" style="left:80.30%;top:5.40%">2</span><span class="pin" style="left:2.46%;top:54.79%">3</span></div><figcaption><span class="fno">S06</span>실 목록 그리드</figcaption><ol class="legend"><li><b>1</b><span>+ 실 추가</span></li><li><b>2</b><span>📥 가져오기 — CSV/XLSX 템플릿 일괄 입력</span></li><li><b>3</b><span>실 목록 — 표에서 바로 수정, 체크 후 복사·삭제·일괄변경</span></li></ol></figure>
+<div class="tbl"><table><thead><tr><th class="">열</th><th class="">의미</th><th class="">기본값</th></tr></thead><tbody><tr><td class="">실 번호·실명·층</td><td class="">식별·산출서 표기</td><td class="">—</td></tr><tr><td class="">면적(㎡)·수량</td><td class="">수량은 같은 실의 개수(면적×수량으로 합산)</td><td class="">—</td></tr><tr><td class="">천장고(m)</td><td class="">체적 = 면적×천장고 → 침기량 산정</td><td class="">2.7</td></tr><tr><td class="">냉방·난방 ℃</td><td class="">실별 설정온도 — 계산에 우선 적용</td><td class="">26 / 22</td></tr><tr><td class="">인원(p)</td><td class="">면적 × 인원밀도(상세 탭)</td><td class="">0.2 인/㎡</td></tr><tr><td class="">조명·기기 W/㎡</td><td class="">발열 밀도</td><td class="">12 / 15</td></tr><tr><td class="">침기 ac/h</td><td class="">시간당 환기횟수(냉·난방 공통, Ver-5.3.0에서 분리 예정)</td><td class="">0.1</td></tr><tr><td class="">AHU No.</td><td class="">배정 장비 번호(조닝 탭과 연동)</td><td class="">—</td></tr><tr><td class="">SF</td><td class="">실별 안전율 — 건물 집계에도 실별 값이 적용</td><td class="">1.10</td></tr></tbody></table></div>
+<h3 id="s3-4">3-4. 실 상세 모달 (▶ 상세)</h3>
+<div class="pair">
+<figure class="shot" id="fig-s07_modal_internal"><div class="frame"><img src="images/s07_modal_internal.webp" width="1440" height="900" loading="lazy" alt="내부발열·설정 탭"><span class="pin" style="left:32.90%;top:65.58%">1</span><span class="pin" style="left:70.31%;top:60.02%">2</span></div><figcaption><span class="fno">S07</span>내부발열·설정 탭</figcaption><ol class="legend"><li><b>1</b><span>실별 안전율</span></li><li><b>2</b><span>RTS Zone(현재 참고값)</span></li></ol></figure>
+<figure class="shot" id="fig-s09_modal_wall"><div class="frame"><img src="images/s09_modal_wall.webp" width="1440" height="900" loading="lazy" alt="외벽/지붕 탭"><span class="pin" style="left:61.37%;top:18.13%">1</span><span class="pin" style="left:66.60%;top:18.13%">2</span><span class="pin" style="left:71.82%;top:18.13%">3</span></div><figcaption><span class="fno">S09</span>외벽/지붕 탭</figcaption><ol class="legend"><li><b>1</b><span>+ 외벽 추가</span></li><li><b>2</b><span>+ 지붕 추가 — 방위는 「수평」</span></li><li><b>3</b><span>+ 바닥/지중 — 정상상태 전도 부위</span></li></ol></figure>
+</div>
+<figure class="shot" id="fig-s08_modal_glass"><div class="frame"><img src="images/s08_modal_glass.webp" width="1440" height="900" loading="lazy" alt="유리창 탭 — Ver-5.2.0에서 SHGC_D·IAC·FR·전도복사비·θ별 SHGC 추가"><span class="pin" style="left:72.73%;top:18.13%">1</span><span class="pin" style="left:25.05%;top:37.13%">2</span></div><figcaption><span class="fno">S08</span>유리창 탭 — Ver-5.2.0에서 SHGC_D·IAC·FR·전도복사비·θ별 SHGC 추가</figcaption><ol class="legend"><li><b>1</b><span>+ 유리창 추가</span></li><li><b>2</b><span>「θ」 버튼 → 입사각별 SHGC 6점 입력 행</span></li></ol></figure>
+<div class="tbl"><table><thead><tr><th class="">입력</th><th class="">의미</th><th class="">구분</th></tr></thead><tbody><tr><td class="">방위</td><td class="">N·NE·E·SE·S·SW·W·NW (북 0°·동 90°·남 180°·서 270°)</td><td class="">필수</td></tr><tr><td class="">면적·U값</td><td class="">창 면적(㎡), 창호 열관류율(W/㎡K)</td><td class="">필수</td></tr><tr><td class="">SHGC</td><td class="">태양열취득률(수직 입사) — 다른 값이 비어 있으면 이 값 하나로 계산</td><td class="">필수</td></tr><tr><td class="">SHGC<sub>D</sub></td><td class="">확산 일사용 SHGC. 비우면 SHGC</td><td class="">선택</td></tr><tr><td class="">IAC</td><td class="">내부 차폐(블라인드·롤스크린) 감쇠계수. 없으면 1.0(비움)</td><td class="">선택</td></tr><tr><td class="">FR</td><td class="">차폐 시 일사의 복사비율. IAC&lt;1일 때만 사용, 비우면 1.0 + 입력 검증 경고</td><td class="">IAC 입력 시</td></tr><tr><td class="">전도 복사비</td><td class="">창호 전도열의 복사비율. 비우면 0(전량 즉시 부하)</td><td class="">선택</td></tr><tr><td class="">θ별 SHGC</td><td class="">0·40·50·60·70·80° 6점. 비우면 단일 SHGC(80~90°도 감쇠 없음)</td><td class="">선택</td></tr><tr><td class="">DF</td><td class="">방위 보정계수(난방 손실용). 현재 냉방 일사에도 곱해짐 — Ver-5.3.0에서 난방 전용으로 변경 예정</td><td class="">1.05</td></tr></tbody></table></div>
+<div class="tip"><b>유리 제조사 자료 활용</b>창호 성능서에 입사각별 SHGC 표와 확산 SHGC(Hemispherical)가 있으면 그대로 넣습니다. 블라인드를 설계에 반영하면 IAC·FR을 함께 입력합니다. 자료가 없으면 SHGC 하나만 넣어도 계산됩니다.</div>
+<p>외벽/지붕 탭의 <b>흡수율 α</b>는 Ver-5.2.0부터 실제 계산에 반영됩니다(이전 판은 0.9 고정). 밝은 외장재는 0.5~0.6, 일반 콘크리트·어두운 외장은 0.9를 씁니다. 지붕은 방위와 관계없이 수평면 일사로 계산합니다.</p>
+<h3 id="s3-5">3-5. CSV 가져오기 · 입력 검증</h3>
+<div class="pair">
+<figure class="shot" id="fig-s10_import"><div class="frame"><img src="images/s10_import.webp" width="1440" height="900" loading="lazy" alt="실 목록 가져오기 — 템플릿 내려받기 → 작성 → 끌어놓기"></div><figcaption><span class="fno">S10</span>실 목록 가져오기 — 템플릿 내려받기 → 작성 → 끌어놓기</figcaption></figure>
+<figure class="shot" id="fig-s17_validation"><div class="frame"><img src="images/s17_validation.webp" width="1440" height="900" loading="lazy" alt="입력 검증 리포트 — 계산 전 자동 표시"></div><figcaption><span class="fno">S17</span>입력 검증 리포트 — 계산 전 자동 표시</figcaption></figure>
+</div>
+<p>가져오기 템플릿은 46열(기본 15열 + 외피 1~4 × 7열 + 지붕·비고)입니다. 벽 면적은 「길이×높이×(1−창면적비)」, 유리는 「길이×높이×창면적비」로 자동 산정됩니다. 입력 검증은 누락·이상치(조명 &gt; 50, 기기 &gt; 100 W/㎡, 재실 &gt; 0.6 인/㎡, 침기 &gt; 2 ACH, 외피 면적 과다, 지역 U값 기준 초과)·장비 미배정·외기량 0을 점검하며 계산을 막지는 않습니다. 같은 내용이 산출서 Ⅲ장 각주에 남습니다.</p>
+<h3 id="s3-6">3-6. 조닝·장비</h3>
+<figure class="shot" id="fig-s11_zoning"><div class="frame"><img src="images/s11_zoning.webp" width="1236" height="768" loading="lazy" alt="조닝·장비 탭 — 존·장비 등록과 실 배정 보드"><span class="pin" style="left:73.45%;top:3.92%">1</span></div><figcaption><span class="fno">S11</span>조닝·장비 탭 — 존·장비 등록과 실 배정 보드</figcaption><ol class="legend"><li><b>1</b><span>장비 추가</span></li></ol></figure>
+<figure class="shot" id="fig-s12_equip"><div class="frame"><img src="images/s12_equip.webp" width="1204" height="225" loading="lazy" alt="장비별 집계 결과 — 「장비별 집계」 버튼"></div><figcaption><span class="fno">S12</span>장비별 집계 결과 — 「장비별 집계」 버튼</figcaption></figure>
+<div class="tbl"><table><thead><tr><th class="">항목</th><th class="">산정 방식</th></tr></thead><tbody><tr><td class="">동시 피크</td><td class="">배정된 실들의 시각별 현열을 더한 뒤 최대값(실별 피크의 단순 합보다 작거나 같음)</td></tr><tr><td class="">외기량</td><td class="">인원(Σ인원×CMH/인, 기본 29) · 면적(Σ면적×CMH/㎡, 기본 5) · 직접 입력 중 선택</td></tr><tr><td class="">ERV</td><td class="">전열교환기 효율(현열·잠열 %) 입력 시 외기부하에서 감산</td></tr><tr><td class="">냉방 코일</td><td class="">실 현열 피크 + 실 잠열 + 외기 현열 + 외기 잠열</td></tr><tr><td class="">난방 코일</td><td class="">실 난방 + 외기 난방</td></tr><tr><td class="">급기량</td><td class="">현열 피크 ÷ (0.335 × 취출온도차) [CMH]</td></tr></tbody></table></div>
+<h3 id="s3-7">3-7. 외부 부하 · 내부 부하 탭</h3>
+<div class="pair">
+<figure class="shot" id="fig-s13_external"><div class="frame"><img src="images/s13_external.webp" width="1236" height="702" loading="lazy" alt="외부 부하 탭 — 실 데이터가 있으면 합산 안내만 표시"><span class="pin" style="left:3.72%;top:31.29%">1</span></div><figcaption><span class="fno">S13</span>외부 부하 탭 — 실 데이터가 있으면 합산 안내만 표시</figcaption><ol class="legend"><li><b>1</b><span>실 데이터 기반 합산 안내</span></li></ol></figure>
+<figure class="shot" id="fig-s14_internal"><div class="frame"><img src="images/s14_internal.webp" width="1236" height="1000" loading="lazy" alt="내부 부하 탭 — 실별 입력을 합산한 대표값 표시"></div><figcaption><span class="fno">S14</span>내부 부하 탭 — 실별 입력을 합산한 대표값 표시</figcaption></figure>
+</div>
+<p>실별 입력이 있으면 계산은 실 데이터만 씁니다. 두 탭의 입력란은 <b>실을 하나도 만들지 않은 간이 계산</b>(건물 한 덩어리) 용도입니다. 「🧱 열관류율」 탭에서는 열관류율 WAP 결과를 불러와 실 외피에 U값을 일괄 적용할 수 있습니다.</p>
+<h3 id="s3-8">3-8. CTS/RTS 계수</h3>
+<figure class="shot" id="fig-s15_rts"><div class="frame"><img src="images/s15_rts.webp" width="1236" height="358" loading="lazy" alt="적용 계수표 — CTS(외벽·지붕), Solar/Non-solar RTS"></div><figcaption><span class="fno">S15</span>적용 계수표 — CTS(외벽·지붕), Solar/Non-solar RTS</figcaption></figure>
+<h3 id="s3-9">3-9. 계산 결과</h3>
+<figure class="shot" id="fig-s16_result"><div class="frame"><img src="images/s16_result.webp" width="1236" height="883" loading="lazy" alt="계산 결과 탭"><span class="pin" style="left:3.72%;top:29.27%">1</span><span class="pin" style="left:3.43%;top:61.79%">2</span><span class="pin" style="left:3.27%;top:81.38%">3</span></div><figcaption><span class="fno">S16</span>계산 결과 탭</figcaption><ol class="legend"><li><b>1</b><span>시각별 냉방부하 차트(1~24시)</span></li><li><b>2</b><span>부하 항목별 분석 — 피크 시각의 7개 항목과 자체 검증</span></li><li><b>3</b><span>시각별 부하표(항목 × 24시간)</span></li></ol></figure>
+<p>예제의 피크 15시 항목별 값(SF 포함)은 다음과 같습니다. 「✔ 검증」 줄은 항목 합계와 피크 현열이 일치하는지 프로그램이 스스로 확인한 결과입니다.</p>
+<div class="tbl"><table><thead><tr><th class="">항목</th><th class="num">W</th></tr></thead><tbody><tr><td class="">외피 전도</td><td class="num">630</td></tr><tr><td class="">유리 전도</td><td class="num">1,116</td></tr><tr><td class="">투과 일사</td><td class="num">16,209</td></tr><tr><td class="">인체</td><td class="num">7,522</td></tr><tr><td class="">조명</td><td class="num">8,209</td></tr><tr><td class="">기기</td><td class="num">10,307</td></tr><tr><td class="">침기</td><td class="num">1,173</td></tr><tr><td class=""><b>합계 = 피크 현열</b></td><td class="num"><b>45,166</b></td></tr></tbody></table></div>
+<h3 id="s3-10">3-10. AHU 선정 · 건물 부하 집계</h3>
+<div class="pair">
+<figure class="shot" id="fig-s18_ahu"><div class="frame"><img src="images/s18_ahu.webp" width="1236" height="486" loading="lazy" alt="AHU 선정 — 급기량·외기량·팬 동력 간이 산정"></div><figcaption><span class="fno">S18</span>AHU 선정 — 급기량·외기량·팬 동력 간이 산정</figcaption></figure>
+<figure class="shot" id="fig-s19_building"><div class="frame"><img src="images/s19_building.webp" width="1236" height="363" loading="lazy" alt="건물 부하 집계"></div><figcaption><span class="fno">S19</span>건물 부하 집계</figcaption></figure>
+</div>
+<h3 id="s3-11">3-11. 산출서 · 출력</h3>
+<figure class="shot" id="fig-s20_report"><div class="frame"><img src="images/s20_report.webp" width="1440" height="900" loading="lazy" alt="산출서 탭 — A4 미리보기"><span class="pin" style="left:87.79%;top:27.21%">1</span><span class="pin" style="left:16.79%;top:32.91%">2</span></div><figcaption><span class="fno">S20</span>산출서 탭 — A4 미리보기</figcaption><ol class="legend"><li><b>1</b><span>조립 상태(시각·실 수·장비 수)</span></li><li><b>2</b><span>A4 미리보기(표지·목차·Ⅰ~Ⅶ·부록)</span></li></ol></figure>
+<div class="tbl"><table><thead><tr><th class="">장</th><th class="">내용</th></tr></thead><tbody><tr><td class="">Ⅰ 계산조건</td><td class="">지역·외기·실내조건·계수·근거 고시</td></tr><tr><td class="">Ⅱ 실별 입력</td><td class="">실 목록과 외피 요약</td></tr><tr><td class="">Ⅲ 결과 요약</td><td class="">층별·장비별 소계, 원단위 판정, 입력 검증 각주</td></tr><tr><td class="">Ⅳ 실별 상세</td><td class="">실별 결과표와 계산 과정(2실/쪽)</td></tr><tr><td class="">Ⅴ 장비별</td><td class="">장비별 동시 피크·코일·급기량·외기량</td></tr><tr><td class="">Ⅵ 건물 집계</td><td class="">동시 피크·항목 분해·열원 용량 기준</td></tr><tr><td class="">Ⅶ 설계 대비</td><td class="">설계값 입력 시 비율·차이 판정</td></tr><tr><td class="">부록 A</td><td class="">실별 24시간 부하(선택)</td></tr></tbody></table></div>
+<p>Excel 내보내기는 9개 시트(표지·설계기준·외부열취득·내부열취득·RTS계산결과·실별부하·부하집계·AHU선정·조닝장비집계)로 만들어지며, Ver-5.2.0부터 화면 값과 같은 숫자가 나옵니다. 「계산식 안내」 단추(화면 오른쪽 아래)를 누르면 탭별 계산식 요약을 볼 수 있습니다.</p>
+<figure class="shot" id="fig-s21_formula"><div class="frame"><img src="images/s21_formula.webp" width="1440" height="900" loading="lazy" alt="계산식 안내 창"></div><figcaption><span class="fno">S21</span>계산식 안내 창</figcaption></figure>
+<h3 id="s3-12">3-12. 모바일</h3>
+<div class="pair">
+<figure class="shot narrow" id="fig-s23_mobile_result"><div class="frame"><img src="images/s23_mobile_result.webp" width="390" height="844" loading="lazy" alt="휴대전화 — 계산 결과"></div><figcaption><span class="fno">S23</span>휴대전화 — 계산 결과</figcaption></figure>
+<figure class="shot narrow" id="fig-s24_mobile_room"><div class="frame"><img src="images/s24_mobile_room.webp" width="390" height="844" loading="lazy" alt="휴대전화 — 실별 입력(표는 좌우 스크롤)"></div><figcaption><span class="fno">S24</span>휴대전화 — 실별 입력(표는 좌우 스크롤)</figcaption></figure>
+</div>
+<p>폭 768px 이하에서는 하단 상태바가 숨겨지고, 넓은 표는 화면 전체가 좌우로 스크롤됩니다. 현장 확인·결과 조회는 휴대전화로, 실 입력은 PC에서 하는 것을 권장합니다.</p>
+</section>
+<section class="ch" id="ch4"><h2><span class="n">04</span>기술기준 해설</h2>
+<p class="lead">RTS-MANMIN이 쓰는 계산식과 근거입니다. 방법론은 ASHRAE Handbook—Fundamentals 18장(Nonresidential Cooling and Heating Load Calculations)의 RTS법을 따르며, 국내 법령은 설계 외기조건·열관류율 기준에 적용합니다.</p>
+<h3 id="s4-1">4-1. RTS법 원리</h3>
+<div class="svgbox"><svg viewBox="0 0 900 300" role="img" aria-label="RTS법 계산 흐름도: 열취득을 복사분과 대류분으로 나누고 복사분은 RTS로 시간지연시켜 냉방부하로 합산">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2D3A8C"/></marker></defs>
+<style>.b{fill:#E9ECF8;stroke:#2D3A8C;stroke-width:1.5}.o{fill:#FDF1E7;stroke:#C97A3A;stroke-width:1.5}.t{font:600 14px 'Noto Sans KR','Noto Sans KR Local',sans-serif;fill:#1A1A2E}.s{font:12px 'Noto Sans KR','Noto Sans KR Local',sans-serif;fill:#4A4F66}.l{stroke:#2D3A8C;stroke-width:1.6;fill:none;marker-end:url(#ar)}</style>
+<rect class="b" x="10" y="20" width="190" height="70" rx="10"/><text class="t" x="24" y="48">외벽·지붕 전도</text><text class="s" x="24" y="70">Sol-Air te → CTS 열취득</text>
+<rect class="b" x="10" y="115" width="190" height="70" rx="10"/><text class="t" x="24" y="143">유리 일사·전도</text><text class="s" x="24" y="165">직달/확산 × SHGC × IAC</text>
+<rect class="b" x="10" y="210" width="190" height="70" rx="10"/><text class="t" x="24" y="238">인체·조명·기기·침기</text><text class="s" x="24" y="260">스케줄 × 발열량</text>
+<rect class="o" x="270" y="95" width="170" height="110" rx="10"/><text class="t" x="290" y="130">시각별 열취득</text><text class="t" x="290" y="152">q(h), 24시간</text><text class="s" x="290" y="178">복사분 f · 대류분 (1−f)</text>
+<path class="l" d="M200,55 C235,55 240,120 268,135"/><path class="l" d="M200,150 L268,150"/><path class="l" d="M200,245 C235,245 240,180 268,165"/>
+<rect class="b" x="510" y="40" width="190" height="80" rx="10"/><text class="t" x="526" y="70">복사분 × RTS</text><text class="s" x="526" y="94">Solar RTS(직달) · Non-solar RTS</text>
+<rect class="b" x="510" y="180" width="190" height="80" rx="10"/><text class="t" x="526" y="210">대류분 · 침기</text><text class="s" x="526" y="234">즉시 냉방부하(시간지연 없음)</text>
+<path class="l" d="M440,130 C470,130 480,80 508,80"/><path class="l" d="M440,170 C470,170 480,220 508,220"/>
+<rect class="o" x="760" y="105" width="130" height="90" rx="10"/><text class="t" x="776" y="140">냉방부하</text><text class="t" x="776" y="162">Q(h) × SF</text><text class="s" x="776" y="184">24h 최대=피크</text>
+<path class="l" d="M700,80 C730,80 735,140 758,145"/><path class="l" d="M700,220 C730,220 735,160 758,158"/>
+</svg></div>
+<p>RTS법은 각 부위의 <b>열취득</b>(heat gain)을 시각별로 구한 뒤, 복사분은 실 구조체에 일단 흡수됐다가 시간이 지나 방출되므로 <b>RTS 계수</b>(24개, 합 1.0)로 늦춰서 냉방부하로 바꾸고, 대류분과 침기는 그 시각에 바로 냉방부하가 된다고 봅니다.</p>
+<div class="eq">Q(h) = Σ<sub>대류</sub> (1−f)·q(h)  +  Σ<sub>j=0..23</sub> RTS<sub>j</sub> · f·q(h−j)
+<span class="c">f: 복사비율  ·  RTS: 직달 일사는 Solar RTS, 그 밖의 복사는 Non-solar RTS</span></div>
+<h3 id="s4-2">4-2. 태양 위치와 일사</h3>
+<div class="svgbox"><svg viewBox="0 0 900 230" role="img" aria-label="태양 방위각 기준: 북 0도, 동 90도, 남 180도, 서 270도. 오전 태양은 동측, 오후 태양은 서측">
+<style>.t{font:600 13px 'Noto Sans KR','Noto Sans KR Local',sans-serif;fill:#1A1A2E}.s{font:12px 'Noto Sans KR','Noto Sans KR Local',sans-serif;fill:#4A4F66}</style>
+<circle cx="150" cy="115" r="90" fill="#E9ECF8" stroke="#2D3A8C" stroke-width="1.5"/>
+<line x1="150" y1="25" x2="150" y2="205" stroke="#2D3A8C" stroke-dasharray="4 4"/><line x1="60" y1="115" x2="240" y2="115" stroke="#2D3A8C" stroke-dasharray="4 4"/>
+<text class="t" x="142" y="18">N 0°</text><text class="t" x="246" y="120">E 90°</text><text class="t" x="136" y="226">S 180°</text><text class="t" x="0" y="120">W 270°</text>
+<circle cx="218" cy="160" r="12" fill="#F4A261"/><text class="s" x="232" y="178">오전 태양(동측)</text>
+<circle cx="82" cy="160" r="12" fill="#F4A261" opacity=".6"/><text class="s" x="0" y="190">오후 태양(서측)</text>
+<text class="t" x="330" y="60">Ver-5.2.0 B-1 수정</text>
+<text class="s" x="330" y="86">· 방위각 = 북 기준 시계방향 0~360° (E90 · S180 · W270)</text>
+<text class="s" x="330" y="110">· Ver-5.1.0까지는 오전 태양이 서측(약 260°)에 놓여 동·서향 일사가 뒤바뀜</text>
+<text class="s" x="330" y="134">· 7/21 · 위도 35.95°: 동향 수직면 최대 10시 672 W/㎡ · 서향 17시 676 W/㎡</text>
+<text class="s" x="330" y="158">· 남향은 정오 대칭이라 수정 전·후 동일</text>
+</svg></div>
+<p>적위·균시차·시간각으로 태양고도와 방위각을 구하고, 면의 방위·경사와의 입사각 θ로 면 일사를 계산합니다. 일사는 <b>직달·확산·지면반사</b>로 나눠 다룹니다(Ver-5.2.0). 현재 일사 모델은 간이 투과율식(확산 = 수평면 직달의 20%, 등방성, 지면반사율 0.2)이며, ASHRAE clear-sky 모델(τ<sub>b</sub>·τ<sub>d</sub>)은 계수식과 지역 τ값 확인 후 추가할 예정입니다.</p>
+<h3 id="s4-3">4-3. 상당외기온도(Sol-Air)</h3>
+<div class="eq">t<sub>e</sub> = t<sub>o</sub> + α·E<sub>t</sub>/h<sub>o</sub> − ε·ΔR/h<sub>o</sub>
+<span class="c">α: 외표면 흡수율(부위별 입력, 기본 0.9) · E_t: 면 총일사(W/㎡) · h_o: 외표면 열전달률(기본 22.7 W/㎡K)
+ε·ΔR/h_o: 수평면 3.9℃(=7/1.8), 수직면 0 — ASHRAE HOF 18장</span></div>
+<p>Ver-5.2.0부터 외벽은 각 방위의 수직면 일사, 지붕은 수평면 일사로 따로 계산합니다(이전 판은 모든 부위에 남향 수직 1종). ASHRAE는 α/h<sub>o</sub>를 어두운 색 0.052, 밝은 색 0.026 m²K/W로 제시하며 이는 h<sub>o</sub> ≈ 17 W/㎡K에 해당합니다. 기본값 22.7은 이전 판과 결과를 맞추기 위한 값이므로, 설계 조건에 맞게 조정해 쓰십시오.</p>
+<h3 id="s4-4">4-4. 외벽·지붕 전도 (CTS)</h3>
+<div class="eq">① 전도 열취득   q<sub>g</sub>(h) = Σ<sub>j</sub> CTS<sub>j</sub> · U·A·(t<sub>e</sub>(h−j) − t<sub>i</sub>)
+② 대류분         (1 − f) · q<sub>g</sub>(h)                       <span class="c">→ 즉시 부하</span>
+③ 복사분         Σ<sub>j</sub> RTS<sub>NS,j</sub> · f · q<sub>g</sub>(h−j)            <span class="c">→ Non-solar RTS</span>
+<span class="c">f: 외벽 0.46 · 지붕 0.60 (ASHRAE 권장 복사비율)</span></div>
+<div class="warn"><b>Ver-5.2.0 수정(B-13)</b>이전 판은 대류분을 시간지연 없이 그 시각 Sol-Air로 바로 계산하고, 복사분에 RTS 대신 CTS를 곱했습니다. 중량 구조체일수록 피크가 늦어지고 작아집니다. 시산(남향 외벽 UA=1, 7/21) 피크 13시 13.33 → 23시 12.91, 지붕 15시 29.74 → 18시 22.23. 독립 계산과의 대조 결과 24시간 최대 편차 0.0000%(T-7).</div>
+<p>바닥(외기 간접)·간벽(비공조실)·지중은 정상상태 전도(q = U·A·k·Δt 또는 U·A·냉방Δt)로 24시간 균등하게 더하며 RTS·CTS를 적용하지 않습니다.</p>
+<h3 id="s4-5">4-5. 유리 일사·전도</h3>
+<div class="eq">직달   q<sub>b</sub> = A · E<sub>b</sub> · SHGC(θ) · IAC · DF
+확산   q<sub>d</sub> = A · (E<sub>d</sub> + E<sub>r</sub>) · SHGC<sub>D</sub> · IAC · DF
+IAC = 1 : q<sub>b</sub> → Solar RTS,   q<sub>d</sub> → Non-solar RTS
+IAC &lt; 1 : (q<sub>b</sub>+q<sub>d</sub>)·FR → Non-solar RTS,  (q<sub>b</sub>+q<sub>d</sub>)·(1−FR) → 즉시
+전도   q<sub>c</sub> = U·A·(t<sub>o</sub> − t<sub>i</sub>)·DF  → 복사비(condRad)만큼 Non-solar RTS, 나머지 즉시</div>
+<p>SHGC(θ)는 0·40·50·60·70·80° 값을 선형 보간하고 80~90°에서 0으로 줄입니다. 6점을 넣지 않으면 단일 SHGC를 모든 입사각에 씁니다.</p>
+<h3 id="s4-6">4-6. 내부발열·침기</h3>
+<div class="tbl"><table><thead><tr><th class="">항목</th><th class="">복사</th><th class="">대류</th><th class="">산정</th></tr></thead><tbody><tr><td class="">인체 현열</td><td class="">60%</td><td class="">40%</td><td class="">재실 스케줄 × 인원 × 활동별 현열(코드 A~I, 실내온도별)</td></tr><tr><td class="">인체 잠열</td><td class="">—</td><td class="">100% 즉시</td><td class="">인원 × 활동별 잠열</td></tr><tr><td class="">조명</td><td class="">42%</td><td class="">58%</td><td class="">LPD × 면적 × 스케줄</td></tr><tr><td class="">기기</td><td class="">20%</td><td class="">80%</td><td class="">EPD × 면적 × 스케줄</td></tr><tr><td class="">침기 현열</td><td class="">—</td><td class="">100% 즉시</td><td class="">0.335 × V × ACH × (t<sub>o</sub> − t<sub>i</sub>), 현재 피크 Δt로 24h 일정</td></tr><tr><td class="">침기 잠열</td><td class="">—</td><td class="">100% 즉시</td><td class="">834 × V × ACH × Δx (외기 DB/WB − 실내 DB/RH)</td></tr></tbody></table></div>
+<p>조명·기기의 W/㎡는 실제 설치 전력을 넣습니다. LED 조명은 정격전력에 드라이버 손실이 이미 들어 있으므로 별도 안정기 계수를 곱하지 않습니다.</p>
+<h3 id="s4-7">4-7. 안전율과 동시부하</h3>
+<ul>
+<li><b>안전율(SF)</b> — 실별 SF를 그 실의 현열·잠열에 곱합니다. 난방은 외피 전도에 SF를 곱하고 침기에는 곱하지 않습니다(Ver-5.3.0에서 선택 옵션 예정).</li>
+<li><b>실별 피크 합 vs 동시 피크</b> — 실마다 피크 시각이 다르므로 Σ실별 피크(예제 47,566 W)는 건물 동시 피크(45,166 W)보다 큽니다. 실 단말(FCU) 용량은 실별 피크로, 공조기·열원은 동시 피크로 정합니다. 산출서 Ⅵ에 「실별 피크 합 ÷ 동시 피크」 비율이 표시됩니다.</li>
+</ul>
+<h3 id="s4-8">4-8. 국내 기준</h3>
+<div class="tbl"><table><thead><tr><th class="">법령</th><th class="">고시 번호</th><th class="">시행일</th><th class="">적용 내용</th></tr></thead><tbody><tr><td class="">건축물의 에너지절약설계기준</td><td class="">국토교통부고시 제2026-360호</td><td class="">2026. 7. 8.</td><td class="">제8조제1호 설계용 외기조건 — 위험률 2.5%(냉·난방기 분리) 또는 1%(연간), 또는 <b>별표7</b> 외기온·습도. 별표7 외 지역은 가장 유사한 기후 지역 값</td></tr><tr><td class="">〃</td><td class="">〃</td><td class="">〃</td><td class="">제9조제1호(권장) 설계 실내온도 — 난방 20℃, 냉방 28℃ 기준, 용도·실 특성에 따라 별표8 범위 참고</td></tr><tr><td class="">〃</td><td class="">〃</td><td class="">〃</td><td class="">별표1 지역별 건축물 부위의 열관류율표 — 입력 검증의 U값 상한 판정</td></tr></tbody></table></div>
+<p class="note"><b>확인</b>위 조항·고시 번호·시행일은 국가법령정보(LawMCP)로 2026-10-08 원문 조회해 확인했습니다. 프로그램의 실내 냉방 기본값 26℃는 제9조제1호 권장 기준(28℃)과 다르므로, 설계 조건에 맞게 실별로 지정하십시오.</p>
+</section>
+<section class="ch" id="ch5"><h2><span class="n">05</span>실무 작업 방법</h2>
+<h3 id="s5-1">5-1. 설계 단계별 절차</h3>
+<div class="tbl"><table><thead><tr><th class="">단계</th><th class="">작업</th><th class="">산출·확인</th></tr></thead><tbody><tr><td class="">기획·계획설계</td><td class="">건물 1덩어리 또는 층별 대표실로 간이 계산 → 원단위(W/㎡) 확인</td><td class="">외부·내부 부하 탭 직접 입력 또는 층별 실 몇 개</td></tr><tr><td class="">기본설계</td><td class="">실 목록 CSV 가져오기 → 외피(방위별 벽·유리·지붕) 입력 → 장비 조닝</td><td class="">입력 검증 경고 0 목표, 장비 미배정 0</td></tr><tr><td class="">실시설계</td><td class="">창호 성능서 SHGC(θ)·차폐 IAC 반영, 장비별 외기량·ERV 확정</td><td class="">산출서 PDF + Excel + .rts 함께 납품</td></tr><tr><td class="">설계변경·VE</td><td class="">.rts를 복사해 대안별 파일로 계산 → Ⅶ 설계 대비 시트로 비교</td><td class="">변경 전·후 항목별 편차표 첨부</td></tr></tbody></table></div>
+<div class="tip"><b>파일 이름</b><code>공사명_안(A·B)_냉방_YYYYMMDD.rts</code>처럼 안·조건을 파일명에 넣어 두면 검토·대조가 쉽습니다. 냉방과 난방의 침기횟수가 다르면 현재는 파일을 둘로 나눠 계산합니다(Ver-5.3.0에서 통합 예정).</div>
+<h3 id="s5-2">5-2. 다른 프로그램 계산서와 대조할 때</h3>
+<ol>
+<li>같은 입력(실 면적·외피·발열·스케줄·외기조건)으로 맞춘 .rts를 만든다.</li>
+<li>건물 동시 피크를 <b>항목별</b>(유리·지붕·외벽·간벽·인체·조명·기기·침기 현열/잠열)로 나란히 놓는다.</li>
+<li>편차가 큰 항목부터 원인을 찾는다 — 일사 모델·Sol-Air·CTS/RTS 계수·SHGC/차폐·안전율 적용 범위·조명 안정기/환기 분담 순서.</li>
+<li>피크 시각이 다르면 같은 시각 값도 함께 비교한다.</li>
+</ol>
+<h3 id="s5-3">5-3. 검증 사례 — 하림 익산공장 증축 (RTS-SAREK 3.6 대조)</h3>
+<p>118실·12,752.64㎡, SAREK 입력을 그대로 옮긴 A안(냉방 피크 SAREK 16시)을 판별로 비교했습니다(kW, SF 포함).</p>
+<div class="tbl"><table><thead><tr><th class="">항목</th><th class="num">SAREK 3.6</th><th class="num">Ver-5.1.0</th><th class="num">Ver-5.2.0</th><th class="num">Ver-5.2.0 + SAREK 유리값</th></tr></thead><tbody><tr><td class="">유리(전도+일사)</td><td class="num">195.0</td><td class="num">366.8 <span class="ng">+88%</span></td><td class="num">327.0 <span class="ng">+68%</span></td><td class="num">193.9 <span class="ok">−1%</span></td></tr><tr><td class="">지붕</td><td class="num">10.7</td><td class="num">18.6 +74%</td><td class="num">23.9 +123%</td><td class="num">23.9 +123%</td></tr><tr><td class="">외벽</td><td class="num">1.7</td><td class="num">3.7 +116%</td><td class="num">0.3 −81%</td><td class="num">0.3 −81%</td></tr><tr><td class="">간벽·바닥</td><td class="num">15.1</td><td class="num">15.1 0%</td><td class="num">15.1 0%</td><td class="num">15.1 0%</td></tr><tr><td class="">침기 현열</td><td class="num">51.5</td><td class="num">59.4 +15%</td><td class="num">59.4 +15%</td><td class="num">59.4 +15%</td></tr><tr><td class="">인체 잠열</td><td class="num">156.3</td><td class="num">153.7 −2%</td><td class="num">153.7 −2%</td><td class="num">153.7 −2%</td></tr><tr><td class="">침기 잠열</td><td class="num">227.0</td><td class="num">248.8 +10%</td><td class="num">248.8 +10%</td><td class="num">248.8 +10%</td></tr><tr><td class=""><b>냉방 실부하 합계</b></td><td class="num"><b>1,242.2</b></td><td class="num"><b>1,350.2 +8.7%</b></td><td class="num"><b>1,312.2 +5.6%</b></td><td class="num"><b>1,179.1 −5.1%</b></td></tr><tr><td class="">피크 시각</td><td class="num">16시</td><td class="num">15시</td><td class="num">15시</td><td class="num">15시</td></tr><tr><td class="">난방</td><td class="num">799.5</td><td class="num">765.4 −4.3%</td><td class="num">765.4 −4.3%</td><td class="num">—</td></tr></tbody></table></div>
+<p>「SAREK 유리값」은 G1 유리의 입사각별 SHGC(0.27/0.26/0.25/0.23/0.18/0.11), 확산 SHGC 0.23, 내부차폐 AC 0.67, 복사비율 0.63을 Ver-5.2.0 입력란에 넣은 결과입니다. 유리 항목 편차가 +88%에서 −1%로 줄어 목표(±20%)를 만족했습니다. 합계 −5.1%는 목표(±5%)를 근소하게 벗어났고, 남은 차이는 지붕(CTS 계수 선택, B-4)·조명(안정기 계수·환기 분담, B-6)·침기(안전율 적용, B-5)로 Ver-5.3.0 대상입니다.</p>
+<h3 id="s5-4">5-4. 회귀 시험 (관리자용)</h3>
+<p>프로그램을 고친 뒤에는 브라우저 개발자 도구(<kbd>F12</kbd>) 콘솔에서 <code>runRegression()</code>을 실행합니다. 저장소 <code>tests/regression.json</code>의 6개 케이스(샘플 2실·이리신광교회 2건·동향 단일실·지붕 단일실·CTS 손계산)를 ±1%로 대조하며, Ver-5.2.1 기준 6/6 PASS입니다(계산 로직은 Ver-5.2.0과 동일).</p>
+</section>
+<section class="ch" id="ch6"><h2><span class="n">06</span>문제 해결 · FAQ</h2>
+<div class="tbl"><table><thead><tr><th class="">증상</th><th class="">조치</th></tr></thead><tbody><tr><td class="">새 버전인데 화면이 그대로다</td><td class="">설치형 앱은 서비스워커 캐시를 씁니다. 앱을 닫고 다시 열거나 <kbd>Ctrl</kbd>+<kbd>F5</kbd>. 헤더 버전 표기 확인</td></tr><tr><td class="">결과가 0 또는 「—」</td><td class="">「🔄 전체 계산」을 눌렀는지, 실 면적·발열·외피가 입력됐는지, 입력 검증 리포트의 누락 항목 확인</td></tr><tr><td class="">동·서향 결과가 이상하다</td><td class="">Ver-5.1.0 이하로 계산한 결과입니다. Ver-5.2.0에서 태양 방위각 오류(동·서 교차)가 수정됐으니 다시 계산</td></tr><tr><td class="">북향 유리 일사가 남향만큼 크다</td><td class="">Ver-5.1.0 이하의 오류(북향 0°가 남향으로 처리)입니다. Ver-5.2.0에서 수정</td></tr><tr><td class="">Excel 버튼을 눌러도 파일이 안 나온다</td><td class="">Ver-5.1.0의 오류였고 Ver-5.2.0에서 수정. 오프라인 첫 실행이면 Excel 라이브러리가 아직 없을 수 있으니 온라인에서 한 번 실행</td></tr><tr><td class="">예전 .rts 파일 결과가 달라졌다</td><td class="">Ver-5.2.0의 계산식 개선(방위·Sol-Air·CTS·유리 일사) 때문입니다. 변경 원인은 부록 A2와 CHANGELOG 참조</td></tr><tr><td class="">IAC를 넣었더니 경고가 뜬다</td><td class="">차폐 복사비율 FR을 함께 입력하십시오. 비우면 1.0(전량 복사)으로 계산</td></tr><tr><td class="">실별 피크 합과 건물 피크가 다르다</td><td class="">정상입니다. 건물 피크는 같은 시각의 합(동시부하)입니다(4-7)</td></tr><tr><td class="">외부·내부 부하 탭에서 고친 값이 반영 안 된다</td><td class="">실 데이터가 있으면 실 입력만 계산에 씁니다(3-7)</td></tr></tbody></table></div>
+</section>
+<section class="ch" id="ch7"><h2><span class="n">부록</span>참고 자료</h2>
+<h3 id="a1">A1. 주요 입력 기본값과 근거</h3>
+<div class="tbl"><table><thead><tr><th class="">항목</th><th class="">기본값</th><th class="">입력 위치</th><th class="">근거·비고</th></tr></thead><tbody><tr><td class="">안전율 SF</td><td class="">1.10</td><td class="">—</td><td class="">사내 기본값(실별 변경)</td></tr><tr><td class="">실내 냉방 / 난방</td><td class="">26 / 22 ℃</td><td class="">w-indoor-cool / w-indoor-heat</td><td class="">설계 조건에 맞게 변경. 에너지절약설계기준 제9조제1호 권장 냉방 28·난방 20℃</td></tr><tr><td class="">외표면 열전달률 h<sub>o</sub></td><td class="">22.7 W/㎡K</td><td class="">p-ho</td><td class="">이전 판 호환값. ASHRAE α/h<sub>o</sub> 0.052·0.026</td></tr><tr><td class="">흡수율 α</td><td class="">0.9</td><td class="">wall[].alpha</td><td class="">외장 색·재료별 입력</td></tr><tr><td class="">벽·지붕 복사비율</td><td class="">0.46 / 0.60</td><td class="">고정(Ver-5.3.0 입력화)</td><td class="">ASHRAE 18장 권장값</td></tr><tr><td class="">RTS·CTS 계수</td><td class="">Zone 8 / 중량 벽·지붕</td><td class="">고정(Ver-5.3.0 선택화)</td><td class="">ASHRAE 18장 표</td></tr><tr><td class="">인체·조명·기기 복사비율</td><td class="">0.60 / 0.42 / 0.20</td><td class="">고정</td><td class="">ASHRAE 18장 권장 범위</td></tr><tr><td class="">인원밀도</td><td class="">0.2 인/㎡</td><td class="">ppl_density</td><td class="">용도별</td></tr><tr><td class="">조명 / 기기</td><td class="">12 / 15 W/㎡</td><td class="">lpd / epd</td><td class="">실 설치 전력</td></tr><tr><td class="">침기</td><td class="">0.1 ac/h</td><td class="">infil_ach</td><td class="">창호 기밀성·출입빈도 반영</td></tr><tr><td class="">외기량(인원)</td><td class="">29 CMH/인</td><td class="">oaPerPpl</td><td class="">건축물의 설비기준 등에 관한 규칙 등 해당 용도 기준 확인 후 입력</td></tr><tr><td class="">취출온도차</td><td class="">10 ℃</td><td class="">supplyDT</td><td class="">장비별</td></tr></tbody></table></div>
+<h3 id="a2">A2. 버전 변경 내역</h3>
+<h4>Ver-5.2.1 (2026-10-08) — 사용자 매뉴얼 연결</h4>
+<div class="tbl"><table><thead><tr><th class="">항목</th><th class="">기존</th><th class="">변경</th></tr></thead><tbody><tr><td class="">매뉴얼 버튼</td><td class="">—</td><td class="">헤더 「📘 매뉴얼」 → 이 매뉴얼 새 창(오프라인이면 안내)</td></tr><tr><td class="">사용자 매뉴얼</td><td class="">—</td><td class="">웹(manual/)·PDF 공개, 매뉴얼 판 번호를 프로그램 판(Ver-5.2.1)과 통일</td></tr><tr><td class="">계산 로직</td><td class="">—</td><td class="">변경 없음(Ver-5.2.0과 같은 결과)</td></tr></tbody></table></div>
+<h4>Ver-5.2.0 (2026-10-08) — 계산 엔진 보완 1차</h4>
+<div class="tbl"><table><thead><tr><th class="">ID</th><th class="">항목</th><th class="">기존</th><th class="">변경</th></tr></thead><tbody><tr><td class="">B-1</td><td class="">태양 방위각</td><td class="">오전 태양이 서측 — 동·서향 일사 교차</td><td class="">북 기준 시계방향으로 수정</td></tr><tr><td class="">B-2</td><td class="">상당외기온도</td><td class="">모든 부위 남향 수직 1종, α 0.9 고정</td><td class="">부위별 방위·경사·α, 지붕 수평면, h<sub>o</sub> 입력</td></tr><tr><td class="">B-3</td><td class="">유리 일사</td><td class="">총일사 × 단일 SHGC</td><td class="">직달/확산 분리, SHGC(θ)·SHGC_D·IAC·FR</td></tr><tr><td class="">B-13</td><td class="">CTS 절차</td><td class="">대류분 즉시·RTS 누락</td><td class="">ASHRAE 절차(CTS → 복사분 Non-solar RTS)</td></tr><tr><td class="">B-14</td><td class="">창호 전도</td><td class="">100% 즉시</td><td class="">전도 복사비 입력(기본 0)</td></tr><tr><td class="">B-11</td><td class="">건물 집계</td><td class="">별도 중복 계산</td><td class="">Σ실별 계산(실별 SF·실내온도)</td></tr><tr><td class="">B-18</td><td class="">북향 유리</td><td class="">남향으로 계산</td><td class="">북향 일사</td></tr><tr><td class="">B-10·B-19</td><td class="">Excel</td><td class="">내보내기 중단</td><td class="">정상 생성, 화면 값과 일치</td></tr><tr><td class="">B-16</td><td class="">파일 복원</td><td class="">이전 프로젝트 값 잔류</td><td class="">초기화 후 복원</td></tr></tbody></table></div>
+<p>회귀 영향(건물 냉방 현열): 샘플 2실 −2.21%, 이리신광교회 재구성 −2.94%, 원본 −0.43%. 잠열·난방은 변동 없음. 상세는 저장소 <code>CHANGELOG.md</code>.</p>
+<h3 id="a3">A3. 용어</h3>
+<div class="tbl"><table><thead><tr><th class="">용어</th><th class="">뜻</th></tr></thead><tbody><tr><td class="">RTS</td><td class="">Radiant Time Series — 복사 열취득이 냉방부하로 나타나는 시간 분포 계수(24개)</td></tr><tr><td class="">CTS</td><td class="">Conduction Time Series — 외벽·지붕 전도 열취득의 시간 분포 계수(24개)</td></tr><tr><td class="">Sol-Air(상당외기온도)</td><td class="">일사·장파 복사 영향을 외기온에 더한 가상 온도</td></tr><tr><td class="">SHGC</td><td class="">태양열취득률 — 입사 일사 중 실내로 들어오는 비율</td></tr><tr><td class="">IAC</td><td class="">Interior Attenuation Coefficient — 내부 차폐의 일사 감쇠계수</td></tr><tr><td class="">FR</td><td class="">차폐가 있을 때 일사 열취득 중 복사로 나타나는 비율</td></tr><tr><td class="">동시 피크</td><td class="">여러 실의 같은 시각 부하 합의 최대값</td></tr><tr><td class="">원단위</td><td class="">단위면적당 부하(W/㎡)</td></tr></tbody></table></div>
+</section></main></div>
+<footer class="foot">© 2026 김만민 건축사 · ㈜대성건축사사무소 · RTS-MANMIN 사용자 매뉴얼 Ver-5.2.1 · 그림은 Ver-5.2.1 화면(예제 manual_example_6rooms.rts)으로 캡처</footer>
+<div class="pfoot"><span>RTS-MANMIN 사용자 매뉴얼 Ver-5.2.1</span><span>2026-10-08</span></div>
+<div id="lb" role="dialog" aria-label="그림 확대"><img alt=""></div>
+<button class="totop" aria-label="맨 위로">↑</button>
+<script>
+(function(){
+  var lb=document.getElementById('lb'),li=lb.querySelector('img');
+  document.querySelectorAll('figure.shot .frame').forEach(function(f){f.addEventListener('click',function(){li.src=f.querySelector('img').src;li.alt=f.querySelector('img').alt;lb.classList.add('open');});});
+  lb.addEventListener('click',function(){lb.classList.remove('open');li.removeAttribute('src');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('open');});
+  document.querySelector('.totop').addEventListener('click',function(){window.scrollTo(0,0);});
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id);});}});},{rootMargin:'0px 0px -70% 0px'});
+    document.querySelectorAll('section.ch,h3[id]').forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
+</body></html>

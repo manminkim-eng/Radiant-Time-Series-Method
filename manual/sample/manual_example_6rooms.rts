@@ -1,0 +1,430 @@
+{
+ "_ver": "4.0",
+ "_appVersion": "Ver-5.2.0",
+ "schemaVersion": 6,
+ "_saved": "2026-09-08T16:58:21.021Z",
+ "_app": "RTS-MANMIN 건축물 부하계산서",
+ "inputs": {
+  "p-name": "매뉴얼 예제 — ○○ 사옥 신축공사",
+  "p-designer": "홍길동",
+  "p-reviewer": "",
+  "p-use": "업무시설",
+  "p-date": "2026-09-08",
+  "p-city": "seoul",
+  "p-lat": "37.57",
+  "p-lon": "126.97",
+  "p-meridian": "135",
+  "p-alt": "86",
+  "p-floors": "15",
+  "p-area": "12500",
+  "p-floor-h": "3.6",
+  "p-basement": "2",
+  "p-orient": "0",
+  "p-sf": "1.10",
+  "p-rts-zone": "8",
+  "p-method": "RTS법 (ASHRAE 2009)",
+  "p-wall-rad": "46",
+  "p-roof-rad": "60",
+  "p-cool-month": "8",
+  "p-cool-day": "21",
+  "w-summer-db": "31.2",
+  "w-summer-wb": "25.5",
+  "w-dr": "8.3",
+  "w-winter-db": "-11.3",
+  "w-winter-rh": "63",
+  "w-wind": "3.5",
+  "w-indoor-cool": "26.0",
+  "w-indoor-heat": "22.0",
+  "w-indoor-rh-cool": "50",
+  "w-indoor-rh-heat": "40",
+  "i-people": "86",
+  "i-sens": "57",
+  "i-bf": "0.05",
+  "i-activity": "115,65",
+  "i-people-rad": "60",
+  "i-people-hrs": "9",
+  "i-lpd": "10.2",
+  "i-light-type": "42",
+  "i-light-rad": "42",
+  "i-light-area": "465",
+  "i-light-hrs": "10",
+  "i-epd": "10.3",
+  "i-equip-type": "20",
+  "i-equip-rad": "20",
+  "i-equip-area": "465",
+  "i-equip-hrs": "9",
+  "i-infil": "0.5",
+  "i-oa": "25",
+  "i-oa-min": "20",
+  "i-lat": "62"
+ },
+ "rooms": [
+  {
+   "id": "101",
+   "name": "사무실A",
+   "use": "사무실",
+   "floor": "1F",
+   "qty": 1,
+   "area": 180,
+   "height": 3,
+   "ppl_density": 0.2,
+   "ppl_code": "A",
+   "lpd": 12,
+   "epd": 15,
+   "infil_ach": 0.3,
+   "coolTemp": 26,
+   "heatTemp": 22,
+   "sf": 1.1,
+   "ahuNo": "AHU-1",
+   "wall": [
+    {
+     "type": "wall",
+     "az": "S",
+     "azDeg": 180,
+     "area": 45,
+     "U": 0.24,
+     "alpha": 0.7,
+     "df": 1.0
+    },
+    {
+     "type": "wall",
+     "az": "E",
+     "azDeg": 90,
+     "area": 30,
+     "U": 0.24,
+     "alpha": 0.7,
+     "df": 1.0
+    }
+   ],
+   "glass": [
+    {
+     "az": "S",
+     "azDeg": 180,
+     "area": 24,
+     "U": 1.5,
+     "shgc": 0.4,
+     "df": 1.05
+    },
+    {
+     "az": "E",
+     "azDeg": 90,
+     "area": 12,
+     "U": 1.5,
+     "shgc": 0.4,
+     "df": 1.05
+    }
+   ]
+  },
+  {
+   "id": "102",
+   "name": "회의실",
+   "use": "사무실",
+   "floor": "1F",
+   "qty": 1,
+   "area": 80,
+   "height": 3,
+   "ppl_density": 0.5,
+   "ppl_code": "B",
+   "lpd": 12,
+   "epd": 15,
+   "infil_ach": 0.3,
+   "coolTemp": 26,
+   "heatTemp": 22,
+   "sf": 1.1,
+   "ahuNo": "AHU-1",
+   "wall": [
+    {
+     "type": "wall",
+     "az": "W",
+     "azDeg": 270,
+     "area": 30,
+     "U": 0.24,
+     "alpha": 0.7,
+     "df": 1.0
+    }
+   ],
+   "glass": [
+    {
+     "az": "W",
+     "azDeg": 270,
+     "area": 14,
+     "U": 1.5,
+     "shgc": 0.4,
+     "df": 1.05
+    }
+   ]
+  },
+  {
+   "id": "103",
+   "name": "로비",
+   "use": "사무실",
+   "floor": "1F",
+   "qty": 1,
+   "area": 120,
+   "height": 3,
+   "ppl_density": 0.1,
+   "ppl_code": "A",
+   "lpd": 12,
+   "epd": 15,
+   "infil_ach": 0.3,
+   "coolTemp": 26,
+   "heatTemp": 22,
+   "sf": 1.1,
+   "ahuNo": "AHU-1",
+   "wall": [
+    {
+     "type": "wall",
+     "az": "N",
+     "azDeg": 0,
+     "area": 40,
+     "U": 0.24,
+     "alpha": 0.7,
+     "df": 1.0
+    }
+   ],
+   "glass": [
+    {
+     "az": "N",
+     "azDeg": 0,
+     "area": 30,
+     "U": 1.5,
+     "shgc": 0.4,
+     "df": 1.05,
+     "iac": 0.67,
+     "fr": 0.54,
+     "shgcD": 0.36
+    }
+   ]
+  },
+  {
+   "id": "201",
+   "name": "사무실B",
+   "use": "사무실",
+   "floor": "2F",
+   "qty": 1,
+   "area": 200,
+   "height": 3,
+   "ppl_density": 0.2,
+   "ppl_code": "A",
+   "lpd": 12,
+   "epd": 15,
+   "infil_ach": 0.3,
+   "coolTemp": 26,
+   "heatTemp": 22,
+   "sf": 1.1,
+   "ahuNo": "AHU-2",
+   "wall": [
+    {
+     "type": "wall",
+     "az": "S",
+     "azDeg": 180,
+     "area": 50,
+     "U": 0.24,
+     "alpha": 0.7,
+     "df": 1.0
+    },
+    {
+     "type": "wall",
+     "az": "W",
+     "azDeg": 270,
+     "area": 25,
+     "U": 0.24,
+     "alpha": 0.7,
+     "df": 1.0
+    },
+    {
+     "type": "roof",
+     "az": "수평",
+     "azDeg": 0,
+     "area": 200,
+     "U": 0.15,
+     "alpha": 0.7,
+     "df": 1.0
+    }
+   ],
+   "glass": [
+    {
+     "az": "S",
+     "azDeg": 180,
+     "area": 26,
+     "U": 1.5,
+     "shgc": 0.4,
+     "df": 1.05
+    },
+    {
+     "az": "W",
+     "azDeg": 270,
+     "area": 10,
+     "U": 1.5,
+     "shgc": 0.4,
+     "df": 1.05,
+     "shgcAng": [
+      0.4,
+      0.39,
+      0.37,
+      0.34,
+      0.27,
+      0.17
+     ],
+     "shgcD": 0.34
+    }
+   ]
+  },
+  {
+   "id": "202",
+   "name": "임원실",
+   "use": "사무실",
+   "floor": "2F",
+   "qty": 1,
+   "area": 60,
+   "height": 3,
+   "ppl_density": 0.05,
+   "ppl_code": "A",
+   "lpd": 12,
+   "epd": 15,
+   "infil_ach": 0.3,
+   "coolTemp": 26,
+   "heatTemp": 22,
+   "sf": 1.1,
+   "ahuNo": "AHU-2",
+   "wall": [
+    {
+     "type": "wall",
+     "az": "E",
+     "azDeg": 90,
+     "area": 20,
+     "U": 0.24,
+     "alpha": 0.7,
+     "df": 1.0
+    },
+    {
+     "type": "roof",
+     "az": "수평",
+     "azDeg": 0,
+     "area": 60,
+     "U": 0.15,
+     "alpha": 0.7,
+     "df": 1.0
+    }
+   ],
+   "glass": [
+    {
+     "az": "E",
+     "azDeg": 90,
+     "area": 8,
+     "U": 1.5,
+     "shgc": 0.4,
+     "df": 1.05
+    }
+   ]
+  },
+  {
+   "id": "203",
+   "name": "서고",
+   "use": "사무실",
+   "floor": "2F",
+   "qty": 1,
+   "area": 40,
+   "height": 3,
+   "ppl_density": 0.02,
+   "ppl_code": "A",
+   "lpd": 8,
+   "epd": 2,
+   "infil_ach": 0.3,
+   "coolTemp": 26,
+   "heatTemp": 22,
+   "sf": 1.1,
+   "ahuNo": "AHU-2",
+   "wall": [
+    {
+     "type": "wall-indirect",
+     "az": "N",
+     "azDeg": 0,
+     "area": 20,
+     "U": 0.34,
+     "k": 0.5,
+     "df": 1.0
+    },
+    {
+     "type": "roof",
+     "az": "수평",
+     "azDeg": 0,
+     "area": 40,
+     "U": 0.15,
+     "alpha": 0.7,
+     "df": 1.0
+    }
+   ],
+   "glass": []
+  }
+ ],
+ "extComponents": [
+  {
+   "name": "외벽",
+   "az": 180,
+   "tilt": 90,
+   "area": 120,
+   "U": 0.35,
+   "alpha": 0.9,
+   "eps": 0.9,
+   "sc": 1,
+   "shgf": 0,
+   "rad": 46,
+   "type": "wall"
+  },
+  {
+   "name": "지붕",
+   "az": 0,
+   "tilt": 0,
+   "area": 300,
+   "U": 0.2,
+   "alpha": 0.9,
+   "eps": 0.9,
+   "sc": 1,
+   "shgf": 0,
+   "rad": 60,
+   "type": "roof"
+  },
+  {
+   "name": "유리창",
+   "az": 180,
+   "tilt": 90,
+   "area": 60,
+   "U": 2.8,
+   "alpha": 0,
+   "eps": 0.9,
+   "sc": 0.65,
+   "shgf": 450,
+   "rad": 63,
+   "type": "glass"
+  }
+ ],
+ "equipment": [
+  {
+   "no": "AHU-1",
+   "name": "1층 공조기",
+   "kind": "AHU",
+   "oaMode": "ppl",
+   "oaPerPpl": 29,
+   "supplyDT": 10,
+   "airType": "CAV"
+  },
+  {
+   "no": "AHU-2",
+   "name": "2층 공조기",
+   "kind": "AHU",
+   "oaMode": "area",
+   "oaPerArea": 5,
+   "supplyDT": 10,
+   "airType": "CAV"
+  }
+ ],
+ "zones": [],
+ "designRef": {
+  "unit": "kcal",
+  "tol": 10,
+  "rooms": {},
+  "equip": {}
+ },
+ "roomCount": 6
+}

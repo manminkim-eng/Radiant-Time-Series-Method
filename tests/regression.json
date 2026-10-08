@@ -6,7 +6,7 @@
    "name": "샘플 2실 (하네스 점검)",
    "file": "tests/sample_2rooms.rts",
    "expect": {
-    "app": "Ver-5.2.0",
+    "app": "Ver-5.2.1",
     "rooms": 2,
     "equipment": 1,
     "buildingCoolSens": 29843,
@@ -26,7 +26,7 @@
    "name": "이리신광교회 (MIRAE98 InputData 재구성 · 337실 · 26장비)",
    "file": "tests/benchmark_singwang.rts",
    "expect": {
-    "app": "Ver-5.2.0",
+    "app": "Ver-5.2.1",
     "rooms": 337,
     "equipment": 26,
     "buildingCoolSens": 1774296,
@@ -47,7 +47,7 @@
    "name": "벤치마크_이리신광교회 (저장소 원본 352실·40장비, schemaVersion 4 마이그레이션)",
    "file": "벤치마크_이리신광교회.rts",
    "expect": {
-    "app": "Ver-5.2.0",
+    "app": "Ver-5.2.1",
     "rooms": 352,
     "equipment": 40,
     "buildingCoolSens": 1906496,
@@ -68,7 +68,7 @@
    "name": "T-4 동향 유리 단일실 (B-1 방위 — 실 피크 오전)",
    "file": "tests/t4_east_1room.rts",
    "expect": {
-    "app": "Ver-5.2.0",
+    "app": "Ver-5.2.1",
     "rooms": 1,
     "equipment": 1,
     "buildingCoolSens": 4151,
@@ -88,7 +88,7 @@
    "name": "T-5 지붕 단일실 (B-2 수평면 Sol-Air)",
    "file": "tests/t5_roof_1room.rts",
    "expect": {
-    "app": "Ver-5.2.0",
+    "app": "Ver-5.2.1",
     "rooms": 1,
     "equipment": 1,
     "buildingCoolSens": 418,
@@ -108,7 +108,7 @@
    "name": "T-7 CTS 손계산 대조 (B-13)",
    "file": "tests/t7_cts_wall.rts",
    "expect": {
-    "app": "Ver-5.2.0",
+    "app": "Ver-5.2.1",
     "rooms": 1,
     "equipment": 1,
     "buildingCoolSens": 1160,
