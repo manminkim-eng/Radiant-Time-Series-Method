@@ -118,6 +118,35 @@ footer.foot{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--text2
 }
 .pfoot{display:none}
 @media print{.pfoot{display:flex}}
+/* ── 좁은 화면 대응(r1 · 2026-10-12) : 화면 전용 — 인쇄·PDF에는 영향 없음 ── */
+@media screen and (max-width:640px){
+  .k1 td:first-child,.k1 th:first-child{white-space:normal}
+  /* 글 표(숫자 칸 없는 표) → 행마다 카드로 쌓기 */
+  .tbl.stack{border:0;border-radius:0;overflow:visible}
+  .tbl.stack table,.tbl.stack tbody,.tbl.stack tr,.tbl.stack td{display:block;width:auto}
+  .tbl.stack thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .tbl.stack table{background:transparent}
+  .tbl.stack tr{border:1px solid var(--line);border-radius:10px;background:#fff;margin:0 0 10px;overflow:hidden}
+  .tbl.stack td{border-bottom:1px solid var(--line);padding:8px 12px}
+  .tbl.stack tr td:last-child{border-bottom:0}
+  .tbl.stack td:first-child{background:var(--navy-l);color:var(--navy-d);font-weight:700}
+  .tbl.stack td[data-th]:not(:first-child)::before{content:attr(data-th);display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:2px}
+  .tbl.stack.c2 td[data-th]:not(:first-child)::before{display:none}
+  .tbl.stack td:empty{display:none}
+  /* 숫자 표 → 표 모양 유지, 글자·여백 축소, 넘치면 좌우로 밀기(오른쪽 그림자로 표시) */
+  .tbl:not(.stack){background:linear-gradient(to right,#fff 30%,rgba(255,255,255,0)) left/40px 100% no-repeat local,linear-gradient(to left,#fff 30%,rgba(255,255,255,0)) right/40px 100% no-repeat local,radial-gradient(farthest-side at 100% 50%,rgba(26,26,46,.22),transparent) right/12px 100% no-repeat scroll,#fff}
+  .tbl:not(.stack) table{font-size:13px;background:transparent}
+  .tbl:not(.stack) th,.tbl:not(.stack) td{padding:7px 8px}
+  /* 수식 → 줄바꿈 허용 */
+  .eq{white-space:pre-wrap;word-break:keep-all;font-size:13px;line-height:1.75;padding:12px 14px}
+  .eq .c{display:block;padding-left:1em}
+  .svgbox{position:relative}
+  .svgbox::after{content:"← 좌우로 밀어서 보기 →";display:block;text-align:center;font-size:12px;color:var(--text2);margin-top:6px;position:sticky;left:0}
+  ol.legend{grid-template-columns:1fr}
+  .steps>li{padding-left:34px;margin-left:14px}
+}
+.rev{white-space:nowrap}
+@media print{.rev{display:none}}
 </style>
 </head><body>
 <header class="top"><div class="top-in">
@@ -327,7 +356,7 @@ IAC &lt; 1 : (q<sub>b</sub>+q<sub>d</sub>)·FR → Non-solar RTS,  (q<sub>b</sub
 <h3 id="a3">A3. 용어</h3>
 <div class="tbl"><table><thead><tr><th class="">용어</th><th class="">뜻</th></tr></thead><tbody><tr><td class="">RTS</td><td class="">Radiant Time Series — 복사 열취득이 냉방부하로 나타나는 시간 분포 계수(24개)</td></tr><tr><td class="">CTS</td><td class="">Conduction Time Series — 외벽·지붕 전도 열취득의 시간 분포 계수(24개)</td></tr><tr><td class="">Sol-Air(상당외기온도)</td><td class="">일사·장파 복사 영향을 외기온에 더한 가상 온도</td></tr><tr><td class="">SHGC</td><td class="">태양열취득률 — 입사 일사 중 실내로 들어오는 비율</td></tr><tr><td class="">IAC</td><td class="">Interior Attenuation Coefficient — 내부 차폐의 일사 감쇠계수</td></tr><tr><td class="">FR</td><td class="">차폐가 있을 때 일사 열취득 중 복사로 나타나는 비율</td></tr><tr><td class="">동시 피크</td><td class="">여러 실의 같은 시각 부하 합의 최대값</td></tr><tr><td class="">원단위</td><td class="">단위면적당 부하(W/㎡)</td></tr></tbody></table></div>
 </section></main></div>
-<footer class="foot">© 2026 김만민 건축사 · ㈜대성건축사사무소 · RTS-MANMIN 사용자 매뉴얼 Ver-5.2.1 · 그림은 Ver-5.2.1 화면(예제 manual_example_6rooms.rts)으로 캡처</footer>
+<footer class="foot">© 2026 김만민 건축사 · ㈜대성건축사사무소 · RTS-MANMIN 사용자 매뉴얼 Ver-5.2.1 · 그림은 Ver-5.2.1 화면(예제 manual_example_6rooms.rts)으로 캡처 <span class="rev">· 화면 대응 개정 2026-10-12</span></footer>
 <div class="pfoot"><span>RTS-MANMIN 사용자 매뉴얼 Ver-5.2.1</span><span>2026-10-08</span></div>
 <div id="lb" role="dialog" aria-label="그림 확대"><img alt=""></div>
 <button class="totop" aria-label="맨 위로">↑</button>
@@ -344,5 +373,9 @@ IAC &lt; 1 : (q<sub>b</sub>+q<sub>d</sub>)·FR → Non-solar RTS,  (q<sub>b</sub
     document.querySelectorAll('section.ch,h3[id]').forEach(function(s){io.observe(s);});
   }
 })();
+/* 좁은 화면 표 쌓기 준비: 숫자 칸이 없는 표에 stack 표시, 각 칸에 머리글(data-th) 복사 */
+(function(){document.querySelectorAll('.tbl').forEach(function(t){var tb=t.querySelector('table');if(!tb||!tb.tHead)return;
+ if(tb.querySelector('td.num,th.num'))return;var hs=[].map.call(tb.tHead.rows[0].cells,function(c){return c.textContent.trim()});
+ [].forEach.call(tb.tBodies[0].rows,function(r){[].forEach.call(r.cells,function(c,i){if(hs[i])c.setAttribute('data-th',hs[i])})});t.classList.add('stack');if(hs.length===2)t.classList.add('c2')})})();
 </script>
 </body></html>
