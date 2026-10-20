@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#0e7490">
 <meta name="msapplication-TileColor" content="#0a1628">
 <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
-<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.2.1 by MANMIN">
+<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.1 by MANMIN">
 
 <!-- SheetJS Excel Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 <!-- ======================== -->
 
-<title>RTS-MANMIN 건축물 부하계산서 Ver-5.2.1 | 만민 건축사 신사옥 신축공사</title>
+<title>RTS-MANMIN 건축물 부하계산서 Ver-5.3.1 | 만민 건축사 신사옥 신축공사</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;900&display=swap'); /* v5.1: Orbitron 추가(헤더 각인·인쇄 워터마크 — 소방웹 동일 서체) */
 
@@ -1074,7 +1074,7 @@
     border-top: 0.3pt solid #aaa; padding-top: 2pt;
   }
   @bottom-right {  /* v5.1 A-2-3: 우하단 버전 워터마크(소방웹 규격) — 문자열은 인쇄 시 RTS_APP_VERSION으로 덮어씀 */
-    content: "RTS-MANMIN Ver-5.2.1";
+    content: "RTS-MANMIN Ver-5.3.1";
     font-family: 'Orbitron', sans-serif;
     font-size: 8pt; font-weight: 700; color: #9ca3af; letter-spacing: 0.08em; white-space: nowrap;
   }
@@ -2370,6 +2370,69 @@ body{background:var(--navy);color:var(--text);}
   body.rts-report-mode #rts-report table.rp-list thead { display:table-header-group; }
 }
 </style>
+<style id="ahu-sheet-css">
+/* ═══ 2026-10-21 SHEET 7 AHU 선정 (7-1 LOAD · 7-2 AIR VOLUME · 7-3 SYSTEM DIAGRAM · 7-4 SELECTION) ═══ */
+#tab-ahu .ahu-subnav{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+#tab-ahu .ahu-subnav button{border:1px solid var(--border);background:var(--navy2,#fff);color:var(--text);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;min-height:32px}
+#tab-ahu .ahu-subnav button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+#tab-ahu .ahu-summary{font-size:12px;color:var(--text2);margin:0 0 10px;line-height:1.6}
+.ahu-tbl td,.ahu-tbl th{white-space:nowrap;font-size:11px}
+.ahu-tbl td.l,.ahu-kv td.l,.ahu-st td.l,.ahu-sp td.l{text-align:left}
+.ahu-tbl td.n,.ahu-kv td.n,.ahu-st td.n,.ahu-sp td.n{text-align:right;font-variant-numeric:tabular-nums}
+.ahu-tbl tr.ahu-head td{background:#e0f2fe;font-weight:800;color:#0c4a6e}
+.ahu-tbl tr.ahu-peak td{background:#f8fafc;color:var(--text2);font-size:10px;text-align:left}
+.ahu-tbl tr.ahu-min td{color:var(--text2);font-size:10px;border-top:0}
+.ahu-tbl .dim,.ahu-card .dim,#tab-ahu .dim{color:var(--text2);font-weight:500;font-size:10px}
+.ahu-in{min-height:26px;padding:2px 4px;font-size:11px}
+.ahu-note{font-size:10px;color:var(--text2);padding:6px 10px;line-height:1.6}
+.ahu-empty{padding:16px;text-align:center;color:var(--text2);font-size:12px}
+.ahu-warn{margin:8px 0;padding:8px 10px;border:1px solid #f59e0b;background:#fffbeb;border-radius:8px;font-size:11px;color:#92400e;line-height:1.6}
+.ahu-sysblk{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;background:var(--navy2,#fff);break-inside:avoid}
+.ahu-sys-h{font-weight:800;color:var(--accent);font-size:13px;margin-bottom:4px}
+.ahu-sys-lines{font-size:11px;line-height:1.7;color:var(--text);margin-bottom:6px}
+.ahu-svg-wrap{overflow-x:auto;margin:6px 0}
+.ahu-svg{width:100%;height:auto;min-width:420px;display:block;background:#fff;border:1px solid var(--border);border-radius:8px}
+.ahu-card{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;background:var(--navy2,#fff);box-shadow:0 4px 20px rgba(0,0,0,.05)}
+.ahu-card-h{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-weight:800;font-size:14px;color:#0c4a6e;border-bottom:2px solid var(--accent);padding-bottom:6px;margin-bottom:8px}
+.ahu-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ahu-figs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ahu-sub-h{font-weight:800;font-size:12px;margin:10px 0 4px;color:var(--text)}
+.ahu-kv,.ahu-st,.ahu-sp{width:100%}
+.ahu-kv td,.ahu-st td,.ahu-sp td,.ahu-st th,.ahu-sp th,.ahu-kv th{font-size:11px;padding:3px 6px}
+.ahu-kv td.f{font-size:10px;color:var(--text2);text-align:left;white-space:normal;line-height:1.5}
+.ahu-sp tr.sub td{font-weight:700;background:#f1f5f9}
+.ahu-set-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.ahu-set-grid .form-row .form-input,.ahu-set-grid .form-row .form-select{min-width:0}
+.ahu-sp-edit{margin:6px 0 4px;font-size:12px}
+.ahu-sp-edit summary{cursor:pointer;font-weight:700;color:var(--accent);padding:6px 0}
+.ahu-sp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:1024px){.ahu-grid,.ahu-figs{grid-template-columns:1fr}.ahu-sp-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.ahu-sp-grid{grid-template-columns:1fr}.ahu-card{padding:10px}}
+@media (max-width:480px){#tab-ahu .ahu-subnav button{flex:1 1 30%;padding:6px 6px}.ahu-card-h{font-size:13px}}
+/* 산출서(#rts-report) 내 AHU 시트 */
+#rts-report .ahu-rp table{width:100%;border-collapse:collapse;font-size:8.2px;margin:4px 0}
+#rts-report .ahu-rp th{background:#f0fdfa;color:#0f766e;border:1px solid #cbd5e1;padding:2px 3px;font-weight:700;text-align:center;white-space:nowrap}
+#rts-report .ahu-rp td{border:1px solid #cbd5e1;padding:1.5px 3px;text-align:center;white-space:nowrap}
+#rts-report .ahu-rp td.l{text-align:left}#rts-report .ahu-rp td.n{text-align:right;font-family:'JetBrains Mono',monospace}
+#rts-report .ahu-rp td.f{text-align:left;white-space:normal;color:#475569;font-size:7.6px}
+#rts-report .ahu-rp tr.ahu-head td{background:#ecfeff;font-weight:700}
+#rts-report .ahu-rp tr.ahu-peak td,#rts-report .ahu-rp tr.ahu-min td{text-align:left;color:#475569;font-size:7.6px}
+#rts-report .ahu-rp .ahu-card{box-shadow:none;border:0;padding:0;margin:0}
+#rts-report .ahu-rp .ahu-card-h{font-size:10px}
+#rts-report .ahu-rp .ahu-sub-h{font-size:8.6px;margin:5px 0 2px}
+#rts-report .ahu-rp .ahu-grid{gap:8px}
+#rts-report .ahu-rp .ahu-svg{min-width:0;border-color:#cbd5e1}
+#rts-report .ahu-rp .ahu-note{font-size:7.6px;padding:2px 0}
+#rts-report .ahu-rp .ahu-sysblk{border-color:#cbd5e1;padding:6px;border-radius:4px}
+#rts-report .ahu-rp .ahu-sys-lines{font-size:8.2px;line-height:1.5}
+#rts-report .ahu-rp .ahu-grid,#rts-report .ahu-rp .ahu-figs{grid-template-columns:1fr 1fr}
+#rts-report .ahu-rp .ahu-grid>div,#rts-report .ahu-rp .ahu-figs>div{min-width:0}
+#rts-report .ahu-rp table td,#rts-report .ahu-rp table th{font-size:7.4px!important;padding:1.2px 3px!important;line-height:1.3!important;font-family:'Noto Sans KR','Malgun Gothic',sans-serif!important;letter-spacing:0!important;min-width:0!important}
+#rts-report .ahu-rp table td.n{font-family:'JetBrains Mono',monospace!important}
+#rts-report .ahu-rp .ahu-kv td.l,#rts-report .ahu-rp .ahu-sp td.l,#rts-report .ahu-rp .ahu-st td.l{white-space:normal}
+#rts-report .ahu-rp .ahu-sel-wide table{table-layout:auto}
+@media print{.ahu-card,.ahu-sysblk{break-inside:avoid;page-break-inside:avoid}.ahu-svg{print-color-adjust:exact;-webkit-print-color-adjust:exact}#tab-ahu .ahu-subnav,.ahu-sp-edit{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -2722,7 +2785,7 @@ body{background:var(--navy);color:var(--text);}
         <h1 class="hdr-h1">RTS-MANMIN 건축물 부하계산서</h1>
         <div class="hdr-sub">
           냉난방 부하 · 조닝·장비 · 건물 집계 · A4 / Excel 산출 &nbsp;·&nbsp; <span id="hdr-designer-line">설계자: 김만민 | 만민 건축사 신사옥 신축공사</span>
-          <span class="hdr-manmin">MANMIN · Ver-5.2.1</span>
+          <span class="hdr-manmin">MANMIN · Ver-5.3.1</span>
         </div>
       </div>
     </div>
@@ -2830,7 +2893,7 @@ body{background:var(--navy);color:var(--text);}
         <div class="si-dot"></div> 7. 냉난방 부하 결과
       </div>
       <div class="sidebar-item" onclick="showTab('tab-ahu')">
-        <div class="si-dot"></div> 8. AHU/FCU 선정
+        <div class="si-dot"></div> 8. AHU 선정
       </div>
       <div class="sidebar-item" onclick="showTab('tab-building')">
         <div class="si-dot"></div> 9. 건물 부하 집계
@@ -2903,7 +2966,7 @@ body{background:var(--navy);color:var(--text);}
           <tr><td class="ci-label">검  토  자</td><td class="ci-value" id="cov-reviewer"></td></tr>
           <tr><td class="ci-label">계  산  일</td><td class="ci-value" id="cov-date"></td></tr>
           <tr><td class="ci-label">계 산 방 법</td><td class="ci-value">RTS Method · ASHRAE Fundamentals 2009</td></tr>
-          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value" id="cov-software">RTS-MANMIN Ver-5.2.1</td></tr>
+          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value" id="cov-software">RTS-MANMIN Ver-5.3.1</td></tr>
         </table>
         <!-- 하단 기준 고시 -->
         <div class="cover-footer-box">
@@ -2931,7 +2994,7 @@ body{background:var(--navy);color:var(--text);}
       <!-- 인쇄용 문서 헤더 (화면에서는 숨김) -->
       <div class="print-page-header" style="display:none">
         <div>
-          <div class="print-page-header-title" id="print-title">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1</div>
+          <div class="print-page-header-title" id="print-title">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1</div>
           <div style="font-size:7pt;color:#333;margin-top:2pt;" id="print-subtitle">만민 건축사 신사옥 신축공사 &nbsp;|&nbsp; 설계자: 김만민 &nbsp;|&nbsp; RTS법 (ASHRAE 2009)</div>
         </div>
         <div style="text-align:right;font-size:7pt;color:#555;" id="print-date"></div>
@@ -3164,7 +3227,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 0</span>
     </div>
 </div>
@@ -3174,7 +3237,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-w"></span>
         <span class="sh-title">SHEET 1 · 설계 외기 조건 및 기상 데이터</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-w"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-w"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🌡️ 설계 외기 조건 및 기상 데이터 <span class="stag">SHEET 1</span></div>
@@ -3295,7 +3358,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 1</span>
     </div>
 </div>
@@ -3306,7 +3369,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-r"></span>
         <span class="sh-title">SHEET 2 · 실별 기본 데이터 입력</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-r"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-r"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🏢 실별 기본 데이터 입력 <span class="stag">SHEET 2</span></div>
@@ -3441,7 +3504,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 2</span>
     </div>
 </div>
@@ -3451,10 +3514,10 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-z"></span>
         <span class="sh-title">SHEET 2-1 · 조닝 · 장비 배정 및 장비별 부하 집계</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-z"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-z"></span></span>
       </div>
       <div class="section-header">
-        <div class="section-title">🗂️ 조닝 · 장비 배정 (Zoning &amp; Equipment) <span class="stag">Ver-5.2.1</span></div>
+        <div class="section-title">🗂️ 조닝 · 장비 배정 (Zoning &amp; Equipment) <span class="stag">Ver-5.3.1</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-secondary btn-sm" onclick="addEquipment()">+ 장비 추가</button>
           <button class="btn btn-secondary btn-sm" onclick="autoGenEquipFromRooms()" title="실 목록의 AHU No. 고유값으로 장비 자동 등록">⚡ 실 AHU값 자동 생성</button>
@@ -3580,7 +3643,8 @@ body{background:var(--navy);color:var(--text);}
         <div style="padding:6px 12px;font-size:9px;color:var(--text2)">
           ※ 실부하 현열 = 소속 실 시각별 부하의 <strong>동시각 합산 후 최대값</strong>(실별 피크 단순합이 아님) ·
           외기부하: 현열 q=0.335·V·Δt, 잠열 q=834·V·Δx (ASHRAE 습공기선도 기반) ·
-          가습량 = 1.2·V·(x실내-x외기)겨울 · 급기량 = 실현열피크 / (0.335·취출온도차)
+          가습량 = 1.2·V·(x실내-x외기)겨울 · 급기량 = 실현열피크 / (0.335·취출온도차) ·
+          냉방코일에는 실에서 뺀 천장속(RA) 조명열 Q1(동시 피크 시각) 포함 — Ver-5.3.1
         </div>
       </div>
 
@@ -3612,7 +3676,7 @@ body{background:var(--navy);color:var(--text);}
 
       <!-- 인쇄용 하단 푸터 -->
       <div class="print-sheet-footer no-print-hide" style="display:none">
-        <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+        <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
         <span class="sf-right">SHEET 2-1</span>
       </div>
     </div>
@@ -3622,7 +3686,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-e"></span>
         <span class="sh-title">SHEET 3 · 외부 열취득 (External Heat Gain)</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-e"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-e"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🌞 외부 열취득 (External Heat Gain) <span class="stag">SHEET 3</span></div>
@@ -3718,7 +3782,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 3</span>
     </div>
 </div>
@@ -3728,7 +3792,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-i"></span>
         <span class="sh-title">SHEET 4 · 내부 열취득 (Internal Heat Gain)</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-i"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-i"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">💡 내부 열취득 (Internal Heat Gain) <span class="stag">SHEET 4</span></div>
@@ -3964,7 +4028,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 4</span>
     </div>
 </div>
@@ -3974,7 +4038,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-rts"></span>
         <span class="sh-title">SHEET 5 · CTS / RTS 계수</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-rts"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-rts"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">📊 CTS / RTS 계수 (Conduction & Radiant Time Series) <span class="stag">ASHRAE 2009</span></div>
@@ -3995,7 +4059,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 5</span>
     </div>
 </div>
@@ -4005,7 +4069,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-res"></span>
         <span class="sh-title">SHEET 6 · 냉난방 부하 계산 결과</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-res"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-res"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">📈 냉난방 부하 계산 결과 <span class="stag">SHEET 6</span></div>
@@ -4112,7 +4176,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 6</span>
     </div>
 </div>
@@ -4122,140 +4186,64 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-ahu"></span>
         <span class="sh-title">SHEET 7 · AHU / FCU 선정</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-ahu"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-ahu"></span></span>
       </div>
       <div class="section-header">
-        <div class="section-title">⚙️ AHU / FCU 선정 <span class="stag">SHEET 7</span></div>
-        <button class="btn btn-primary btn-sm" onclick="calcAHU()">AHU 계산</button>
+        <div class="section-title">⚙️ AHU 선정 (AHU Load · Air Volume · System · Selection) <span class="stag">SHEET 7</span></div>
+        <button class="btn btn-primary btn-sm" onclick="calcAHU()">🔄 AHU 계산</button>
       </div>
 
-      <div class="form-grid">
-        <div class="form-card">
-          <div class="form-card-header">🌬️ AHU 기본 정보</div>
-          <div class="form-card-body">
-            <div class="form-row">
-              <label class="form-label">장비 번호</label>
-              <input class="form-input" id="ahu-no" type="text" value="AHU-1">
-              <span class="form-unit"></span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">장비 명칭</label>
-              <input class="form-input" id="ahu-name" type="text" value="공조기-1">
-              <span class="form-unit"></span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">시스템 유형</label>
-              <select class="form-select" id="ahu-sys">
-                <option>CAV (정풍량)</option>
-                <option>VAV (변풍량)</option>
-                <option>FCU+OA</option>
-                <option>PAC</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label class="form-label">배열회수기</label>
-              <select class="form-select" id="ahu-erv">
-                <option value="0">미적용</option>
-                <option value="70">전열교환기 (η=70%)</option>
-                <option value="80">전열교환기 (η=80%)</option>
-              </select>
-            </div>
-          </div>
-        </div>
+      <div class="info-box" style="border-color:var(--gold);background:rgba(240,165,0,0.07)">
+        <strong>📋 사용 방법:</strong>
+        ① SHEET 2-1에서 AHU/RTU 등록·실 배정(방식 CAV/VAV·외기량·전열교환기·취출온도차) →
+        ② 아래 「장비 상세 설정」에서 코일·가습·송풍기·정압 항목 지정 →
+        ③ 7-2 표에서 실별 국소배기·양압 입력(실 상세 모달에서도 가능) → 「🔄 AHU 계산」.
+        냉각코일은 혼합공기–코일출구 <strong>엔탈피차 방식</strong>(RTS-SAREK 3-4 동일)으로 산정하고, 실부하+외기부하 단순합을 대조값으로 함께 표기합니다.
+      </div>
+      <div class="ahu-summary" id="ahu-summary"></div>
 
-        <div class="form-card">
-          <div class="form-card-header">💨 풍량 선정</div>
-          <div class="form-card-body">
-            <div class="form-row">
-              <label class="form-label">냉방 현열 (W)</label>
-              <input class="form-input" id="ahu-cool-sens" type="number" value="0" readonly style="color:var(--calc-text)">
-              <span class="form-unit">W</span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">취출온도 (냉방)</label>
-              <input class="form-input" id="ahu-sa-cool" type="number" value="15.0" step="0.5" onchange="calcAHU()">
-              <span class="form-unit">°C</span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">필요 급기량</label>
-              <input class="form-input" id="ahu-cfm" type="number" value="0" readonly style="color:var(--calc-text)">
-              <span class="form-unit">㎥/h</span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">외기량</label>
-              <input class="form-input" id="ahu-oa" type="number" value="0" readonly style="color:var(--calc-text)">
-              <span class="form-unit">㎥/h</span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">환기횟수</label>
-              <input class="form-input" id="ahu-ach" type="number" value="0" readonly style="color:var(--calc-text)">
-              <span class="form-unit">회/h</span>
-            </div>
-          </div>
-        </div>
+      <div class="excel-wrap no-print">
+        <div class="excel-header">🛠️ 장비 상세 설정 (AHU Configuration)</div>
+        <div style="padding:12px" id="ahu-settings"></div>
+      </div>
 
-        <div class="form-card">
-          <div class="form-card-header">🌀 Fan 선정</div>
-          <div class="form-card-body">
-            <div class="form-row">
-              <label class="form-label">Fan 형식</label>
-              <select class="form-select" id="ahu-fan-type">
-                <option>Multi-Blade (효율 60%)</option>
-                <option>Airfoil (효율 75%)</option>
-                <option>Backward Incline (효율 70%)</option>
-                <option>Propeller (효율 55%)</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label class="form-label">전정압</label>
-              <input class="form-input" id="ahu-sp" type="number" value="900">
-              <span class="form-unit">Pa</span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">Fan 효율</label>
-              <input class="form-input" id="ahu-fan-eff" type="number" value="60">
-              <span class="form-unit">%</span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">Fan 동력</label>
-              <input class="form-input" id="ahu-fan-kw" type="number" value="0" readonly style="color:var(--calc-text)">
-              <span class="form-unit">kW</span>
-            </div>
-            <div class="form-row">
-              <label class="form-label">모터 안전율</label>
-              <input class="form-input" id="ahu-motor-sf" type="number" value="1.15" step="0.05">
-              <span class="form-unit">배</span>
-            </div>
-          </div>
+      <div class="ahu-subnav" role="tablist">
+        <button type="button" data-k="all" class="on" onclick="setAhuView('all')">전체</button>
+        <button type="button" data-k="load" onclick="setAhuView('load')">7-1 AHU LOAD</button>
+        <button type="button" data-k="air" onclick="setAhuView('air')">7-2 AIR VOLUME</button>
+        <button type="button" data-k="sys" onclick="setAhuView('sys')">7-3 SYSTEM DIAGRAM</button>
+        <button type="button" data-k="sel" onclick="setAhuView('sel')">7-4 AHU SELECTION</button>
+      </div>
+
+      <div class="ahu-sub" data-k="load">
+        <div class="excel-wrap">
+          <div class="excel-header">📋 7-1. AHU LOAD — 실별·Zone 피크 냉방부하 / 난방부하</div>
+          <div style="overflow-x:auto" id="ahu-load-body"></div>
+        </div>
+      </div>
+      <div class="ahu-sub" data-k="air">
+        <div class="excel-wrap">
+          <div class="excel-header">💨 7-2. AHU AIR VOLUME — 급기·환기·배기·양압 풍량</div>
+          <div style="overflow-x:auto" id="ahu-air-body"></div>
+        </div>
+      </div>
+      <div class="ahu-sub" data-k="sys">
+        <div class="excel-wrap">
+          <div class="excel-header">🗺️ 7-3. AHU SYSTEM DIAGRAM — 계통별 구성·풍량·코일 유량</div>
+          <div style="padding:10px" id="ahu-sys-body"></div>
+        </div>
+      </div>
+      <div class="ahu-sub" data-k="sel">
+        <div class="excel-wrap">
+          <div class="excel-header">🧮 7-4. AHU SELECTION — 공조기별 선정 계산서</div>
+          <div style="padding:10px" id="ahu-sel-body"></div>
         </div>
       </div>
 
-      <div class="excel-wrap">
-        <div class="excel-header">📋 AHU/FCU 선정 결과</div>
-        <table class="excel-table" id="tbl-ahu-result">
-          <thead>
-            <tr>
-              <th class="col-label"></th>
-              <th>장비번호</th>
-              <th>명칭</th>
-              <th>담당 실</th>
-              <th>냉방 현열 (kW)</th>
-              <th>냉방 잠열 (kW)</th>
-              <th>냉방 합계 (kW)</th>
-              <th>난방 부하 (kW)</th>
-              <th>급기량 (㎥/h)</th>
-              <th>외기량 (㎥/h)</th>
-              <th>Fan 동력 (kW)</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-ahu-result">
-          </tbody>
-        </table>
-      </div>
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 7</span>
     </div>
 </div>
@@ -4265,7 +4253,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-bld"></span>
         <span class="sh-title">SHEET 8 · 건물 부하 집계</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-bld"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-bld"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🏗️ 건물 부하 집계 (Building Load Summary) <span class="stag">SHEET 8</span></div>
@@ -4321,7 +4309,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 8</span>
     </div>
 </div>
@@ -4332,10 +4320,10 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-uval"></span>
         <span class="sh-title">SHEET 1-2 · T.D &amp; Glass / Wall / Roof Data</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.2.1 &nbsp;|&nbsp; <span id="sh-date-uval"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-uval"></span></span>
       </div>
       <div class="section-header">
-        <div class="section-title">🧱 부위별 열관류율 검토 연계 <span class="stag">RTS-MANMIN Ver-5.2.1</span></div>
+        <div class="section-title">🧱 부위별 열관류율 검토 연계 <span class="stag">RTS-MANMIN Ver-5.3.1</span></div>
         <div style="display:flex;gap:8px;align-items:center">
           <button class="btn btn-primary btn-sm" onclick="loadAndRenderUvalData()" style="background:linear-gradient(135deg,#059669,#065f46);border:none;">
             🔄 전송 데이터 불러오기
@@ -4377,7 +4365,7 @@ body{background:var(--navy);color:var(--text);}
           <div style="flex:1;min-width:0;">
             <div class="ub-title" style="color:#fff;font-size:14px;font-weight:900;margin-bottom:3px;display:flex;align-items:center;gap:8px;">
               열관류율 종합 검토 시스템
-              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.2.1</span>
+              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.1</span>
             </div>
             <div class="ub-sub" style="color:#a7f3d0;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호</div>
           </div>
@@ -4541,7 +4529,7 @@ body{background:var(--navy);color:var(--text);}
     <span id="status-rooms">실 수: 0</span>
     <span id="status-cool">냉방: 0 kW</span>
     <span id="status-heat">난방: 0 kW</span>
-    <span style="color:var(--text2)">© RTS-MANMIN 부하계산 WAP &nbsp;|&nbsp; <span style="color:rgba(147,197,253,0.8);font-weight:700;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.2.1</span></span>
+    <span style="color:var(--text2)">© RTS-MANMIN 부하계산 WAP &nbsp;|&nbsp; <span style="color:rgba(147,197,253,0.8);font-weight:700;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.1</span></span>
   </div>
 </div>
 
@@ -4932,7 +4920,7 @@ function renderUvalReceived(list) {
   <!-- 1-2 시트 헤더 (성락교회 PDF 형식) -->
   <div style="background:var(--cell-bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:10px;color:var(--text2);">
     <strong style="color:var(--accent);font-size:11px;">□ 1-2. T.D &amp; Glass / Wall / Roof Data</strong>
-    <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.2.1</span>
+    <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.1</span>
   </div>`;
 
   /* 부위 순서: Wall → Roof → Floor → Glass */
@@ -5009,6 +4997,7 @@ function showTab(id) {
   if(si) si.classList.add('active');
   if(id==='tab-rts') showRTSTable();
   if(id==='tab-internal') { renderPeopleCodeRef(); renderInternalTypeRef(); calcInternal(); }
+  if(id==='tab-ahu' && typeof calcAHU==='function') { try { calcAHU(); } catch(_){} }   /* 2026-10-21: 탭 진입 시 장비별 AHU 선정 갱신 */
 
   /* tab-uval: localStorage에 데이터 있으면 자동 로드 */
   if (id === 'tab-uval') {
@@ -5153,7 +5142,7 @@ function _num01(x, dflt){ return (x==null || x==='' || isNaN(+x)) ? dflt : Math.
 
 /* B-3·B-14: 유리 1개 → { condCL, solarCL } (W, 24h, SF 전)
    전도: UA·Δt·df — condRad(기본 0) 만큼 Non-solar RTS
-   일사: 직달 × SHGC(θ) × IAC + (확산+반사) × SHGC_D × IAC  (df 곱 유지 — B-7은 Ver-5.3.0)
+   일사: 직달 × SHGC(θ) × IAC + (확산+반사) × SHGC_D × IAC  (df 곱 유지 — B-7은 Ver-5.4.0)
          IAC = 1 : 직달 → Solar RTS, 확산·반사 → Non-solar RTS (100% 복사)
          IAC < 1 : 직달+확산 → FR 복사분 Non-solar RTS + (1−FR) 대류 즉시 (FR 미입력 시 1.0, 입력검증 경고) */
 function glassLoad24(g, hourlyT24, toIn, doy){
@@ -5899,6 +5888,30 @@ function _renderModal() {
             <label class="form-label">AHU / FCU No.</label>
             <input class="form-input" id="md-ahu" value="${r.ahuNo??'AHU-1'}">
           </div>
+          <div class="form-row" title="SHEET 7-2 AHU AIR VOLUME — 국소배기 용도(화장실·주방 등)">
+            <label class="form-label">국소배기 용도</label>
+            <input class="form-input" id="md-ea-use" list="md-ea-uses" value="${(r.eaUse||'').replace(/"/g,'&quot;')}">
+            <datalist id="md-ea-uses">${AHU_EA_USES.map(u=>`<option value="${u}">`).join('')}</datalist>
+          </div>
+          <div class="form-row">
+            <label class="form-label">국소배기량</label>
+            <input class="form-input" type="number" id="md-ea-cmh" value="${r.eaCMH||0}" step="10" min="0">
+            <span class="form-unit">㎥/h</span>
+          </div>
+          <div class="form-row" title="실압 유지(양압)·전이공기 — 환기(RA)에서 제외">
+            <label class="form-label">양압(Posit.)</label>
+            <input class="form-input" type="number" id="md-pos-cmh" value="${r.posCMH||0}" step="10" min="0">
+            <span class="form-unit">㎥/h</span>
+          </div>
+          <div class="form-row" title="체크 시 RA = 0, 급기 잔여량을 양압(전이공기)으로 처리">
+            <label class="form-label">환기(RA) 없음</label>
+            <input type="checkbox" id="md-no-ra" ${r.noRA?'checked':''}>
+          </div>
+          <div class="form-row" title="조명 발열 중 천장속 환기 플레넘으로 가는 비율(0~90%) — 실부하 제외·AHU RA 부하(Q1) 가산">
+            <label class="form-label">조명→천장속(RA)</label>
+            <input class="form-input" type="number" id="md-ra-frac" value="${Math.round((r.raFrac||0)*100)}" step="5" min="0" max="90">
+            <span class="form-unit">%</span>
+          </div>
         </div>
       </div>
     </div>`;
@@ -6113,6 +6126,12 @@ function _saveInternalFields() {
   if(get('md-rts-zone'))   r.rtsZone     = +get('md-rts-zone').value;
   if(get('md-sf'))         r.sf          = +get('md-sf').value;
   if(get('md-ahu'))        r.ahuNo       =  get('md-ahu').value;
+  /* 2026-10-21 AHU 풍량·천장속 부하 */
+  if(get('md-ea-use'))     r.eaUse       =  get('md-ea-use').value.trim();
+  if(get('md-ea-cmh'))     r.eaCMH       =  Math.max(0, +get('md-ea-cmh').value || 0);
+  if(get('md-pos-cmh'))    r.posCMH      =  Math.max(0, +get('md-pos-cmh').value || 0);
+  if(get('md-no-ra'))      r.noRA        =  !!get('md-no-ra').checked;
+  if(get('md-ra-frac'))    r.raFrac      =  Math.min(0.9, Math.max(0, (+get('md-ra-frac').value || 0)/100));
 }
 
 /* 인체코드 변경 시 힌트 업데이트 */
@@ -6771,53 +6790,11 @@ function renderLoadBreakdown(wall, glass, solar, internal, latent, SF, cmp) {
    AHU 계산
 ===================================================== */
 function calcAHU() {
-  const Q    = v('ahu-cool-sens') || 0;
-  const tSA  = v('ahu-sa-cool')   || 15;
-  const tRoom= v('w-indoor-cool') || 26;
-  const dT   = tRoom - tSA;
-  if(dT <= 0) {
-    const tb = document.getElementById('tbody-ahu-result');
-    if(tb) tb.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--red);padding:12px">⚠️ 급기온도(${tSA}°C)가 실내온도(${tRoom}°C) 이상입니다. 급기 온도를 확인하세요.</td></tr>`;
-    return;
-  }
-  const cfm  = Q / (1.2 * 1.006 * dT) * 3.6;
-  /* 재실인원: rooms[] 합산 우선, 없으면 i-people 폴백 */
-  const ppl  = (rooms && rooms.length > 0)
-    ? rooms.reduce((s,rm)=>s+Math.round((rm.area||0)*(rm.qty||1)*(rm.ppl_density ?? 0.2)),0)
-    : (v('i-people') || 50);
-  const SF_ahu = v('p-sf') || 1.10;
-  const latCode = (rooms && rooms.length > 0)
-    ? (PEOPLE_CODE[rooms[0]?.ppl_code||'A']||PEOPLE_CODE['A']).lh
-    : (v('i-lat')||50);
-  const oa   = ppl * 25;
-  const ach  = v('p-area') > 0 ? cfm / (v('p-area') * (v('p-floor-h')||3.0)) : 0;
-  const sp   = v('ahu-sp')  || 900;
-  const eff  = (v('ahu-fan-eff')||60)/100;
-  const fanKW= (cfm/3600 * sp) / eff / 1000;
-
-  setInputVal('ahu-cfm',    cfm.toFixed(0));
-  setInputVal('ahu-oa',     oa.toFixed(0));
-  setInputVal('ahu-ach',    ach.toFixed(2));
-  setInputVal('ahu-fan-kw', fanKW.toFixed(2));
-
-  const lat = ppl * latCode * SF_ahu;
-  const heat= calcResults.heat || 0;
-  const tbody = document.getElementById('tbody-ahu-result');
-  if(!tbody) return;
-  tbody.innerHTML = `
-    <tr>
-      <td class="row-label">1</td>
-      <td class="label-cell">${document.getElementById('ahu-no').value||'AHU-1'}</td>
-      <td class="label-cell">${document.getElementById('ahu-name').value||'공조기-1'}</td>
-      <td class="label-cell">실 전체</td>
-      <td class="calc-cell">${(Q/1000).toFixed(2)}</td>
-      <td class="calc-cell">${(lat/1000).toFixed(2)}</td>
-      <td class="total-cell">${((Q+lat)/1000).toFixed(2)}</td>
-      <td class="calc-cell" style="color:var(--red)">${(heat/1000).toFixed(2)}</td>
-      <td class="calc-cell">${cfm.toFixed(0)}</td>
-      <td class="calc-cell">${oa.toFixed(0)}</td>
-      <td class="calc-cell">${fanKW.toFixed(2)}</td>
-    </tr>`;
+  /* 2026-10-21: 구 SHEET 7 단일 공조기 계산(전역 입력·rooms[0] 인체코드)을 장비별 AHU 선정(rooms[] 단일 경로)으로 대체 */
+  let list=[];
+  try { list = calcAhuSystem(); } catch(e){ console.error('[AHU] 계산 오류', e); if (typeof showToast==='function') showToast('⚠️ AHU 계산 오류 — 콘솔 참조'); }
+  renderAhuAll(list);
+  return list;
 }
 
 function setInputVal(id, val) {
@@ -6896,7 +6873,12 @@ function calcRoomLoad(room, solAir24, hourlyT24, doy) {
 
   /* Ver-5.2.0 B-11: 성분별(인체·조명·기기·침기) 냉방부하 분리 — 건물 집계·산출서 항목 분해용 (합 = 기존 intCL24) */
   const peopleCL24 = rtsSplitCL(sch(pHrs, pSens),  0.60);
-  const lightCL24  = rtsSplitCL(sch(lHrs, lTotal), 0.42);
+  /* 2026-10-21 AHU: 조명 발열 중 천장속(환기 플레넘) 비율 raFrac — 실 냉방부하에서 제외, AHU 환기(RA) 부하 Q1으로 이동. 기본 0 = 기존 결과 동일 */
+  /* Ver-5.3.1 보강#1: 천장속 환기로 열을 가져갈 AHU/RTU가 있는 실만 적용(FCU·PAC·미배정 실은 0 → 실부하 유지) */
+  const _raEq      = (typeof equipment!=='undefined' && room.ahuNo) ? equipment.find(e=>e.no===room.ahuNo) : null;
+  const raFrac     = (_raEq && ['AHU','RTU'].includes(_raEq.kind||'AHU')) ? Math.min(0.9, Math.max(0, +room.raFrac || 0)) : 0;
+  const lightCL24  = rtsSplitCL(sch(lHrs, lTotal*(1-raFrac)), 0.42);
+  const q1_24      = sch(lHrs, lTotal*raFrac*SF);
   const equipCL24  = rtsSplitCL(sch(eHrs, eTotal), 0.20);
   const infilCL24  = new Array(24).fill(infiltQ);
   const intCL24 = Array.from({length:24},(_,h)=> peopleCL24[h] + lightCL24[h] + equipCL24[h] + infilCL24[h]);
@@ -6917,7 +6899,7 @@ function calcRoomLoad(room, solAir24, hourlyT24, doy) {
   const glassUA_h = (room.glass||[]).reduce((s,g)=> s + (g.U||1.5) *(g.area||0)*(g.df||1.05),0);
   const heatLoad  = (wallUA_h + glassUA_h) * dTh * SF + steadyH * SF + vol * ach * 0.335 * dTh;   /* v5.1: 정상상태 부위 난방 가산 */
 
-  return { cool24, coolRaw24, peakCool, peakHour, latTotal, heatLoad, steadyC, steadyH,
+  return { cool24, coolRaw24, peakCool, peakHour, latTotal, heatLoad, steadyC, steadyH, q1_24, raFrac,
            peopleTot, pSens, pLat, lTotal, eTotal, infiltQ, infiltL,
            wallCL24, roofCL24, glassConv24, solarCL24, intCL24, area, vol, SF,
            latPeople: pLat * SF, latInfil: infiltL * SF,
@@ -7128,7 +7110,7 @@ function calcEquipLoads(){
   const rhIn = v('w-indoor-rh-cool')||50, winDB = v('w-winter-db')||-11.3;
   const xOut = _xFromDbWb(toDB,toWB), xIn = _xFromDbRh(toIn,rhIn);
 
-  const groups = equipment.map(eq=>({ eq, cool24:new Array(24).fill(0), lat:0, heat:0, area:0, cnt:0, ppl:0 }));
+  const groups = equipment.map(eq=>({ eq, cool24:new Array(24).fill(0), q124:new Array(24).fill(0), lat:0, heat:0, area:0, cnt:0, ppl:0 }));
   const byNo = Object.fromEntries(groups.map(g=>[g.eq.no,g]));
   let unassigned = 0;
   rooms.forEach(room=>{
@@ -7136,6 +7118,7 @@ function calcEquipLoads(){
     const g = byNo[room.ahuNo];
     if(!g){ unassigned++; return; }
     res.cool24.forEach((q,h)=>g.cool24[h]+=q);
+    (res.q1_24||[]).forEach((q,h)=>g.q124[h]+=q);   /* Ver-5.3.1 보강#1: 천장속(RA) 부하 */
     g.lat += res.latTotal; g.heat += res.heatLoad; g.area += res.area; g.cnt++; g.ppl += res.peopleTot||0;
   });
   groups.forEach(g=>{
@@ -7157,7 +7140,8 @@ function calcEquipLoads(){
     g.oaSH   = g.oaSH_raw*(1-es);
     g.oaLH   = g.oaLH_raw*(1-el);
     g.oaHeat = g.oaHeat_raw*(1-es);
-    g.coilC  = g.peak+g.lat+g.oaSH+g.oaLH;
+    g.q1     = g.cnt ? (g.q124[g.peakH-1]||0) : 0;   /* Ver-5.3.1 보강#1: 실부하에서 뺀 천장속 조명열을 코일 단순합에 환원 (기본 0) */
+    g.coilC  = g.peak+g.lat+g.oaSH+g.oaLH+g.q1;
     g.coilH  = g.heat+g.oaHeat;
     /* 겨울 가습량 kg/h = ρ·V·Δx (실내 난방 습도 목표 - 겨울 외기 절대습도) */
     const rhInH  = v('w-indoor-rh-heat')||40;
@@ -7245,6 +7229,651 @@ function calcEquipLoads(){
   if(unassigned) showToast(`⚠️ 미배정 실 ${unassigned}개는 집계에서 제외되었습니다`);
   else showToast(`✅ 장비 ${groups.length}대 부하 집계 완료`);
   return groups;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   AHU 선정 엔진 (RTS-SAREK 3-1~3-4 방식) — 2026-10-21
+   순수 함수 ahuCore(p): 입력 = 부하·풍량·설계조건·장비 구성, 출력 = 상태점·코일·팬
+   끝수 처리(SAREK 역산): 풍량 100㎥/h 올림, 온도차 0.1℃ 올림, 상태점 온도 0.1℃ 반올림,
+   절대습도 0.0001 반올림(코일 출구 Δx는 올림), 외기비 0.01 올림, 가습 kg/h·lpm 올림
+═══════════════════════════════════════════════════════════════════ */
+const AHU_MOTOR_STD = [0.4,0.75,1.5,2.2,3.7,5.5,7.5,11,15,18.5,22,30,37,45,55,75,90,110,132,160,200];
+const _ahuCeil  = (v,d)=>{ const k=Math.pow(10,d); return Math.ceil(v*k-1e-9)/k; };
+const _ahuRound = (v,d)=>{ const k=Math.pow(10,d); return Math.round(v*k)/k; };
+/* 포화수증기압 Pa — ASHRAE HOF 2009 1장 식(5)·(6) Hyland-Wexler (빙점 이하 얼음면) */
+function _ahuPws(t){
+  const T=t+273.15;
+  if (t<0) return Math.exp(-5.6745359e3/T + 6.3925247 - 9.677843e-3*T + 6.2215701e-7*T*T + 2.0747825e-9*T*T*T - 9.484024e-13*T*T*T*T + 4.1635019*Math.log(T));
+  return Math.exp(-5.8002206e3/T + 1.3914993 - 4.8640239e-2*T + 4.1764768e-5*T*T - 1.4452093e-8*T*T*T + 6.5459673*Math.log(T));
+}
+function _ahuX(t,rh){ const pw=(rh/100)*_ahuPws(t); return 0.622*pw/(101325-pw); }
+function _ahuXs(t){ return _ahuX(t,100); }
+function _ahuRH(t,x){ const pw=x*101325/(0.622+x); return Math.min(100,100*pw/_ahuPws(t)); }
+function _ahuH(t,x){ return (1.006*t + x*(2501+1.86*t))/3.6; }   /* Wh/kg(DA) — ASHRAE HOF 1장 식(32) ÷ 3.6 */
+function _ahuState(t,x){ return { t, x, rh:_ahuRH(t,x), h:_ahuH(t,x) }; }
+function _ahuMotor(kw){ return AHU_MOTOR_STD.find(m=>m>=kw-1e-9) || Math.ceil(kw); }
+/* 장치노점(ADP): 혼합점 M → 코일출구 L 직선 연장선이 포화곡선과 만나는 온도 */
+function _ahuADP(M,L){
+  if (!(M.t-L.t>0.05)) return null;
+  const k=(M.x-L.x)/(M.t-L.t);
+  const g=t=> (L.x + (t-L.t)*k) - _ahuXs(t);
+  if (g(L.t)>=0) return L.t;          /* 출구가 이미 포화 이상 */
+  let hi=L.t, lo=null;
+  for (let t=L.t-0.1; t>=-40; t-=0.1){ if (g(t)>=0){ lo=t; break; } hi=t; }   /* 출구에서 저온 쪽으로 첫 교점 탐색 */
+  if (lo==null) return null;
+  for (let i=0;i<60;i++){ const m=(lo+hi)/2; if (g(m)>=0) lo=m; else hi=m; }
+  return (lo+hi)/2;
+}
+/* 정압 기본값 (Pa) — SAREK 표준 항목 */
+const AHU_SP_DEF = {
+  int:{ cc:120, rh:0, ph:0, hc:40, erv:0, pre:80, med:150, fin:0, casing:50, chamber:30, vd:20 },
+  sa: { d15:0, d10:60, fitPct:50, tu:0, prh:0, louver:50, diff:30, flex:10, vd:20, fd:20, att:100, plenum:0, vp:0 },
+  ra: { d10:0, d08:60, fitPct:50, louver:50, grille:30, flex:10, vd:20, fd:20, att:80, plenum:0, vp:0 },
+};
+const AHU_SP_LABEL = {
+  int:{ cc:'냉방(냉온수) 코일', rh:'재열 코일', ph:'예열 코일', hc:'가열 코일', erv:'배열회수기', pre:'Pre Filter', med:'Medium Filter', fin:'Final Filter', casing:'Plenum/Casing', chamber:'Chamber', vd:'Volume Damper' },
+  sa: { d15:'덕트 1.5 Pa/m × 길이(m)', d10:'덕트 1.0 Pa/m × 길이(m)', fitPct:'이음류 (직관 대비 %)', tu:'Terminal Unit', prh:'Pre(Re) Heating Coil', louver:'OA 루버', diff:'Diffuser', flex:'Flexible Duct', vd:'Volume Damper', fd:'Fire Damper', att:'Sound Attenuator', plenum:'Plenum', vp:'Velocity Pressure' },
+  ra: { d10:'덕트 1.0 Pa/m × 길이(m)', d08:'덕트 0.8 Pa/m × 길이(m)', fitPct:'이음류 (직관 대비 %)', louver:'EA 루버', grille:'Grille', flex:'Flexible Duct', vd:'Volume Damper', fd:'Fire Damper', att:'Sound Attenuator', plenum:'RA Plenum', vp:'Velocity Pressure' },
+};
+function ahuSpSum(sp, spSF){
+  const f=spSF||1.1, I=sp.int, S=sp.sa, R=sp.ra;
+  const intRaw = ['cc','rh','ph','hc','erv','pre','med','fin','casing','chamber','vd'].reduce((s,k)=>s+(+I[k]||0),0);
+  const sDuct = 1.5*(+S.d15||0) + 1.0*(+S.d10||0), sFit = sDuct*(+S.fitPct||0)/100;
+  const saRaw = sDuct + sFit + ['tu','prh','louver','diff','flex','vd','fd','att','plenum','vp'].reduce((s,k)=>s+(+S[k]||0),0);
+  const rDuct = 1.0*(+R.d10||0) + 0.8*(+R.d08||0), rFit = rDuct*(+R.fitPct||0)/100;
+  const raRaw = rDuct + rFit + ['louver','grille','flex','vd','fd','att','plenum','vp'].reduce((s,k)=>s+(+R[k]||0),0);
+  return { intRaw, saRaw, raRaw, sDuct, sFit, rDuct, rFit,
+           int:_ahuRound(intRaw*f,1), sa:_ahuRound(saRaw*f,1), ra:_ahuRound(raRaw*f,1) };
+}
+
+/* p: { SH, LH, Q1, heat, dt, OA, TA, SAcalc?, SA, RA, qty,
+        cool:{tIn,rhIn,tOA,xOA}, heatC:{tIn,rhIn,tOA,xOA},
+        erv:{on,sens,lat}, coil:{pre,preT,rh,rhDT,hc,hum,chwIn,chwOut,hwIn,hwOut,steamH},
+        sp, spSF, fan:{sfEff,rfEff,motorSF,rfOn,rfHeat}, coilSF } */
+function ahuCore(p){
+  const out = { warn:[] };
+  const SA=p.SA, OA=p.OA, RA=p.RA, qty=Math.max(1,Math.round(+p.qty)||1), cSF=(+p.coilSF>=1)?+p.coilSF:1.1;   /* 입력은 _ahuSanitize에서 검증 */
+  const r = Math.min(1,_ahuCeil(OA/SA,2));
+  out.ratio = r;
+  /* ── 정압·팬 ── */
+  const sp = ahuSpSum(p.sp, p.spSF);
+  const fan = p.fan;
+  const SPs = Math.ceil(sp.int + sp.sa - 1e-9), SPr = Math.ceil(sp.ra - 1e-9);   /* 팬 정압 정수 올림 (SAREK 336.6→337) */
+  const saU = SA/qty, raU = RA/qty;
+  const sfShaft = saU*SPs/(3600*1000*(fan.sfEff/100))*fan.motorSF;
+  const sfMotor = _ahuMotor(sfShaft);
+  const rfOn = fan.rfOn && RA>0;
+  const rfShaft = rfOn ? raU*SPr/(3600*1000*(fan.rfEff/100))*fan.motorSF : 0;
+  const rfMotor = rfOn ? _ahuMotor(rfShaft) : 0;
+  out.fan = { sp, SPs, SPr, saU, raU, sfShaft, sfMotor, rfOn, rfShaft, rfMotor };
+  const Q2 = sfMotor*1000*(1-fan.sfEff/100)*qty;
+  const Q3 = (rfOn && fan.rfHeat) ? rfMotor*1000*(1-fan.rfEff/100)*qty : 0;
+  const dtFan = _ahuCeil(Q2/(0.335*SA),1);
+  out.Q2=Q2; out.Q3=Q3; out.dtFan=dtFan;
+
+  /* ── 냉방 ── */
+  const c=p.cool, ei=p.erv||{on:false};
+  const I = _ahuState(c.tIn, _ahuRound(_ahuX(c.tIn,c.rhIn),4));
+  const raLoad = (p.Q1||0)+Q3;
+  const dtRA = (RA>0 && raLoad>0) ? _ahuCeil(raLoad/(0.335*RA),1) : 0;
+  const Rp = _ahuState(I.t+dtRA, I.x);
+  const O  = _ahuState(c.tOA, _ahuRound(c.xOA,4));
+  let Op = O;
+  if (ei.on) Op = _ahuState(_ahuRound(O.t-ei.sens*(O.t-Rp.t),1), _ahuRound(O.x-ei.lat*(O.x-Rp.x),4));
+  const M  = _ahuState(_ahuRound(r*Op.t+(1-r)*Rp.t,1), _ahuRound(r*Op.x+(1-r)*Rp.x,4));
+  const dtSA = _ahuCeil(p.SH/(0.335*SA),1);
+  const S  = I.t - dtSA;                                        /* 취출 온도 */
+  const rhDT = (p.coil.rh && p.coil.rh!=='none') ? (+p.coil.rhDT||0) : 0;
+  const dxL = _ahuCeil(p.LH/(1.2*SA*(2501/3.6)),4);
+  const L  = _ahuState(_ahuRound(S-dtFan-rhDT,1), _ahuRound(I.x-dxL,4));
+  /* Ver-5.3.1 보강#6: 잠열 제거량이 실내 절대습도를 넘으면 물리적으로 불가 — 계산 불가 처리 */
+  if (I.x-dxL < 0.001) out.fatal = `코일 출구 절대습도 ${(I.x-dxL).toFixed(4)} kg/kg' (≤ 0.001) — 잠열 ${Math.round(p.LH)} W를 급기량 ${SA} ㎥/h로 제거 불가: 급기량 증가(취출온도차 축소)·잠열 처리 별도 검토`;
+  if (L.x > _ahuXs(L.t)+1e-6) out.warn.push(`코일 출구 과포화(${L.t}℃ · x ${L.x.toFixed(4)}) — 취출온도차·재열 조건 재검토`);
+  const Qc  = 1.2*SA*(M.h-L.h)*cSF;
+  /* ADP: 표기 상태점(M·L) 연장선과 포화곡선 교점 — 산출서 수치로 손검산 가능 */
+  const adp = _ahuADP(M,L);
+  const bf  = (adp!=null && M.t-adp>0) ? (L.t-adp)/(M.t-adp) : null;
+  if (adp==null) out.warn.push(`장치노점(ADP) 교점 없음 — 혼합(M)–코일출구(L, RH ${_ahuRH(L.t,L.x).toFixed(1)}%) 연장선이 포화곡선과 만나지 않음: 취출온도차 축소(급기량 증가) 또는 재열 적용 검토`);
+  else if (adp < +p.coil.chwIn) out.warn.push(`ADP ${_ahuRound(adp,1)} ℃ < 냉수 입구 ${p.coil.chwIn} ℃ — 코일 성립 곤란: 취출온도차 축소 또는 냉수온도 하향 검토`);
+  const Qrh = rhDT>0 ? 0.335*SA*rhDT*cSF : 0;
+  const chwDT = (p.coil.chwOut-p.coil.chwIn>0) ? p.coil.chwOut-p.coil.chwIn : 5;
+  const Qref = p.SH + p.LH + 0.335*OA*Math.max(0,Op.t-I.t) + 834*OA*Math.max(0,Op.x-I.x);   /* 단순합(대조) */
+  out.cool = { I, Rp, O, Op, M, S:_ahuRound(S,1), L, dtRA, raLoad, dtSA, dxL, rhDT,
+               Qc, Qrh, adp:adp==null?null:_ahuRound(adp,1), bf, lpm:Math.ceil(Qc*60/(4186*chwDT)-1e-9), Qref,
+               rRoom:_ahuCeil((p.SH+p.LH)/Qc,2), rOA:_ahuCeil(1.2*OA*(Op.h-I.h)/Qc,2) };
+  out.cool.rAdd = _ahuRound(1-out.cool.rRoom-out.cool.rOA,2);
+
+  /* ── 난방 ── */
+  const hC=p.heatC;
+  const Ih = _ahuState(hC.tIn, _ahuRound(_ahuX(hC.tIn,hC.rhIn),4));
+  const Ow = _ahuState(hC.tOA, _ahuRound(hC.xOA,4));
+  let Owp = Ow;
+  if (ei.on) Owp = _ahuState(_ahuRound(Ow.t+ei.sens*(Ih.t-Ow.t),1), _ahuRound(Ow.x+ei.lat*(Ih.x-Ow.x),4));
+  const Mh = _ahuState(_ahuRound(r*Owp.t+(1-r)*Ih.t,1), _ahuRound(r*Owp.x+(1-r)*Ih.x,4));
+  const pre = p.coil.pre||'none';
+  let P = Mh, Qph = 0;
+  const preT = isFinite(+p.coil.preT) ? +p.coil.preT : 10;
+  if (pre!=='none' && Mh.t < preT) { P = _ahuState(preT, Mh.x); Qph = 0.335*SA*(P.t-Mh.t)*cSF; }
+  const hum = p.coil.hum||'none';
+  const dxH = Math.max(0, Ih.x-Owp.x);
+  const humNet = 1.2*OA*dxH;
+  const humKg  = hum!=='none' ? Math.ceil(humNet*cSF-1e-9) : 0;
+  const LAT = _ahuCeil(p.heat/(0.335*SA)+Ih.t,1);
+  /* 수분무(단열 가습): 증발 냉각만큼 가열코일 출구를 올림 — Δt = W·(2501/3.6)/(0.335·SA) */
+  const dtEvap = hum==='water' ? _ahuCeil(humNet*(2501/3.6)/(0.335*SA),1) : 0;
+  const hcLAT = _ahuRound(LAT+dtEvap,1);
+  const hcType = p.coil.hc||'hw';
+  const Qh = hcType!=='none' ? 0.335*SA*Math.max(0,hcLAT-P.t)*cSF : 0;
+  if (hcType==='none' && p.heat>0) out.warn.push('가열코일 없음 — 실 난방부하를 별도 설비로 처리해야 함');
+  const hwDT = (p.coil.hwIn-p.coil.hwOut>0) ? p.coil.hwIn-p.coil.hwOut : 10, steamH = (+p.coil.steamH>0) ? +p.coil.steamH : 620;
+  const Ht = Qh+Qph;
+  out.heat = { Ih, Ow, Owp, Mh, P, pre, Qph, LAT, dtEvap, hcLAT, hcType, Qh, hum, dxH, humNet, humKg,
+               phKg: (pre==='steam'&&Qph>0) ? Math.ceil(Qph/steamH-1e-9) : 0, phLpm: (pre==='water'&&Qph>0) ? Math.ceil(Qph*60/(4186*hwDT)-1e-9) : 0,
+               lpm: hcType==='hw' ? Math.ceil(Qh*60/(4186*hwDT)-1e-9) : 0, kg: hcType==='steam' ? Math.ceil(Qh/steamH-1e-9) : 0,
+               rRoom: Ht>0?_ahuCeil(p.heat/Ht,2):0, rOA: Ht>0?_ahuCeil(0.335*OA*Math.max(0,Ih.t-Owp.t)/Ht,2):0 };
+  out.heat.rAdd = _ahuRound(1-out.heat.rRoom-out.heat.rOA,2);
+  return out;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   AHU 선정 앱 연동 (SHEET 7-1 ~ 7-4) — RTS-SAREK 3-1~3-4 형식
+   부하 경로: rooms[] → calcRoomLoad() (단일 경로 원칙 B-11) → 장비별 집계 → ahuCore()
+   ※ calcEquipLoads()(SHEET 2-1 · 회귀 키 equipCoilC 등)는 변경하지 않음 — 단순합 대조값으로 유지
+═══════════════════════════════════════════════════════════════════ */
+const AHU_EA_USES = ['화장실','주방','탕비실','흡연실','창고','기계실','주차장','기타'];
+function _ahuDefaults(){
+  return { qty:1, oaTime:'peak', oaCool:true, oaOver:'raise', tIn:null, rhIn:null,
+    coil:{ pre:'none', preT:10, rh:'none', rhDT:0, hc:'hw', hum:'steam', chwIn:7, chwOut:12, hwIn:80, hwOut:70, steamH:620 },
+    sp:JSON.parse(JSON.stringify(AHU_SP_DEF)), spSF:1.1,
+    fan:{ sfType:'Air Foil', sfEff:65, rfType:'Sirocco', rfEff:50, motorSF:1.15, rfOn:true, rfHeat:false },
+    coilSF:1.1 };
+}
+/* 장비 AHU 설정 정규화 — 구 파일(schema ≤6)은 기본값으로 채움 */
+function _ahuCfg(eq){
+  const d=_ahuDefaults(), a=eq.ahu||{};
+  const cfg = Object.assign({}, d, a);
+  cfg.coil = Object.assign({}, d.coil, a.coil||{});
+  cfg.fan  = Object.assign({}, d.fan,  a.fan||{});
+  cfg.sp   = { int:Object.assign({}, d.sp.int, (a.sp||{}).int||{}), sa:Object.assign({}, d.sp.sa, (a.sp||{}).sa||{}), ra:Object.assign({}, d.sp.ra, (a.sp||{}).ra||{}) };
+  eq.ahu = cfg;
+  return cfg;
+}
+/* Ver-5.3.1 보강#3·#8·#9: 입력 범위 검증 — 0·음수·역전·문자열을 조용히 기본값으로 바꾸지 않고 보정 후 경고 */
+function _ahuSanitize(cfg){
+  const w=[], d=_ahuDefaults();
+  const num=(v)=>{ const n=(typeof v==='number')?v:parseFloat(v); return isFinite(n)?n:NaN; };
+  const fix=(obj,k,lo,hi,def,label,unit)=>{ const n=num(obj[k]);
+    if (isNaN(n)) { obj[k]=def; w.push(`${label} 입력 없음/오류 → ${def}${unit} 적용`); return; }
+    if (n<lo || n>hi) { const c=Math.min(hi,Math.max(lo,n)); obj[k]=c; w.push(`${label} ${n}${unit} 범위(${lo}~${hi}) 밖 → ${c}${unit} 적용`); return; }
+    obj[k]=n; };
+  const q=num(cfg.qty); cfg.qty = (isFinite(q)&&q>=1) ? Math.round(q) : (w.push(`수량 ${cfg.qty} 오류 → 1 적용`),1);
+  fix(cfg,'coilSF',1,2,1.1,'코일·가습 여유율',' 배'); fix(cfg,'spSF',1,2,1.1,'정압 여유율',' 배');
+  fix(cfg.fan,'sfEff',10,95,65,'급기팬 효율',' %'); fix(cfg.fan,'rfEff',10,95,50,'환기팬 효율',' %'); fix(cfg.fan,'motorSF',1,2,1.15,'전동기 여유율',' 배');
+  const c=cfg.coil;
+  fix(c,'chwIn',0,20,7,'냉수 입구',' ℃'); fix(c,'chwOut',1,25,12,'냉수 출구',' ℃');
+  if (!(c.chwOut-c.chwIn>0)) { w.push(`냉수 입/출구 ${c.chwIn}/${c.chwOut} ℃ 역전·동일 → 7/12 ℃ 적용`); c.chwIn=7; c.chwOut=12; }
+  fix(c,'hwIn',30,180,80,'온수 입구',' ℃'); fix(c,'hwOut',20,170,70,'온수 출구',' ℃');
+  if (!(c.hwIn-c.hwOut>0)) { w.push(`온수 입/출구 ${c.hwIn}/${c.hwOut} ℃ 역전·동일 → 80/70 ℃ 적용`); c.hwIn=80; c.hwOut=70; }
+  fix(c,'steamH',400,800,620,'증기 잠열',' Wh/kg'); fix(c,'preT',-20,30,10,'예열 목표온도',' ℃'); fix(c,'rhDT',0,15,0,'재열 Δt',' ℃');
+  if (cfg.tIn!=null && cfg.tIn!=='') fix(cfg,'tIn',10,35,null,'실내 냉방 온도',' ℃'); else cfg.tIn=null;
+  if (cfg.rhIn!=null && cfg.rhIn!=='') fix(cfg,'rhIn',10,95,null,'실내 냉방 습도',' %'); else cfg.rhIn=null;
+  ['int','sa','ra'].forEach(gk=>Object.keys(d.sp[gk]).forEach(k=>{ const n=num(cfg.sp[gk][k]); if (isNaN(n)||n<0) { if(!isNaN(n)) w.push(`정압 항목 ${k} 음수 → 0`); cfg.sp[gk][k]=isNaN(n)?d.sp[gk][k]:0; } else cfg.sp[gk][k]=n; }));
+  if (!['peak','design'].includes(cfg.oaTime)) cfg.oaTime='peak';
+  if (!['raise','cap'].includes(cfg.oaOver)) cfg.oaOver='raise';
+  return w;
+}
+function _ahuIsAir(eq){ return ['AHU','RTU'].includes(eq.kind||'AHU'); }
+function _ahuXwb(t,twb){ const xs=_ahuXs(twb); return ((2501-2.326*twb)*xs-1.006*(t-twb))/(2501+1.86*t-4.186*twb); }
+function _ahuOAreq(eq, ppl, area){
+  const mode=eq.oaMode||'direct';
+  if (mode==='ppl')  return { v:Math.round(ppl*(eq.oaPerPpl??29)), basis:`${ppl} 인 × ${eq.oaPerPpl??29} ㎥/h·인` };
+  if (mode==='area') return { v:Math.round(area*(eq.oaPerArea??5)), basis:`${Math.round(area)} ㎡ × ${eq.oaPerArea??5} ㎥/h·㎡` };
+  return { v:Math.round(eq.oaCMH||0), basis:'직접 입력' };
+}
+
+function calcAhuSystem(){
+  if (typeof equipment==='undefined' || !equipment.length) { window._ahuResults=[]; return []; }
+  const {hourlyT, solAir} = calcSolAirTemp();
+  const doy = getDayOfYear();
+  /* Ver-5.3.1 보강#8: 0 입력(예: 동계 외기 0 ℃)이 기본값으로 바뀌지 않도록 숫자 여부로 판정 */
+  const g = (id,def)=>{ const n=parseFloat(document.getElementById(id)?.value); return isFinite(n)?n:def; };
+  const toDB=g('w-summer-db',33.3), toWB=g('w-summer-wb',25);
+  const tInC=g('w-indoor-cool',26), rhInC=g('w-indoor-rh-cool',50);
+  const tInH=g('w-indoor-heat',22), rhInH=g('w-indoor-rh-heat',40);
+  const winDB=g('w-winter-db',-11.3), winRH=g('w-winter-rh',63);
+  const xOAs=_ahuXwb(toDB,toWB), xOAw=_ahuX(winDB,winRH);
+  const resOf = new Map();
+  rooms.forEach((room,i)=>{ if (room.ahuNo) resOf.set(i, calcRoomLoad(room, solAir, hourlyT, doy)); });
+  const out=[];
+  equipment.forEach(eq=>{
+    if (!_ahuIsAir(eq)) return;
+    const cfg=_ahuCfg(eq);
+    const R={ eq, cfg, rows:[], warn:_ahuSanitize(cfg) };
+    const idx=rooms.map((r,i)=>i).filter(i=>rooms[i].ahuNo===eq.no);
+    R.n=idx.length;
+    if (!idx.length){ R.empty=true; R.reason='담당 실 없음'; out.push(R); return; }
+    const dt = parseFloat(eq.supplyDT);
+    if (!(dt>0)) { R.empty=true; R.reason=`취출온도차 ${eq.supplyDT} ℃ — 0 이하(계산 제외, SHEET 2-1에서 수정)`; out.push(R); return; }   /* 보강#8 */
+    const blk=new Array(24).fill(0);
+    idx.forEach(i=>resOf.get(i).cool24.forEach((q,h)=>blk[h]+=q));
+    const zpkV=Math.max(...blk), zpk=blk.indexOf(zpkV)+1;
+    let SHr=0,SHz=0,Q1r=0,Q1z=0,LH=0,heat=0,area=0,vol=0,ppl=0;
+    idx.forEach(i=>{
+      const rm=rooms[i], res=resOf.get(i), q1=res.q1_24||new Array(24).fill(0);
+      const row={ i, rm, res, pk:res.peakHour, shR:res.peakCool, lh:res.latTotal, q1R:q1[res.peakHour-1]||0,
+                  shZ:res.cool24[zpk-1], q1Z:q1[zpk-1]||0, heat:res.heatLoad, area:res.area, vol:res.vol, ppl:res.peopleTot||0, h:rm.height||2.7 };
+      R.rows.push(row);
+      SHr+=row.shR; SHz+=row.shZ; Q1r+=row.q1R; Q1z+=row.q1Z; LH+=row.lh; heat+=row.heat; area+=row.area; vol+=row.vol; ppl+=row.ppl;
+    });
+    const vav = eq.airType==='VAV';
+    let SHd = vav?SHz:SHr, Q1d = vav?Q1z:Q1r, q1ToRoom=0;
+    const oaReq = _ahuOAreq(eq, ppl, area);
+    /* 풍량 배분 — VAV는 실 피크 풍량(VAV 박스 용량)을 AHU 급기량 합에 맞춰 정규화한 값으로 RA·양압 산정(보강#5) */
+    const alloc=(SA)=>{
+      let EA=0, Pos=0; const sumPk=R.rows.reduce((s_,r)=>s_+r.shR,0);
+      R.rows.forEach(row=>{
+        const rm=row.rm;
+        row.saPeak = row.shR/(0.335*dt);
+        row.saCalc = vav ? row.saPeak : (sumPk>0 ? SA*row.shR/sumPk : SA/R.rows.length);
+        const share = sumPk>0 ? SA*row.shR/sumPk : SA/R.rows.length;
+        row.sa = Math.round(share/10)*10;
+        row.ea = Math.max(0, +rm.eaCMH||0);
+        if (rm.noRA){ row.ra=0; row.pos=Math.max(0,row.sa-row.ea); }
+        else { row.pos=Math.max(0,+rm.posCMH||0); row.ra=Math.max(0,row.sa-row.ea-row.pos); }
+        row.ach = row.vol>0 ? row.sa/row.vol : 0;
+        EA+=row.ea; Pos+=row.pos;
+      });
+      const RA=Math.max(0,SA-EA-Pos); return { EA, Pos, RA, TA:SA-RA };
+    };
+    let SAcalc = SHd/(0.335*dt);
+    let SA = Math.max(100, Math.ceil(SAcalc/100-1e-9)*100);
+    let F = alloc(SA);
+    /* 보강#4: 환기(RA)가 없으면 천장속 부하 Q1을 받을 환기 경로가 없으므로 실 현열로 환원 후 급기량 재산정 */
+    if (F.RA<=0 && Q1d>0){ q1ToRoom=Q1d; SHd+=Q1d; Q1d=0; SAcalc=SHd/(0.335*dt); SA=Math.max(SA,Math.ceil(SAcalc/100-1e-9)*100); F=alloc(SA);
+      R.warn.push(`환기(RA) 0 — 천장속 부하 Q1 ${Math.round(q1ToRoom)} W를 실 현열에 가산해 급기량 재산정`); }
+    /* 보강#2: 필요외기 > 급기량 — 기본은 급기량을 외기량까지 상향(100 % 외기), 「외기량 제한」 선택 시 미달 경고 */
+    const needOA = Math.max(oaReq.v, F.TA);
+    let saRaised=false, oaShort=0;
+    if (needOA > SA){
+      if (cfg.oaOver==='raise'){ const SA2=Math.ceil(needOA/100-1e-9)*100; R.warn.push(`필요외기 ${needOA} ㎥/h > 급기량 ${SA} ㎥/h → 급기량 ${SA2} ㎥/h로 상향(100 % 외기, 실효 취출온도차 ${(SHd/(0.335*SA2)).toFixed(1)} ℃)`); SA=SA2; F=alloc(SA); saRaised=true; }
+      else { oaShort=needOA-SA; R.warn.push(`필요외기 ${needOA} ㎥/h > 급기량 ${SA} ㎥/h — 외기량 ${oaShort} ㎥/h 부족(법정 환기량 확인 필요)`); }
+    }
+    const {EA,Pos,RA,TA}=F;
+    R.rows.forEach(row=>{ if (row.ea+row.pos > row.sa+0.5) R.warn.push(`${row.rm.id||''} ${row.rm.name||''}: 배기+양압(${row.ea+row.pos}) > 급기(${row.sa}) ㎥/h`); });
+    const OA = Math.min(SA, Math.max(oaReq.v, TA));
+    const tOA = cfg.oaTime==='design' ? Math.max(...hourlyT) : hourlyT[zpk-1];
+    /* 보강#7: 전열교환기는 AHU 배기(EA = OA − TA)만 통과 — 회수율 = 효율 × min(1, EA/OA) */
+    const ervOn=!!eq.ervOn, EAx=Math.max(0,OA-TA), kE = (ervOn && OA>0) ? Math.min(1, EAx/OA) : 0;
+    const erv = { on:ervOn && kE>0, sens:Math.min(0.95,Math.max(0,(eq.ervSens??70)/100))*kE, lat:Math.min(0.95,Math.max(0,(eq.ervLat??60)/100))*kE, k:kE, sens0:(eq.ervSens??70), lat0:(eq.ervLat??60) };
+    if (ervOn && kE<=0) R.warn.push('전열교환기: AHU 배기(EA) 0 — 국소배기·양압으로 전량 배출되어 열회수 없음(효율 미적용)');
+    else if (ervOn && kE<1) R.warn.push(`전열교환기: 배기 ${EAx} / 외기 ${OA} ㎥/h → 효율 × ${kE.toFixed(2)} 적용`);
+    const core = ahuCore({ SH:SHd, LH, Q1:Q1d, heat, OA, SA, RA, qty:cfg.qty,
+      cool:{ tIn:cfg.tIn??tInC, rhIn:cfg.rhIn??rhInC, tOA:_ahuRound(tOA,1), xOA:xOAs },
+      heatC:{ tIn:tInH, rhIn:rhInH, tOA:winDB, xOA:xOAw }, erv, coil:cfg.coil, sp:cfg.sp, spSF:cfg.spSF, fan:cfg.fan, coilSF:cfg.coilSF });
+    Object.assign(R, { zpk, SHr, SHz, Q1r, Q1z, LH, heat, area, vol, ppl, vav, dt, SHd, Q1d, q1ToRoom, SAcalc, SA, RA, EA, Pos, TA, saRaised, oaShort,
+      oaReq, OA, EAmin:OA-TA, OAmax:cfg.oaCool?SA:OA, EAmax:cfg.oaCool?RA:OA-TA, tOA, erv, core,
+      ach: vol>0?SA/vol:0, avgH: area>0?vol/area:0, rshf:(SHd+LH)>0?SHd/(SHd+LH):0 });
+    R.warn.push(...core.warn);
+    /* 보강#6: 코일 출구 절대습도 음수·과소 → 계산 불가(합계 제외) */
+    if (core.fatal){ R.empty=true; R.reason=core.fatal; }
+    if (oaReq.v < TA) R.warn.push(`외기량을 배기·양압 합계(TA ${TA} ㎥/h)로 상향 — 필요외기 ${oaReq.v} ㎥/h`);
+    out.push(R);
+  });
+  window._ahuResults = out;
+  return out;
+}
+
+/* ── 표시 헬퍼 ── */
+const _aN = (x,d=0)=> (x==null||isNaN(x)) ? '—' : Number(x).toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const _aE = s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const AHU_COIL_TXT = {
+  pre:{ none:'None', steam:'Steam', water:'Water' }, rh:{ none:'None', elec:'Electric', water:'Water' },
+  hc:{ hw:'Water', steam:'Steam', elec:'Electric', none:'None' }, hum:{ none:'None', steam:'증기분사', water:'수분무' } };
+function _ahuSysLines(R){
+  const c=R.cfg.coil, L=[];
+  L.push(`공조 SYSTEM : ${R.eq.airType||'CAV'}`);
+  L.push(`배열 회수기 : ${R.eq.ervOn?`전열교환기 (현열 ${R.eq.ervSens??70}% · 잠열 ${R.eq.ervLat??60}%)`:'None'}`);
+  if (c.pre!=='none') L.push(`○ 예열 코일 - ${c.pre==='steam'?`증기 : ${c.steamH} Wh/kg`:`온수 : ${c.hwIn} / ${c.hwOut} ℃`} (목표 ${c.preT} ℃)`);
+  L.push(`■ 냉방 코일 - 냉수 : ${c.chwIn} / ${c.chwOut} ℃`);
+  if (c.rh!=='none') L.push(`▲ 재열 코일 - ${c.rh==='elec'?'전기':'온수'} : Δt ${c.rhDT} ℃`);
+  if (c.hc!=='none') L.push(`● 가열 코일 - ${c.hc==='hw'?`온수 : ${c.hwIn} / ${c.hwOut} ℃`:c.hc==='steam'?`증기 : ${c.steamH} Wh/kg`:'전기'}`);
+  if (c.hum!=='none') L.push(`△ 가 습 기 - ${AHU_COIL_TXT.hum[c.hum]}`);
+  return L;
+}
+function _ahuSysKey(R){ return _ahuSysLines(R).join('|'); }
+
+/* ── SVG: 공조 계통도 ── */
+let _ahuSvgSeq = 0;
+function _ahuDiagramSVG(R){
+  const c=R.cfg.coil, erv=!!R.eq.ervOn;
+  const comps=[]; comps.push(['F','필터','#64748b']);
+  if (c.pre!=='none') comps.push(['P/H','예열','#ea580c']);
+  comps.push(['C/C','냉각','#0e7490']);
+  if (c.rh!=='none') comps.push(['R/H','재열','#dc2626']);
+  if (c.hc!=='none') comps.push(['H/C','가열','#dc2626']);
+  if (c.hum!=='none') comps.push(['HUM',c.hum==='water'?'수분무':'증기','#2563eb']);
+  const x0 = erv?190:150, w=40, gap=8, y=96, hgt=56;
+  const boxW = comps.length*(w+gap)+gap+58;
+  const sfX = x0+comps.length*(w+gap)+gap;
+  const roomX = x0+boxW+60;
+  const W = roomX+130;
+  const f=v=>_aN(v), mid='ahar'+(++_ahuSvgSeq);
+  let s=`<svg class="ahu-svg" viewBox="0 0 ${W} 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="공조 계통도 ${_aE(R.eq.no)}">
+  <defs><marker id="${mid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+  <style>.t{font:600 10px 'Noto Sans KR',sans-serif;fill:#1e293b}.s{font:500 9px 'Noto Sans KR',sans-serif;fill:#475569}.ln{stroke:#475569;stroke-width:1.6;fill:none}</style>`;
+  const mk=`url(#${mid})`;
+  /* AHU 케이싱 */
+  s+=`<rect x="${x0-6}" y="${y-14}" width="${boxW+6}" height="${hgt+28}" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text class="t" x="${x0+30}" y="${y-20}">${_aE(R.eq.no)} ${_aE(R.eq.name||'')} · ${_aE(R.eq.airType||'CAV')}${R.cfg.qty>1?` × ${R.cfg.qty}대`:''}</text>`;
+  comps.forEach((cp,k)=>{ const x=x0+gap+k*(w+gap);
+    s+=`<rect x="${x}" y="${y}" width="${w}" height="${hgt}" rx="4" fill="#fff" stroke="${cp[2]}" stroke-width="1.6"/>
+    <text class="t" x="${x+w/2}" y="${y+25}" text-anchor="middle" style="fill:${cp[2]}">${cp[0]}</text><text class="s" x="${x+w/2}" y="${y+40}" text-anchor="middle">${cp[1]}</text>`; });
+  /* 급기팬 */
+  s+=`<circle cx="${sfX+24}" cy="${y+hgt/2}" r="20" fill="#fff" stroke="#0f766e" stroke-width="1.6"/><text class="t" x="${sfX+24}" y="${y+hgt/2+4}" text-anchor="middle" style="fill:#0f766e">SF</text>`;
+  /* 외기 → (ERV) → 혼합 */
+  const mixX = x0-6;
+  s+=`<text class="t" x="6" y="${y+hgt/2-6}">OA</text><text class="s" x="6" y="${y+hgt/2+8}">${f(R.OA)} ㎥/h</text>`;
+  if (erv){
+    s+=`<rect x="92" y="${y+6}" width="58" height="${hgt-12}" rx="4" fill="#fff7ed" stroke="#ea580c"/><text class="t" x="121" y="${y+hgt/2+4}" text-anchor="middle" style="fill:#ea580c">ERV</text>
+    <path class="ln" d="M40 ${y+hgt/2} L90 ${y+hgt/2}" marker-end="${mk}"/><path class="ln" d="M152 ${y+hgt/2} L${mixX-2} ${y+hgt/2}" marker-end="${mk}"/>
+    <path class="ln" d="M121 ${y-4} L121 ${y+4}"/><path class="ln" d="M121 ${y+hgt-6} L121 ${y+hgt+40} L40 ${y+hgt+40}" marker-end="${mk}"/>`;
+  } else s+=`<path class="ln" d="M40 ${y+hgt/2} L${mixX-2} ${y+hgt/2}" marker-end="${mk}"/>`;
+  /* 급기 → 실 */
+  s+=`<path class="ln" d="M${sfX+44} ${y+hgt/2} L${roomX-2} ${y+hgt/2}" marker-end="${mk}"/>
+  <text class="t" x="${sfX+64}" y="${y+hgt/2-8}">SA</text><text class="s" x="${sfX+64}" y="${y+hgt/2+16}">${f(R.SA)} ㎥/h</text>
+  <rect x="${roomX}" y="${y-10}" width="110" height="${hgt+20}" rx="6" fill="#ecfeff" stroke="#0e7490"/>
+  <text class="t" x="${roomX+55}" y="${y+18}" text-anchor="middle">담당 실 ${R.n}개</text><text class="s" x="${roomX+55}" y="${y+34}" text-anchor="middle">${f(R.area)} ㎡</text>
+  <text class="s" x="${roomX+55}" y="${y+50}" text-anchor="middle">TA ${f(R.TA)} ㎥/h</text>`;
+  /* 환기 → RF → 혼합 / 배기 */
+  const ry=30, rfX = Math.round((x0+roomX)/2);
+  s+=`<path class="ln" d="M${roomX+55} ${y-10} L${roomX+55} ${ry} L${rfX+22} ${ry}" marker-end="${mk}"/>
+  ${R.core.fan.rfOn?`<circle cx="${rfX}" cy="${ry}" r="16" fill="#fff" stroke="#0f766e" stroke-width="1.6"/><text class="t" x="${rfX}" y="${ry+4}" text-anchor="middle" style="fill:#0f766e">RF</text>`:''}
+  <text class="s" x="${rfX+28}" y="${ry-6}">RA ${f(R.RA)} ㎥/h</text>
+  <path class="ln" d="M${rfX-16} ${ry} L${mixX+16} ${ry} L${mixX+16} ${y-16}" marker-end="${mk}"/>
+  <path class="ln" d="M${mixX+16} ${ry} L${erv?121:40} ${ry} ${erv?`L121 ${y+4}`:''}" ${erv?'':`marker-end="${mk}"`}/>
+  <text class="t" x="6" y="${erv?y+hgt+34:ry-6}">EA</text><text class="s" x="${erv?28:6}" y="${erv?y+hgt+34:ry+14}">${f(R.EAmin)}${R.cfg.oaCool?`~${f(R.EAmax)}`:''} ㎥/h</text>`;
+  s+=`<text class="s" x="6" y="222">※ OA·EA = 설계(최소외기) 풍량${R.cfg.oaCool?` · 외기냉방 시 OA 최대 ${f(R.OAmax)} ㎥/h`:''} · TA = 국소배기 ${f(R.EA)} + 양압 ${f(R.Pos)} ㎥/h</text></svg>`;
+  return s;
+}
+
+/* ── SVG: 습공기선도 (건구온도-절대습도) ── */
+function _ahuPsySVG(R){
+  const C=R.core.cool, H=R.core.heat;
+  const W=520, Ht=300, m={l:40,r:46,t:14,b:30}, tmin=-15, tmax=45, xmax=0.030;
+  const X=t=>m.l+(t-tmin)/(tmax-tmin)*(W-m.l-m.r), Y=x=>Ht-m.b-(x/xmax)*(Ht-m.t-m.b);
+  let s=`<svg class="ahu-svg ahu-psy" viewBox="0 0 ${W} ${Ht}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="습공기선도 ${_aE(R.eq.no)}">
+  <style>.g{stroke:#e2e8f0;stroke-width:.8}.a{font:500 8.5px 'Noto Sans KR',sans-serif;fill:#64748b}.p{font:700 9px 'Noto Sans KR',sans-serif}</style>`;
+  for(let t=-10;t<=45;t+=5) s+=`<line class="g" x1="${X(t)}" y1="${m.t}" x2="${X(t)}" y2="${Ht-m.b}"/><text class="a" x="${X(t)}" y="${Ht-m.b+12}" text-anchor="middle">${t}</text>`;
+  for(let x=0;x<=0.030001;x+=0.005) s+=`<line class="g" x1="${m.l}" y1="${Y(x)}" x2="${W-m.r}" y2="${Y(x)}"/><text class="a" x="${W-m.r+4}" y="${Y(x)+3}">${x.toFixed(3)}</text>`;
+  const curve=rh=>{ const pts=[]; for(let t=tmin;t<=tmax;t+=0.5){ const x=_ahuX(t,rh); if(x>xmax) break; pts.push(`${X(t).toFixed(1)},${Y(x).toFixed(1)}`);} return pts.join(' '); };
+  [20,40,60,80].forEach(rh=>{ s+=`<polyline points="${curve(rh)}" fill="none" stroke="#cbd5e1" stroke-width=".8" stroke-dasharray="3 2"/>`; });
+  s+=`<polyline points="${curve(100)}" fill="none" stroke="#334155" stroke-width="1.4"/>
+  <text class="a" x="${m.l}" y="${Ht-4}">건구온도 ℃</text><text class="a" x="${W-m.r-4}" y="${m.t-3}" text-anchor="end">절대습도 kg/kg'</text>`;
+  const seg=(a,b,col,dash)=>`<line x1="${X(a.t)}" y1="${Y(a.x)}" x2="${X(b.t)}" y2="${Y(b.x)}" stroke="${col}" stroke-width="1.6" ${dash?'stroke-dasharray="4 3"':''}/>`;
+  const pt=(p,lb,col,dx=5,dy=-5)=>`<circle cx="${X(p.t)}" cy="${Y(p.x)}" r="3" fill="${col}"/><text class="p" x="${X(p.t)+dx}" y="${Y(p.x)+dy}" style="fill:${col}">${lb}</text>`;
+  const cc='#0e7490', hc='#dc2626';
+  const Sp={t:C.S, x:C.L.x};
+  s+=seg(C.Op,C.M,cc,1)+seg(C.Rp,C.M,cc,1)+seg(C.M,C.L,cc)+seg(C.L,Sp,cc)+seg(Sp,C.I,cc,1);
+  if (C.adp!=null){ const A={t:C.adp,x:_ahuXs(C.adp)}; s+=seg(C.L,A,'#94a3b8',1)+`<circle cx="${X(A.t)}" cy="${Y(A.x)}" r="2.5" fill="#94a3b8"/><text class="a" x="${X(A.t)-4}" y="${Y(A.x)-5}" text-anchor="end">ADP</text>`; }
+  s+=pt(C.Op,R.erv.on?"O'":'O',cc)+pt(C.Rp,'R',cc,5,10)+pt(C.M,'M',cc)+pt(C.L,'L',cc,-12,12)+pt(Sp,'S',cc,4,12)+pt(C.I,'I',cc,5,-6);
+  const Hc=H, Hl={t:Hc.hcLAT,x:Hc.P.x};
+  s+=seg(Hc.Owp,Hc.Mh,hc,1)+seg(Hc.Ih,Hc.Mh,hc,1)+seg(Hc.Mh,Hc.P,hc)+seg(Hc.P,Hl,hc);
+  if (Hc.hum!=='none'){ const Hs={t:Hc.hum==='water'?Hc.LAT:Hc.hcLAT, x:Hc.Ih.x}; s+=seg(Hl,Hs,'#2563eb'); }
+  s+=pt(Hc.Owp,R.erv.on?"O'w":'Ow',hc,5,12)+pt(Hc.Mh,'Mw',hc,5,12)+(Hc.Qph>0?pt(Hc.P,'P',hc,4,12):'')+pt(Hl,'H',hc,4,12)+pt(Hc.Ih,'Iw',hc,-16,-6);
+  s+=`<text class="a" x="${m.l+4}" y="${m.t+10}">— 냉방(청록) · — 난방(적색) · 점선: 혼합·취출 경로</text></svg>`;
+  return s;
+}
+
+/* ── 화면 렌더 ── */
+let _ahuSelNo = null, _ahuView = 'all';
+function setAhuView(k){
+  _ahuView=k;
+  document.querySelectorAll('#tab-ahu .ahu-subnav button').forEach(b=>b.classList.toggle('on', b.dataset.k===k));
+  document.querySelectorAll('#tab-ahu .ahu-sub').forEach(el=>{ el.style.display = (k==='all'||el.dataset.k===k)?'':'none'; });
+}
+function renderAhuAll(list){
+  list = list || window._ahuResults || [];
+  const host=id=>document.getElementById(id);
+  const air=list.filter(R=>!R.empty);
+  const nonAir=(typeof equipment!=='undefined'?equipment:[]).filter(e=>!_ahuIsAir(e)).length;
+  const sm=host('ahu-summary');
+  if (sm) sm.innerHTML = list.length
+    ? `공조기 ${list.length}대 (계산 ${air.length}대${list.length-air.length?` · 계산 제외 ${list.length-air.length}대`:''})${nonAir?` · FCU/PAC ${nonAir}대는 SHEET 2-1 집계 대상`:''} · 급기 합계 ${_aN(air.reduce((s,R)=>s+R.SA,0))} ㎥/h · 냉각코일 합계 ${_aN(air.reduce((s,R)=>s+R.core.cool.Qc,0)/1000,1)} kW · 가열코일 합계 ${_aN(air.reduce((s,R)=>s+R.core.heat.Qh+R.core.heat.Qph,0)/1000,1)} kW`
+    : '등록된 AHU/RTU가 없습니다 — SHEET 2-1 「조닝 · 장비 배정」에서 장비를 등록하고 실을 배정하세요.';
+  /* Ver-5.3.1: 계산 제외 공조기와 사유 표시 */
+  const ex=list.filter(R=>R.empty);
+  if (sm && ex.length) sm.innerHTML += `<div class="ahu-warn" style="margin-top:6px">⚠ 계산 제외 — ${ex.map(R=>`${_aE(R.eq.no)}: ${_aE(R.reason||'담당 실 없음')}`).join('<br>⚠ 계산 제외 — ')}</div>`;
+  renderAhuSettings(list);
+  if (host('ahu-load-body')) host('ahu-load-body').innerHTML = _ahuLoadTable(air);
+  if (host('ahu-air-body'))  host('ahu-air-body').innerHTML  = _ahuAirTable(air, true);
+  if (host('ahu-sys-body'))  host('ahu-sys-body').innerHTML  = _ahuSysBlocks(air);
+  if (host('ahu-sel-body'))  host('ahu-sel-body').innerHTML  = air.map(R=>_ahuSelCard(R)).join('') || '<div class="ahu-empty">계산된 공조기가 없습니다.</div>';
+  setAhuView(_ahuView);
+}
+
+function _ahuLoadTable(list){
+  if (!list.length) return '<div class="ahu-empty">계산된 공조기가 없습니다.</div>';
+  let h=`<table class="excel-table ahu-tbl"><thead>
+  <tr><th rowspan="2">RM No.</th><th rowspan="2">실 명</th><th rowspan="2">수량</th><th rowspan="2">면적<br>㎡</th><th rowspan="2">C.H<br>m</th><th rowspan="2">인원<br>인</th>
+  <th colspan="4">Room Peak Cooling Load (W)</th><th colspan="3">Zone Peak Cooling Load (W)</th><th rowspan="2">난방부하<br>W</th></tr>
+  <tr><th>hr</th><th>SH</th><th>LH</th><th>RA L</th><th>SH</th><th>LH</th><th>RA L</th></tr></thead><tbody>`;
+  list.forEach(R=>{
+    h+=`<tr class="ahu-head"><td>${_aE(R.eq.no)}</td><td class="l">${_aE(R.eq.name||'')} <span class="dim">${_aE(R.eq.airType||'CAV')} · ${R.cfg.oaTime==='design'?'A':'B'}</span></td><td>${R.cfg.qty}</td><td class="n">${_aN(R.area,1)}</td><td class="n">${_aN(R.avgH,2)}</td><td class="n">${_aN(R.ppl)}</td>
+      <td>—</td><td class="n">${_aN(R.SHr)}</td><td class="n">${_aN(R.LH)}</td><td class="n">${_aN(R.Q1r)}</td><td class="n">${_aN(R.SHz)}</td><td class="n">${_aN(R.LH)}</td><td class="n">${_aN(R.Q1z)}</td><td class="n">${_aN(R.heat)}</td></tr>
+      <tr class="ahu-peak"><td colspan="14">□ Zone Block Peak Time : ${R.zpk}:00 · 설계 현열 = ${R.vav?'Zone 피크(VAV)':'실별 피크 합(CAV)'} ${_aN(R.SHd)} W</td></tr>`;
+    R.rows.forEach(r=>{ h+=`<tr><td>${_aE(r.rm.id)}</td><td class="l">${_aE(r.rm.name)}</td><td>${r.rm.qty||1}</td><td class="n">${_aN(r.area,1)}</td><td class="n">${_aN(r.h,2)}</td><td class="n">${_aN(r.ppl)}</td>
+      <td>${r.pk}</td><td class="n">${_aN(r.shR)}</td><td class="n">${_aN(r.lh)}</td><td class="n">${_aN(r.q1R)}</td><td class="n">${_aN(r.shZ)}</td><td class="n">${_aN(r.lh)}</td><td class="n">${_aN(r.q1Z)}</td><td class="n">${_aN(r.heat)}</td></tr>`; });
+  });
+  return h+`</tbody></table><div class="ahu-note">RA L = 조명 발열 중 천장속(환기 플레넘)으로 가는 열(실 설정 「조명→천장속 비율」) · CAV는 실별 피크 합, VAV는 Zone 블록 피크로 급기량 산정 · 외기조건 A: 설계 최고온도 시각 / B: Zone 피크 시각</div>`;
+}
+
+function _ahuAirTable(list, editable){
+  if (!list.length) return '<div class="ahu-empty">계산된 공조기가 없습니다.</div>';
+  const dl=`<datalist id="ahu-ea-uses">${AHU_EA_USES.map(u=>`<option value="${u}">`).join('')}</datalist>`;
+  let h=(editable?dl:'')+`<table class="excel-table ahu-tbl"><thead>
+  <tr><th rowspan="2">RM No.</th><th rowspan="2">실 명</th><th rowspan="2">면적<br>㎡</th><th rowspan="2">C.H<br>m</th><th rowspan="2">A.C<br>회/h</th><th rowspan="2">SA Vol<br>㎥/h</th><th rowspan="2">RA Vol<br>㎥/h</th>
+  <th colspan="2">EA Volume</th><th rowspan="2">Posit.<br>㎥/h</th>${editable?'<th rowspan="2">RA<br>없음</th>':''}<th rowspan="2">계산풍량<br>㎥/h</th><th rowspan="2">전등(CL)<br>W</th><th rowspan="2">Max. SH<br>W</th></tr>
+  <tr><th>용 도</th><th>㎥/h</th></tr></thead><tbody>`;
+  list.forEach(R=>{
+    h+=`<tr class="ahu-head"><td>${_aE(R.eq.no)}</td><td class="l">${_aE(R.eq.name||'')}</td><td class="n">${_aN(R.area,1)}</td><td class="n">${_aN(R.avgH,2)}</td><td class="n">${_aN(R.ach,2)}</td><td class="n">${_aN(R.SA)}</td><td class="n">${_aN(R.RA)}</td>
+      <td></td><td class="n">${_aN(R.EA)}</td><td class="n">${_aN(R.Pos)}</td>${editable?'<td></td>':''}<td class="n">${_aN(R.SAcalc)}</td><td class="n">${_aN(R.Q1d)}</td><td class="n">${_aN(R.SHd)}</td></tr>
+      <tr class="ahu-peak"><td colspan="${editable?14:13}">(Δt = ${R.dt} ℃) · SA = ${_aN(R.SHd)} W ÷ (0.335 × ${R.dt}) = ${_aN(R.SAcalc)} → ${_aN(R.SA)} ㎥/h (100 단위 올림) · RA = SA − EA − Posit. = ${_aN(R.RA)} ㎥/h</td></tr>`;
+    R.rows.forEach(r=>{ const i=r.i, rm=r.rm;
+      const ed=(f,val,w,t)=>editable?`<input class="form-input ahu-in" style="width:${w}px" ${t==='text'?'list="ahu-ea-uses"':'type="number" step="10" min="0"'} value="${_aE(val??'')}" onchange="ahuRoomField(${i},'${f}',this.value)">`:_aE(val??'');
+      h+=`<tr><td>${_aE(rm.id)}</td><td class="l">${_aE(rm.name)}</td><td class="n">${_aN(r.area,1)}</td><td class="n">${_aN(r.h,2)}</td><td class="n">${_aN(r.ach,2)}</td><td class="n">${_aN(r.sa)}</td><td class="n">${_aN(r.ra)}</td>
+      <td>${ed('eaUse',rm.eaUse||'',70,'text')}</td><td class="n">${editable?ed('eaCMH',rm.eaCMH||'',64):(r.ea?_aN(r.ea):'')}</td>
+      <td class="n">${editable&&!rm.noRA?ed('posCMH',rm.posCMH||'',64):(r.pos?_aN(r.pos):'')}</td>
+      ${editable?`<td><input type="checkbox" ${rm.noRA?'checked':''} title="환기(RA) 없음 — 잔여 급기를 양압(전이)으로 처리" onchange="ahuRoomField(${i},'noRA',this.checked)"></td>`:''}
+      <td class="n">${_aN(r.saCalc)}</td><td class="n">${_aN(R.vav?r.q1Z:r.q1R)}</td><td class="n">${_aN(r.shR)}</td></tr>`; });
+  });
+  return h+`</tbody></table><div class="ahu-note">실별 SA Vol = AHU 급기량 × (실 피크 현열 ÷ Σ실 피크 현열), 10 ㎥/h 반올림 — RA·양압 산정 기준 · 계산풍량 = CAV 배분값 / VAV 실 피크 현열 ÷ (0.335 × Δt)(VAV 박스 용량) · 「RA 없음」 체크 시 잔여 급기량을 양압(전이공기)으로 처리 · 외기량 = max(필요외기, 국소배기+양압)</div>`;
+}
+function ahuRoomField(i,f,val){
+  const rm=rooms[i]; if(!rm) return;
+  if (f==='noRA') rm.noRA=!!val;
+  else if (f==='eaUse') rm.eaUse=String(val||'').trim();
+  else rm[f]=Math.max(0,parseFloat(val)||0);
+  calcAHU();
+}
+
+function _ahuSysBlocks(list){
+  if (!list.length) return '<div class="ahu-empty">계산된 공조기가 없습니다.</div>';
+  const groups=[]; const map={};
+  list.forEach(R=>{ const k=_ahuSysKey(R); if(!map[k]){ map[k]={k,items:[]}; groups.push(map[k]); } map[k].items.push(R); });
+  return groups.map((gp,gi)=>{
+    const R0=gp.items[0];
+    return `<div class="ahu-sysblk"><div class="ahu-sys-h">HVAC SYSTEM - ${gi+1}</div>
+    <div class="ahu-sys-lines">${_ahuSysLines(R0).map(l=>`<div>${_aE(l)}</div>`).join('')}</div>
+    <div class="ahu-svg-wrap">${_ahuDiagramSVG(R0)}</div>
+    <div style="overflow-x:auto"><table class="excel-table ahu-tbl"><thead>
+    <tr><th rowspan="2">AHU No.</th><th rowspan="2">Service</th><th rowspan="2">Location</th><th rowspan="2">Q'ty</th><th colspan="5">Air Volume (㎥/h)</th><th>CL/C</th><th>RH/C</th><th>PH/C</th><th>AH/C</th><th>Humd.</th></tr>
+    <tr><th>OA</th><th>SA</th><th>RA</th><th>EA</th><th>TA</th><th>lpm</th><th>kW</th><th>${R0.cfg.coil.pre==='water'?'lpm':'kg/h'}</th><th>${R0.cfg.coil.hc==='steam'?'kg/h':R0.cfg.coil.hc==='elec'?'kW':'lpm'}</th><th>kg/h</th></tr></thead><tbody>
+    ${gp.items.map(R=>{ const C=R.core.cool, H=R.core.heat;
+      return `<tr><td>${_aE(R.eq.no)}</td><td class="l">${_aE(R.eq.name||'')}</td><td class="l">${_aE(R.eq.loc||'')}</td><td>${R.cfg.qty}</td>
+      <td class="n">${_aN(R.OAmax)}</td><td class="n">${_aN(R.SA)}</td><td class="n">${_aN(R.RA)}</td><td class="n">${_aN(R.EAmax)}</td><td class="n">${_aN(R.TA)}</td>
+      <td class="n">${_aN(C.lpm)}</td><td class="n">${C.Qrh>0?_aN(C.Qrh/1000,1):''}</td><td class="n">${H.Qph>0?_aN(H.phKg||H.phLpm):''}</td>
+      <td class="n">${H.hcType==='hw'?_aN(H.lpm):H.hcType==='steam'?_aN(H.kg):H.hcType==='elec'?_aN(H.Qh/1000,1):''}</td><td class="n">${H.humKg?(H.hum==='water'?'(w)':'')+_aN(H.humKg):''}</td></tr>
+      <tr class="ahu-min"><td colspan="4"></td><td class="n">(${_aN(R.OA)})</td><td></td><td></td><td class="n">(${_aN(R.EAmin)})</td><td colspan="6"></td></tr>`; }).join('')}
+    </tbody></table></div></div>`;
+  }).join('') + `<div class="ahu-note">OA·EA 괄호 = 최소외기(설계) 운전 풍량, 괄호 밖 = 외기냉방 시 최대 풍량 · TA = 국소배기 + 양압 · (w) = 수분무 가습 · CL/C·AH/C 유량 = Q × 60 ÷ (4,186 × Δt)</div>`;
+}
+
+function _ahuSelCard(R){
+  const C=R.core.cool, H=R.core.heat, F=R.core.fan, sp=F.sp, cfg=R.cfg, c=cfg.coil;
+  const st=(lb,P)=>`<tr><td class="l">${lb}</td><td class="n">${_aN(P.t,1)}</td><td class="n">${_aN(P.rh,1)}</td><td class="n">${P.x.toFixed(4)}</td><td class="n">${_aN(P.h,2)}</td></tr>`;
+  const kv=(k,vv,u)=>`<tr><td class="l">${k}</td><td class="n">${vv}</td><td>${u||''}</td></tr>`;
+  const I=sp, SI=cfg.sp.int, SS=cfg.sp.sa, SR=cfg.sp.ra;
+  const spRows=[...Object.keys(AHU_SP_LABEL.int).filter(k=>+SI[k]).map(k=>`<tr><td class="l">${AHU_SP_LABEL.int[k]}</td><td class="n">${SI[k]}</td><td></td><td></td></tr>`),
+    `<tr><td class="l">SA 덕트 직관</td><td></td><td class="n">${_aN(I.sDuct,1)}</td><td></td></tr>`,
+    `<tr><td class="l">RA 덕트 직관</td><td></td><td></td><td class="n">${_aN(I.rDuct,1)}</td></tr>`,
+    `<tr><td class="l">이음류 (직관 × ${SS.fitPct}% / ${SR.fitPct}%)</td><td></td><td class="n">${_aN(I.sFit,1)}</td><td class="n">${_aN(I.rFit,1)}</td></tr>`,
+    ...[['Terminal Unit','tu',null],['Pre(Re) Heating Coil','prh',null],['OA / EA Louver','louver','louver'],['Diffuser / Grille','diff','grille'],['Flexible Duct','flex','flex'],['Volume Damper','vd','vd'],['Fire Damper','fd','fd'],['Sound Attenuator','att','att'],['Plenum','plenum','plenum'],['Velocity Pressure','vp','vp']]
+       .filter(([,a,b])=>+SS[a]||(b&&+SR[b])).map(([lb,a,b])=>`<tr><td class="l">${lb}</td><td></td><td class="n">${+SS[a]||''}</td><td class="n">${b&&+SR[b]?SR[b]:''}</td></tr>`),
+    `<tr class="sub"><td class="l">소계</td><td class="n">${_aN(I.intRaw,1)}</td><td class="n">${_aN(I.saRaw,1)}</td><td class="n">${_aN(I.raRaw,1)}</td></tr>`,
+    `<tr class="sub"><td class="l">여유율 × ${cfg.spSF}</td><td class="n">${_aN(I.int,1)}</td><td class="n">${_aN(I.sa,1)}</td><td class="n">${_aN(I.ra,1)}</td></tr>`].join('');
+  const warn = R.warn.length?`<div class="ahu-warn">⚠ ${R.warn.map(_aE).join('<br>⚠ ')}</div>`:'';
+  return `<div class="ahu-card" data-no="${_aE(R.eq.no)}">
+  <div class="ahu-card-h"><span>${_aE(R.eq.no)} : ${_aE(R.eq.name||'')}</span><span class="dim">수량 ${cfg.qty} · 설치 위치 ${_aE(R.eq.loc||'—')} · ${_aE(R.eq.airType||'CAV')} · 외기냉방 ${cfg.oaCool?'○':'×'}</span></div>
+  ${warn}
+  <div class="ahu-grid">
+   <div><div class="ahu-sub-h">■ 실내 부하 · 부하 분석 · 설계 조건</div>
+    <table class="excel-table ahu-kv"><tbody>
+     ${kv('담당 Room 수량 · Zone Block Peak Time',`${R.n} 개 · ${R.zpk}:00`)}
+     ${kv('실내냉방부하 — 현열 (설계)',_aN(R.SHd),'W')}${kv('— 잠열',_aN(R.LH),'W')}${kv('— 천장속 부하 (Q1)',_aN(R.Q1d),'W')}
+     ${kv('실내난방부하 — 전열',_aN(R.heat),'W')}
+     ${kv('장치냉방부하 / 장치난방부하',`${_aN(C.Qc/R.area,1)} / ${_aN((H.Qh+H.Qph)/R.area,1)}`,'W/㎡')}
+     ${kv('급기 풍량 · 환기 횟수',`${_aN(R.SA/R.area,1)} ㎥/h·㎡ · ${_aN(R.ach,2)}`,'회/h')}
+     ${kv('인원 · RSHF · 면적 · 평균 천장고',`${_aN(R.ppl)} 인 · ${_aN(R.rshf,2)} · ${_aN(R.area,1)} ㎡ · ${_aN(R.avgH,2)} m`)}
+     ${kv('배열회수기',R.eq.ervOn?(R.erv.on?`전열 현열 ${R.erv.sens0}% · 잠열 ${R.erv.lat0}%${R.erv.k<1?` × 배기비 ${R.erv.k.toFixed(2)}`:''}`:'전열교환기 — 배기 0, 회수 없음'):'None')}
+     ${kv('냉방 부하 구성비 (Room / OA / 기타)',`${C.rRoom} / ${C.rOA} / ${C.rAdd}`)}
+     ${kv('난방 부하 구성비 (Room / OA / 기타)',`${H.rRoom} / ${H.rOA} / ${H.rAdd}`)}
+    </tbody></table>
+    <div class="ahu-sub-h">□ 외기/실내 설계 조건 <span class="dim">OA Time ${cfg.oaTime==='design'?'설계 최고온도(A)':`${R.zpk}:00 (B)`}</span></div>
+    <table class="excel-table ahu-st"><thead><tr><th>구분</th><th>℃ DB</th><th>% RH</th><th>kg/kg'</th><th>Wh/kg</th></tr></thead><tbody>
+     ${st('냉방 — 외기',C.O)}${st('냉방 — 실내',C.I)}${st('난방 — 외기',H.Ow)}${st('난방 — 실내',H.Ih)}</tbody></table>
+    <div class="ahu-sub-h">■ AIR VOLUME SELECTION</div>
+    <table class="excel-table ahu-kv"><tbody>
+     ${kv('Supply Air Volume',`<b>${_aN(R.SA)}</b>`,'㎥/h')}<tr><td colspan="3" class="f">${_aN(R.SHd)} W ÷ (0.335 × ${R.dt} ℃) = ${_aN(R.SAcalc)} → 100 단위 올림</td></tr>
+     ${kv('Outdoor Air Volume',`<b>${_aN(R.OA)}</b>`,'㎥/h')}<tr><td colspan="3" class="f">${_aE(R.oaReq.basis)} = ${_aN(R.oaReq.v)}${R.OA>R.oaReq.v?` → TA ${_aN(R.TA)} 이상으로 상향`:''}</td></tr>
+     ${kv('Exhaust Air Volume (TA = 국소배기 + 양압)',`<b>${_aN(R.TA)}</b>`,'㎥/h')}
+     ${kv('Return Air Volume',_aN(R.RA),'㎥/h')}
+    </tbody></table>
+    <div class="ahu-sub-h">■ COOLING / HEATING COIL & HUMIDIFIER CAPACITY</div>
+    <table class="excel-table ahu-kv"><tbody>
+     ${C.Qrh>0?kv('냉방용 재열',`<b>${_aN(C.Qrh)}</b>`,'W')+`<tr><td colspan="3" class="f">0.335 × ${_aN(R.SA)} × ${C.rhDT} ℃ × ${cfg.coilSF}</td></tr>`:''}
+     ${kv('냉방 (냉각코일)',`<b>${_aN(C.Qc)}</b>`,'W')}<tr><td colspan="3" class="f">1.2 × ${_aN(R.SA)} ㎥/h × (${C.M.h.toFixed(2)} − ${C.L.h.toFixed(2)}) Wh/kg × ${cfg.coilSF}</td></tr>
+     ${kv('　대조: 단순합 (실 현열+잠열+외기 현열·잠열)',_aN(C.Qref),'W')}
+     ${H.Qph>0?kv('난방용 예열',`<b>${_aN(H.Qph)}</b>`,'W')+`<tr><td colspan="3" class="f">0.335 × ${_aN(R.SA)} × (${H.P.t} − ${H.Mh.t}) ℃ × ${cfg.coilSF}</td></tr>`:''}
+     ${kv('난방 (가열코일)',`<b>${_aN(H.Qh)}</b>`,'W')}<tr><td colspan="3" class="f">0.335 × ${_aN(R.SA)} ㎥/h × (${H.hcLAT} − ${H.P.t}) ℃ × ${cfg.coilSF}${H.dtEvap?` · 수분무 증발냉각 보상 +${H.dtEvap} ℃ 포함`:''}</td></tr>
+     ${H.hum!=='none'?kv('가습',`<b>${H.hum==='water'?'(w)':''}${_aN(H.humKg)}</b>`,'kg/h')+`<tr><td colspan="3" class="f">1.2 × ${_aN(R.OA)} ㎥/h × (${H.Ih.x.toFixed(4)} − ${H.Owp.x.toFixed(4)}) kg/kg' × ${cfg.coilSF}</td></tr>`:''}
+    </tbody></table>
+    <div class="ahu-sub-h">□ 코일 형식 / 가습기 제원</div>
+    <table class="excel-table ahu-kv"><tbody>
+     ${kv("Cool'g Coil",`Water (${c.chwIn}/${c.chwOut} ℃, ${_aN(C.lpm)} lpm)`)}
+     ${kv('R/H Coil',c.rh==='none'?'None':`${AHU_COIL_TXT.rh[c.rh]} (${_aN(C.Qrh/1000,1)} kW)`)}
+     ${kv('P/H Coil',c.pre==='none'?'None':H.Qph<=0?`${c.pre==='steam'?'Steam':'Water'} (혼합 ${H.Mh.t} ℃ ≥ 목표 ${c.preT} ℃ — 예열 불요)`:c.pre==='steam'?`Steam (${_aN(H.phKg)} kg/h)`:`Water (${c.hwIn}/${c.hwOut} ℃, ${_aN(H.phLpm)} lpm)`)}
+     ${kv('A/H Coil',H.hcType==='none'?'None':H.hcType==='hw'?`Water (${c.hwIn}/${c.hwOut} ℃, ${_aN(H.lpm)} lpm)`:H.hcType==='steam'?`Steam (${_aN(H.kg)} kg/h)`:`Electric (${_aN(H.Qh/1000,1)} kW)`)}
+     ${kv('가습기 형식',AHU_COIL_TXT.hum[H.hum])}
+    </tbody></table>
+   </div>
+   <div><div class="ahu-sub-h">■ FAN SELECTION</div>
+    <table class="excel-table ahu-sp"><thead><tr><th>정압 항목 (Pa)</th><th>Internal</th><th>Ext. SA</th><th>Ext. RA</th></tr></thead><tbody>${spRows}</tbody></table>
+    <table class="excel-table ahu-kv"><tbody>
+     ${kv('Supply Fan',`${_aE(cfg.fan.sfType)} · ${_aN(F.saU)} ㎥/h · ${_aN(F.SPs)} Pa`)}<tr><td colspan="3" class="f">Ps = ${_aN(F.saU)} × ${_aN(F.SPs)} ÷ (3600 × 1000 × ${cfg.fan.sfEff/100}) × ${cfg.fan.motorSF} = ${_aN(F.sfShaft,2)} kW → <b>${F.sfMotor} kW</b></td></tr>
+     ${F.rfOn?kv('Return Fan',`${_aE(cfg.fan.rfType)} · ${_aN(F.raU)} ㎥/h · ${_aN(F.SPr)} Pa`)+`<tr><td colspan="3" class="f">Pr = ${_aN(F.raU)} × ${_aN(F.SPr)} ÷ (3600 × 1000 × ${cfg.fan.rfEff/100}) × ${cfg.fan.motorSF} = ${_aN(F.rfShaft,2)} kW → <b>${F.rfMotor} kW</b></td></tr>`:kv('Return Fan','None')}
+    </tbody></table>
+    <div class="ahu-sub-h">■ ENTERING / LEAVING AIR STATUS</div>
+    <table class="excel-table ahu-st"><thead><tr><th>상태점</th><th>℃ DB</th><th>% RH</th><th>kg/kg'</th><th>Wh/kg</th></tr></thead><tbody>
+     ${R.erv.on?st("OA' (배열회수 후) — 냉방",C.Op):''}
+     ${st("RA' (천장속·RF 부하 가산)",C.Rp)}${st('M 혼합공기 — 냉방',C.M)}${st("L 코일 출구 (Leav'g)",C.L)}
+     ${R.erv.on?st("OA' (배열회수 후) — 난방",H.Owp):''}${st('Mw 혼합공기 — 난방',H.Mh)}${H.Qph>0?st('P 예열코일 출구',H.P):''}
+    </tbody></table>
+    <table class="excel-table ahu-kv"><tbody>
+     <tr><td colspan="3" class="f">SF Load (Q2) = ${F.sfMotor} kW × ${R.cfg.qty} × 1000 × (1 − ${cfg.fan.sfEff/100}) = ${_aN(R.core.Q2)} W → ${R.core.dtFan} ℃ · RF Load (Q3) = ${_aN(R.core.Q3)} W</td></tr>
+     <tr><td colspan="3" class="f">RA Temp. : (Q1 ${_aN(R.Q1d)} + Q3 ${_aN(R.core.Q3)}) ÷ (0.335 × ${_aN(R.RA)}) = ${C.dtRA} ℃ → RA' ${C.Rp.t} ℃</td></tr>
+     <tr><td colspan="3" class="f">외기비 ${R.core.ratio} = ${_aN(R.OA)} ÷ ${_aN(R.SA)} (0.01 올림) · MA = ${R.core.ratio} × ${C.Op.t} + ${_aN(1-R.core.ratio,2)} × ${C.Rp.t} = ${C.M.t} ℃</td></tr>
+     <tr><td colspan="3" class="f">취출 ${C.S} ℃ = ${C.I.t} − ${C.dtSA} (= SH ÷ 0.335·SA) · L = ${C.S} − 팬 ${R.core.dtFan}${C.rhDT?` − 재열 ${C.rhDT}`:''} = ${C.L.t} ℃ · x<sub>L</sub> = ${C.I.x.toFixed(4)} − ${C.dxL.toFixed(4)}</td></tr>
+     <tr><td colspan="3" class="f">App. Dew Point ${C.adp==null?'—':C.adp+' ℃'} · By-Pass Factor ${C.bf==null?'—':_aN(C.bf*100,1)+' %'}</td></tr>
+     <tr><td colspan="3" class="f">A/H : E.A.T ${H.P.t} ℃ → L.A.T ${H.hcLAT} ℃ (= ${_aN(R.heat)} W ÷ (0.335 × ${_aN(R.SA)}) + ${H.Ih.t} ℃${H.dtEvap?` + 증발냉각 ${H.dtEvap} ℃`:''})</td></tr>
+    </tbody></table>
+   </div>
+  </div>
+  <div class="ahu-sub-h">■ PSYCHROMETRIC CHART / SYSTEM DIAGRAM</div>
+  <div class="ahu-figs"><div class="ahu-svg-wrap">${_ahuPsySVG(R)}</div><div class="ahu-svg-wrap">${_ahuDiagramSVG(R)}</div></div>
+ </div>`;
+}
+
+/* ── 장비 상세 설정 (선택 장비) ── */
+function renderAhuSettings(list){
+  const host=document.getElementById('ahu-settings'); if(!host) return;
+  const eqs=(typeof equipment!=='undefined'?equipment:[]).filter(_ahuIsAir);
+  if (!eqs.length){ host.innerHTML='<div class="ahu-empty">AHU/RTU 형식 장비가 없습니다.</div>'; return; }
+  if (!eqs.some(e=>e.no===_ahuSelNo)) _ahuSelNo=eqs[0].no;
+  const eq=eqs.find(e=>e.no===_ahuSelNo), cfg=_ahuCfg(eq), c=cfg.coil, F=cfg.fan;
+  const sel=(path,opts,cur)=>`<select class="form-select" onchange="ahuCfgField('${path}',this.value)">${opts.map(([v,l])=>`<option value="${v}"${String(v)===String(cur)?' selected':''}>${l}</option>`).join('')}</select>`;
+  const num=(path,val,step,ph)=>`<input class="form-input" type="number" step="${step||1}" value="${val??''}" ${ph?`placeholder="${ph}"`:''} onchange="ahuCfgField('${path}',this.value)">`;
+  const row=(lb,ctl,u)=>`<div class="form-row"><label class="form-label">${lb}</label>${ctl}<span class="form-unit">${u||''}</span></div>`;
+  const spT=(grp)=>Object.keys(AHU_SP_LABEL[grp]).map(k=>`<tr><td class="l">${AHU_SP_LABEL[grp][k]}</td><td><input class="form-input ahu-in" type="number" step="1" min="0" value="${cfg.sp[grp][k]}" onchange="ahuCfgField('sp.${grp}.${k}',this.value)"></td></tr>`).join('');
+  const g=id=>document.getElementById(id)?.value;
+  host.innerHTML=`<div class="ahu-set-top">
+    <label class="form-label">대상 장비</label>
+    <select class="form-select" style="max-width:260px" onchange="_ahuSelNo=this.value;renderAhuSettings()">${eqs.map(e=>`<option value="${_aE(e.no)}"${e.no===_ahuSelNo?' selected':''}>${_aE(e.no)} ${_aE(e.name||'')} (${e.airType||'CAV'})</option>`).join('')}</select>
+    <span class="dim">방식·외기량·전열교환기·취출온도차는 SHEET 2-1 장비 목록에서 설정</span></div>
+  <div class="form-grid ahu-set-grid">
+   <div class="form-card"><div class="form-card-header">🌬️ 운전 · 설계 조건</div><div class="form-card-body">
+     ${row('수량',num('qty',cfg.qty,1),'대')}
+     ${row('외기 조건 시각',sel('oaTime',[['peak','B · Zone 피크 시각'],['design','A · 설계 최고온도']],cfg.oaTime))}
+     ${row('외기냉방',sel('oaCool',[['true','적용 ○'],['false','미적용 ×']],String(cfg.oaCool)))}
+     ${row('필요외기 > 급기량',sel('oaOver',[['raise','급기량 상향 (권장)'],['cap','외기량 제한 + 경고']],cfg.oaOver||'raise'))}
+     ${row('실내 냉방 온도',num('tIn',cfg.tIn,0.5,g('w-indoor-cool')),'℃')}
+     ${row('실내 냉방 습도',num('rhIn',cfg.rhIn,1,g('w-indoor-rh-cool')),'%')}
+     ${row('코일·가습 여유율',num('coilSF',cfg.coilSF,0.05),'배')}
+   </div></div>
+   <div class="form-card"><div class="form-card-header">🧊 코일 · 가습 구성</div><div class="form-card-body">
+     ${row('예열 코일',sel('coil.pre',[['none','None'],['steam','증기'],['water','온수']],c.pre))}
+     ${row('예열 목표온도',num('coil.preT',c.preT,0.5),'℃')}
+     ${row('냉수 입/출구',`<span style="display:flex;gap:4px">${num('coil.chwIn',c.chwIn,0.5)}${num('coil.chwOut',c.chwOut,0.5)}</span>`,'℃')}
+     ${row('재열 코일',sel('coil.rh',[['none','None'],['elec','전기'],['water','온수']],c.rh))}
+     ${row('재열 Δt',num('coil.rhDT',c.rhDT,0.5),'℃')}
+     ${row('가열 코일',sel('coil.hc',[['hw','온수'],['steam','증기'],['elec','전기'],['none','None']],c.hc))}
+     ${row('온수 입/출구',`<span style="display:flex;gap:4px">${num('coil.hwIn',c.hwIn,1)}${num('coil.hwOut',c.hwOut,1)}</span>`,'℃')}
+     ${row('증기 잠열',num('coil.steamH',c.steamH,1),'Wh/kg')}
+     ${row('가습기',sel('coil.hum',[['none','None'],['steam','증기분사'],['water','수분무']],c.hum))}
+   </div></div>
+   <div class="form-card"><div class="form-card-header">🌀 송풍기</div><div class="form-card-body">
+     ${row('급기팬 형식',sel('fan.sfType',[['Air Foil','Air Foil'],['Sirocco','Sirocco'],['Plug','Plug'],['Backward Incline','Backward Incline']],F.sfType))}
+     ${row('급기팬 효율',num('fan.sfEff',F.sfEff,1),'%')}
+     ${row('환기팬',sel('fan.rfOn',[['true','설치'],['false','없음']],String(F.rfOn)))}
+     ${row('환기팬 형식',sel('fan.rfType',[['Sirocco','Sirocco'],['Air Foil','Air Foil'],['Plug','Plug']],F.rfType))}
+     ${row('환기팬 효율',num('fan.rfEff',F.rfEff,1),'%')}
+     ${row('환기팬 발열 RA 가산',sel('fan.rfHeat',[['false','미가산'],['true','가산']],String(F.rfHeat)))}
+     ${row('전동기 여유율',num('fan.motorSF',F.motorSF,0.05),'배')}
+     ${row('정압 여유율',num('spSF',cfg.spSF,0.05),'배')}
+   </div></div>
+  </div>
+  <details class="ahu-sp-edit"><summary>정압 항목 편집 (Pa) — 기내 · 기외 급기 · 기외 환기</summary>
+   <div class="ahu-sp-grid">
+    <table class="excel-table ahu-kv"><thead><tr><th>Internal S.P</th><th>Pa</th></tr></thead><tbody>${spT('int')}</tbody></table>
+    <table class="excel-table ahu-kv"><thead><tr><th>External S.P (SA)</th><th>Pa·m·%</th></tr></thead><tbody>${spT('sa')}</tbody></table>
+    <table class="excel-table ahu-kv"><thead><tr><th>External S.P (RA)</th><th>Pa·m·%</th></tr></thead><tbody>${spT('ra')}</tbody></table>
+   </div></details>`;
+}
+function ahuCfgField(path,val){
+  const eq=(equipment||[]).find(e=>e.no===_ahuSelNo); if(!eq) return;
+  const cfg=_ahuCfg(eq), ks=path.split('.'); let o=cfg; for(let k=0;k<ks.length-1;k++) o=o[ks[k]];
+  const key=ks[ks.length-1], prev=o[key];
+  let v=val;
+  if (val==='true'||val==='false') v=(val==='true');
+  else if (['tIn','rhIn'].includes(key)) { const n=parseFloat(val); v=isNaN(n)?null:n; }
+  else if (ks[0]==='sp' || typeof prev==='number') { const n=parseFloat(val); v=isNaN(n)?(ks[0]==='sp'?0:prev):Math.max(ks[0]==='sp'?0:-1e9,n); }
+  if (key==='qty') v=Math.max(1,Math.round(v)||1);
+  o[key]=v;
+  /* 구성 변경 시 정압 기본값 동기 (0일 때만 채움 / None이면 0) */
+  if (path==='coil.pre') cfg.sp.int.ph = v==='none'?0:(cfg.sp.int.ph||40);
+  if (path==='coil.rh')  cfg.sp.int.rh = v==='none'?0:(cfg.sp.int.rh||40);
+  if (path==='coil.hc')  cfg.sp.int.hc = v==='none'?0:(cfg.sp.int.hc||40);
+  const w=_ahuSanitize(cfg); if (w.length && typeof showToast==='function') showToast('⚠️ '+w[0]);   /* Ver-5.3.1 보강#3 */
+  calcAHU();
 }
 
 /* ====================================================
@@ -7532,7 +8161,7 @@ function collectProjectData() {
   return {
     _ver:    '4.0',
     _appVersion: RTS_APP_VERSION,   /* C-2: 저장 앱 버전 기록 */
-    schemaVersion: 6,   /* Ver-5.2.0: glass shgcD·iac·fr·condRad·shgcAng[6] · wall alpha(계산 반영) · inputs p-ho (v5.1: 5 — 외피 type floor/ground/wall-indirect + k/tg) */
+    schemaVersion: 7,   /* 2026-10-21: rooms eaUse·eaCMH·posCMH·noRA·raFrac, equipment.ahu(코일·정압·팬 설정) — 없으면 기본값(구 파일 동일 결과) · */ /* Ver-5.2.0: glass shgcD·iac·fr·condRad·shgcAng[6] · wall alpha(계산 반영) · inputs p-ho (v5.1: 5 — 외피 type floor/ground/wall-indirect + k/tg) */
     _saved:  new Date().toISOString(),
     _app:    'RTS-MANMIN 건축물 부하계산서',
     inputs,
@@ -7591,7 +8220,7 @@ function restoreProjectData(data) {
   const name     = document.getElementById('p-name')?.value     || '';
   const designer = document.getElementById('p-designer')?.value || '';
   setEl('status-project', `${name} | ${designer}`);
-  document.title = `RTS-MANMIN Ver-5.2.1 | ${name}`;
+  document.title = `RTS-MANMIN Ver-5.3.1 | ${name}`;
   syncHeader();
   /* 기상 + 전체 재계산 */
   if (typeof calcWeather === 'function') calcWeather();
@@ -7605,7 +8234,7 @@ function saveProjectFile() {
   const name     = document.getElementById('p-name')?.value     || '만민 건축사 신사옥 신축공사';
   const designer = document.getElementById('p-designer')?.value || '김만민';
   setEl('status-project', `${name} | ${designer}`);
-  document.title = `RTS-MANMIN Ver-5.2.1 | ${name}`;
+  document.title = `RTS-MANMIN Ver-5.3.1 | ${name}`;
   syncHeader();
 
   const data    = collectProjectData();
@@ -7925,7 +8554,13 @@ function regressionSnapshot(){
     buildingCoolSens: Math.round(Math.max(...(cr.cool||[0]))), buildingCoolLat: Math.round(cr.latent||0), buildingHeat: Math.round(cr.heat||0), peakHour: cr.peakHour,
     roomSumCoolSens: Math.round(sum(results,r=>r.peakCool)), roomSumCoolLat: Math.round(sum(results,r=>r.latTotal)), roomSumHeat: Math.round(sum(results,r=>r.heatLoad)),
     equipCoilC: Math.round(sum(groups,g=>g.coilC)), equipCoilH: Math.round(sum(groups,g=>g.coilH)), equipSA: Math.round(sum(groups,g=>g.saCMH)),
+    ..._ahuRegKeys(),   /* 2026-10-21: SHEET 7 AHU 선정(엔탈피차) 합계 — 기존 키와 별도 */
   };
+}
+function _ahuRegKeys(){
+  let L=[]; try { L=(calcAhuSystem()||[]).filter(R=>!R.empty); } catch(_){ return {}; }
+  const sum=f=>Math.round(L.reduce((s,R)=>s+f(R),0));
+  return { ahuCount:L.length, ahuSA:sum(R=>R.SA), ahuOA:sum(R=>R.OA), ahuCoilC:sum(R=>R.core.cool.Qc), ahuCoilH:sum(R=>R.core.heat.Qh+R.core.heat.Qph), ahuHumid:sum(R=>R.core.heat.humKg), ahuFanKW:sum(R=>(R.core.fan.sfMotor+R.core.fan.rfMotor)*R.cfg.qty) };
 }
 function _regCompare(name, expect, actual){
   const keys = Object.keys(expect).filter(k=>typeof expect[k]==='number' && k!=='rooms' && k!=='equipment' && k!=='peakHour');
@@ -8315,7 +8950,7 @@ function buildRtsReport(opts){
   const totArea=results.reduce((s,r)=>s+r.area,0);
 
   /* 표지 · 목차 (산출서 톤) */
-  const tocItems=[['Ⅰ','계산조건 요약','Design Conditions'],['Ⅱ','실별 입력 자료','Room Data'],['Ⅲ','실별 부하 결과 요약 · 층별/장비별 소계','Room Load Summary'],['Ⅳ','실별 상세 계산 — 결과표 · 계산 과정','Room Detail'],['Ⅴ','장비별 집계 — 코일부하 · 급기량 · 가습량','Equipment'],['Ⅵ','건물 부하 집계 — 항목별 분석 · 시각별 부하','Building Summary'],['—','적용 법령 및 기준 · 각주','References']];
+  const tocItems=[['Ⅰ','계산조건 요약','Design Conditions'],['Ⅱ','실별 입력 자료','Room Data'],['Ⅲ','실별 부하 결과 요약 · 층별/장비별 소계','Room Load Summary'],['Ⅳ','실별 상세 계산 — 결과표 · 계산 과정','Room Detail'],['Ⅴ','장비별 집계 — 코일부하 · 급기량 · 가습량','Equipment'],['Ⅴ-1~4','AHU 선정 — Load · Air Volume · System Diagram · Selection','AHU Selection'],['Ⅵ','건물 부하 집계 — 항목별 분석 · 시각별 부하','Building Summary'],['—','적용 법령 및 기준 · 각주','References']];
   if (_drHas()) tocItems.splice(6,0,['Ⅶ','설계 대비 검증 — 실별·장비별 비율·차이','Design Comparison']);
   if (RTS_REPORT.appendix) tocItems.push(['A','부록 — 실별 시각별(24h) 냉방부하 성분표','Appendix']);
   let h=`<div class="rp-cover">
@@ -8382,6 +9017,16 @@ function buildRtsReport(opts){
   /* Ⅴ 장비 */
   if (groups.length) h+=`<div class="rp-break"></div>`+groups.map(g=>_rpEquip(g,ctx)).join('');
 
+  /* Ⅴ-1~4 AHU 선정 (2026-10-21 · RTS-SAREK 3-1~3-4 형식) */
+  let ahuL=[]; try { ahuL=(calcAhuSystem()||[]).filter(R=>!R.empty); } catch(e){ console.error('[AHU] 산출서', e); }
+  if (ahuL.length){
+    const sSA=ahuL.reduce((a,R)=>a+R.SA,0), sQc=ahuL.reduce((a,R)=>a+R.core.cool.Qc,0);
+    h+=`<div class="rp-break"></div>`+_rpSec('Ⅴ-1. AHU LOAD (공조기별 실 부하)',`${ahuL.length}대 · Σ설계 현열 ${_rpN(ahuL.reduce((a,R)=>a+R.SHd,0)/1000,1)} kW`,`<div class="ahu-rp">${_ahuLoadTable(ahuL)}</div>`,'rp-list-sec');
+    h+=_rpSec('Ⅴ-2. AHU AIR VOLUME (급기·환기·배기 풍량)',`Σ급기 ${_rpN(sSA)} ㎥/h · Σ외기 ${_rpN(ahuL.reduce((a,R)=>a+R.OA,0))} ㎥/h`,`<div class="ahu-rp">${_ahuAirTable(ahuL,false)}</div>`,'rp-list-sec');
+    h+=`<div class="rp-break"></div>`+_rpSec('Ⅴ-3. AHU SYSTEM DIAGRAM (계통별 구성)',`Σ냉각코일 ${_rpN(sQc/1000,1)} kW`,`<div class="ahu-rp">${_ahuSysBlocks(ahuL)}</div>`,'rp-list-sec');
+    h+=ahuL.map(R=>`<div class="rp-break"></div>`+_rpSec(`Ⅴ-4. AHU SELECTION — ${_rpEsc(R.eq.no)} ${_rpEsc(R.eq.name||'')}`,`급기 ${_rpN(R.SA)} ㎥/h · 냉각 ${_rpN(R.core.cool.Qc/1000,1)} kW · 가열 ${_rpN((R.core.heat.Qh+R.core.heat.Qph)/1000,1)} kW · SF ${R.core.fan.sfMotor} kW`,`<div class="ahu-rp">${_ahuSelCard(R)}</div>`)).join('');
+  }
+
   /* Ⅵ 건물 집계 */
   const cr=calcResults||{}, cmp=cr.cmp||{}, pk=(cr.peakHour||14)-1, SFb=cr.SF||ctx.sf;
   const bv=a=>Math.round(((a&&a[pk])||0)*SFb);
@@ -8396,8 +9041,14 @@ function buildRtsReport(opts){
       _rpRow('Q<sub>t</sub>','건물 냉방 전열 (실부하)',_rpN(bPeak+bLat),'W','Q<sub>s</sub> + Q<sub>L</sub> · 외기부하 제외',true),
       _rpRow('Q<sub>h</sub>','건물 난방부하 (실부하)',_rpN(cr.heat||0),'W','Σ실 난방부하 · 외기 난방 제외',true),
       /* v5.1: 열원 용량 기준 — 장비 코일 합계(실부하+외기부하, ERV 반영) */
-      _rpRow('Q<sub>c,eq</sub>','냉동기 용량 기준 (Σ장비 냉방코일)',groups.length?_rpN(eqCoilC):'—','W',groups.length?`${_rpN(eqCoilC/3517,1)} USRT · 실 현열+잠열+외기 현열·잠열${groups.some(g=>g.erv&&g.erv.on)?' · ERV 감산 반영':''} (Ⅴ 합계)`:'장비 미등록 — 조닝 탭에서 배정',true),
-      _rpRow('Q<sub>h,eq</sub>','보일러 용량 기준 (Σ장비 난방코일)',groups.length?_rpN(eqCoilH):'—','W',groups.length?`실 난방 ${_rpN(eqHeatRoom)} + 외기 난방 ${_rpN(eqCoilH-eqHeatRoom)} · 가습·배관손실·예열 별도`:'장비 미등록',true),
+      ...(ahuL.length?(()=>{ const byNo=Object.fromEntries(ahuL.map(R=>[R.eq.no,R]));
+          const qc=groups.reduce((a,g)=>a+(byNo[g.eq.no]?byNo[g.eq.no].core.cool.Qc:g.coilC),0);
+          const qh=groups.reduce((a,g)=>a+(byNo[g.eq.no]?byNo[g.eq.no].core.heat.Qh+byNo[g.eq.no].core.heat.Qph:g.coilH),0);
+          return [ _rpRow('Q<sub>c,AHU</sub>','냉동기 용량 기준 (AHU 선정 냉각코일 + FCU·PAC)',_rpN(qc),'W',`${_rpN(qc/3517,1)} USRT · AHU ${ahuL.length}대 엔탈피차 방식(코일 여유율·팬 발열 포함, Ⅴ-4) + 기타 장비 단순합`,true),
+                   _rpRow('Q<sub>h,AHU</sub>','보일러 용량 기준 (AHU 가열·예열코일 + FCU·PAC)',_rpN(qh),'W','AHU 가열+예열(Ⅴ-4) + 기타 장비 단순합 · 가습·배관손실 별도',true) ]; })():[]),
+      _rpRow('Q<sub>c,eq</sub>',ahuL.length?'Σ장비 냉방코일 — 단순합 (대조)':'냉동기 용량 기준 (Σ장비 냉방코일)',groups.length?_rpN(eqCoilC):'—','W',groups.length?`${_rpN(eqCoilC/3517,1)} USRT · 실 현열+잠열+외기 현열·잠열${groups.some(g=>g.erv&&g.erv.on)?' · ERV 감산 반영':''} (Ⅴ 합계)`:'장비 미등록 — 조닝 탭에서 배정',true),
+      ...((()=>{ const q1=groups.reduce((a,g)=>a+(g.q1||0),0); return q1>0?[_rpRow('Q1','천장속(RA) 조명 부하 — 실부하 제외분',_rpN(q1),'W','조명→천장속 비율 적용 실(AHU·RTU 담당)의 동시 피크 시각 합 · 위 실부하에 미포함, 코일 용량에는 포함')]:[]; })()),
+      _rpRow('Q<sub>h,eq</sub>',ahuL.length?'Σ장비 난방코일 — 단순합 (대조)':'보일러 용량 기준 (Σ장비 난방코일)',groups.length?_rpN(eqCoilH):'—','W',groups.length?`실 난방 ${_rpN(eqHeatRoom)} + 외기 난방 ${_rpN(eqCoilH-eqHeatRoom)} · 가습·배관손실·예열 별도`:'장비 미등록',!ahuL.length),
       _rpRow('Q<sub>s</sub>/A','건물 냉방 원단위',_rpN(totArea>0?bPeak/totArea:0,1),'W/㎡',`${_rpN(bPeak)} ÷ ${_rpN(totArea)} ㎡`),
       _rpRow('Σ/Block','실별 피크 합 ÷ 동시각 피크',_rpN(bPeak>0?tS/bPeak:0,3),'—',`${_rpN(tS)} ÷ ${_rpN(bPeak)} (동시부하율의 역수)`),
     ])+`<div class="rp-ledger-title">▶ 부하 항목별 분석 (피크 ${cr.peakHour}시 · W)</div>
@@ -8452,7 +9103,7 @@ function openRtsManual(e){
   }
   return true;
 }
-const RTS_APP_VERSION = 'Ver-5.2.1';   /* C-2: 헤더 각인·표지·워터마크·.rts 저장·README와 한 쌍 (sw.js CACHE rts-v5.2.2 — 5.2.1 보완: 매뉴얼 고정 링크) */
+const RTS_APP_VERSION = 'Ver-5.3.1';   /* C-2: 헤더 각인·표지·워터마크·.rts 저장·README와 한 쌍 (sw.js CACHE rts-v5.3.1 — Ver-5.3.0 AHU 선정 7-1~7-4 · Ver-5.3.1 AHU 보강 1~8) */
 const RTS_LEGAL = {
   notice:    '건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호',
   effective: '2026. 7. 8.',
@@ -8494,7 +9145,7 @@ const SHEET_INDEX = [
   { id:'tab-internal', no:'4',   title:'내부 열취득 (Internal Heat Gain)' },
   { id:'tab-rts',      no:'5',   title:'CTS / RTS 계수' },
   { id:'tab-result',   no:'6',   title:'냉난방 부하 계산 결과' },
-  { id:'tab-ahu',      no:'7',   title:'AHU / FCU 선정' },
+  { id:'tab-ahu',      no:'7',   title:'AHU 선정 (Load · Air Volume · System Diagram · Selection)' },
   { id:'tab-building', no:'8',   title:'건물 부하 집계' },
 ];
 function applySheetNumbers() {
@@ -8569,6 +9220,7 @@ function _exportReportRun(mode) {
     '📊 CTS / RTS 계수 (Conduction & Radiant Time Series)': 'CTS / RTS 계수',
     '📈 냉난방 부하 계산 결과': '냉난방 부하 계산 결과',
     '⚙️ AHU / FCU 선정': 'AHU / FCU 선정',
+    '⚙️ AHU 선정 (AHU Load · Air Volume · System · Selection)': 'AHU 선정 (AHU Load · Air Volume · System · Selection)',
     '🏗️ 건물 부하 집계 (Building Load Summary)': '건물 부하 집계 (Building Load Summary)',
     '🧱 부위별 열관류율 검토 연계': '부위별 열관류율 검토'
   };
@@ -8581,7 +9233,7 @@ function _exportReportRun(mode) {
     el._printOrigHTML = el._printOrigHTML || el.innerHTML;
   });
   const ptEl = document.getElementById('print-title');
-  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver-5.2.1'; }
+  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver-5.3.1'; }
   const psEl = document.getElementById('print-subtitle');
   if(psEl) psEl.textContent = pname + ' | 설계자: ' + des + ' | ASHRAE 2009 RTS법';
 
@@ -8723,7 +9375,7 @@ function _exportReportRun(mode) {
      Sheet 5 : RTS계산결과  — 시간별 냉방부하 (24h)
      Sheet 6 : 실별부하      — rooms[] 냉·난방 결과
      Sheet 7 : 부하집계      — 건물 피크 부하 요약
-     Sheet 8 : AHU선정       — 공조기 선정 결과
+     Sheet 8 : AHU부하·AHU풍량·AHU계통·AHU선정 — 공조기 선정(7-1~7-4)
    ══════════════════════════════════════════════════════════════════ */
 function exportExcel() {
   /* ── SheetJS 로드 확인 ── */
@@ -8810,15 +9462,7 @@ function exportExcel() {
   const heatLoad = calcResults.heat || 0;
   const latentPeak = (calcResults.latent != null) ? calcResults.latent : iLatTotal * pSF;   /* Ver-5.2.0 B-12: 화면 잠열(인체+침기)과 일치 */
 
-  /* ── AHU 데이터 ── */
-  const ahuNo    = vs('ahu-no')       || 'AHU-1';
-  const ahuName  = vs('ahu-name')     || '공조기-1';
-  const ahuSys   = vs('ahu-sys')      || 'CAV';
-  const ahuCfm   = v('ahu-cfm')       || 0;
-  const ahuOA    = v('ahu-oa')        || 0;
-  const ahuFanKW = v('ahu-fan-kw')    || 0;
-  const ahuSP    = v('ahu-sp')        || 900;
-  const ahuEff   = v('ahu-fan-eff')   || 60;
+  /* ── AHU 데이터: 2026-10-21 장비별 AHU 선정(calcAhuSystem)으로 대체 — 구 SHEET 7 전역 입력(ahu-*) 폐지 ── */
 
   const wb = XLSX.utils.book_new();
 
@@ -8917,7 +9561,7 @@ function exportExcel() {
     for (let i=0; i<6; i++) { ws[XLSX.utils.encode_cell({r,c:0})] = {v:'',t:'s'}; r++; }
 
     // 메인 제목
-    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver-5.2.1', t:'s',
+    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver-5.3.1', t:'s',
       s: S({ bold:true, bg:'0A3A6B', color:'FFFFFF', sz:16, align:'center' }) };
     mergeCells(ws, [[r,1,r,6]]);
     r++;
@@ -9483,57 +10127,103 @@ function exportExcel() {
   })();
 
   /* ─────────────────────────────────────────────────────
-     ⑧ AHU선정 Sheet (AH-Sel 참조)
+     ⑧ AHU 시트 4종 (2026-10-21 · RTS-SAREK 3-1~3-4 형식, rooms[] 단일 경로)
+        AHU부하(7-1) · AHU풍량(7-2) · AHU계통(7-3) · AHU선정(7-4)
   ───────────────────────────────────────────────────── */
   (function buildAHU() {
-    const ws = {};
-    ws['!cols']=[{wch:18},{wch:14},{wch:12},{wch:12},{wch:12},{wch:10}];
-    let r=0;
-
-    ws[XLSX.utils.encode_cell({r,c:0})]={v:pName,t:'s',s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:10})};
-    ws[XLSX.utils.encode_cell({r,c:3})]={v:'7. AHU / 공조기 선정',t:'s',
-      s:S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:9,align:'right'})};
-    mergeCells(ws,[[r,0,r,2],[r,3,r,5]]); r++;
-    ws[XLSX.utils.encode_cell({r,c:4})]={v:dateStr,t:'s',s:ST.note}; r++; r++;
-
-    ws[XLSX.utils.encode_cell({r,c:0})]={v:'□ 공조기 선정 결과',t:'s',s:ST.h2};
-    mergeCells(ws,[[r,0,r,5]]); r++;
-
-    const aHdr=['항목','값','단위','비고'];
-    aHdr.forEach((h,ci)=>{ws[XLSX.utils.encode_cell({r,c:ci})]={v:h,t:'s',s:ST.h3};});
-    r++;
-
-    const totCkW=(peakCool+iPeople*iLat*pSF)/1000;
-    const aData=[
-      ['기기 번호',   ahuNo||'AHU-1', '',     ''],
-      ['기기 명칭',   ahuName||'공조기-1', '',  ''],
-      ['시스템 방식', ahuSys||'CAV', '',       ''],
-      ['냉방 부하',   +totCkW.toFixed(2), 'kW',  '냉방 코일'],
-      ['난방 부하',   +(heatLoad/1000).toFixed(2), 'kW', '가열 코일'],
-      ['급기 풍량',   Math.round(ahuCfm), '㎥/h', ''],
-      ['외기 도입량', Math.round(ahuOA),  '㎥/h', ''],
-      ['Fan 정압',    ahuSP, 'Pa', ''],
-      ['Fan 효율',    ahuEff, '%', ''],
-      ['Fan 동력',    +ahuFanKW.toFixed(2), 'kW', ''],
-      ['냉동기 용량', +(totCkW*0.2843).toFixed(1), 'USRT', '1 USRT=3.517kW'],
-    ];
-    aData.forEach(row=>{
-      ws[XLSX.utils.encode_cell({r,c:0})]={v:row[0],t:'s',s:ST.label};
-      ws[XLSX.utils.encode_cell({r,c:1})]={v:row[1],t:typeof row[1]==='number'?'n':'s',
-        s:typeof row[1]==='number'?ST.valDec:ST.plain};
-      ws[XLSX.utils.encode_cell({r,c:2})]={v:row[2],t:'s',s:ST.center};
-      ws[XLSX.utils.encode_cell({r,c:3})]={v:row[3],t:'s',s:ST.note};
-      r++;
-    });
-    r++;
-
-    ws[XLSX.utils.encode_cell({r,c:0})]={v:'* 본 계산서는 ASHRAE 2009 RTS법(Radiant Time Series)에 의한 결과입니다.',t:'s',s:ST.note};
-    mergeCells(ws,[[r,0,r,5]]); r++;
-    ws[XLSX.utils.encode_cell({r,c:0})]={v:'  설계자: '+pDesign+'  |  출력일: '+dateStr+'  |  RTS-MANMIN Ver-5.2.1',t:'s',s:ST.note};
-    mergeCells(ws,[[r,0,r,5]]); r++;
-
-    setRange(ws,r+1,5);
-    XLSX.utils.book_append_sheet(wb, ws, 'AHU선정');
+    let L=[]; try { L=(calcAhuSystem()||[]).filter(R=>!R.empty); } catch(e){ console.error('[AHU] Excel', e); }
+    const put=(ws,r,c,v,st)=>{ if(v===null||v===undefined||v==='') return; ws[XLSX.utils.encode_cell({r,c})]={v, t:typeof v==='number'?'n':'s', s:st||(typeof v==='number'?ST.val:ST.plain)}; };
+    const head=(ws,title,ncol)=>{
+      put(ws,0,0,pName,S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:10}));
+      put(ws,0,ncol-3,title,S({bold:true,bg:'0A3A6B',color:'FFFFFF',sz:9,align:'right'}));
+      mergeCells(ws,[[0,0,0,ncol-4],[0,ncol-3,0,ncol-1]]);
+      put(ws,1,ncol-3,dateStr,ST.note); return 3;
+    };
+    const R0=(x)=>Math.round(x||0);
+    const finish=(ws,r,ncol,name,widths)=>{ ws['!cols']=widths.map(w=>({wch:w})); setRange(ws,r+1,ncol-1); XLSX.utils.book_append_sheet(wb, ws, name); };
+    if (!L.length){
+      const ws={}; let r=head(ws,'7. AHU 선정',6);
+      put(ws,r,0,'AHU/RTU 장비가 없거나 배정된 실이 없습니다 — SHEET 2-1에서 장비 등록·실 배정 후 다시 내보내세요.',ST.note);
+      finish(ws,r,6,'AHU선정',[18,14,12,12,12,10]); return;
+    }
+    /* 7-1 AHU LOAD */
+    (function(){
+      const ws={}, nc=14; let r=head(ws,'7-1. AHU LOAD',nc);
+      ['RM No.','실 명','수량','면적(㎡)','C.H(m)','인원(인)','Room Peak hr','Room SH(W)','Room LH(W)','Room RA L(W)','Zone SH(W)','Zone LH(W)','Zone RA L(W)','난방(W)'].forEach((t,c)=>put(ws,r,c,t,ST.h3)); r++;
+      L.forEach(A=>{
+        [A.eq.no,(A.eq.name||'')+` (${A.eq.airType||'CAV'})`,A.cfg.qty,+A.area.toFixed(1),+A.avgH.toFixed(2),A.ppl,'—',R0(A.SHr),R0(A.LH),R0(A.Q1r),R0(A.SHz),R0(A.LH),R0(A.Q1z),R0(A.heat)].forEach((v,c)=>put(ws,r,c,v,typeof v==='number'?ST.total:S({bold:true,bg:'FFF3CD',sz:9}))); r++;
+        put(ws,r,1,`□ Zone Block Peak Time ${A.zpk}:00 · 설계 현열 ${A.vav?'Zone 피크(VAV)':'실별 피크 합(CAV)'} ${R0(A.SHd)} W`,ST.note); r++;
+        A.rows.forEach(w=>{ [w.rm.id,w.rm.name,w.rm.qty||1,+w.area.toFixed(1),+(+w.h).toFixed(2),w.ppl,w.pk,R0(w.shR),R0(w.lh),R0(w.q1R),R0(w.shZ),R0(w.lh),R0(w.q1Z),R0(w.heat)].forEach((v,c)=>put(ws,r,c,v)); r++; });
+        r++;
+      });
+      finish(ws,r,nc,'AHU부하',[10,20,6,10,8,8,8,11,11,10,11,11,10,11]);
+    })();
+    /* 7-2 AHU AIR VOLUME */
+    (function(){
+      const ws={}, nc=13; let r=head(ws,'7-2. AHU AIR VOLUME',nc);
+      ['RM No.','실 명','면적(㎡)','C.H(m)','A.C(회/h)','SA(㎥/h)','RA(㎥/h)','EA 용도','EA(㎥/h)','Posit.(㎥/h)','계산풍량(㎥/h)','전등 CL(W)','Max SH(W)'].forEach((t,c)=>put(ws,r,c,t,ST.h3)); r++;
+      L.forEach(A=>{
+        [A.eq.no,A.eq.name||'',+A.area.toFixed(1),+A.avgH.toFixed(2),+A.ach.toFixed(2),A.SA,A.RA,'',A.EA,A.Pos,R0(A.SAcalc),R0(A.Q1d),R0(A.SHd)].forEach((v,c)=>put(ws,r,c,v,typeof v==='number'?ST.total:S({bold:true,bg:'FFF3CD',sz:9}))); r++;
+        put(ws,r,1,`(Δt = ${A.dt} ℃) SA = ${R0(A.SHd)} ÷ (0.335 × ${A.dt}) = ${R0(A.SAcalc)} → ${A.SA} · RA = SA − EA − Posit.`,ST.note); r++;
+        A.rows.forEach(w=>{ [w.rm.id,w.rm.name,+w.area.toFixed(1),+(+w.h).toFixed(2),+w.ach.toFixed(2),w.sa,w.ra,w.rm.eaUse||'',w.ea||'',w.pos||'',R0(w.saCalc),R0(A.vav?w.q1Z:w.q1R),R0(w.shR)].forEach((v,c)=>put(ws,r,c,v)); r++; });
+        r++;
+      });
+      finish(ws,r,nc,'AHU풍량',[10,20,10,8,9,10,10,10,9,10,12,10,11]);
+    })();
+    /* 7-3 SYSTEM DIAGRAM */
+    (function(){
+      const ws={}, nc=14; let r=head(ws,'7-3. AHU SYSTEM DIAGRAM',nc);
+      const groups=[], map={}; L.forEach(A=>{ const k=_ahuSysKey(A); if(!map[k]){map[k]={items:[]};groups.push(map[k]);} map[k].items.push(A); });
+      groups.forEach((g,gi)=>{
+        put(ws,r,0,`HVAC SYSTEM - ${gi+1}`,ST.h2); mergeCells(ws,[[r,0,r,3]]); r++;
+        _ahuSysLines(g.items[0]).forEach(t=>{ put(ws,r,0,t,ST.plain); r++; });
+        ['AHU No.','Service','Location',"Q'ty",'OA','SA','RA','EA','TA','CL/C lpm','RH/C kW','PH/C','AH/C','Humd. kg/h'].forEach((t,c)=>put(ws,r,c,t,ST.h3)); r++;
+        g.items.forEach(A=>{ const C=A.core.cool,H=A.core.heat;
+          [A.eq.no,A.eq.name||'',A.eq.loc||'',A.cfg.qty,A.OAmax,A.SA,A.RA,A.EAmax,A.TA,C.lpm,C.Qrh?+(C.Qrh/1000).toFixed(1):'',H.Qph?(H.phKg||H.phLpm):'',H.hcType==='hw'?H.lpm:H.hcType==='steam'?H.kg:H.hcType==='elec'?+(H.Qh/1000).toFixed(1):'',H.humKg||''].forEach((v,c)=>put(ws,r,c,v)); r++;
+          put(ws,r,4,`(${A.OA})`,ST.center); put(ws,r,7,`(${A.EAmin})`,ST.center); r++; });
+        r++;
+      });
+      put(ws,r,0,'OA·EA 괄호 = 최소외기(설계) 풍량 · 괄호 밖 = 외기냉방 최대 · TA = 국소배기 + 양압',ST.note);
+      finish(ws,r,nc,'AHU계통',[10,18,12,6,9,9,9,9,9,10,9,9,9,10]);
+    })();
+    /* 7-4 AHU SELECTION */
+    (function(){
+      const ws={}, nc=5; let r=head(ws,'7-4. AHU SELECTION',nc);
+      const kv=(k,v,u,b)=>{ put(ws,r,0,k,ST.label); put(ws,r,1,v,typeof v==='number'?(Number.isInteger(v)?ST.val:ST.valDec):ST.plain); put(ws,r,2,u||'',ST.center); put(ws,r,3,b||'',ST.note); mergeCells(ws,[[r,3,r,4]]); r++; };
+      const sec=t=>{ put(ws,r,0,t,ST.h3); mergeCells(ws,[[r,0,r,4]]); r++; };
+      const stp=(k,P)=>kv(k,`${P.t.toFixed(1)} ℃ · ${P.rh.toFixed(1)} % · ${P.x.toFixed(4)} kg/kg' · ${P.h.toFixed(2)} Wh/kg`);
+      L.forEach(A=>{ const C=A.core.cool,H=A.core.heat,F=A.core.fan,cf=A.cfg;
+        put(ws,r,0,`${A.eq.no} : ${A.eq.name||''}`,ST.h1); put(ws,r,3,`수량 ${cf.qty} · ${A.eq.loc||'—'} · ${A.eq.airType||'CAV'}`,ST.h1); mergeCells(ws,[[r,0,r,2],[r,3,r,4]]); r++;
+        sec('■ 실내 부하 · 설계 조건');
+        kv('담당 실 · Zone Peak',`${A.n} 개 · ${A.zpk}:00`); kv('실내냉방 현열(설계)',R0(A.SHd),'W',A.vav?'Zone 피크(VAV)':'실별 피크 합(CAV)'); kv('잠열',R0(A.LH),'W'); kv('천장속 부하 Q1',R0(A.Q1d),'W'); kv('실내난방 전열',R0(A.heat),'W');
+        kv('면적 · 인원 · RSHF',`${A.area.toFixed(1)} ㎡ · ${A.ppl} 인 · ${A.rshf.toFixed(2)}`);
+        stp('냉방 외기',C.O); stp('냉방 실내',C.I); stp('난방 외기',H.Ow); stp('난방 실내',H.Ih);
+        sec('■ AIR VOLUME SELECTION');
+        kv('Supply Air',A.SA,'㎥/h',`${R0(A.SHd)} ÷ (0.335 × ${A.dt}) = ${R0(A.SAcalc)} → 100 단위 올림`);
+        kv('Outdoor Air',A.OA,'㎥/h',`${A.oaReq.basis} = ${A.oaReq.v}${A.OA>A.oaReq.v?` → TA ${A.TA} 이상`:''}`);
+        kv('Exhaust (TA)',A.TA,'㎥/h','국소배기 + 양압'); kv('Return Air',A.RA,'㎥/h');
+        sec('■ COIL & HUMIDIFIER CAPACITY');
+        kv('냉각코일',R0(C.Qc),'W',`1.2 × ${A.SA} × (${C.M.h.toFixed(2)} − ${C.L.h.toFixed(2)}) × ${cf.coilSF} · ${C.lpm} lpm (${cf.coil.chwIn}/${cf.coil.chwOut} ℃)`);
+        kv('　대조: 단순합',R0(C.Qref),'W','실 현열+잠열+외기 현열·잠열');
+        if (C.Qrh) kv('재열코일',R0(C.Qrh),'W',`0.335 × ${A.SA} × ${C.rhDT} × ${cf.coilSF}`);
+        if (H.Qph) kv('예열코일',R0(H.Qph),'W',`0.335 × ${A.SA} × (${H.P.t} − ${H.Mh.t}) × ${cf.coilSF}${H.phKg?` · ${H.phKg} kg/h`:H.phLpm?` · ${H.phLpm} lpm`:''}`);
+        kv('가열코일',R0(H.Qh),'W',`0.335 × ${A.SA} × (${H.hcLAT} − ${H.P.t}) × ${cf.coilSF}${H.lpm?` · ${H.lpm} lpm`:H.kg?` · ${H.kg} kg/h`:''}`);
+        if (H.hum!=='none') kv('가습',H.humKg,'kg/h',`1.2 × ${A.OA} × (${H.Ih.x.toFixed(4)} − ${H.Owp.x.toFixed(4)}) × ${cf.coilSF} · ${AHU_COIL_TXT.hum[H.hum]}`);
+        sec('■ AIR STATUS');
+        if (A.erv.on) stp("OA' (배열회수 후)",C.Op);
+        stp("RA'",C.Rp); stp('혼합 M',C.M); stp('코일출구 L',C.L); stp('난방 혼합 Mw',H.Mh); if(H.Qph) stp('예열 출구 P',H.P);
+        kv('ADP · BF',`${C.adp==null?'—':C.adp+' ℃'} · ${C.bf==null?'—':(C.bf*100).toFixed(1)+' %'}`);
+        sec('■ FAN SELECTION');
+        kv('정압 Internal / SA / RA',`${F.sp.int} / ${F.sp.sa} / ${F.sp.ra}`,'Pa',`여유율 × ${cf.spSF}`);
+        kv('Supply Fan',`${F.sfMotor} kW`,'',`${cf.fan.sfType} · ${R0(F.saU)} ㎥/h × ${F.SPs} Pa ÷ (3.6×10⁶ × ${cf.fan.sfEff/100}) × ${cf.fan.motorSF} = ${F.sfShaft.toFixed(2)} kW`);
+        kv('Return Fan',F.rfOn?`${F.rfMotor} kW`:'None','',F.rfOn?`${cf.fan.rfType} · ${R0(F.raU)} ㎥/h × ${F.SPr} Pa ÷ (3.6×10⁶ × ${cf.fan.rfEff/100}) × ${cf.fan.motorSF} = ${F.rfShaft.toFixed(2)} kW`:'');
+        if (A.warn.length) A.warn.forEach(w=>kv('⚠ 검토',w));
+        r++;
+      });
+      put(ws,r,0,'* 냉각코일 = 혼합공기–코일출구 엔탈피차 방식(RTS-SAREK 3-4 동일) · 습공기 물성 ASHRAE HOF 2009 1장',ST.note); mergeCells(ws,[[r,0,r,4]]); r++;
+      put(ws,r,0,'  설계자: '+pDesign+'  |  출력일: '+dateStr+'  |  RTS-MANMIN '+RTS_APP_VERSION,ST.note); mergeCells(ws,[[r,0,r,4]]);
+      finish(ws,r,nc,'AHU선정',[26,30,8,30,40]);
+    })();
   })();
 
   /* ─────────────────────────────────────────────────────
@@ -10081,7 +10771,7 @@ window.addEventListener('appinstalled', () => {
     <div style="font-size:10px;color:rgba(110,231,183,.6);margin-top:1px;">${payload.projectName || ''}</div>
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.2.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET U</span>
     </div>
 
