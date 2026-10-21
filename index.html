@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#0e7490">
 <meta name="msapplication-TileColor" content="#0a1628">
 <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
-<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.1 by MANMIN">
+<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.2 by MANMIN">
 
 <!-- SheetJS Excel Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 <!-- ======================== -->
 
-<title>RTS-MANMIN 건축물 부하계산서 Ver-5.3.1 | 만민 건축사 신사옥 신축공사</title>
+<title>RTS-MANMIN 건축물 부하계산서 Ver-5.3.2 | 만민 건축사 신사옥 신축공사</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;900&display=swap'); /* v5.1: Orbitron 추가(헤더 각인·인쇄 워터마크 — 소방웹 동일 서체) */
 
@@ -1074,7 +1074,7 @@
     border-top: 0.3pt solid #aaa; padding-top: 2pt;
   }
   @bottom-right {  /* v5.1 A-2-3: 우하단 버전 워터마크(소방웹 규격) — 문자열은 인쇄 시 RTS_APP_VERSION으로 덮어씀 */
-    content: "RTS-MANMIN Ver-5.3.1";
+    content: "RTS-MANMIN Ver-5.3.2";
     font-family: 'Orbitron', sans-serif;
     font-size: 8pt; font-weight: 700; color: #9ca3af; letter-spacing: 0.08em; white-space: nowrap;
   }
@@ -2395,6 +2395,8 @@ body{background:var(--navy);color:var(--text);}
 .ahu-card{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;background:var(--navy2,#fff);box-shadow:0 4px 20px rgba(0,0,0,.05)}
 .ahu-card-h{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-weight:800;font-size:14px;color:#0c4a6e;border-bottom:2px solid var(--accent);padding-bottom:6px;margin-bottom:8px}
 .ahu-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ahu-grid>div,.ahu-figs>div{min-width:0}   /* Ver-5.3.2: 긴 계산식이 단 밖으로 넘치지 않게 */
+.ahu-kv td.f{word-break:keep-all;overflow-wrap:anywhere}
 .ahu-figs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ahu-sub-h{font-weight:800;font-size:12px;margin:10px 0 4px;color:var(--text)}
 .ahu-kv,.ahu-st,.ahu-sp{width:100%}
@@ -2410,28 +2412,66 @@ body{background:var(--navy);color:var(--text);}
 @media (max-width:760px){.ahu-sp-grid{grid-template-columns:1fr}.ahu-card{padding:10px}}
 @media (max-width:480px){#tab-ahu .ahu-subnav button{flex:1 1 30%;padding:6px 6px}.ahu-card-h{font-size:13px}}
 /* 산출서(#rts-report) 내 AHU 시트 */
-#rts-report .ahu-rp table{width:100%;border-collapse:collapse;font-size:8.2px;margin:4px 0}
-#rts-report .ahu-rp th{background:#f0fdfa;color:#0f766e;border:1px solid #cbd5e1;padding:2px 3px;font-weight:700;text-align:center;white-space:nowrap}
-#rts-report .ahu-rp td{border:1px solid #cbd5e1;padding:1.5px 3px;text-align:center;white-space:nowrap}
-#rts-report .ahu-rp td.l{text-align:left}#rts-report .ahu-rp td.n{text-align:right;font-family:'JetBrains Mono',monospace}
-#rts-report .ahu-rp td.f{text-align:left;white-space:normal;color:#475569;font-size:7.6px}
-#rts-report .ahu-rp tr.ahu-head td{background:#ecfeff;font-weight:700}
-#rts-report .ahu-rp tr.ahu-peak td,#rts-report .ahu-rp tr.ahu-min td{text-align:left;color:#475569;font-size:7.6px}
-#rts-report .ahu-rp .ahu-card{box-shadow:none;border:0;padding:0;margin:0}
-#rts-report .ahu-rp .ahu-card-h{font-size:10px}
-#rts-report .ahu-rp .ahu-sub-h{font-size:8.6px;margin:5px 0 2px}
-#rts-report .ahu-rp .ahu-grid{gap:8px}
-#rts-report .ahu-rp .ahu-svg{min-width:0;border-color:#cbd5e1}
-#rts-report .ahu-rp .ahu-note{font-size:7.6px;padding:2px 0}
-#rts-report .ahu-rp .ahu-sysblk{border-color:#cbd5e1;padding:6px;border-radius:4px}
-#rts-report .ahu-rp .ahu-sys-lines{font-size:8.2px;line-height:1.5}
-#rts-report .ahu-rp .ahu-grid,#rts-report .ahu-rp .ahu-figs{grid-template-columns:1fr 1fr}
-#rts-report .ahu-rp .ahu-grid>div,#rts-report .ahu-rp .ahu-figs>div{min-width:0}
-#rts-report .ahu-rp table td,#rts-report .ahu-rp table th{font-size:7.4px!important;padding:1.2px 3px!important;line-height:1.3!important;font-family:'Noto Sans KR','Malgun Gothic',sans-serif!important;letter-spacing:0!important;min-width:0!important}
-#rts-report .ahu-rp table td.n{font-family:'JetBrains Mono',monospace!important}
-#rts-report .ahu-rp .ahu-kv td.l,#rts-report .ahu-rp .ahu-sp td.l,#rts-report .ahu-rp .ahu-st td.l{white-space:normal}
-#rts-report .ahu-rp .ahu-sel-wide table{table-layout:auto}
+:is(#rts-report,#ahu-print) .ahu-rp table{width:100%;border-collapse:collapse;font-size:8.2px;margin:4px 0}
+:is(#rts-report,#ahu-print) .ahu-rp th{background:#f0fdfa;color:#0f766e;border:1px solid #cbd5e1;padding:2px 3px;font-weight:700;text-align:center;white-space:nowrap}
+:is(#rts-report,#ahu-print) .ahu-rp td{border:1px solid #cbd5e1;padding:1.5px 3px;text-align:center;white-space:nowrap}
+:is(#rts-report,#ahu-print) .ahu-rp td.l{text-align:left}:is(#rts-report,#ahu-print) .ahu-rp td.n{text-align:right;font-family:'JetBrains Mono',monospace}
+:is(#rts-report,#ahu-print) .ahu-rp td.f{text-align:left;white-space:normal;color:#475569;font-size:7.6px}
+:is(#rts-report,#ahu-print) .ahu-rp tr.ahu-head td{background:#ecfeff;font-weight:700}
+:is(#rts-report,#ahu-print) .ahu-rp tr.ahu-peak td,:is(#rts-report,#ahu-print) .ahu-rp tr.ahu-min td{text-align:left;color:#475569;font-size:7.6px}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-card{box-shadow:none;border:0;padding:0;margin:0}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-card-h{font-size:10px}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-sub-h{font-size:8.6px;margin:5px 0 2px}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-grid{gap:8px}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-svg{min-width:0;border-color:#cbd5e1}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-note{font-size:7.6px;padding:2px 0}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-sysblk{border-color:#cbd5e1;padding:6px;border-radius:4px}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-sys-lines{font-size:8.2px;line-height:1.5}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-grid,:is(#rts-report,#ahu-print) .ahu-rp .ahu-figs{grid-template-columns:1fr 1fr}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-grid>div,:is(#rts-report,#ahu-print) .ahu-rp .ahu-figs>div{min-width:0}
+:is(#rts-report,#ahu-print) .ahu-rp table td,:is(#rts-report,#ahu-print) .ahu-rp table th{font-size:7.4px!important;padding:1.2px 3px!important;line-height:1.3!important;font-family:'Noto Sans KR','Malgun Gothic',sans-serif!important;letter-spacing:0!important;min-width:0!important}
+:is(#rts-report,#ahu-print) .ahu-rp table td.n{font-family:'JetBrains Mono',monospace!important}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-kv td.l,:is(#rts-report,#ahu-print) .ahu-rp .ahu-sp td.l,:is(#rts-report,#ahu-print) .ahu-rp .ahu-st td.l{white-space:normal}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-sel-wide table{table-layout:auto}
 @media print{.ahu-card,.ahu-sysblk{break-inside:avoid;page-break-inside:avoid}.ahu-svg{print-color-adjust:exact;-webkit-print-color-adjust:exact}#tab-ahu .ahu-subnav,.ahu-sp-edit{display:none!important}}
+
+/* ═══ Ver-5.3.2 AHU 선정서 A4 출력 — 공조기 1대 = A4 세로 1쪽 (용지 여백 18/14/20/14 mm → 인쇄 영역 182 × 259 mm) ═══ */
+#ahu-print{display:none;background:#fff;color:#1a1a2e;font-family:'Noto Sans KR','Malgun Gothic',sans-serif}
+#ahu-print.ap-measure{display:block;position:absolute;left:-12000px;top:0;width:182mm;z-index:-1}
+#ahu-print .ap-page{width:182mm;box-sizing:border-box;overflow:hidden}
+#ahu-print .ap-fit{transform-origin:top left}
+#ahu-print .ap-head{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;border-bottom:1.6pt solid #2D3A8C;padding:0 0 3px;margin:0 0 6px}
+#ahu-print .ap-head .t{font-size:11.5pt;font-weight:800;color:#2D3A8C;letter-spacing:-.01em}
+#ahu-print .ap-head .m{font-size:7.4pt;color:#475569;text-align:right;line-height:1.35}
+#ahu-print .ap-sum table{width:100%;border-collapse:collapse;font-size:7.6pt;margin:4px 0}
+#ahu-print .ap-sum th{background:#E9ECF8;color:#1F2A6B;border:.6pt solid #cbd5e1;padding:2px 3px;font-weight:700;text-align:center;white-space:nowrap}
+#ahu-print .ap-sum td{border:.6pt solid #cbd5e1;padding:1.5px 3px;text-align:center;white-space:nowrap}
+#ahu-print .ap-sum td.l{text-align:left;white-space:normal}#ahu-print .ap-sum td.n{text-align:right;font-family:'JetBrains Mono',monospace}
+#ahu-print .ap-sum tr.tot td{font-weight:800;background:#FDF1E7}
+#ahu-print .ap-sum thead{display:table-header-group}
+#ahu-print .ap-note{font-size:7pt;color:#475569;line-height:1.5;margin-top:4px}
+#ahu-print .ap-fitnote{font-size:6.5pt;color:#94a3b8;text-align:right;margin-top:2px}
+#ahu-print .ahu-rp .ahu-card-h{display:none}   /* 쪽 머리(ap-head)로 대체 */
+#ahu-print .ap-page{--apfs:7.6px}
+#ahu-print .ap-page .ahu-rp table td,#ahu-print .ap-page .ahu-rp table th{font-size:var(--apfs)!important;padding:calc(var(--apfs)*.22) 3px!important;line-height:1.32!important}
+#ahu-print .ap-page .ahu-rp .ahu-sub-h{font-size:calc(var(--apfs)*1.18)!important;margin:calc(var(--apfs)*.6) 0 calc(var(--apfs)*.25)!important}
+#ahu-print .ap-page .ahu-rp td.f{font-size:calc(var(--apfs)*.95)!important}
+#ahu-print .ap-page .ahu-rp .ahu-warn{font-size:var(--apfs)!important;padding:3px 6px;margin:0 0 4px}
+#ahu-print .ap-page .ahu-rp .ahu-svg{max-height:calc(var(--apfs)*30);width:100%}
+/* 앱 공통 인쇄 규칙(.excel-table td: nowrap·ellipsis !important)이 AHU 표 글자를 자르지 않도록 해제 — Ver-5.3.2 */
+:is(#rts-report,#ahu-print) .ahu-rp table.excel-table td{overflow:visible!important;text-overflow:clip!important}
+:is(#rts-report,#ahu-print) .ahu-rp table.excel-table td.l,:is(#rts-report,#ahu-print) .ahu-rp table.excel-table td.f,:is(#rts-report,#ahu-print) .ahu-rp .ahu-kv td{white-space:normal!important;word-break:keep-all}
+:is(#rts-report,#ahu-print) .ahu-rp .ahu-kv td.n{white-space:nowrap!important}
+#ahu-print .ahu-rp .ahu-figs .ahu-svg-wrap{overflow:hidden;margin:2px 0}
+@media print{
+  body.ahu-print-mode > *:not(#ahu-print){display:none !important}
+  body.ahu-print-mode{background:#fff !important;overflow:visible !important;display:block !important;height:auto !important}
+  body.ahu-print-mode #ahu-print{display:block !important;position:static !important;left:auto !important;width:auto !important}
+  body.ahu-print-mode #ahu-print .ap-page{break-after:page;page-break-after:always;break-inside:avoid;page-break-inside:avoid;width:100%}
+  body.ahu-print-mode #ahu-print .ap-page:last-child{break-after:auto;page-break-after:auto}
+  body.ahu-print-mode #ahu-print .ap-page.ap-sum{overflow:visible}
+  body.ahu-print-mode #ahu-print *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 </style>
 </head>
 <body>
@@ -2785,7 +2825,7 @@ body{background:var(--navy);color:var(--text);}
         <h1 class="hdr-h1">RTS-MANMIN 건축물 부하계산서</h1>
         <div class="hdr-sub">
           냉난방 부하 · 조닝·장비 · 건물 집계 · A4 / Excel 산출 &nbsp;·&nbsp; <span id="hdr-designer-line">설계자: 김만민 | 만민 건축사 신사옥 신축공사</span>
-          <span class="hdr-manmin">MANMIN · Ver-5.3.1</span>
+          <span class="hdr-manmin">MANMIN · Ver-5.3.2</span>
         </div>
       </div>
     </div>
@@ -2966,7 +3006,7 @@ body{background:var(--navy);color:var(--text);}
           <tr><td class="ci-label">검  토  자</td><td class="ci-value" id="cov-reviewer"></td></tr>
           <tr><td class="ci-label">계  산  일</td><td class="ci-value" id="cov-date"></td></tr>
           <tr><td class="ci-label">계 산 방 법</td><td class="ci-value">RTS Method · ASHRAE Fundamentals 2009</td></tr>
-          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value" id="cov-software">RTS-MANMIN Ver-5.3.1</td></tr>
+          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value" id="cov-software">RTS-MANMIN Ver-5.3.2</td></tr>
         </table>
         <!-- 하단 기준 고시 -->
         <div class="cover-footer-box">
@@ -2994,7 +3034,7 @@ body{background:var(--navy);color:var(--text);}
       <!-- 인쇄용 문서 헤더 (화면에서는 숨김) -->
       <div class="print-page-header" style="display:none">
         <div>
-          <div class="print-page-header-title" id="print-title">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1</div>
+          <div class="print-page-header-title" id="print-title">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2</div>
           <div style="font-size:7pt;color:#333;margin-top:2pt;" id="print-subtitle">만민 건축사 신사옥 신축공사 &nbsp;|&nbsp; 설계자: 김만민 &nbsp;|&nbsp; RTS법 (ASHRAE 2009)</div>
         </div>
         <div style="text-align:right;font-size:7pt;color:#555;" id="print-date"></div>
@@ -3227,7 +3267,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 0</span>
     </div>
 </div>
@@ -3237,7 +3277,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-w"></span>
         <span class="sh-title">SHEET 1 · 설계 외기 조건 및 기상 데이터</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-w"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-w"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🌡️ 설계 외기 조건 및 기상 데이터 <span class="stag">SHEET 1</span></div>
@@ -3358,7 +3398,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 1</span>
     </div>
 </div>
@@ -3369,7 +3409,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-r"></span>
         <span class="sh-title">SHEET 2 · 실별 기본 데이터 입력</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-r"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-r"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🏢 실별 기본 데이터 입력 <span class="stag">SHEET 2</span></div>
@@ -3504,7 +3544,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 2</span>
     </div>
 </div>
@@ -3514,10 +3554,10 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-z"></span>
         <span class="sh-title">SHEET 2-1 · 조닝 · 장비 배정 및 장비별 부하 집계</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-z"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-z"></span></span>
       </div>
       <div class="section-header">
-        <div class="section-title">🗂️ 조닝 · 장비 배정 (Zoning &amp; Equipment) <span class="stag">Ver-5.3.1</span></div>
+        <div class="section-title">🗂️ 조닝 · 장비 배정 (Zoning &amp; Equipment) <span class="stag">Ver-5.3.2</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-secondary btn-sm" onclick="addEquipment()">+ 장비 추가</button>
           <button class="btn btn-secondary btn-sm" onclick="autoGenEquipFromRooms()" title="실 목록의 AHU No. 고유값으로 장비 자동 등록">⚡ 실 AHU값 자동 생성</button>
@@ -3644,7 +3684,7 @@ body{background:var(--navy);color:var(--text);}
           ※ 실부하 현열 = 소속 실 시각별 부하의 <strong>동시각 합산 후 최대값</strong>(실별 피크 단순합이 아님) ·
           외기부하: 현열 q=0.335·V·Δt, 잠열 q=834·V·Δx (ASHRAE 습공기선도 기반) ·
           가습량 = 1.2·V·(x실내-x외기)겨울 · 급기량 = 실현열피크 / (0.335·취출온도차) ·
-          냉방코일에는 실에서 뺀 천장속(RA) 조명열 Q1(동시 피크 시각) 포함 — Ver-5.3.1
+          냉방코일에는 실에서 뺀 천장속(RA) 조명열 Q1(동시 피크 시각) 포함 — Ver-5.3.2
         </div>
       </div>
 
@@ -3676,7 +3716,7 @@ body{background:var(--navy);color:var(--text);}
 
       <!-- 인쇄용 하단 푸터 -->
       <div class="print-sheet-footer no-print-hide" style="display:none">
-        <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+        <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
         <span class="sf-right">SHEET 2-1</span>
       </div>
     </div>
@@ -3686,7 +3726,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-e"></span>
         <span class="sh-title">SHEET 3 · 외부 열취득 (External Heat Gain)</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-e"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-e"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🌞 외부 열취득 (External Heat Gain) <span class="stag">SHEET 3</span></div>
@@ -3782,7 +3822,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 3</span>
     </div>
 </div>
@@ -3792,7 +3832,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-i"></span>
         <span class="sh-title">SHEET 4 · 내부 열취득 (Internal Heat Gain)</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-i"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-i"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">💡 내부 열취득 (Internal Heat Gain) <span class="stag">SHEET 4</span></div>
@@ -4028,7 +4068,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 4</span>
     </div>
 </div>
@@ -4038,7 +4078,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-rts"></span>
         <span class="sh-title">SHEET 5 · CTS / RTS 계수</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-rts"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-rts"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">📊 CTS / RTS 계수 (Conduction & Radiant Time Series) <span class="stag">ASHRAE 2009</span></div>
@@ -4059,7 +4099,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 5</span>
     </div>
 </div>
@@ -4069,7 +4109,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-res"></span>
         <span class="sh-title">SHEET 6 · 냉난방 부하 계산 결과</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-res"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-res"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">📈 냉난방 부하 계산 결과 <span class="stag">SHEET 6</span></div>
@@ -4176,7 +4216,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 6</span>
     </div>
 </div>
@@ -4186,11 +4226,11 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-ahu"></span>
         <span class="sh-title">SHEET 7 · AHU / FCU 선정</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-ahu"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-ahu"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">⚙️ AHU 선정 (AHU Load · Air Volume · System · Selection) <span class="stag">SHEET 7</span></div>
-        <button class="btn btn-primary btn-sm" onclick="calcAHU()">🔄 AHU 계산</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-secondary btn-sm" onclick="printAhuSheets()" title="공조기 1대 = A4 세로 1쪽 · 요약 1쪽">🖨️ AHU 선정서 A4</button><button class="btn btn-primary btn-sm" onclick="calcAHU()">🔄 AHU 계산</button></div>
       </div>
 
       <div class="info-box" style="border-color:var(--gold);background:rgba(240,165,0,0.07)">
@@ -4243,7 +4283,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 7</span>
     </div>
 </div>
@@ -4253,7 +4293,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-bld"></span>
         <span class="sh-title">SHEET 8 · 건물 부하 집계</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-bld"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-bld"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🏗️ 건물 부하 집계 (Building Load Summary) <span class="stag">SHEET 8</span></div>
@@ -4309,7 +4349,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 8</span>
     </div>
 </div>
@@ -4320,10 +4360,10 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-uval"></span>
         <span class="sh-title">SHEET 1-2 · T.D &amp; Glass / Wall / Roof Data</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.1 &nbsp;|&nbsp; <span id="sh-date-uval"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.2 &nbsp;|&nbsp; <span id="sh-date-uval"></span></span>
       </div>
       <div class="section-header">
-        <div class="section-title">🧱 부위별 열관류율 검토 연계 <span class="stag">RTS-MANMIN Ver-5.3.1</span></div>
+        <div class="section-title">🧱 부위별 열관류율 검토 연계 <span class="stag">RTS-MANMIN Ver-5.3.2</span></div>
         <div style="display:flex;gap:8px;align-items:center">
           <button class="btn btn-primary btn-sm" onclick="loadAndRenderUvalData()" style="background:linear-gradient(135deg,#059669,#065f46);border:none;">
             🔄 전송 데이터 불러오기
@@ -4365,7 +4405,7 @@ body{background:var(--navy);color:var(--text);}
           <div style="flex:1;min-width:0;">
             <div class="ub-title" style="color:#fff;font-size:14px;font-weight:900;margin-bottom:3px;display:flex;align-items:center;gap:8px;">
               열관류율 종합 검토 시스템
-              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.1</span>
+              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.2</span>
             </div>
             <div class="ub-sub" style="color:#a7f3d0;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호</div>
           </div>
@@ -4529,7 +4569,7 @@ body{background:var(--navy);color:var(--text);}
     <span id="status-rooms">실 수: 0</span>
     <span id="status-cool">냉방: 0 kW</span>
     <span id="status-heat">난방: 0 kW</span>
-    <span style="color:var(--text2)">© RTS-MANMIN 부하계산 WAP &nbsp;|&nbsp; <span style="color:rgba(147,197,253,0.8);font-weight:700;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.1</span></span>
+    <span style="color:var(--text2)">© RTS-MANMIN 부하계산 WAP &nbsp;|&nbsp; <span style="color:rgba(147,197,253,0.8);font-weight:700;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.2</span></span>
   </div>
 </div>
 
@@ -4920,7 +4960,7 @@ function renderUvalReceived(list) {
   <!-- 1-2 시트 헤더 (성락교회 PDF 형식) -->
   <div style="background:var(--cell-bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:10px;color:var(--text2);">
     <strong style="color:var(--accent);font-size:11px;">□ 1-2. T.D &amp; Glass / Wall / Roof Data</strong>
-    <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.1</span>
+    <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.2</span>
   </div>`;
 
   /* 부위 순서: Wall → Roof → Floor → Glass */
@@ -7523,6 +7563,104 @@ function calcAhuSystem(){
   return out;
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════
+   Ver-5.3.2 AHU 선정서 A4 출력 — 요약 1쪽 + 공조기 1대 = A4 세로 1쪽
+   인쇄 폭 182 mm(@page 여백 18/14/20/14)에서 실제 높이를 재고, 259 mm를 넘는 쪽만 축소(하한 0.85)
+═══════════════════════════════════════════════════════════════════ */
+const AHU_PRINT = { availH_mm:259, minZoom:0.85, summary:true, scope:'all' };
+const _mmPx = mm => mm*96/25.4;
+function _ahuPrintHost(){ let h=document.getElementById('ahu-print'); if(!h){ h=document.createElement('div'); h.id='ahu-print'; document.body.appendChild(h); } return h; }
+function _ahuPrintHead(title, meta){ return `<div class="ap-head"><div class="t">${title}</div><div class="m">${meta}</div></div>`; }
+function _ahuPrintSummary(L, ex, pname){
+  const sum=f=>L.reduce((a,R)=>a+f(R),0);
+  const rows=L.map(R=>{ const C=R.core.cool,H=R.core.heat,F=R.core.fan; return `<tr><td>${_aE(R.eq.no)}</td><td class="l">${_aE(R.eq.name||'')}</td><td>${_aE(R.eq.airType||'CAV')}</td><td>${R.cfg.qty}</td>
+    <td class="n">${_aN(R.SA)}</td><td class="n">${_aN(R.OA)}</td><td class="n">${_aN(R.RA)}</td><td class="n">${_aN(R.TA)}</td>
+    <td class="n">${_aN(C.Qc/1000,1)}</td><td class="n">${_aN(C.lpm)}</td><td class="n">${_aN((H.Qh+H.Qph)/1000,1)}</td><td class="n">${H.lpm?_aN(H.lpm):'—'}</td><td class="n">${H.humKg?_aN(H.humKg):'—'}</td>
+    <td class="n">${F.sfMotor}</td><td class="n">${F.rfOn?F.rfMotor:'—'}</td><td>${R.warn.length||''}</td></tr>`; }).join('');
+  const tot=`<tr class="tot"><td colspan="4">합계 (${L.length}대)</td><td class="n">${_aN(sum(R=>R.SA))}</td><td class="n">${_aN(sum(R=>R.OA))}</td><td class="n">${_aN(sum(R=>R.RA))}</td><td class="n">${_aN(sum(R=>R.TA))}</td>
+    <td class="n">${_aN(sum(R=>R.core.cool.Qc)/1000,1)}</td><td class="n">${_aN(sum(R=>R.core.cool.lpm))}</td><td class="n">${_aN(sum(R=>R.core.heat.Qh+R.core.heat.Qph)/1000,1)}</td><td class="n">${_aN(sum(R=>R.core.heat.lpm))}</td><td class="n">${_aN(sum(R=>R.core.heat.humKg))}</td>
+    <td class="n">${_aN(sum(R=>R.core.fan.sfMotor*R.cfg.qty),1)}</td><td class="n">${_aN(sum(R=>R.core.fan.rfMotor*R.cfg.qty),1)}</td><td></td></tr>`;
+  return `<div class="ap-page ap-sum">${_ahuPrintHead('AHU 선정서 — 공조기 요약 (SHEET 7)', `${_aE(pname)}<br>RTS-MANMIN ${RTS_APP_VERSION} · ${new Date().toISOString().slice(0,10)}`)}
+   <table><thead><tr><th rowspan="2">AHU No.</th><th rowspan="2">Service</th><th rowspan="2">방식</th><th rowspan="2">수량</th><th colspan="4">풍량 (㎥/h)</th><th colspan="2">냉각코일</th><th colspan="2">가열·예열코일</th><th rowspan="2">가습<br>kg/h</th><th colspan="2">전동기 kW</th><th rowspan="2">⚠</th></tr>
+   <tr><th>SA</th><th>OA</th><th>RA</th><th>TA</th><th>kW</th><th>lpm</th><th>kW</th><th>lpm</th><th>SF</th><th>RF</th></tr></thead><tbody>${rows}${tot}</tbody></table>
+   ${ex.length?`<div class="ap-note">⚠ 계산 제외 — ${ex.map(R=>`${_aE(R.eq.no)}: ${_aE(R.reason||'')}`).join(' · ')}</div>`:''}
+   <div class="ap-note">· 냉각코일 = 1.2 × SA × (h<sub>M</sub> − h<sub>L</sub>) × 여유율, 가열 = 0.335 × SA × (LAT − t<sub>E</sub>) × 여유율 (산식 매뉴얼 4-9) · 전동기 합계는 대수 포함 · ⚠ = 공조기별 검토 문구 수(각 쪽 상단)<br>· 다음 쪽부터 공조기 1대당 A4 1쪽 — SHEET 7-4 AHU SELECTION</div></div>`;
+}
+function _ahuPrintBuild(opts){
+  const all=calcAhuSystem();
+  let L=all.filter(R=>!R.empty), ex=all.filter(R=>R.empty);
+  if (opts.scope==='sel' && _ahuSelNo) L=L.filter(R=>R.eq.no===_ahuSelNo);
+  const pname=_rpTxt('p-name','—');
+  const host=_ahuPrintHost();
+  let h=opts.summary?_ahuPrintSummary(L,ex,pname):'';
+  h+=L.map((R,i)=>`<div class="ap-page" data-no="${_aE(R.eq.no)}">${_ahuPrintHead(`${_aE(R.eq.no)} : ${_aE(R.eq.name||'')}`, `${_aE(pname)} · ${_aE(R.eq.airType||'CAV')} · 수량 ${R.cfg.qty} · ${_aE(R.eq.loc||'—')} · 외기냉방 ${R.cfg.oaCool?'○':'×'}<br>RTS-MANMIN ${RTS_APP_VERSION} · AHU SELECTION ${i+1}/${L.length}`)}<div class="ap-fit"><div class="ahu-rp">${_ahuSelCard(R)}</div></div><div class="ap-fitnote"></div></div>`).join('');
+  host.innerHTML=h;
+  return { L, ex, host, pname };
+}
+/* 인쇄 폭(182 mm)에서 쪽마다 높이를 재고, 넘치면 그 쪽만 축소 — 하한에서도 넘치면 목록 반환 */
+function _ahuPrintFit(host){
+  host.classList.add('ap-measure');
+  const avail=_mmPx(AHU_PRINT.availH_mm)*0.985, over=[], FS=[8.8,8.2,7.6,7.0];
+  host.querySelectorAll('.ap-page:not(.ap-sum)').forEach(pg=>{
+    const fit=pg.querySelector('.ap-fit'), note=pg.querySelector('.ap-fitnote'); fit.style.zoom=''; note.textContent='';
+    const room=avail-pg.querySelector('.ap-head').getBoundingClientRect().height-14;
+    /* 1쪽에 들어가는 가장 큰 글자 크기 선택 → 최소 크기에서도 넘치면 축소(하한 0.85) */
+    let fs=FS[FS.length-1], hh=0;
+    for (const f of FS){ pg.style.setProperty('--apfs', f+'px'); hh=fit.scrollHeight; if (hh<=room){ fs=f; break; } }
+    pg.dataset.fs=fs;
+    if (hh>room){ const z=Math.max(AHU_PRINT.minZoom, room/hh); fit.style.zoom=z.toFixed(3); note.textContent=`※ 1쪽 맞춤 축소 ${Math.round(z*100)} %`; pg.dataset.zoom=z.toFixed(3);
+      if (hh*z>room+1) over.push(pg.dataset.no); }
+  });
+  host.classList.remove('ap-measure');
+  return over;
+}
+function printAhuSheets(){
+  const old=document.getElementById('_ahu-print-dlg'); if(old) old.remove();
+  const ov=document.createElement('div'); ov.id='_ahu-print-dlg'; ov.className='formula-modal-overlay open no-print';
+  const selName=_ahuSelNo?`선택 장비만 (${_aE(_ahuSelNo)})`:'선택 장비만';
+  ov.innerHTML=`<div class="formula-modal" style="width:min(460px,94vw)"><div class="formula-modal-header"><h2>🖨️ AHU 선정서 A4</h2></div>
+   <div style="padding:16px 20px;font-size:13px;line-height:1.8;color:var(--white)">공조기 1대를 A4 세로 1쪽에 담아 출력합니다. 넘치는 쪽은 자동으로 축소합니다(최소 ${Math.round(AHU_PRINT.minZoom*100)} %).
+    <div style="margin-top:8px"><label style="display:block;cursor:pointer"><input type="radio" name="_ap-scope" value="all" ${AHU_PRINT.scope!=='sel'?'checked':''}> 전체 공조기</label>
+    <label style="display:block;cursor:pointer"><input type="radio" name="_ap-scope" value="sel" ${AHU_PRINT.scope==='sel'?'checked':''}> ${selName}</label>
+    <label style="display:block;cursor:pointer;margin-top:4px"><input type="checkbox" id="_ap-sum" ${AHU_PRINT.summary?'checked':''}> 첫 쪽에 공조기 요약표 포함</label></div></div>
+   <div style="display:flex;gap:8px;justify-content:flex-end;padding:0 20px 18px;flex-wrap:wrap"><button class="btn btn-sm" data-act="cancel">취소</button><button class="btn btn-secondary btn-sm" data-act="print">🖨️ A4 출력</button><button class="btn btn-primary btn-sm" data-act="pdf">📄 PDF 저장</button></div></div>`;
+  ov.addEventListener('click',e=>{ const act=e.target?.dataset?.act; if(!act && e.target!==ov) return;
+    AHU_PRINT.scope=ov.querySelector('input[name="_ap-scope"]:checked')?.value||'all'; AHU_PRINT.summary=!!ov.querySelector('#_ap-sum')?.checked; ov.remove();
+    if (act==='print'||act==='pdf') _ahuPrintRun(act); });
+  document.body.appendChild(ov);
+}
+function _ahuPrintRun(mode){
+  const {L, host, pname}=_ahuPrintBuild({scope:AHU_PRINT.scope, summary:AHU_PRINT.summary});
+  if (!L.length){ showToast && showToast('⚠️ 출력할 공조기가 없습니다 — 장비 배정·계산 제외 사유 확인'); return; }
+  const over=_ahuPrintFit(host);
+  if (over.length && !confirm(`다음 공조기는 ${Math.round(AHU_PRINT.minZoom*100)} %로 줄여도 1쪽을 넘습니다: ${over.join(', ')}\n그대로 출력하시겠습니까? (2쪽으로 이어짐)`)) return;
+  const st=document.createElement('style'); st.id='_ahu-print-page';
+  const safe=String(pname).replace(/["\\]/g,'').slice(0,40);
+  st.textContent=`@page { size:A4 portrait; margin:18mm 14mm 20mm 14mm;
+    @bottom-left { content:"${safe} · AHU 선정서"; font-family:'Noto Sans KR','Malgun Gothic',sans-serif; font-size:6.5pt; color:#6b7280; }
+    @bottom-right { content:"RTS-MANMIN ${RTS_APP_VERSION}"; } }`;
+  document.head.appendChild(st);
+  const _t=document.title;
+  if (mode==='pdf'){ const d=new Date(), ymd=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+    document.title=`RTS_AHU선정서_${String(pname).replace(/[\\/:*?"<>|]+/g,'_').replace(/\s+/g,'_')}_${ymd}`; }
+  document.body.classList.add('ahu-print-mode');
+  setTimeout(()=>{ window.print(); setTimeout(()=>{ document.title=_t; document.body.classList.remove('ahu-print-mode'); st.remove(); },800); },600);
+}
+/* 산출서 Ⅴ-4도 같은 기준으로 1쪽 보장 (인쇄 폭 182 mm에서 측정) */
+function _fitReportAhuSecs(){
+  const rp=document.getElementById('rts-report'); if(!rp) return [];
+  const keep={t:rp.style.transform,w:rp.style.width}; rp.style.transform='none'; rp.style.width='182mm';
+  const avail=_mmPx(AHU_PRINT.availH_mm)*0.985, over=[];
+  rp.querySelectorAll('.rp-sec').forEach(sec=>{
+    if (!sec.querySelector('.ahu-rp .ahu-card')) return;
+    sec.style.zoom=''; const hh=sec.getBoundingClientRect().height;
+    if (hh>avail){ const z=Math.max(AHU_PRINT.minZoom, avail/hh); sec.style.zoom=z.toFixed(3); if (hh*z>avail+1) over.push(sec.querySelector('.rp-sec-h span')?.textContent||''); }
+  });
+  rp.style.transform=keep.t; rp.style.width=keep.w;
+  return over;
+}
+
 /* ── 표시 헬퍼 ── */
 const _aN = (x,d=0)=> (x==null||isNaN(x)) ? '—' : Number(x).toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const _aE = s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -7767,14 +7905,6 @@ function _ahuSelCard(R){
      ${kv('난방 (가열코일)',`<b>${_aN(H.Qh)}</b>`,'W')}<tr><td colspan="3" class="f">0.335 × ${_aN(R.SA)} ㎥/h × (${H.hcLAT} − ${H.P.t}) ℃ × ${cfg.coilSF}${H.dtEvap?` · 수분무 증발냉각 보상 +${H.dtEvap} ℃ 포함`:''}</td></tr>
      ${H.hum!=='none'?kv('가습',`<b>${H.hum==='water'?'(w)':''}${_aN(H.humKg)}</b>`,'kg/h')+`<tr><td colspan="3" class="f">1.2 × ${_aN(R.OA)} ㎥/h × (${H.Ih.x.toFixed(4)} − ${H.Owp.x.toFixed(4)}) kg/kg' × ${cfg.coilSF}</td></tr>`:''}
     </tbody></table>
-    <div class="ahu-sub-h">□ 코일 형식 / 가습기 제원</div>
-    <table class="excel-table ahu-kv"><tbody>
-     ${kv("Cool'g Coil",`Water (${c.chwIn}/${c.chwOut} ℃, ${_aN(C.lpm)} lpm)`)}
-     ${kv('R/H Coil',c.rh==='none'?'None':`${AHU_COIL_TXT.rh[c.rh]} (${_aN(C.Qrh/1000,1)} kW)`)}
-     ${kv('P/H Coil',c.pre==='none'?'None':H.Qph<=0?`${c.pre==='steam'?'Steam':'Water'} (혼합 ${H.Mh.t} ℃ ≥ 목표 ${c.preT} ℃ — 예열 불요)`:c.pre==='steam'?`Steam (${_aN(H.phKg)} kg/h)`:`Water (${c.hwIn}/${c.hwOut} ℃, ${_aN(H.phLpm)} lpm)`)}
-     ${kv('A/H Coil',H.hcType==='none'?'None':H.hcType==='hw'?`Water (${c.hwIn}/${c.hwOut} ℃, ${_aN(H.lpm)} lpm)`:H.hcType==='steam'?`Steam (${_aN(H.kg)} kg/h)`:`Electric (${_aN(H.Qh/1000,1)} kW)`)}
-     ${kv('가습기 형식',AHU_COIL_TXT.hum[H.hum])}
-    </tbody></table>
    </div>
    <div><div class="ahu-sub-h">■ FAN SELECTION</div>
     <table class="excel-table ahu-sp"><thead><tr><th>정압 항목 (Pa)</th><th>Internal</th><th>Ext. SA</th><th>Ext. RA</th></tr></thead><tbody>${spRows}</tbody></table>
@@ -7795,6 +7925,14 @@ function _ahuSelCard(R){
      <tr><td colspan="3" class="f">취출 ${C.S} ℃ = ${C.I.t} − ${C.dtSA} (= SH ÷ 0.335·SA) · L = ${C.S} − 팬 ${R.core.dtFan}${C.rhDT?` − 재열 ${C.rhDT}`:''} = ${C.L.t} ℃ · x<sub>L</sub> = ${C.I.x.toFixed(4)} − ${C.dxL.toFixed(4)}</td></tr>
      <tr><td colspan="3" class="f">App. Dew Point ${C.adp==null?'—':C.adp+' ℃'} · By-Pass Factor ${C.bf==null?'—':_aN(C.bf*100,1)+' %'}</td></tr>
      <tr><td colspan="3" class="f">A/H : E.A.T ${H.P.t} ℃ → L.A.T ${H.hcLAT} ℃ (= ${_aN(R.heat)} W ÷ (0.335 × ${_aN(R.SA)}) + ${H.Ih.t} ℃${H.dtEvap?` + 증발냉각 ${H.dtEvap} ℃`:''})</td></tr>
+    </tbody></table>
+    <div class="ahu-sub-h">□ 코일 형식 / 가습기 제원</div>
+    <table class="excel-table ahu-kv"><tbody>
+     ${kv("Cool'g Coil",`Water (${c.chwIn}/${c.chwOut} ℃, ${_aN(C.lpm)} lpm)`)}
+     ${kv('R/H Coil',c.rh==='none'?'None':`${AHU_COIL_TXT.rh[c.rh]} (${_aN(C.Qrh/1000,1)} kW)`)}
+     ${kv('P/H Coil',c.pre==='none'?'None':H.Qph<=0?`${c.pre==='steam'?'Steam':'Water'} (혼합 ${H.Mh.t} ℃ ≥ 목표 ${c.preT} ℃ — 예열 불요)`:c.pre==='steam'?`Steam (${_aN(H.phKg)} kg/h)`:`Water (${c.hwIn}/${c.hwOut} ℃, ${_aN(H.phLpm)} lpm)`)}
+     ${kv('A/H Coil',H.hcType==='none'?'None':H.hcType==='hw'?`Water (${c.hwIn}/${c.hwOut} ℃, ${_aN(H.lpm)} lpm)`:H.hcType==='steam'?`Steam (${_aN(H.kg)} kg/h)`:`Electric (${_aN(H.Qh/1000,1)} kW)`)}
+     ${kv('가습기 형식',AHU_COIL_TXT.hum[H.hum])}
     </tbody></table>
    </div>
   </div>
@@ -8220,7 +8358,7 @@ function restoreProjectData(data) {
   const name     = document.getElementById('p-name')?.value     || '';
   const designer = document.getElementById('p-designer')?.value || '';
   setEl('status-project', `${name} | ${designer}`);
-  document.title = `RTS-MANMIN Ver-5.3.1 | ${name}`;
+  document.title = `RTS-MANMIN Ver-5.3.2 | ${name}`;
   syncHeader();
   /* 기상 + 전체 재계산 */
   if (typeof calcWeather === 'function') calcWeather();
@@ -8234,7 +8372,7 @@ function saveProjectFile() {
   const name     = document.getElementById('p-name')?.value     || '만민 건축사 신사옥 신축공사';
   const designer = document.getElementById('p-designer')?.value || '김만민';
   setEl('status-project', `${name} | ${designer}`);
-  document.title = `RTS-MANMIN Ver-5.3.1 | ${name}`;
+  document.title = `RTS-MANMIN Ver-5.3.2 | ${name}`;
   syncHeader();
 
   const data    = collectProjectData();
@@ -9103,7 +9241,7 @@ function openRtsManual(e){
   }
   return true;
 }
-const RTS_APP_VERSION = 'Ver-5.3.1';   /* C-2: 헤더 각인·표지·워터마크·.rts 저장·README와 한 쌍 (sw.js CACHE rts-v5.3.1 — Ver-5.3.0 AHU 선정 7-1~7-4 · Ver-5.3.1 AHU 보강 1~8) */
+const RTS_APP_VERSION = 'Ver-5.3.2';   /* C-2: 헤더 각인·표지·워터마크·.rts 저장·README와 한 쌍 (sw.js CACHE rts-v5.3.2 — 5.3.0 AHU 선정 · 5.3.1 보강 1~8 · 5.3.2 AHU 선정서 A4 출력) */
 const RTS_LEGAL = {
   notice:    '건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호',
   effective: '2026. 7. 8.',
@@ -9233,7 +9371,7 @@ function _exportReportRun(mode) {
     el._printOrigHTML = el._printOrigHTML || el.innerHTML;
   });
   const ptEl = document.getElementById('print-title');
-  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver-5.3.1'; }
+  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver-5.3.2'; }
   const psEl = document.getElementById('print-subtitle');
   if(psEl) psEl.textContent = pname + ' | 설계자: ' + des + ' | ASHRAE 2009 RTS법';
 
@@ -9254,6 +9392,7 @@ function _exportReportRun(mode) {
   /* v5.1: 산출서 조립 → 인쇄는 #rts-report만 (화면 탭 숨김) */
   buildRtsReport({ appendix: RTS_REPORT.appendix });
   const _appx = document.getElementById('rp-appx'); if (_appx) _appx.checked = RTS_REPORT.appendix;
+  try { const _ov=_fitReportAhuSecs(); if(_ov.length) console.warn('[산출서] Ⅴ-4 1쪽 초과', _ov); } catch(_){}   /* Ver-5.3.2 */
   document.body.classList.add('rts-report-mode');
 
   /* ══════════════════════════════════════════════════════════
@@ -9561,7 +9700,7 @@ function exportExcel() {
     for (let i=0; i<6; i++) { ws[XLSX.utils.encode_cell({r,c:0})] = {v:'',t:'s'}; r++; }
 
     // 메인 제목
-    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver-5.3.1', t:'s',
+    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver-5.3.2', t:'s',
       s: S({ bold:true, bg:'0A3A6B', color:'FFFFFF', sz:16, align:'center' }) };
     mergeCells(ws, [[r,1,r,6]]);
     r++;
@@ -10771,7 +10910,7 @@ window.addEventListener('appinstalled', () => {
     <div style="font-size:10px;color:rgba(110,231,183,.6);margin-top:1px;">${payload.projectName || ''}</div>
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.1  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET U</span>
     </div>
 
