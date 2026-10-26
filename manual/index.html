@@ -4,10 +4,9 @@
 <title>RTS-MANMIN 사용자 매뉴얼 Ver-5.3.2</title>
 <meta name="description" content="RTS-MANMIN Ver-5.3.2 냉난방 부하계산 웹도구 사용자 매뉴얼 — 화면 기능, 기술기준(ASHRAE RTS법·에너지절약설계기준), 실무 작업 방법">
 <meta name="author" content="김만민 건축사 · ㈜대성건축사사무소">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;900&display=swap">
+<meta name="theme-color" content="#0e7490"><meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="./assets/fonts/manmin-fonts.css">
-<style>
+<style>:root{--mh-a:#083344;--mh-b:#0e7490;--mh-c:#0891b2;--mh-accent:#7dd3fc;--mh-shadow:rgba(14,116,144,.35);--mh-btn-ink:#0e7490;--mh-veil:0.25;--mh-bp:50%}
 :root{
   --navy:#2D3A8C;--navy-d:#1F2A6B;--navy-l:#E9ECF8;--accent:#F4A261;--accent-d:#C97A3A;--accent-l:#FDF1E7;
   --bg:#F8F9FA;--card:#FFFFFF;--text:#1A1A2E;--text2:#4A4F66;--line:#DDE1EA;--ok:#0F766E;--ng:#B42318;
@@ -21,15 +20,25 @@ code,kbd,.mono{font-family:var(--font-mono);font-size:.9em}
 code{background:var(--navy-l);color:var(--navy-d);padding:1px 6px;border-radius:5px}
 kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 6px;background:#fff}
 /* 상단 */
-.top{background:linear-gradient(135deg,var(--navy-d),var(--navy));color:#fff}
-.top-in{max-width:1240px;margin:0 auto;padding:44px 24px 36px}
-.eyebrow{font-family:var(--font-brand);font-weight:700;font-size:12px;letter-spacing:.18em;opacity:.85}
+.top{position:relative;background:linear-gradient(135deg,var(--mh-a),var(--mh-b) var(--mh-bp),var(--mh-c));color:#fff;box-shadow:0 2px 20px var(--mh-shadow)}
+.top::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,var(--mh-veil));pointer-events:none}
+.top-in{position:relative;max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;padding:40px 24px 32px}
+.eyebrow{font-family:var(--font-brand);font-weight:700;font-size:12px;letter-spacing:.18em;color:var(--mh-accent)}
 .top h1{font-size:28px;font-weight:900;margin:8px 0 6px;line-height:1.35}
 .top .sub{opacity:.9;margin:0}
-.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:4px 12px;font-size:13px}
-a.badge{color:#fff;text-decoration:none}a.badge:hover{background:rgba(255,255,255,.24);color:#fff}
-.badge.acc{background:var(--accent);border-color:var(--accent);color:#1A1A2E;font-weight:700}
+.mh-main{flex:1 1 640px;min-width:0}
+.mh-eb{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mh-ver{font:700 11px var(--font-brand);background:var(--mh-accent);color:#1A1A2E;border-radius:999px;padding:1px 10px}
+.mh-meta{margin:12px 0 0;font-size:13px;color:rgba(255,255,255,.9)}
+.mh-act{display:flex;gap:10px;flex-wrap:wrap}
+.mh-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:10px;font-size:15px;text-decoration:none}
+.mh-btn.pri{background:#fff;color:var(--mh-btn-ink);font-weight:700}
+.mh-btn.sec{border:1px solid rgba(255,255,255,.45);color:#fff}
+.mh-btn.pri:hover{background:var(--mh-accent);color:#1A1A2E}.mh-btn.sec:hover{background:rgba(255,255,255,.12);color:#fff}
+.mh-btn:focus-visible{outline:3px solid var(--mh-accent);outline-offset:2px}
+.mh-prog{position:fixed;top:0;left:0;right:0;height:3px;z-index:50;pointer-events:none}
+.mh-prog i{display:block;height:100%;width:0;background:var(--mh-accent)}
+.toc-sum{display:none}
 /* 레이아웃 */
 .wrap{max-width:1240px;margin:0 auto;padding:28px 24px 80px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:32px}
 nav.toc{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px 16px;font-size:14px}
@@ -100,6 +109,21 @@ footer.foot{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--text2
 @media (max-width:640px){nav.toc ol{columns:1}body{font-size:15px}}
 @media (max-width:480px){.wrap,.top-in{padding-left:16px;padding-right:16px}.pin{width:22px;height:22px;font-size:11px;line-height:22px}}
 @media (max-width:400px){section.ch>h2{font-size:20px}}
+/* v-mh1 D4 접이식 목차 · D9 터치 44px (≤1024px) */
+@media (max-width:1024px){
+  nav.toc{padding:0 16px}
+  nav.toc .toc-sum{display:flex;align-items:center;justify-content:space-between;min-height:48px;font-weight:700;font-size:14px;color:var(--navy);cursor:pointer;list-style:none}
+  nav.toc .toc-sum::-webkit-details-marker{display:none}
+  nav.toc details:not([open]) ol,nav.toc details:not([open]) h2{display:none}
+  nav.toc details[open]{padding-bottom:12px}
+  nav.toc li a{display:flex;align-items:center;min-height:44px;padding:0 8px}
+}
+/* v-mh1 D5 좁은 화면 헤드 */
+@media (max-width:640px){
+  .top-in{padding:28px 16px 24px;gap:16px}.top h1{font-size:22px}.top .sub{font-size:13px}.mh-meta{font-size:12px}
+  .mh-act{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.mh-btn{padding:0 8px;font-size:14px}
+}
+@media (max-width:480px){.eyebrow{letter-spacing:.04em}.mh-eb{gap:8px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 /* A4 인쇄 */
 @page{size:A4;margin:14mm 12mm 14mm}
@@ -113,7 +137,9 @@ footer.foot{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--text2
   section.ch:first-of-type{break-before:auto}
   figure.shot,.tbl,.eq,.svgbox,.note,.tip,.warn,.steps>li{break-inside:avoid}
   h3,h4{break-after:avoid}
-  .top{border-radius:0}
+  .top{border-radius:0;box-shadow:none}
+  .mh-prog,.mh-act{display:none!important}
+  .mh-meta{color:#fff}
   .pfoot{position:fixed;bottom:0;left:0;right:0;height:6mm;background:#fff;font-size:8pt;color:#666;border-top:1px solid #ccc;padding-top:1.5mm;display:flex;justify-content:space-between}
 }
 .pfoot{display:none}
@@ -147,15 +173,39 @@ footer.foot{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--text2
 }
 .rev{white-space:nowrap}
 @media print{.rev{display:none}}
+/* v-mh1 D6 다크 모드(화면 전용 · 헤드 색 불변 · 그림과 흐름도는 흰 바탕 유지) */
+@media screen and (prefers-color-scheme:dark){
+  :root{--bg:#0F1420;--card:#171D2C;--text:#E6E8EF;--text2:#A9AFC3;--line:#2A3245;--navy-l:#232B45;--accent-l:#33281D;--shadow:0 4px 20px rgba(0,0,0,.35)}
+  a,section.ch>h2,h3,.steps>li>b.t,.card h5,nav.toc li a.on,nav.toc .toc-sum{color:#AEB8F5}
+  a:hover{color:#F4A261}
+  code{background:var(--navy-l);color:#C9D0FA}
+  kbd{background:var(--card);color:var(--text)}
+  table,.card,nav.toc,section.ch{background:var(--card)}
+  th{background:var(--navy-l);color:#C9D0FA}
+  .note{border-left-color:#7F8CE0}
+  .warn{background:#3A1F22}
+  .ok{color:#5EEAD4}.ng{color:#FDA29B}
+  figure.shot .frame,.svgbox{background:#fff;border-color:var(--line)}
+  .tbl.stack tr{background:var(--card)}
+  .tbl.stack td:first-child{color:#C9D0FA}
+  .tbl:not(.stack){background:var(--card)}
+}
+@media screen and (prefers-color-scheme:dark) and (max-width:640px){
+  .tbl:not(.stack){background:linear-gradient(to right,var(--card) 30%,rgba(23,29,44,0)) left/40px 100% no-repeat local,linear-gradient(to left,var(--card) 30%,rgba(23,29,44,0)) right/40px 100% no-repeat local,radial-gradient(farthest-side at 100% 50%,rgba(0,0,0,.5),transparent) right/12px 100% no-repeat scroll,var(--card)}
+}
 </style>
 </head><body>
+<div class="mh-prog" aria-hidden="true"><i></i></div>
 <header class="top"><div class="top-in">
-<div class="eyebrow">RADIANT TIME SERIES · USER MANUAL</div>
+<div class="mh-main">
+<div class="mh-eb"><span class="eyebrow">RADIANT TIME SERIES · USER MANUAL</span><span class="mh-ver">Ver-5.3.2</span></div>
 <h1>RTS-MANMIN 건축물 부하계산 사용자 매뉴얼</h1>
 <p class="sub">웹 기능 · 기술기준 · 작업 방법 — 일반 기술자용 안내서</p>
-<div class="badges"><span class="badge acc">매뉴얼 <span style="font-family:var(--font-brand)">Ver-5.3.2</span></span><a class="badge" href="../index.html">▶ RTS-MANMIN 열기</a><a class="badge" href="RTS-MANMIN_사용자매뉴얼_Ver-5.3.2.pdf" download>⤓ PDF</a><span class="badge">2026-10-21</span><span class="badge">김만민 건축사 · ㈜대성건축사사무소</span></div>
+<p class="mh-meta">2026-10-21 · 김만민 건축사 · ㈜대성건축사사무소 · ASHRAE RTS법 · 에너지절약설계기준</p>
+</div>
+<div class="mh-act"><a class="mh-btn pri" href="../index.html" aria-label="RTS-MANMIN 열기">▶ 계산서 열기</a><a class="mh-btn sec" href="RTS-MANMIN_사용자매뉴얼_Ver-5.3.2.pdf" download>⤓ PDF (A4)</a></div>
 </div></header>
-<div class="wrap"><nav class="toc" aria-label="목차"><h2>목차</h2><ol><li><a href="#ch0">0. 이 매뉴얼에 대하여</a></li><li><a href="#ch1">1. RTS-MANMIN 한눈에 보기</a></li><li class="sub"><a href="#s1-1">화면 구성</a></li><li class="sub"><a href="#s1-2">헤더 버튼</a></li><li class="sub"><a href="#s1-3">설치·저장·불러오기</a></li><li><a href="#ch2">2. 10분 따라하기</a></li><li><a href="#ch3">3. 탭별 기능 상세</a></li><li class="sub"><a href="#s3-1">프로젝트 개요</a></li><li class="sub"><a href="#s3-2">기상 데이터</a></li><li class="sub"><a href="#s3-3">실별 입력</a></li><li class="sub"><a href="#s3-4">실 상세 모달</a></li><li class="sub"><a href="#s3-5">CSV·입력 검증</a></li><li class="sub"><a href="#s3-6">조닝·장비</a></li><li class="sub"><a href="#s3-7">외부·내부 부하</a></li><li class="sub"><a href="#s3-8">CTS/RTS 계수</a></li><li class="sub"><a href="#s3-9">계산 결과</a></li><li class="sub"><a href="#s3-10">AHU·건물 집계</a></li><li class="sub"><a href="#s3-11">산출서·출력</a></li><li class="sub"><a href="#s3-12">모바일</a></li><li><a href="#ch4">4. 기술기준 해설</a></li><li class="sub"><a href="#s4-1">RTS법 원리</a></li><li class="sub"><a href="#s4-2">태양 위치·일사</a></li><li class="sub"><a href="#s4-3">상당외기온도</a></li><li class="sub"><a href="#s4-4">전도(CTS)</a></li><li class="sub"><a href="#s4-5">유리 일사</a></li><li class="sub"><a href="#s4-6">내부발열·침기</a></li><li class="sub"><a href="#s4-7">안전율·동시부하</a></li><li class="sub"><a href="#s4-8">국내 기준</a></li><li class="sub"><a href="#s4-9">AHU 선정 산식</a></li><li><a href="#ch5">5. 실무 작업 방법</a></li><li class="sub"><a href="#s5-1">설계 단계 절차</a></li><li class="sub"><a href="#s5-2">타 프로그램 대조</a></li><li class="sub"><a href="#s5-3">하림 검증 사례</a></li><li class="sub"><a href="#s5-4">SAREK AHU 대조</a></li><li class="sub"><a href="#s5-5">회귀 시험</a></li><li><a href="#ch6">6. 문제 해결·FAQ</a></li><li><a href="#ch7">부록</a></li><li class="sub"><a href="#a1">입력값 기본값·근거</a></li><li class="sub"><a href="#a2">버전 변경 내역</a></li><li class="sub"><a href="#a3">용어</a></li></ol></nav><main><section class="ch" id="ch0"><h2><span class="n">00</span>이 매뉴얼에 대하여</h2>
+<div class="wrap"><nav class="toc" aria-label="목차"><details open><summary class="toc-sum">목차 <span aria-hidden="true">▾</span></summary><h2>목차</h2><ol><li><a href="#ch0">0. 이 매뉴얼에 대하여</a></li><li><a href="#ch1">1. RTS-MANMIN 한눈에 보기</a></li><li class="sub"><a href="#s1-1">화면 구성</a></li><li class="sub"><a href="#s1-2">헤더 버튼</a></li><li class="sub"><a href="#s1-3">설치·저장·불러오기</a></li><li><a href="#ch2">2. 10분 따라하기</a></li><li><a href="#ch3">3. 탭별 기능 상세</a></li><li class="sub"><a href="#s3-1">프로젝트 개요</a></li><li class="sub"><a href="#s3-2">기상 데이터</a></li><li class="sub"><a href="#s3-3">실별 입력</a></li><li class="sub"><a href="#s3-4">실 상세 모달</a></li><li class="sub"><a href="#s3-5">CSV·입력 검증</a></li><li class="sub"><a href="#s3-6">조닝·장비</a></li><li class="sub"><a href="#s3-7">외부·내부 부하</a></li><li class="sub"><a href="#s3-8">CTS/RTS 계수</a></li><li class="sub"><a href="#s3-9">계산 결과</a></li><li class="sub"><a href="#s3-10">AHU·건물 집계</a></li><li class="sub"><a href="#s3-11">산출서·출력</a></li><li class="sub"><a href="#s3-12">모바일</a></li><li><a href="#ch4">4. 기술기준 해설</a></li><li class="sub"><a href="#s4-1">RTS법 원리</a></li><li class="sub"><a href="#s4-2">태양 위치·일사</a></li><li class="sub"><a href="#s4-3">상당외기온도</a></li><li class="sub"><a href="#s4-4">전도(CTS)</a></li><li class="sub"><a href="#s4-5">유리 일사</a></li><li class="sub"><a href="#s4-6">내부발열·침기</a></li><li class="sub"><a href="#s4-7">안전율·동시부하</a></li><li class="sub"><a href="#s4-8">국내 기준</a></li><li class="sub"><a href="#s4-9">AHU 선정 산식</a></li><li><a href="#ch5">5. 실무 작업 방법</a></li><li class="sub"><a href="#s5-1">설계 단계 절차</a></li><li class="sub"><a href="#s5-2">타 프로그램 대조</a></li><li class="sub"><a href="#s5-3">하림 검증 사례</a></li><li class="sub"><a href="#s5-4">SAREK AHU 대조</a></li><li class="sub"><a href="#s5-5">회귀 시험</a></li><li><a href="#ch6">6. 문제 해결·FAQ</a></li><li><a href="#ch7">부록</a></li><li class="sub"><a href="#a1">입력값 기본값·근거</a></li><li class="sub"><a href="#a2">버전 변경 내역</a></li><li class="sub"><a href="#a3">용어</a></li></ol></details></nav><main><section class="ch" id="ch0"><h2><span class="n">00</span>이 매뉴얼에 대하여</h2>
 <p class="lead">RTS-MANMIN은 ASHRAE RTS법(Radiant Time Series)으로 건축물 냉·난방 부하를 실별·장비별·건물별로 산정하고 A4 산출서와 Excel로 출력하는 웹 계산도구입니다. 이 매뉴얼은 처음 쓰는 설비·건축 기술자가 화면 순서대로 따라 하며 결과를 읽고 검토할 수 있도록 작성했습니다.</p>
 <div class="tbl"><table><thead><tr><th class="">항목</th><th class="">내용</th></tr></thead><tbody><tr><td class="">대상 프로그램</td><td class="">RTS-MANMIN <b>Ver-5.3.2</b> (2026-10-21 배포) — 앱 헤더 「📘 매뉴얼」 버튼으로 이 문서가 열립니다</td></tr><tr><td class="">접속 주소</td><td class=""><a href="https://manminkim-eng.github.io/Radiant-Time-Series-Method/index.html" target="_blank" rel="noopener">manminkim-eng.github.io/Radiant-Time-Series-Method</a></td></tr><tr><td class="">매뉴얼 판</td><td class=""><b>Ver-5.3.2</b> (프로그램과 같은 판 번호, 2판 — AHU 선정 추가·보강·A4 출력) · 2026-10-21 · 초판 Ver-5.2.1(2026-10-08) · 작성 김만민 건축사(㈜대성건축사사무소)</td></tr><tr><td class="">내려받기</td><td class=""><a href="RTS-MANMIN_사용자매뉴얼_Ver-5.3.2.pdf" download>PDF(A4)</a> · <a href="../index.html">RTS-MANMIN 열기</a></td></tr><tr><td class="">예제 파일</td><td class=""><a href="sample/manual_example_6rooms.rts" download>manual_example_6rooms.rts</a> — 본문 그림은 모두 이 파일로 캡처 · <a href="sample/sample_2rooms.rts" download>sample_2rooms.rts</a>(회귀 시험용 2실)</td></tr><tr><td class="">읽는 순서</td><td class="">처음이면 1장 → 2장(따라하기) → 필요할 때 3장(탭별 상세). 결과 검토·보고서 작성은 4장(기술기준)·5장(작업 방법)</td></tr></tbody></table></div>
 <div class="note"><b>표기</b>그림 위 주황색 번호(①②…)는 그림 아래 범례 번호와 같습니다. 그림을 누르면 크게 볼 수 있습니다. 버튼 이름은 「전체 계산」처럼 낫표로, 입력란은 <code>p-sf</code>처럼 화면 요소 ID를 함께 적었습니다.</div>
@@ -418,7 +468,7 @@ IAC &lt; 1 : (q<sub>b</sub>+q<sub>d</sub>)·FR → Non-solar RTS,  (q<sub>b</sub
 <h3 id="a3">A3. 용어</h3>
 <div class="tbl"><table><thead><tr><th class="">용어</th><th class="">뜻</th></tr></thead><tbody><tr><td class="">RTS</td><td class="">Radiant Time Series — 복사 열취득이 냉방부하로 나타나는 시간 분포 계수(24개)</td></tr><tr><td class="">CTS</td><td class="">Conduction Time Series — 외벽·지붕 전도 열취득의 시간 분포 계수(24개)</td></tr><tr><td class="">Sol-Air(상당외기온도)</td><td class="">일사·장파 복사 영향을 외기온에 더한 가상 온도</td></tr><tr><td class="">SHGC</td><td class="">태양열취득률 — 입사 일사 중 실내로 들어오는 비율</td></tr><tr><td class="">IAC</td><td class="">Interior Attenuation Coefficient — 내부 차폐의 일사 감쇠계수</td></tr><tr><td class="">FR</td><td class="">차폐가 있을 때 일사 열취득 중 복사로 나타나는 비율</td></tr><tr><td class="">동시 피크</td><td class="">여러 실의 같은 시각 부하 합의 최대값</td></tr><tr><td class="">원단위</td><td class="">단위면적당 부하(W/㎡)</td></tr><tr><td class="">ADP</td><td class="">Apparatus Dew Point(장치노점) — 냉각코일 표면의 유효 노점온도</td></tr><tr><td class="">BF</td><td class="">By-pass Factor — 코일을 거치지 않은 것처럼 지나가는 공기 비율</td></tr><tr><td class="">TA</td><td class="">국소배기 + 양압(실압 유지) 풍량 — 외기량의 하한</td></tr><tr><td class="">RA′</td><td class="">천장속 조명·환기팬 발열로 데워진 환기 상태</td></tr><tr><td class="">외기냉방</td><td class="">외기가 실내보다 서늘할 때 외기 도입량을 급기량까지 늘리는 운전</td></tr><tr><td class="">RSHF</td><td class="">실 현열비 = 실 현열 ÷ (실 현열 + 실 잠열)</td></tr></tbody></table></div>
 </section></main></div>
-<footer class="foot">© 2026 김만민 건축사 · ㈜대성건축사사무소 · RTS-MANMIN 사용자 매뉴얼 Ver-5.3.2 · 그림은 예제 manual_example_6rooms.rts로 캡처(S07·S18·S18-1~4·S20-1은 Ver-5.3.2 화면, 나머지는 Ver-5.2.1 화면 — 해당 탭 기능 동일) <span class="rev">· 화면 대응 개정 2026-10-12 · AHU 선정 개정 2026-10-21</span></footer>
+<footer class="foot">© 2026 김만민 건축사 · ㈜대성건축사사무소 · RTS-MANMIN 사용자 매뉴얼 Ver-5.3.2 · 그림은 예제 manual_example_6rooms.rts로 캡처(S07·S18·S18-1~4·S20-1은 Ver-5.3.2 화면, 나머지는 Ver-5.2.1 화면 — 해당 탭 기능 동일) <span class="rev">· 화면 대응 개정 2026-10-12 · AHU 선정 개정 2026-10-21</span> <span class="rev">· 디자인 개정 2026-10-26</span></footer>
 <div class="pfoot"><span>RTS-MANMIN 사용자 매뉴얼 Ver-5.3.2</span><span>2026-10-21</span></div>
 <div id="lb" role="dialog" aria-label="그림 확대"><img alt=""></div>
 <button class="totop" aria-label="맨 위로">↑</button>
@@ -439,5 +489,9 @@ IAC &lt; 1 : (q<sub>b</sub>+q<sub>d</sub>)·FR → Non-solar RTS,  (q<sub>b</sub
 (function(){document.querySelectorAll('.tbl').forEach(function(t){var tb=t.querySelector('table');if(!tb||!tb.tHead)return;
  if(tb.querySelector('td.num,th.num'))return;var hs=[].map.call(tb.tHead.rows[0].cells,function(c){return c.textContent.trim()});
  [].forEach.call(tb.tBodies[0].rows,function(r){[].forEach.call(r.cells,function(c,i){if(hs[i])c.setAttribute('data-th',hs[i])})});t.classList.add('stack');if(hs.length===2)t.classList.add('c2')})})();
+/* v-mh1 D3 읽기 진행 막대 · D4 좁은 화면 목차 접힘 */
+(function(){var b=document.querySelector('.mh-prog i');if(b){var f=function(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;b.style.width=(m>0?h.scrollTop/m*100:0)+'%';};addEventListener('scroll',f,{passive:true});addEventListener('resize',f);f();}
+ var d=document.querySelector('nav.toc details'),mq=matchMedia('(max-width:1024px)');if(d){var s=function(){d.open=!mq.matches;};s();(mq.addEventListener?mq.addEventListener('change',s):mq.addListener(s));
+ d.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){if(mq.matches)d.open=false;});});}})();
 </script>
 </body></html>
