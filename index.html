@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- ===== PWA Meta Tags ===== -->
-<meta name="application-name" content="RTS-MANMIN">
+<meta name="application-name" content="부하계산">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="RTS-MANMIN">
+<meta name="apple-mobile-web-app-title" content="부하계산">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0e7490">
-<meta name="msapplication-TileColor" content="#0a1628">
+<meta name="theme-color" content="#2d5186">
+<meta name="msapplication-TileColor" content="#2d5186">
 <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
 <meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.2 by MANMIN">
 
@@ -31,6 +31,7 @@
 <!-- ======================== -->
 
 <title>RTS-MANMIN 건축물 부하계산서 Ver-5.3.2 | 만민 건축사 신사옥 신축공사</title>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
 <!-- 링크 미리보기(네이버 · 카카오 · SNS) — 2026-10-30 전수 정비 -->
 <link rel="canonical" href="https://manminkim-eng.github.io/Radiant-Time-Series-Method/">
 <meta property="og:type" content="website">
@@ -52,12 +53,12 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;900&display=swap'); /* v5.1: Orbitron 추가(헤더 각인·인쇄 워터마크 — 소방웹 동일 서체) */
 
-  :root {
+  :root {--d:#5a9ae8;--d-deep:#2d5186;--d-lt:#9cc3f5;--d-tint:#dbeafe;--d-rgb:90,154,232;--fs-badge:11px;--fs-cap:11.5px;--fs-sm:12.5px;--fs-desc:13px;--fs-body:14px;--fs-sec:16px;--fs-card:17px;--fs-stat:20px;
     --navy: #0a1628;
     --navy2: #0f2040;
     --blue: #1a4a8a;
-    --accent: #00b4d8;
-    --accent2: #0096b7;
+    --accent: #4375b7;
+    --accent2: #2d5186;
     --gold: #f0a500;
     --green: #00c896;
     --red: #e84040;
@@ -77,7 +78,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif;
     background: var(--navy);
     color: var(--text);
     font-size: 12px;
@@ -92,7 +93,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 4px 20px rgba(0,180,216,0.2);
+    box-shadow: 0 4px 20px rgba(67,117,183,0.2);
     position: sticky;
     top: 0;
     z-index: 200;
@@ -116,7 +117,7 @@
     font-size: 22px;
     font-weight: 900;
     color: white;
-    text-shadow: 0 0 10px rgba(0,180,216,0.8);
+    text-shadow: 0 0 10px rgba(67,117,183,0.8);
   }
 
   .logo-text h1 {
@@ -133,7 +134,7 @@
     display: inline-block;
     background: linear-gradient(135deg, #1d4ed8, #7c3aed);
     color: #fff;
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 900;
     padding: 2px 8px;
     border-radius: 5px;
@@ -144,15 +145,15 @@
     white-space: nowrap;
   }
   .logo-text p {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--accent);
     letter-spacing: 1.5px;
     text-transform: uppercase;
     margin-top: 1px;
   }
   .logo-designer {
-    font-size: 10px;
-    color: rgba(0,180,216,0.75);
+    font-size: 11px;
+    color: rgba(67,117,183,0.75);
     font-weight: 600;
     letter-spacing: 0;
     text-transform: none;
@@ -168,13 +169,13 @@
   .badge {
     padding: 4px 10px;
     border-radius: 4px;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
   }
 
-  .badge-ashrae { background: rgba(0,180,216,0.2); border: 1px solid var(--accent); color: var(--accent); }
+  .badge-ashrae { background: rgba(67,117,183,0.2); border: 1px solid var(--accent); color: var(--accent); }
   .badge-rts { background: rgba(240,165,0,0.2); border: 1px solid var(--gold); color: var(--gold); }
   .badge-ver { background: rgba(0,200,150,0.15); border: 1px solid var(--green); color: var(--green); }
 
@@ -209,7 +210,7 @@
   .nav-tab.active {
     color: var(--accent);
     border-bottom-color: var(--accent);
-    background: rgba(0,180,216,0.05);
+    background: rgba(67,117,183,0.05);
   }
 
   .nav-tab .tab-icon { font-size: 14px; }
@@ -238,7 +239,7 @@
 
   .sidebar-title {
     padding: 8px 14px;
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 700;
     color: var(--text2);
     letter-spacing: 2px;
@@ -257,8 +258,8 @@
     border-left: 2px solid transparent;
   }
 
-  .sidebar-item:hover { background: rgba(0,180,216,0.07); color: var(--text); }
-  .sidebar-item.active { background: rgba(0,180,216,0.12); color: var(--accent); border-left-color: var(--accent); }
+  .sidebar-item:hover { background: rgba(67,117,183,0.07); color: var(--text); }
+  .sidebar-item.active { background: rgba(67,117,183,0.12); color: var(--accent); border-left-color: var(--accent); }
   .sidebar-item .si-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text2); flex-shrink: 0; }
   .sidebar-item.active .si-dot { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
 
@@ -297,9 +298,9 @@
   }
 
   .section-title .stag {
-    font-size: 10px;
+    font-size: 11px;
     padding: 2px 8px;
-    background: rgba(0,180,216,0.15);
+    background: rgba(67,117,183,0.15);
     border: 1px solid var(--accent);
     border-radius: 3px;
     color: var(--accent);
@@ -314,21 +315,21 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif;
     display: inline-flex;
     align-items: center;
     gap: 5px;
   }
 
   .btn-primary { background: var(--accent); color: var(--navy); }
-  .btn-primary:hover { background: var(--accent2); box-shadow: 0 0 12px rgba(0,180,216,0.4); }
+  .btn-primary:hover { background: var(--accent2); box-shadow: 0 0 12px rgba(67,117,183,0.4); }
   .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text); border: 1px solid var(--border); }
   .btn-secondary:hover { background: rgba(255,255,255,0.12); }
   .btn-success { background: var(--green); color: var(--navy); }
   .btn-success:hover { filter: brightness(1.1); }
   .btn-warning { background: var(--gold); color: var(--navy); }
   .btn-danger { background: var(--red); color: white; }
-  .btn-sm { padding: 4px 10px; font-size: 10px; }
+  .btn-sm { padding: 4px 10px; font-size: 11px; }
 
   /* ===== EXCEL-STYLE TABLES ===== */
   .excel-wrap {
@@ -361,7 +362,7 @@
   .excel-table th {
     background: var(--header-bg);
     color: var(--text2);
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     padding: 6px 8px;
     text-align: center;
@@ -375,11 +376,11 @@
     color: var(--accent);
     width: 30px;
     min-width: 30px;
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .excel-table tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
-  .excel-table tr:hover td { background: rgba(0,180,216,0.06); }
+  .excel-table tr:hover td { background: rgba(67,117,183,0.06); }
 
   .excel-table td {
     border: 1px solid var(--border);
@@ -392,7 +393,7 @@
   .excel-table td.row-label {
     background: #0d2240;
     color: var(--text2);
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 600;
     text-align: center;
     width: 30px;
@@ -401,13 +402,13 @@
   .excel-table td.label-cell {
     background: rgba(255,255,255,0.03);
     color: var(--text2);
-    font-size: 10px;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 11px;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif;
   }
 
   .excel-table td.unit-cell {
     color: var(--text2);
-    font-size: 10px;
+    font-size: 11px;
     text-align: center;
     width: 60px;
   }
@@ -432,7 +433,7 @@
   .excel-table select:focus {
     border-color: var(--accent);
     background: #0d2644;
-    box-shadow: 0 0 0 2px rgba(0,180,216,0.15);
+    box-shadow: 0 0 0 2px rgba(67,117,183,0.15);
   }
 
   /* Calculated cells */
@@ -460,7 +461,7 @@
   .merged-header {
     background: rgba(26,74,138,0.5) !important;
     color: var(--accent) !important;
-    font-family: 'Noto Sans KR', sans-serif !important;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif !important;
     font-weight: 700;
     text-align: center;
     font-size: 11px;
@@ -522,14 +523,14 @@
 
   .form-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(0,180,216,0.15);
+    box-shadow: 0 0 0 2px rgba(67,117,183,0.15);
   }
 
   .form-select {
     background: var(--input-bg);
     border: 1px solid #1e4a7a;
     color: #4fc3f7;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif;
     font-size: 11px;
     padding: 5px 8px;
     outline: none;
@@ -539,7 +540,7 @@
   }
 
   .form-unit {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text2);
     text-align: right;
   }
@@ -577,7 +578,7 @@
   .result-card.info::before { background: var(--green); }
 
   .result-label {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text2);
     margin-bottom: 6px;
     letter-spacing: 0.5px;
@@ -595,7 +596,7 @@
   .result-card.info .result-value { color: var(--green); }
 
   .result-unit {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text2);
     margin-top: 3px;
   }
@@ -645,7 +646,7 @@
     min-height: 2px;
   }
 
-  .chart-bar.cooling { background: linear-gradient(180deg, var(--accent), rgba(0,180,216,0.4)); }
+  .chart-bar.cooling { background: linear-gradient(180deg, var(--accent), rgba(67,117,183,0.4)); }
   .chart-bar.heating { background: linear-gradient(180deg, #ff7070, rgba(232,64,64,0.4)); }
 
   .chart-bar:hover::after {
@@ -656,7 +657,7 @@
     transform: translateX(-50%);
     background: var(--navy2);
     color: var(--white);
-    font-size: 9px;
+    font-size: 11px;
     padding: 2px 5px;
     border-radius: 3px;
     white-space: nowrap;
@@ -665,7 +666,7 @@
   }
 
   .chart-label {
-    font-size: 9px;
+    font-size: 11px;
     color: var(--text2);
     margin-top: 4px;
     position: absolute;
@@ -686,7 +687,7 @@
   }
 
   .chart-y-label {
-    font-size: 9px;
+    font-size: 11px;
     color: var(--text2);
     font-family: 'JetBrains Mono', monospace;
   }
@@ -705,7 +706,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text2);
     position: fixed;
     bottom: 0;
@@ -718,7 +719,7 @@
   .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
 
   /* ===== UTILITIES ===== */
-  .row-group td { border-top: 1px solid rgba(0,180,216,0.2) !important; }
+  .row-group td { border-top: 1px solid rgba(67,117,183,0.2) !important; }
   .text-right { text-align: right; }
   .text-center { text-align: center; }
   .text-accent { color: var(--accent); }
@@ -729,8 +730,8 @@
   .mb-12 { margin-bottom: 12px; }
 
   .info-box {
-    background: rgba(0,180,216,0.06);
-    border: 1px solid rgba(0,180,216,0.25);
+    background: rgba(67,117,183,0.06);
+    border: 1px solid rgba(67,117,183,0.25);
     border-left: 3px solid var(--accent);
     border-radius: 4px;
     padding: 10px 14px;
@@ -782,7 +783,7 @@
   }
 
   /* CTS/RTS coefficient display */
-  .coeff-table td { font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+  .coeff-table td { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
   /* Tooltip */
   [title] { cursor: help; }
@@ -803,7 +804,7 @@
     white-space: nowrap;
     transition: all 0.2s;
     box-shadow: 0 2px 8px rgba(5,150,105,0.4);
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif;
   }
   .btn-uval:hover {
     background: linear-gradient(135deg, #047857, #064e3b);
@@ -882,16 +883,16 @@
     font-size: 22px;
     cursor: pointer;
     z-index: 9000;
-    box-shadow: 0 4px 20px rgba(0,180,216,0.55);
+    box-shadow: 0 4px 20px rgba(67,117,183,0.55);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.2s, box-shadow 0.2s;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif;
   }
   .formula-fab:hover {
     transform: scale(1.12);
-    box-shadow: 0 6px 28px rgba(0,180,216,0.75);
+    box-shadow: 0 6px 28px rgba(67,117,183,0.75);
   }
   .formula-fab .fab-label {
     position: absolute;
@@ -901,7 +902,7 @@
     background: var(--navy2);
     border: 1px solid var(--border);
     color: var(--accent);
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     padding: 4px 10px;
     border-radius: 4px;
@@ -933,7 +934,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 12px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,180,216,0.12);
+    box-shadow: 0 12px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(67,117,183,0.12);
   }
   .formula-modal-header {
     background: linear-gradient(135deg, #1a3a6a, #0f2a50);
@@ -982,7 +983,7 @@
     transition: all 0.15s;
   }
   .fm-tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-  .fm-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(0,180,216,0.06); }
+  .fm-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(67,117,183,0.06); }
   .formula-modal-body {
     padding: 18px 22px;
     overflow-y: auto;
@@ -1014,9 +1015,9 @@
     line-height: 1.9;
   }
   .fm-var { color: #fcd34d; }
-  .fm-unit { color: #93c5fd; font-size: 10px; }
+  .fm-unit { color: #93c5fd; font-size: 11px; }
   .fm-desc {
-    font-size: 10.5px;
+    font-size: 11px;
     color: var(--text2);
     line-height: 1.8;
     margin-bottom: 8px;
@@ -1026,7 +1027,7 @@
     border-left: 3px solid var(--gold);
     border-radius: 3px;
     padding: 7px 12px;
-    font-size: 10px;
+    font-size: 11px;
     color: #f0c060;
     line-height: 1.75;
     margin-top: 6px;
@@ -1036,7 +1037,7 @@
     border-left: 3px solid var(--red);
     border-radius: 3px;
     padding: 7px 12px;
-    font-size: 10px;
+    font-size: 11px;
     color: #f87171;
     line-height: 1.75;
     margin-top: 6px;
@@ -1044,7 +1045,7 @@
   .fm-ref-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 10px;
+    font-size: 11px;
     margin-top: 6px;
   }
   .fm-ref-table th {
@@ -1150,7 +1151,7 @@
     padding: 0 !important;
     background: #fff !important;
     color: #000 !important;
-    font-family: 'Noto Sans KR', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif !important;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif !important;
     font-size: 8.5pt !important;
     line-height: 1.3 !important;
   }
@@ -1639,7 +1640,7 @@
     height: auto !important;
     -webkit-appearance: none !important;
     appearance: none !important;
-    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif !important;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', 'Malgun Gothic', sans-serif !important;
   }
 
   /* excel-table: PDF처럼 촘촘하고 선명하게 */
@@ -2069,7 +2070,7 @@
 } /* end @media print */
 
 /* ══ v5.0 HDR — 헤더 3층 · 탭 44 · 스트립 (규격표 §3 · 기계설비 토큰) · 2026-09-05 S12 ══ */
-:root{--hdr-a:#083344;--hdr-b:#0e7490;--hdr-c:#0891b2;--hdr-accent:#7dd3fc;--hdr-tab:#0e7490;--hdr-shadow:rgba(14,116,144,.35);}
+:root{--hdr-a:#0f1a2e;--hdr-b:#1b3150;--hdr-c:#2d5186;--hdr-accent:#9cc3f5;--hdr-tab:#2d5186;--hdr-shadow:rgba(45,81,134,.35);}
 .top-fixed-wrapper{background:linear-gradient(135deg,var(--hdr-a) 0%,var(--hdr-b) 50%,var(--hdr-c) 100%);box-shadow:0 2px 20px var(--hdr-shadow);}
 .app-header{background:transparent!important;border-bottom:0!important;padding:0!important;display:block!important;box-shadow:none!important;}
 .header-inner{max-width:none;margin:0;padding:20px 24px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
@@ -2079,15 +2080,15 @@
 .hdr-h1{font-size:26px;font-weight:900;color:#fff;letter-spacing:.04em;line-height:1.2;margin:0;display:block;}
 .hdr-sub{font-size:11px;margin-top:8px;color:#fff;opacity:.85;letter-spacing:.02em;line-height:17px;max-width:640px;}
 .hdr-sub #hdr-designer-line{color:#fff;opacity:1;font-weight:600;}
-.hdr-manmin{font-family:'Orbitron',sans-serif!important;font-weight:900;font-size:12px;color:var(--hdr-accent);letter-spacing:.08em;text-shadow:0 0 8px rgba(125,211,252,.6);white-space:nowrap;display:inline-block;margin-left:8px;}
+.hdr-manmin{font-family:'Orbitron',sans-serif!important;font-weight:900;font-size:12px;color:var(--hdr-accent);letter-spacing:.08em;text-shadow:0 0 8px rgba(156,195,245,.6);white-space:nowrap;display:inline-block;margin-left:8px;}
 .hdr-right-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
 .hdr-right{text-align:right;opacity:.75;color:#fff;font-size:11px;line-height:normal;}
-.hdr-right strong{font-size:13px;font-weight:700;} .hdr-right em{font-style:normal;font-size:10px;color:var(--hdr-accent);margin-left:6px;}
+.hdr-right strong{font-size:13px;font-weight:700;} .hdr-right em{font-style:normal;font-size:11px;color:var(--hdr-accent);margin-left:6px;}
 .hdr-btns{display:flex;gap:6px;flex-wrap:nowrap;justify-content:flex-end;}
 .hdr-btns .btn-g{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;padding:0 11px;height:30px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;box-shadow:none;letter-spacing:0;}
 .hdr-btns .btn-g:hover{background:#fff;color:var(--hdr-b);}
 .hdr-btns a.btn-g{box-sizing:border-box;text-decoration:none;line-height:1;}   /* Ver-5.2.1 보완: 매뉴얼 고정 링크(<a>)를 <button>과 동일 치수로 */
-.hdr-btns .btn-calc{background:var(--hdr-accent);border-color:var(--hdr-accent);color:#083344;}
+.hdr-btns .btn-calc{background:var(--hdr-accent);border-color:var(--hdr-accent);color:#0f1a2e;}
 .hdr-btns .btn-uval{background:rgba(5,150,105,.35);border-color:rgba(110,231,183,.6);}
 .nav-tabs.tab-bar{background:transparent!important;border-bottom:0!important;padding:0!important;position:static!important;overflow:visible;display:block;}
 .tab-bar-inner{margin:0;padding:4px 24px 0;display:flex;gap:4px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
@@ -2100,32 +2101,32 @@
 .sum-bar-wrap{background:#0f172a;padding:10px 0;}
 .sum-bar{margin:0;padding:0 24px;display:flex;flex-wrap:wrap;gap:14px;}
 .sum-item{font-size:12px;color:#94a3b8;}
-.sum-item b{font-family:'JetBrains Mono','Noto Sans KR',monospace;font-weight:700;color:var(--hdr-accent);}
+.sum-item b{font-family:'JetBrains Mono','Pretendard Variable',Pretendard,'Noto Sans KR',monospace;font-weight:700;color:var(--hdr-accent);}
 @media(max-width:768px){.hdr-right{display:none;}}
 @media(max-width:1024px){.hdr-btns{flex-wrap:wrap;}}
 @media(max-width:640px){.hdr-h1{font-size:18px;}.header-inner{padding:20px 14px 16px;}.hdr-sub{font-size:11px;margin-top:6px;}.hdr-manmin{font-size:11px;}.hdr-btns .btn-g .btn-txt{display:none;}.hdr-btns{gap:3px;}.tab-bar-inner{padding:4px 14px 0;}.sum-bar{padding:0 14px;}.sum-item{font-size:11px;}}
 </style>
 <style id="mm-v5-light">
 /* ══ v5.0 §3-12 라이트 본문 — :root 토큰 재지정 + 다크 고정색 오버라이드 (계산 스크립트·HTML 무접촉 · 2026-09-05 S12 · MIN 결정: 계산창도 라이트) ══ */
-:root{--navy:#f4f6f9;--navy2:#ffffff;--blue:#0e7490;--accent:#0e7490;--accent2:#0891b2;--gold:#b45309;--green:#15803d;--red:#b91c1c;--light:#e0f2fe;
-      --border:#e4e9f0;--text:#1a2744;--text2:#475569;--white:#1a2744;--cell-bg:#ffffff;--cell-bg2:#ffffff;--header-bg:#e0f2fe;--input-bg:#f8fafd;--calc-bg:#f0fdf4;--calc-text:#14532d;
-      --surf:#fff;--hint:#94a3b8;--th:#e0f2fe;--th-txt:#155e75;}
+:root{--navy:#f4f6f9;--navy2:#ffffff;--blue:#2d5186;--accent:#2d5186;--accent2:#4375b7;--gold:#b45309;--green:#15803d;--red:#b91c1c;--light:#dbeafe;
+      --border:#e4e9f0;--text:#1a2744;--text2:#475569;--white:#1a2744;--cell-bg:#ffffff;--cell-bg2:#ffffff;--header-bg:#dbeafe;--input-bg:#f8fafd;--calc-bg:#f0fdf4;--calc-text:#14532d;
+      --surf:#fff;--hint:#94a3b8;--th:#dbeafe;--th-txt:#244168;}
 body{background:var(--navy);color:var(--text);}
 .content-area{background:#f4f6f9;}
-.sidebar{background:#fff;border-right:1px solid var(--border);} .sidebar-item:hover{background:#f0fdff;} .sidebar-item.active{background:#e0f2fe;color:#155e75;border-left-color:#0e7490;}
-.sidebar-item .si-dot{background:#cbd5e1;} .sidebar-item.active .si-dot{background:#0e7490;}
+.sidebar{background:#fff;border-right:1px solid var(--border);} .sidebar-item:hover{background:#eff5fd;} .sidebar-item.active{background:#dbeafe;color:#244168;border-left-color:#2d5186;}
+.sidebar-item .si-dot{background:#cbd5e1;} .sidebar-item.active .si-dot{background:#2d5186;}
 .section-title{color:#1a2744;} .section-header{border-bottom-color:var(--border);}
 /* 버튼 */
 .btn{border-radius:7px;font-weight:700;}
-.btn-primary{background:#0e7490;color:#fff;} .btn-primary:hover{background:#155e75;}
-.btn-secondary{background:#fff;color:#1a2744;border:1px solid #dde3ed;} .btn-secondary:hover{background:#f0fdff;border-color:#0e7490;color:#0e7490;}
+.btn-primary{background:#2d5186;color:#fff;} .btn-primary:hover{background:#244168;}
+.btn-secondary{background:#fff;color:#1a2744;border:1px solid #dde3ed;} .btn-secondary:hover{background:#eff5fd;border-color:#2d5186;color:#2d5186;}
 .btn-success{background:#15803d;color:#fff;} .btn-warning{background:#b45309;color:#fff;}
 /* 카드 · 폼 (§3-12) */
 .form-card,.result-card,.chart-wrap,.sheet-block,.excel-wrap{background:#fff;border:1px solid #e4e9f0;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
-.form-card-header,.sheet-block-header,.excel-header{background:#f8fafd;border-bottom:1px solid #e4e9f0;color:#0e7490;border-radius:12px 12px 0 0;}
+.form-card-header,.sheet-block-header,.excel-header{background:#f8fafd;border-bottom:1px solid #e4e9f0;color:#2d5186;border-radius:12px 12px 0 0;}
 .form-label,.form-unit,.result-label,.result-unit,.chart-label,.chart-y-label,.fm-desc{color:#475569;}
 .form-input,.form-select{background:#f8fafd;border:1.5px solid #dde3ed;color:#1a2744;border-radius:7px;font-size:13px;font-weight:600;padding:7px 10px;height:38px;box-sizing:border-box;}
-.form-input:focus,.form-select:focus{border-color:#0e7490;box-shadow:0 0 0 3px rgba(14,116,144,.15);outline:none;}
+.form-input:focus,.form-select:focus{border-color:#2d5186;box-shadow:0 0 0 3px rgba(45,81,134,.15);outline:none;}
 /* 엑셀형 그리드 — 셀 입력은 밀도 유지(높이 원형) */
 .excel-table th{background:var(--th);color:var(--th-txt);border:1px solid #dbe4ee;}
 .excel-table th.col-label,.excel-table td.row-label{background:#f1f5f9;color:#64748b;}
@@ -2133,10 +2134,10 @@ body{background:var(--navy);color:var(--text);}
 .excel-table tr:nth-child(even) td{background:#f8fafd;}
 .excel-table td.label-cell{background:#f8fafd;color:#475569;}
 .excel-table select,.excel-table input{background:#f8fafd;border:1px solid #dde3ed;color:#1a2744;border-radius:5px;}
-.excel-table select:focus,.excel-table input:focus{border-color:#0e7490;background:#fff;box-shadow:0 0 0 2px rgba(14,116,144,.15);}
+.excel-table select:focus,.excel-table input:focus{border-color:#2d5186;background:#fff;box-shadow:0 0 0 2px rgba(45,81,134,.15);}
 .calc-cell{background:#f0fdf4!important;color:#14532d!important;} .calc-cell.highlight{background:#dcfce7!important;color:#166534!important;}
 /* 정보 · 상태 */
-.info-box{background:#f0fdff;border:1px solid #bae6fd;border-left:3px solid #0e7490;color:#334155;}
+.info-box{background:#eff5fd;border:1px solid #c2d9f7;border-left:3px solid #2d5186;color:#334155;}
 .status-bar{background:#0f172a;border-top:0;color:#94a3b8;}
 .chart-bar:hover::after{background:#1a2744;color:#fff;}
 /* 인라인 다크 잔재 — HTML 무접촉 오버라이드 */
@@ -2145,20 +2146,20 @@ body{background:var(--navy);color:var(--text);}
 [style*="color:var(--calc-text)"]{color:#14532d!important;}
 [style*="color:#fff"][style*="font-size:14px"]{color:#1a2744!important;}
 /* FAB · 모달 (§18-11) */
-.formula-fab{width:68px;height:auto;min-height:68px;border-radius:16px;padding:11px 8px;bottom:18px;right:18px;background:linear-gradient(135deg,#083344,#0e7490 50%,#0891b2);border:1px solid rgba(125,211,252,.3);box-shadow:0 4px 20px rgba(14,116,144,.65);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:20px;}
-.formula-fab .fab-label{position:static;transform:none;background:none;border:0;color:#fff;font-size:10px;font-weight:800;padding:0;opacity:1;white-space:nowrap;}
+.formula-fab{width:68px;height:auto;min-height:68px;border-radius:16px;padding:11px 8px;bottom:18px;right:18px;background:linear-gradient(135deg,#0f1a2e,#2d5186 50%,#4375b7);border:1px solid rgba(156,195,245,.3);box-shadow:0 4px 20px rgba(45,81,134,.65);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:20px;}
+.formula-fab .fab-label{position:static;transform:none;background:none;border:0;color:#fff;font-size:11px;font-weight:800;padding:0;opacity:1;white-space:nowrap;}
 .formula-modal-overlay{background:rgba(0,0,0,.65);backdrop-filter:blur(5px);padding:16px;}
 .formula-modal{background:#fff;border:0;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.4);max-width:800px;}
-.formula-modal-header{background:linear-gradient(135deg,#083344,#0e7490 50%,#0891b2);border-bottom:0;padding:18px 22px 12px;}
+.formula-modal-header{background:linear-gradient(135deg,#0f1a2e,#2d5186 50%,#4375b7);border-bottom:0;padding:18px 22px 12px;}
 .formula-modal-header h2{color:#fff;letter-spacing:.04em;}
 .formula-modal-close{background:rgba(255,255,255,.13);color:#fff;border-radius:50%;width:34px;height:34px;padding:0;font-size:18px;} .formula-modal-close:hover{background:rgba(255,255,255,.25);color:#fff;}
-.formula-modal-tabs{background:linear-gradient(135deg,#083344,#0e7490 50%,#0891b2);border-bottom:0;padding:0 12px;}
-.fm-tab{color:rgba(255,255,255,.6);padding:9px 14px;font-size:12px;font-weight:700;border-bottom:3px solid transparent;} .fm-tab:hover{color:#fff;background:rgba(255,255,255,.08);} .fm-tab.active{color:#fff;border-bottom-color:#7dd3fc;background:none;}
+.formula-modal-tabs{background:linear-gradient(135deg,#0f1a2e,#2d5186 50%,#4375b7);border-bottom:0;padding:0 12px;}
+.fm-tab{color:rgba(255,255,255,.6);padding:9px 14px;font-size:12px;font-weight:700;border-bottom:3px solid transparent;} .fm-tab:hover{color:#fff;background:rgba(255,255,255,.08);} .fm-tab.active{color:#fff;border-bottom-color:#9cc3f5;background:none;}
 .formula-modal-body{background:#fff;color:#1a2744;padding:20px 22px 26px;}
-.fm-section-title{color:#0e7490;border-bottom-color:#e4e9f0;}
+.fm-section-title{color:#2d5186;border-bottom-color:#e4e9f0;}
 .fm-formula-box{background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;}
-.fm-ref-table th{background:#e0f2fe;color:#155e75;border-color:#dbe4ee;} .fm-ref-table td{border-color:#e4e9f0;color:#1a2744;} .fm-ref-table tr:nth-child(even) td{background:#f8fafd;}
-.formula-modal-body [style*="background:rgba(0,180,216,0.06)"]{background:#f0fdff!important;}
+.fm-ref-table th{background:#dbeafe;color:#244168;border-color:#dbe4ee;} .fm-ref-table td{border-color:#e4e9f0;color:#1a2744;} .fm-ref-table tr:nth-child(even) td{background:#f8fafd;}
+.formula-modal-body [style*="background:rgba(0,180,216,0.06)"]{background:#eff5fd!important;}
 .formula-modal-body [style*="background:rgba(0,200,150,0.06)"]{background:#f0fdf4!important;}
 .formula-modal-body strong[style*="color:#00c896"]{color:#15803d!important;}
 @media(max-width:540px){.formula-modal-overlay{padding:0;align-items:flex-end;}.formula-modal{border-radius:20px 20px 0 0;max-height:92vh;width:100%;}}
@@ -2171,7 +2172,7 @@ body{background:var(--navy);color:var(--text);}
   .form-input, .form-select, textarea.form-input,
   .excel-table input[type="number"], .excel-table input[type="text"], .excel-table select,
   .formula-modal input[type="number"], .formula-modal input[type="text"], .formula-modal select {
-    font-family: 'Noto Sans KR', sans-serif !important;
+    font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif !important;
     font-size: 12px !important;
     font-weight: 600 !important;
     line-height: 1.3 !important;
@@ -2196,15 +2197,15 @@ body{background:var(--navy);color:var(--text);}
   .excel-table .form-input, .excel-table .form-select, .excel-table input, .excel-table select,
   .formula-modal .excel-table input, .formula-modal .excel-table select { height: 28px !important; min-height: 0 !important; padding: 3px 6px !important; border-width: 1px !important; border-radius: 5px !important; }
   textarea.form-input { height: auto !important; min-height: 68px !important; font-family: 'JetBrains Mono', monospace !important; line-height: 1.5 !important; padding: 8px 10px !important; }
-  input[type="date"].form-input { font-family: 'Noto Sans KR', sans-serif !important; text-align: left !important; }
+  input[type="date"].form-input { font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif !important; text-align: left !important; }
   /* 상태 */
-  .form-input::placeholder, .excel-table input::placeholder { color: #94a3b8 !important; font-weight: 400 !important; font-family: 'Noto Sans KR', sans-serif !important; }
+  .form-input::placeholder, .excel-table input::placeholder { color: #94a3b8 !important; font-weight: 400 !important; font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', sans-serif !important; }
   .form-input:focus, .form-select:focus, .excel-table input:focus, .excel-table select:focus, .formula-modal input:focus, .formula-modal select:focus {
-    border-color: #0e7490 !important; background: #fff !important; box-shadow: 0 0 0 3px rgba(14,116,144,.15) !important; outline: none !important;
+    border-color: #2d5186 !important; background: #fff !important; box-shadow: 0 0 0 3px rgba(45,81,134,.15) !important; outline: none !important;
   }
   .form-input:disabled, .form-select:disabled, .excel-table input:disabled, .excel-table select:disabled { opacity: .45 !important; cursor: not-allowed; }
   .form-input[readonly] { background: #f1f5f9 !important; color: #475569 !important; }
-  input[type="checkbox"], input[type="radio"] { accent-color: #0e7490; width: 15px; height: 15px; vertical-align: middle; }
+  input[type="checkbox"], input[type="radio"] { accent-color: #2d5186; width: 15px; height: 15px; vertical-align: middle; }
   /* 셀렉트 화살표 통일 */
   .form-select, .excel-table select { -webkit-appearance: none; appearance: none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23475569' stroke-width='1.5'/></svg>") !important;
@@ -2280,8 +2281,8 @@ body{background:var(--navy);color:var(--text);}
 /* ══ v5.0 인쇄 규격 덧씌움 (§3-7 서체 · R24② mono · §20-1 각인 없음 · 신설 요소 숨김) — 시트 구조·@page 18/14/20/14·collapse 는 원형 유지(README 예외) ══ */
 @media print{
   .sum-bar-wrap,.no-print,#fab-group,.formula-fab,#mm-save-ov{display:none!important;}
-  body,.excel-table,.form-card,.sheet-block,.print-sheet-header,.print-sheet-footer,.section-title,.form-label,td,th,p,div,span{font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif!important;}
-  .excel-table td.calc-cell,.print-sheet-header .sh-meta,.print-sheet-footer .sf-right,.mono,[style*="JetBrains Mono"],[style*="Courier New"]{font-family:'JetBrains Mono','Noto Sans KR','Malgun Gothic',Consolas,monospace!important;}
+  body,.excel-table,.form-card,.sheet-block,.print-sheet-header,.print-sheet-footer,.section-title,.form-label,td,th,p,div,span{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif!important;}
+  .excel-table td.calc-cell,.print-sheet-header .sh-meta,.print-sheet-footer .sf-right,.mono,[style*="JetBrains Mono"],[style*="Courier New"]{font-family:'JetBrains Mono','Pretendard Variable',Pretendard,'Noto Sans KR','Malgun Gothic',Consolas,monospace!important;}
 }
 </style>
 
@@ -2292,55 +2293,55 @@ body{background:var(--navy);color:var(--text);}
 #rp-toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
 #rp-toolbar .rp-st { font-size:11px; color:var(--text2); margin-left:auto; }
 #rp-outer { position:relative; overflow:hidden; background:#e2e8f0; border-radius:12px; padding:8px 0; }
-#rts-report { width:794px; margin:0; background:#fff; color:#1a1a2e; font-family:'Noto Sans KR',sans-serif; font-size:11px; line-height:1.45; padding:28px 40px; box-shadow:0 4px 20px rgba(0,0,0,.08); box-sizing:border-box; }
+#rts-report { width:794px; margin:0; background:#fff; color:#1a1a2e; font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif; font-size:11px; line-height:1.45; padding:28px 40px; box-shadow:0 4px 20px rgba(0,0,0,.08); box-sizing:border-box; }
 #rts-report *, #rts-report *::before { box-sizing:border-box; }
 #rts-report .rp-h1 { text-align:center; font-size:22px; font-weight:900; margin:0 0 4px; padding-bottom:6px; border-bottom:3px double #334155; letter-spacing:.02em; color:#1a1a2e; }
 #rts-report .rp-sub { text-align:center; font-size:12px; color:#64748b; margin-bottom:10px; }
-#rts-report .rp-sub b { color:#0f766e; }
+#rts-report .rp-sub b { color:#2d5186; }
 #rts-report table { border-collapse:collapse; width:100%; }
 #rts-report table.rp-info { font-size:11px; margin-bottom:12px; }
 #rts-report table.rp-info td { border:1px solid #cbd5e1; padding:5px 8px; }
 #rts-report table.rp-info td.k { background:#f8fafc; font-weight:700; width:84px; text-align:center; color:#334155; }
-#rts-report .rp-sec { border:2px solid #0f766e; border-radius:8px; overflow:hidden; margin-bottom:12px; break-inside:avoid; page-break-inside:avoid; }
+#rts-report .rp-sec { border:2px solid #2d5186; border-radius:8px; overflow:hidden; margin-bottom:12px; break-inside:avoid; page-break-inside:avoid; }
 #rts-report .rp-room .rp-sec-b { padding:6px 12px; }
 #rts-report .rp-room table.rp-calc { font-size:10px; } #rts-report .rp-room table.rp-calc td { padding:2px 6px; } #rts-report .rp-room table.rp-calc th { padding:3px 6px; }
 #rts-report .rp-room table.rp-ledger { font-size:9.5px; } #rts-report .rp-room table.rp-ledger td { padding:1.5px 5px; } #rts-report .rp-room .rp-ledger-title { margin:6px 0 3px; }
 #rts-report .rp-room .rp-sec-h { padding:4px 12px; font-size:11.5px; } #rts-report .rp-room .rp-note { margin-top:4px; }
 #rts-report .rp-sec.rp-list-sec, #rts-report .rp-sec.rp-list-sec .rp-sec-b { break-inside:auto; page-break-inside:auto; }
-#rts-report .rp-sec-h { background:#0f766e; color:#fff; padding:6px 14px; font-size:12.5px; font-weight:700; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+#rts-report .rp-sec-h { background:#2d5186; color:#fff; padding:6px 14px; font-size:12.5px; font-weight:700; display:flex; justify-content:space-between; align-items:center; gap:8px; }
 #rts-report .rp-sec-h .dim { font-weight:400; opacity:.9; }
 #rts-report .rp-sec-h .kpi { font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:400; white-space:nowrap; }
 #rts-report .rp-sec-b { padding:10px 14px; }
 #rts-report table.rp-calc { font-size:11px; }
-#rts-report table.rp-calc th { background:#f0fdfa; color:#0f766e; border:1px solid #cbd5e1; padding:5px 8px; font-weight:700; text-align:center; }
+#rts-report table.rp-calc th { background:#eff5fd; color:#2d5186; border:1px solid #cbd5e1; padding:5px 8px; font-weight:700; text-align:center; }
 #rts-report table.rp-calc th.w-sym{width:44px} #rts-report table.rp-calc th.w-num{width:96px} #rts-report table.rp-calc th.w-unit{width:56px}
 #rts-report table.rp-calc td { border:1px solid #cbd5e1; padding:4px 8px; vertical-align:middle; }
 #rts-report table.rp-calc tr.strong td { font-weight:700; background:#f8fafc; }
-#rts-report td.sym { font-family:'JetBrains Mono',monospace; color:#0f766e; font-weight:700; text-align:center; }
+#rts-report td.sym { font-family:'JetBrains Mono',monospace; color:#2d5186; font-weight:700; text-align:center; }
 #rts-report td.num { font-family:'JetBrains Mono',monospace; font-weight:700; text-align:right; }
 #rts-report td.unit { text-align:center; color:#6b7280; }
 #rts-report td.basis { font-size:10px; color:#6b7280; }
-#rts-report .rp-ledger-title { font-size:11px; font-weight:700; color:#0f766e; margin:10px 0 4px; }
+#rts-report .rp-ledger-title { font-size:11px; font-weight:700; color:#2d5186; margin:10px 0 4px; }
 #rts-report table.rp-ledger { font-size:10.5px; }
 #rts-report table.rp-ledger td { border-bottom:1px dotted #cbd5e1; padding:3px 6px; }
 #rts-report table.rp-ledger td.lk { width:200px; color:#334155; }
 #rts-report table.rp-ledger td.lv { width:120px; text-align:right; font-family:'JetBrains Mono',monospace; font-weight:700; white-space:nowrap; }
 #rts-report table.rp-ledger td.lf { color:#6b7280; font-family:'JetBrains Mono',monospace; font-size:9.5px; }
 #rts-report table.rp-ledger tr.res td { background:#f8fafc; font-weight:700; }
-#rts-report table.rp-ledger tr.res td.lk { color:#0f766e; }
+#rts-report table.rp-ledger tr.res td.lk { color:#2d5186; }
 #rts-report table.rp-list { font-size:9.5px; }
-#rts-report table.rp-list th { background:#f0fdfa; color:#0f766e; border:1px solid #cbd5e1; padding:3px 4px; font-weight:700; text-align:center; white-space:nowrap; }
+#rts-report table.rp-list th { background:#eff5fd; color:#2d5186; border:1px solid #cbd5e1; padding:3px 4px; font-weight:700; text-align:center; white-space:nowrap; }
 #rts-report table.rp-list td { border:1px solid #cbd5e1; padding:2px 4px; text-align:center; white-space:nowrap; }
 #rts-report table.rp-list td.l { text-align:left; } #rts-report table.rp-list td.n { text-align:right; font-family:'JetBrains Mono',monospace; }
 #rts-report table.rp-list tr.sub td { background:#f8fafc; font-weight:700; }
-#rts-report table.rp-list tr.tot td { background:#f0fdfa; font-weight:700; color:#0f766e; }
+#rts-report table.rp-list tr.tot td { background:#eff5fd; font-weight:700; color:#2d5186; }
 #rts-report table.rp-h24 { font-size:9px; margin-bottom:6px; }
-#rts-report table.rp-h24 th { background:#f0fdfa; color:#0f766e; border:1px solid #cbd5e1; padding:2px 3px; font-weight:700; text-align:center; }
+#rts-report table.rp-h24 th { background:#eff5fd; color:#2d5186; border:1px solid #cbd5e1; padding:2px 3px; font-weight:700; text-align:center; }
 #rts-report table.rp-h24 td { border:1px solid #cbd5e1; padding:2px 3px; text-align:right; font-family:'JetBrains Mono',monospace; }
 #rts-report table.rp-h24 td:first-child { text-align:left; font-family:inherit; }
 #rts-report table.rp-h24 tr.strong td, #rts-report table.rp-h24 td.strong { font-weight:700; background:#f8fafc; }
 #rts-report table.rp-bd { table-layout:fixed; margin-top:2px; }
-#rts-report table.rp-bd td.num.tot { background:#f0fdfa; color:#0f766e; }
+#rts-report table.rp-bd td.num.tot { background:#eff5fd; color:#2d5186; }
 #rts-report .rp-note { font-size:10px; color:#6b7280; margin-top:6px; }
 #rts-report .rp-note.ok { color:#0f766e; font-weight:700; } #rts-report .rp-note.ng { color:#b91c1c; font-weight:700; }
 #rts-report .rp-legal { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 12px; font-size:10.5px; line-height:1.9; margin-top:14px; }
@@ -2348,21 +2349,21 @@ body{background:var(--navy);color:var(--text);}
 #rts-report .rp-stamp { text-align:right; font-size:9px; color:#94a3b8; margin-top:10px; }
 #rts-report .rp-break { height:0; }
 #rts-report .rp-cover { min-height:1040px; display:flex; flex-direction:column; justify-content:space-between; }
-#rts-report .rp-cover-band { background:#0f766e; color:#fff; border-radius:8px; padding:26px 30px; }
+#rts-report .rp-cover-band { background:#2d5186; color:#fff; border-radius:8px; padding:26px 30px; }
 #rts-report .rp-cover-eyebrow { font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:.18em; opacity:.85; margin-bottom:8px; }
 #rts-report .rp-cover-title { font-size:30px; font-weight:900; letter-spacing:.22em; }
 #rts-report .rp-cover-mid { text-align:center; padding:40px 0; }
-#rts-report .rp-cover-label { font-size:11px; letter-spacing:.3em; color:#0f766e; font-weight:700; margin-bottom:12px; }
+#rts-report .rp-cover-label { font-size:11px; letter-spacing:.3em; color:#2d5186; font-weight:700; margin-bottom:12px; }
 #rts-report .rp-cover-project { font-size:28px; font-weight:900; color:#1a1a2e; border-top:3px double #334155; border-bottom:3px double #334155; padding:16px 0; }
 #rts-report .rp-cover-use { font-size:12px; color:#64748b; margin-top:12px; }
 #rts-report table.rp-cover-info { font-size:12px; margin:0 auto 20px; }
 #rts-report table.rp-cover-info td { padding:8px 12px; }
-#rts-report table.rp-cover-info td.k { background:#f0fdfa; color:#0f766e; width:96px; letter-spacing:.08em; }
+#rts-report table.rp-cover-info td.k { background:#eff5fd; color:#2d5186; width:96px; letter-spacing:.08em; }
 #rts-report .rp-cover-foot { text-align:center; font-size:10.5px; color:#334155; border-top:1px solid #cbd5e1; padding-top:10px; line-height:1.8; }
 #rts-report .rp-cover-foot .dim { color:#6b7280; font-size:9.5px; }
 #rts-report table.rp-toc-t { font-size:12px; }
 #rts-report table.rp-toc-t td { border-bottom:1px dotted #cbd5e1; padding:8px 6px; }
-#rts-report table.rp-toc-t td.no { width:60px; text-align:center; font-family:'JetBrains Mono',monospace; font-weight:700; color:#0f766e; }
+#rts-report table.rp-toc-t td.no { width:60px; text-align:center; font-family:'JetBrains Mono',monospace; font-weight:700; color:#2d5186; }
 #rts-report table.rp-toc-t td.ti { font-weight:500; color:#1a1a2e; }
 #rts-report table.rp-toc-t td.en { width:150px; text-align:right; color:#94a3b8; font-size:10px; }
 @media print {
@@ -2397,12 +2398,12 @@ body{background:var(--navy);color:var(--text);}
 .ahu-tbl td,.ahu-tbl th{white-space:nowrap;font-size:11px}
 .ahu-tbl td.l,.ahu-kv td.l,.ahu-st td.l,.ahu-sp td.l{text-align:left}
 .ahu-tbl td.n,.ahu-kv td.n,.ahu-st td.n,.ahu-sp td.n{text-align:right;font-variant-numeric:tabular-nums}
-.ahu-tbl tr.ahu-head td{background:#e0f2fe;font-weight:800;color:#0c4a6e}
-.ahu-tbl tr.ahu-peak td{background:#f8fafc;color:var(--text2);font-size:10px;text-align:left}
-.ahu-tbl tr.ahu-min td{color:var(--text2);font-size:10px;border-top:0}
-.ahu-tbl .dim,.ahu-card .dim,#tab-ahu .dim{color:var(--text2);font-weight:500;font-size:10px}
+.ahu-tbl tr.ahu-head td{background:#dbeafe;font-weight:800;color:#1b3150}
+.ahu-tbl tr.ahu-peak td{background:#f8fafc;color:var(--text2);font-size:11px;text-align:left}
+.ahu-tbl tr.ahu-min td{color:var(--text2);font-size:11px;border-top:0}
+.ahu-tbl .dim,.ahu-card .dim,#tab-ahu .dim{color:var(--text2);font-weight:500;font-size:11px}
 .ahu-in{min-height:26px;padding:2px 4px;font-size:11px}
-.ahu-note{font-size:10px;color:var(--text2);padding:6px 10px;line-height:1.6}
+.ahu-note{font-size:11px;color:var(--text2);padding:6px 10px;line-height:1.6}
 .ahu-empty{padding:16px;text-align:center;color:var(--text2);font-size:12px}
 .ahu-warn{margin:8px 0;padding:8px 10px;border:1px solid #f59e0b;background:#fffbeb;border-radius:8px;font-size:11px;color:#92400e;line-height:1.6}
 .ahu-sysblk{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;background:var(--navy2,#fff);break-inside:avoid}
@@ -2411,7 +2412,7 @@ body{background:var(--navy);color:var(--text);}
 .ahu-svg-wrap{overflow-x:auto;margin:6px 0}
 .ahu-svg{width:100%;height:auto;min-width:420px;display:block;background:#fff;border:1px solid var(--border);border-radius:8px}
 .ahu-card{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;background:var(--navy2,#fff);box-shadow:0 4px 20px rgba(0,0,0,.05)}
-.ahu-card-h{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-weight:800;font-size:14px;color:#0c4a6e;border-bottom:2px solid var(--accent);padding-bottom:6px;margin-bottom:8px}
+.ahu-card-h{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-weight:800;font-size:14px;color:#1b3150;border-bottom:2px solid var(--accent);padding-bottom:6px;margin-bottom:8px}
 .ahu-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .ahu-grid>div,.ahu-figs>div{min-width:0}   /* Ver-5.3.2: 긴 계산식이 단 밖으로 넘치지 않게 */
 .ahu-kv td.f{word-break:keep-all;overflow-wrap:anywhere}
@@ -2419,7 +2420,7 @@ body{background:var(--navy);color:var(--text);}
 .ahu-sub-h{font-weight:800;font-size:12px;margin:10px 0 4px;color:var(--text)}
 .ahu-kv,.ahu-st,.ahu-sp{width:100%}
 .ahu-kv td,.ahu-st td,.ahu-sp td,.ahu-st th,.ahu-sp th,.ahu-kv th{font-size:11px;padding:3px 6px}
-.ahu-kv td.f{font-size:10px;color:var(--text2);text-align:left;white-space:normal;line-height:1.5}
+.ahu-kv td.f{font-size:11px;color:var(--text2);text-align:left;white-space:normal;line-height:1.5}
 .ahu-sp tr.sub td{font-weight:700;background:#f1f5f9}
 .ahu-set-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .ahu-set-grid .form-row .form-input,.ahu-set-grid .form-row .form-select{min-width:0}
@@ -2431,11 +2432,11 @@ body{background:var(--navy);color:var(--text);}
 @media (max-width:480px){#tab-ahu .ahu-subnav button{flex:1 1 30%;padding:6px 6px}.ahu-card-h{font-size:13px}}
 /* 산출서(#rts-report) 내 AHU 시트 */
 :is(#rts-report,#ahu-print) .ahu-rp table{width:100%;border-collapse:collapse;font-size:8.2px;margin:4px 0}
-:is(#rts-report,#ahu-print) .ahu-rp th{background:#f0fdfa;color:#0f766e;border:1px solid #cbd5e1;padding:2px 3px;font-weight:700;text-align:center;white-space:nowrap}
+:is(#rts-report,#ahu-print) .ahu-rp th{background:#eff5fd;color:#2d5186;border:1px solid #cbd5e1;padding:2px 3px;font-weight:700;text-align:center;white-space:nowrap}
 :is(#rts-report,#ahu-print) .ahu-rp td{border:1px solid #cbd5e1;padding:1.5px 3px;text-align:center;white-space:nowrap}
 :is(#rts-report,#ahu-print) .ahu-rp td.l{text-align:left}:is(#rts-report,#ahu-print) .ahu-rp td.n{text-align:right;font-family:'JetBrains Mono',monospace}
 :is(#rts-report,#ahu-print) .ahu-rp td.f{text-align:left;white-space:normal;color:#475569;font-size:7.6px}
-:is(#rts-report,#ahu-print) .ahu-rp tr.ahu-head td{background:#ecfeff;font-weight:700}
+:is(#rts-report,#ahu-print) .ahu-rp tr.ahu-head td{background:#eff5fd;font-weight:700}
 :is(#rts-report,#ahu-print) .ahu-rp tr.ahu-peak td,:is(#rts-report,#ahu-print) .ahu-rp tr.ahu-min td{text-align:left;color:#475569;font-size:7.6px}
 :is(#rts-report,#ahu-print) .ahu-rp .ahu-card{box-shadow:none;border:0;padding:0;margin:0}
 :is(#rts-report,#ahu-print) .ahu-rp .ahu-card-h{font-size:10px}
@@ -2447,14 +2448,14 @@ body{background:var(--navy);color:var(--text);}
 :is(#rts-report,#ahu-print) .ahu-rp .ahu-sys-lines{font-size:8.2px;line-height:1.5}
 :is(#rts-report,#ahu-print) .ahu-rp .ahu-grid,:is(#rts-report,#ahu-print) .ahu-rp .ahu-figs{grid-template-columns:1fr 1fr}
 :is(#rts-report,#ahu-print) .ahu-rp .ahu-grid>div,:is(#rts-report,#ahu-print) .ahu-rp .ahu-figs>div{min-width:0}
-:is(#rts-report,#ahu-print) .ahu-rp table td,:is(#rts-report,#ahu-print) .ahu-rp table th{font-size:7.4px!important;padding:1.2px 3px!important;line-height:1.3!important;font-family:'Noto Sans KR','Malgun Gothic',sans-serif!important;letter-spacing:0!important;min-width:0!important}
+:is(#rts-report,#ahu-print) .ahu-rp table td,:is(#rts-report,#ahu-print) .ahu-rp table th{font-size:7.4px!important;padding:1.2px 3px!important;line-height:1.3!important;font-family:'Pretendard Variable',Pretendard,'Noto Sans KR','Malgun Gothic',sans-serif!important;letter-spacing:0!important;min-width:0!important}
 :is(#rts-report,#ahu-print) .ahu-rp table td.n{font-family:'JetBrains Mono',monospace!important}
 :is(#rts-report,#ahu-print) .ahu-rp .ahu-kv td.l,:is(#rts-report,#ahu-print) .ahu-rp .ahu-sp td.l,:is(#rts-report,#ahu-print) .ahu-rp .ahu-st td.l{white-space:normal}
 :is(#rts-report,#ahu-print) .ahu-rp .ahu-sel-wide table{table-layout:auto}
 @media print{.ahu-card,.ahu-sysblk{break-inside:avoid;page-break-inside:avoid}.ahu-svg{print-color-adjust:exact;-webkit-print-color-adjust:exact}#tab-ahu .ahu-subnav,.ahu-sp-edit{display:none!important}}
 
 /* ═══ Ver-5.3.2 AHU 선정서 A4 출력 — 공조기 1대 = A4 세로 1쪽 (용지 여백 18/14/20/14 mm → 인쇄 영역 182 × 259 mm) ═══ */
-#ahu-print{display:none;background:#fff;color:#1a1a2e;font-family:'Noto Sans KR','Malgun Gothic',sans-serif}
+#ahu-print{display:none;background:#fff;color:#1a1a2e;font-family:'Pretendard Variable',Pretendard,'Noto Sans KR','Malgun Gothic',sans-serif}
 #ahu-print.ap-measure{display:block;position:absolute;left:-12000px;top:0;width:182mm;z-index:-1}
 #ahu-print .ap-page{width:182mm;box-sizing:border-box;overflow:hidden}
 #ahu-print .ap-fit{transform-origin:top left}
@@ -2491,6 +2492,17 @@ body{background:var(--navy);color:var(--text);}
   body.ahu-print-mode #ahu-print *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
+<style id="mm-foot-css">/* 하단 버전 표시 — 건축 도구와 같은 형식 · 화면 폭 전체 (2026-10-31) */
+footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;background:#fff;padding:20px;margin-top:10px;width:100%;box-sizing:border-box;align-self:stretch;font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif}
+.mm-foot .foot-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.mm-foot .foot-nm{font-weight:900;font-size:13px;color:#2d5186;letter-spacing:.06em}
+.mm-foot .foot-desc{font-size:11px;color:#64748b;line-height:1.6}
+.mm-foot .foot-copy{font-size:11px;color:#64748b;font-family:'DM Mono',ui-monospace,monospace}
+@media screen{sub,sup{font-size:max(.75em,11px)}[class*="a4"] sub,[class*="a4"] sup,#report-zone sub,#report-zone sup{font-size:smaller}}
+/* Pretendard 전환 후 헤더 높이를 종전과 같게 (머리 글줄은 px 줄 높이라 그대로) */
+.hdr-right,.nav-tabs .nav-tab{line-height:1.45}
+@media print{footer.mm-foot{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -2523,18 +2535,18 @@ body{background:var(--navy);color:var(--text);}
       <div class="fm-panel active" id="fm-work">
         <div class="fm-section">
           <div class="fm-section-title">📋 RTS법 부하계산 작업 순서</div>
-          <div style="display:grid;gap:8px;font-size:10.5px;color:var(--text);line-height:1.75">
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+          <div style="display:grid;gap:8px;font-size:11px;color:var(--text);line-height:1.75">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 1 · 프로젝트 개요 입력</strong><br>
               건물명, 용도, 위치(지역), 설계자, 계산일자, RTS Zone 번호, 안전율(SF)을 입력합니다.<br>
               <em style="color:var(--text2)">※ RTS Zone은 ASHRAE 2009 Table 18 기준 (한국 서울 기준 권장 Zone 8)</em>
             </div>
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 2 · 기상 데이터 설정</strong><br>
               지역 선택 시 여름 설계 DB/WB·일교차·겨울 설계 외기온이 자동 입력됩니다.<br>
               실내 설계조건(냉방 26°C·난방 20°C)을 확인하고 필요 시 수정합니다.
             </div>
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 3 · 실별 데이터 입력</strong><br>
               건물 용도 선택 → 실 구성 자동 편성 → 각 실의 면적·천장고·설계온도·외피(벽/창) 입력.<br>
               사용인원, 조명밀도(LPD), 기기밀도(EPD), 침기량(ACH) 입력.
@@ -2544,29 +2556,29 @@ body{background:var(--navy);color:var(--text);}
               상단 <strong style="color:#00c896">🧱 열관류율 검토</strong> 버튼 → 별도 앱에서 외벽/지붕/창호 구성 입력 → U값 자동 전송.<br>
               건축물 에너지절약설계기준 지역별 기준값 초과 여부 자동 판정.
             </div>
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 4 · 외부 열취득 입력</strong><br>
               외벽·지붕·창호 면적, 방위각, U값, 흡수율(α), SHGC 입력.<br>
               <em style="color:var(--text2)">Sol-Air 온도 테이블이 자동 생성됩니다.</em>
             </div>
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 5 · 내부 열취득 확인</strong><br>
               인체·조명·기기 발열량이 실별 데이터에서 자동 계산됩니다. 필요 시 직접 수정 가능.
             </div>
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 6 · CTS/RTS 계수 확인</strong><br>
               선택한 Zone에 대한 24시간 CTS(전도 시계열) 및 RTS(복사 시계열) 계수 테이블이 표시됩니다.
             </div>
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 7 · 🔄 전체 계산 실행</strong><br>
               상단 <strong style="color:var(--accent)">🔄 전체 계산</strong> 버튼 클릭 → 모든 부하 자동 계산.<br>
               계산 결과 탭에서 피크 냉·난방 부하(W, kW, RT, kcal/h) 확인.
             </div>
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 8 · AHU/FCU 선정</strong><br>
               계산된 부하를 기반으로 공조기·팬코일 사양 입력 및 풍량 산출.
             </div>
-            <div style="background:rgba(0,180,216,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
+            <div style="background:rgba(67,117,183,0.06);border-left:3px solid var(--accent);border-radius:4px;padding:8px 12px">
               <strong style="color:var(--accent)">STEP 9 · 저장 및 출력</strong><br>
               💾 <strong>파일 저장</strong>: 현재 입력 데이터를 <em>.rts</em> 파일로 저장 (나중에 불러오기 가능).<br>
               🖨️ <strong>A4 전체 출력</strong>: 브라우저 인쇄 → PDF 저장으로 계산서 제출용 문서 생성.
@@ -2741,7 +2753,7 @@ body{background:var(--navy);color:var(--text);}
             이전 버전에서는 앱 로드 시 자동으로 .rts 저장파일이 생성되는 버그가 있었습니다.<br>
             현재 버전에서는 사용자가 <strong>💾 저장 버튼</strong>을 직접 클릭할 때만 파일이 저장됩니다.
           </div>
-          <div style="display:grid;gap:8px;font-size:10.5px;line-height:1.75">
+          <div style="display:grid;gap:8px;font-size:11px;line-height:1.75">
             <div class="fm-note">
               📌 <strong>면적 입력</strong>: 실 면적은 순면적(벽체 내측 기준) 적용 권장. 창호 면적은 유리+프레임 포함 전체 창호 면적.
             </div>
@@ -2936,7 +2948,7 @@ body{background:var(--navy);color:var(--text);}
       </div>
       <div class="sidebar-item" onclick="showTab('tab-uval')" style="border-left-color:#059669">
         <div class="si-dot" style="background:#059669"></div>
-        <span style="color:#047857;font-size:10px">3.5 열관류율 U값 검토</span>
+        <span style="color:#047857;font-size:11px">3.5 열관류율 U값 검토</span>
       </div>
       <div class="sidebar-item" onclick="showTab('tab-external')">
         <div class="si-dot"></div> 4. 외부 열취득
@@ -2979,7 +2991,7 @@ body{background:var(--navy);color:var(--text);}
         <div class="si-dot"></div>
         <span>⑤ 시각별 냉방부하 합산</span>
       </div>
-      <div style="padding:6px 14px 4px;font-size:9px;color:#64748b;font-style:italic">
+      <div style="padding:6px 14px 4px;font-size:11px;color:#64748b;font-style:italic">
         ※ 항목에 마우스를 올리면 계산식 요약을 확인할 수 있습니다
       </div>
     </div>
@@ -2997,7 +3009,7 @@ body{background:var(--navy);color:var(--text);}
       </div>
       <div class="sidebar-item" onclick="window.open('https://manminkim-eng.github.io/u-value-app-/','_blank')" style="cursor:pointer">
         <div class="si-dot" style="background:#059669"></div>
-        <span style="color:#64748b;font-size:10px">새 탭으로 열기 ↗</span>
+        <span style="color:#64748b;font-size:11px">새 탭으로 열기 ↗</span>
       </div>
     </div>
   </div>
@@ -3062,7 +3074,7 @@ body{background:var(--navy);color:var(--text);}
         <div style="display:flex;gap:8px">
           <button class="btn btn-secondary btn-sm" onclick="clearProject()">초기화</button>
           <button class="btn btn-secondary btn-sm" onclick="loadProjectFile()"
-            style="background:rgba(0,180,216,0.2);border:1px solid rgba(0,180,216,0.4);color:var(--accent);">
+            style="background:rgba(67,117,183,0.2);border:1px solid rgba(67,117,183,0.4);color:var(--accent);">
             📂 불러오기
           </button>
           <button class="btn btn-primary btn-sm" onclick="saveProjectFile()">💾 파일 저장</button>
@@ -3071,9 +3083,9 @@ body{background:var(--navy);color:var(--text);}
 
 
       <!-- 작업 순서 안내 -->
-      <div class="info-box" style="border:1.5px solid var(--accent);background:rgba(0,180,216,0.06);border-radius:8px;padding:10px 14px;margin-bottom:14px;">
+      <div class="info-box" style="border:1.5px solid var(--accent);background:rgba(67,117,183,0.06);border-radius:8px;padding:10px 14px;margin-bottom:14px;">
         <div style="font-size:11px;font-weight:900;color:var(--accent);margin-bottom:8px;letter-spacing:.04em;">📋 RTS 부하계산 작업 순서 (PDF 계산서 기준)</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px;font-size:10px;color:var(--text);">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px;font-size:11px;color:var(--text);">
           <div style="background:rgba(0,0,0,.3);border-radius:5px;padding:6px 8px;border-left:2px solid var(--accent);">
             <strong style="color:var(--accent)">STEP 1 · 프로젝트 개요</strong><br>
             건물명·용도·위치·설계자·계산일·RTS Zone 설정
@@ -3148,11 +3160,11 @@ body{background:var(--navy);color:var(--text);}
         </div>
 
         <div class="form-card">
-          <div class="form-card-header">🌍 위치 정보 (Location Data) <span style="font-size:9px;color:#0e7490;font-weight:600;margin-left:6px;">▶ 지역 선택 자동설정 · 직접 수정 시 일사량 재계산</span></div>
+          <div class="form-card-header">🌍 위치 정보 (Location Data) <span style="font-size:11px;color:#2d5186;font-weight:600;margin-left:6px;">▶ 지역 선택 자동설정 · 직접 수정 시 일사량 재계산</span></div>
           <div class="form-card-body">
             <div class="form-row">
               <label class="form-label">지역</label>
-              <select class="form-select" id="p-city" onchange="loadCityData()" style="grid-column:span 2;border-color:rgba(0,180,216,0.5);background-color:rgba(0,180,216,0.05);">
+              <select class="form-select" id="p-city" onchange="loadCityData()" style="grid-column:span 2;border-color:rgba(67,117,183,0.5);background-color:rgba(67,117,183,0.05);">
                 <option value="seoul">서울 (Seoul)</option>
                 <option value="incheon">인천 (Incheon)</option>
                 <option value="suwon">수원 (Suwon)</option>
@@ -3303,16 +3315,16 @@ body{background:var(--navy);color:var(--text);}
       </div>
 
       <!-- 프로젝트 개요 자동 연동 안내 -->
-      <div style="background:#f0fdff;border:1px solid rgba(0,180,216,0.3);border-left:3px solid var(--accent);border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="background:#eff5fd;border:1px solid rgba(67,117,183,0.3);border-left:3px solid var(--accent);border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="font-size:16px;">🔄</span>
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--accent);">프로젝트 개요 → 기상 데이터 자동 연동</div>
-            <div style="font-size:10px;color:var(--text2);margin-top:2px;">「프로젝트 개요」 탭의 <strong style="color:var(--text)">지역 선택</strong>을 변경하면 아래 모든 값이 자동 갱신됩니다.</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px;">「프로젝트 개요」 탭의 <strong style="color:var(--text)">지역 선택</strong>을 변경하면 아래 모든 값이 자동 갱신됩니다.</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span id="status-weather" style="font-size:10px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace;background:rgba(0,180,216,0.1);padding:4px 10px;border-radius:4px;border:1px solid rgba(0,180,216,0.25);">기상: 서울 (DB 33.3℃ / WB 25.0℃)</span>
+          <span id="status-weather" style="font-size:11px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace;background:rgba(67,117,183,0.1);padding:4px 10px;border-radius:4px;border:1px solid rgba(67,117,183,0.25);">기상: 서울 (DB 33.3℃ / WB 25.0℃)</span>
           <button class="btn btn-secondary btn-sm" onclick="showTab('tab-project')">📋 프로젝트 개요로</button>
         </div>
       </div>
@@ -3323,17 +3335,17 @@ body{background:var(--navy);color:var(--text);}
           <div class="form-card-body">
             <div class="form-row">
               <label class="form-label">설계 외기 온도 (DB)</label>
-              <input class="form-input" id="w-summer-db" type="number" value="31.2" step="0.1" onchange="calcWeather()" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(0,180,216,0.4);">
+              <input class="form-input" id="w-summer-db" type="number" value="31.2" step="0.1" onchange="calcWeather()" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(67,117,183,0.4);">
               <span class="form-unit">°C</span>
             </div>
             <div class="form-row">
               <label class="form-label">설계 외기 온도 (WB)</label>
-              <input class="form-input" id="w-summer-wb" type="number" value="25.5" step="0.1" onchange="calcWeather()" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(0,180,216,0.4);">
+              <input class="form-input" id="w-summer-wb" type="number" value="25.5" step="0.1" onchange="calcWeather()" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(67,117,183,0.4);">
               <span class="form-unit">°C</span>
             </div>
             <div class="form-row">
               <label class="form-label">일교차 (Daily Range)</label>
-              <input class="form-input" id="w-dr" type="number" value="8.3" step="0.1" onchange="calcWeather()" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(0,180,216,0.4);">
+              <input class="form-input" id="w-dr" type="number" value="8.3" step="0.1" onchange="calcWeather()" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(67,117,183,0.4);">
               <span class="form-unit">°C</span>
             </div>
             <div class="form-row">
@@ -3354,12 +3366,12 @@ body{background:var(--navy);color:var(--text);}
           <div class="form-card-body">
             <div class="form-row">
               <label class="form-label">설계 외기 온도 (DB)</label>
-              <input class="form-input" id="w-winter-db" type="number" value="-11.3" step="0.1" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(0,180,216,0.4);">
+              <input class="form-input" id="w-winter-db" type="number" value="-11.3" step="0.1" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(67,117,183,0.4);">
               <span class="form-unit">°C</span>
             </div>
             <div class="form-row">
               <label class="form-label">설계 외기 상대습도</label>
-              <input class="form-input" id="w-winter-rh" type="number" value="63" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(0,180,216,0.4);">
+              <input class="form-input" id="w-winter-rh" type="number" value="63" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(67,117,183,0.4);">
               <span class="form-unit">%</span>
             </div>
             <div class="form-row">
@@ -3374,7 +3386,7 @@ body{background:var(--navy);color:var(--text);}
             </div>
             <div class="form-row">
               <label class="form-label">풍속</label>
-              <input class="form-input" id="w-wind" type="number" value="3.5" step="0.1" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(0,180,216,0.4);">
+              <input class="form-input" id="w-wind" type="number" value="3.5" step="0.1" title="프로젝트 개요 지역 선택 시 자동 설정" style="border-color:rgba(67,117,183,0.4);">
               <span class="form-unit">m/s</span>
             </div>
             <div class="form-row">
@@ -3509,8 +3521,8 @@ body{background:var(--navy);color:var(--text);}
         <div class="excel-header" style="display:flex;justify-content:space-between;align-items:center">
           <span>📊 실별 냉난방 부하 계산서 — ASHRAE 2009 RTS법 (2-3. COOLING / HEATING LOAD)</span>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-secondary btn-sm" onclick="toggleRoomDetail()" id="btn-room-detail-toggle" style="font-size:10px">🔍 간략 보기</button>
-            <button class="btn btn-secondary btn-sm" onclick="exportRoomLoadExcel()" style="font-size:10px">📥 Excel</button>
+            <button class="btn btn-secondary btn-sm" onclick="toggleRoomDetail()" id="btn-room-detail-toggle" style="font-size:11px">🔍 간략 보기</button>
+            <button class="btn btn-secondary btn-sm" onclick="exportRoomLoadExcel()" style="font-size:11px">📥 Excel</button>
           </div>
         </div>
         <!-- 집계 요약 헤더 -->
@@ -3526,7 +3538,7 @@ body{background:var(--navy);color:var(--text);}
                 <th class="col-label">인원(p)</th>
                 <th class="col-label">냉방SH(kW)</th>
                 <th class="col-label">냉방LH(kW)</th>
-                <th class="col-label" style="background:rgba(0,180,216,0.2)">냉방합계(kW)</th>
+                <th class="col-label" style="background:rgba(67,117,183,0.2)">냉방합계(kW)</th>
                 <th class="col-label">Peak</th>
                 <th class="col-label">밀도(W/㎡)</th>
                 <th class="col-label" style="color:var(--red)">난방(kW)</th>
@@ -3547,7 +3559,7 @@ body{background:var(--navy);color:var(--text);}
         <div style="background:linear-gradient(135deg,#0a1628,#1a3a6a);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
           <div>
             <div style="font-size:13px;font-weight:900;color:var(--accent)" id="modal-room-title">실별 상세 입력</div>
-            <div style="font-size:10px;color:var(--text2);margin-top:2px">유리창 · 외벽/지붕 · 내부발열 · 침기</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">유리창 · 외벽/지붕 · 내부발열 · 침기</div>
           </div>
           <button onclick="closeRoomModal()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--text);border-radius:6px;padding:5px 12px;cursor:pointer;font-family:inherit;font-size:12px">✕ 닫기</button>
         </div>
@@ -3623,9 +3635,9 @@ body{background:var(--navy);color:var(--text);}
             <th style="min-width:60px">형식</th>
             <th style="min-width:58px">방식</th>
             <th style="min-width:80px">설치위치</th>
-            <th style="min-width:86px">외기 산정<br><span style="font-size:9px;font-weight:400;opacity:.7">A-1-3</span></th>
-            <th style="min-width:78px">외기량(CMH)<br><span style="font-size:9px;font-weight:400;opacity:.7">직접 / 기준값</span></th>
-            <th style="min-width:96px">전열교환(ERV)<br><span style="font-size:9px;font-weight:400;opacity:.7">현열% · 잠열%</span></th>
+            <th style="min-width:86px">외기 산정<br><span style="font-size:11px;font-weight:400;opacity:.7">A-1-3</span></th>
+            <th style="min-width:78px">외기량(CMH)<br><span style="font-size:11px;font-weight:400;opacity:.7">직접 / 기준값</span></th>
+            <th style="min-width:96px">전열교환(ERV)<br><span style="font-size:11px;font-weight:400;opacity:.7">현열% · 잠열%</span></th>
             <th style="min-width:70px">취출온도차(K)</th>
             <th style="min-width:80px">운영 존</th>
             <th style="min-width:56px">담당 실</th>
@@ -3641,7 +3653,7 @@ body{background:var(--navy);color:var(--text);}
         <div class="excel-wrap" style="margin:0">
           <div class="excel-header" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
             <span>🏢 실 배정 보드 (Room → Equipment)</span>
-            <label style="font-size:10px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer">
+            <label style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer">
               <input type="checkbox" id="zb-only-un" onchange="renderZoningBoard()"> 미배정 실만 보기
             </label>
           </div>
@@ -3662,11 +3674,11 @@ body{background:var(--navy);color:var(--text);}
         <div class="excel-wrap" style="margin:0">
           <div class="excel-header">🎯 배정 실행</div>
           <div style="padding:12px;display:flex;flex-direction:column;gap:10px">
-            <label style="font-size:10px;color:var(--text2)">대상 장비</label>
+            <label style="font-size:11px;color:var(--text2)">대상 장비</label>
             <select class="form-select" id="zb-target" style="width:100%"></select>
             <button class="btn btn-primary btn-sm" onclick="assignRoomsToEquip()">→ 선택 실 배정</button>
             <button class="btn btn-danger btn-sm" onclick="unassignRooms()">✕ 선택 실 배정 해제</button>
-            <div id="zb-summary" style="font-size:10px;color:var(--text2);line-height:1.8;border-top:1px solid var(--border);padding-top:8px"></div>
+            <div id="zb-summary" style="font-size:11px;color:var(--text2);line-height:1.8;border-top:1px solid var(--border);padding-top:8px"></div>
           </div>
         </div>
       </div>
@@ -3682,10 +3694,10 @@ body{background:var(--navy);color:var(--text);}
               <th class="col-label" rowspan="2" style="min-width:50px">담당실</th>
               <th class="col-label" rowspan="2" style="min-width:64px">면적(㎡)</th>
               <th class="col-label" rowspan="2" style="min-width:50px">피크시각</th>
-              <th class="col-label" rowspan="2" style="min-width:92px">외기량(CMH)<br><span style="font-size:9px;font-weight:400;opacity:.7">산정 근거 · ERV</span></th>
-              <th class="col-label" colspan="2" style="background:rgba(0,180,216,0.15)">실부하(kW)</th>
+              <th class="col-label" rowspan="2" style="min-width:92px">외기량(CMH)<br><span style="font-size:11px;font-weight:400;opacity:.7">산정 근거 · ERV</span></th>
+              <th class="col-label" colspan="2" style="background:rgba(67,117,183,0.15)">실부하(kW)</th>
               <th class="col-label" colspan="2" style="background:rgba(240,165,0,0.12)">외기부하(kW)</th>
-              <th class="col-label" rowspan="2" style="background:rgba(0,180,216,0.25);min-width:70px">냉방코일(kW)</th>
+              <th class="col-label" rowspan="2" style="background:rgba(67,117,183,0.25);min-width:70px">냉방코일(kW)</th>
               <th class="col-label" rowspan="2" style="color:var(--red);min-width:70px">난방코일(kW)</th>
               <th class="col-label" rowspan="2" style="min-width:64px">가습량(kg/h)</th>
               <th class="col-label" rowspan="2" style="min-width:70px">급기량(CMH)</th>
@@ -3698,7 +3710,7 @@ body{background:var(--navy);color:var(--text);}
           <tbody id="tbody-equip-result"></tbody>
         </table>
         </div>
-        <div style="padding:6px 12px;font-size:9px;color:var(--text2)">
+        <div style="padding:6px 12px;font-size:11px;color:var(--text2)">
           ※ 실부하 현열 = 소속 실 시각별 부하의 <strong>동시각 합산 후 최대값</strong>(실별 피크 단순합이 아님) ·
           외기부하: 현열 q=0.335·V·Δt, 잠열 q=834·V·Δx (ASHRAE 습공기선도 기반) ·
           가습량 = 1.2·V·(x실내-x외기)겨울 · 급기량 = 실현열피크 / (0.335·취출온도차) ·
@@ -3717,7 +3729,7 @@ body{background:var(--navy);color:var(--text);}
             <th class="col-label" style="min-width:56px">장비 수</th>
             <th class="col-label" style="min-width:50px">담당실</th>
             <th class="col-label" style="min-width:66px">면적(㎡)</th>
-            <th class="col-label" style="background:rgba(0,180,216,0.25);min-width:78px">냉방코일(kW)</th>
+            <th class="col-label" style="background:rgba(67,117,183,0.25);min-width:78px">냉방코일(kW)</th>
             <th class="col-label" style="color:var(--red);min-width:78px">난방코일(kW)</th>
             <th class="col-label" style="min-width:64px">가습(kg/h)</th>
             <th class="col-label" style="min-width:74px">급기량(CMH)</th>
@@ -3726,7 +3738,7 @@ body{background:var(--navy);color:var(--text);}
           <tbody id="tbody-zone-result"></tbody>
         </table>
         </div>
-        <div style="padding:6px 12px;font-size:9px;color:var(--text2)">
+        <div style="padding:6px 12px;font-size:11px;color:var(--text2)">
           ※ 존 = 운영 스케줄 그룹(주말·평일 등). 열원 용량은 존별 동시 운전 조합을 검토하여 결정 ·
           1 USRT = 3.517 kW
         </div>
@@ -3749,7 +3761,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="section-header">
         <div class="section-title">🌞 외부 열취득 (External Heat Gain) <span class="stag">SHEET 3</span></div>
         <div style="display:flex;gap:8px;align-items:center">
-          <button class="btn-uval btn-sm" style="font-size:10px;padding:5px 10px" onclick="showTab('tab-uval')">
+          <button class="btn-uval btn-sm" style="font-size:11px;padding:5px 10px" onclick="showTab('tab-uval')">
             🧱 U값 검토
           </button>
           <button class="btn btn-primary btn-sm" onclick="calcExternal()">외부 열취득 계산</button>
@@ -3761,22 +3773,22 @@ body{background:var(--navy);color:var(--text);}
           <span style="font-size:18px">🧱</span>
           <div>
             <div style="font-size:11px;font-weight:700;color:#047857;">열관류율 U값 → 외부 부하 직접 연계</div>
-            <div style="font-size:10px;color:rgba(4,120,87,.9);margin-top:2px;">「열관류율 검토 연계」 탭에서 부위별 U값을 확인하고 아래 표에 입력하세요. | 국토교통부고시 제2026-360호</div>
+            <div style="font-size:11px;color:rgba(4,120,87,.9);margin-top:2px;">「열관류율 검토 연계」 탭에서 부위별 U값을 확인하고 아래 표에 입력하세요. | 국토교통부고시 제2026-360호</div>
           </div>
         </div>
-        <button onclick="showTab('tab-uval')" style="background:rgba(5,150,105,0.14);border:1px solid rgba(5,150,105,0.5);color:#047857;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(5,150,105,0.4)'" onmouseout="this.style.background='rgba(5,150,105,0.14)'">
+        <button onclick="showTab('tab-uval')" style="background:rgba(5,150,105,0.14);border:1px solid rgba(5,150,105,0.5);color:#047857;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(5,150,105,0.4)'" onmouseout="this.style.background='rgba(5,150,105,0.14)'">
           🧱 U값 검토 탭으로 →
         </button>
       </div>
 
       <!-- rooms[] 기반 자동 합산 안내 배너 -->
-      <div style="background:rgba(0,180,216,0.10);border:1px solid var(--accent);border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:11px;color:var(--text);line-height:1.7">
+      <div style="background:rgba(67,117,183,0.10);border:1px solid var(--accent);border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:11px;color:var(--text);line-height:1.7">
         <strong style="color:var(--accent)">ℹ️ 외부 열취득 데이터 입력 안내</strong><br>
         RTS 계산 엔진은 <strong>「실 목록 탭」의 각 실 상세 입력(🔧 버튼 → 유리창·외벽/지붕 탭)</strong>에서
         <b>방위·면적·U값·SHGC</b>를 읽어 실별로 합산합니다.<br>
         아래 표는 <span style="color:var(--gold)">실 데이터 없을 때 폴백으로 사용하는 전역 참조값</span>입니다.
         실을 입력했다면 아래 값은 계산에 영향을 주지 않습니다.
-        <div id="ext-rooms-note" style="margin-top:6px;display:none;background:rgba(0,200,150,0.12);border:1px solid var(--green);border-radius:5px;padding:5px 10px;font-size:10px;color:var(--green);font-weight:600"></div>
+        <div id="ext-rooms-note" style="margin-top:6px;display:none;background:rgba(0,200,150,0.12);border:1px solid var(--green);border-radius:5px;padding:5px 10px;font-size:11px;color:var(--green);font-weight:600"></div>
       </div>
 
       <div class="form-grid">
@@ -3858,7 +3870,7 @@ body{background:var(--navy);color:var(--text);}
       </div>
 
       <!-- ── rooms[] 연동 안내 배너 ── -->
-      <div style="background:rgba(0,180,216,0.10);border:1px solid var(--accent);border-radius:8px;
+      <div style="background:rgba(67,117,183,0.10);border:1px solid var(--accent);border-radius:8px;
                   padding:10px 16px;margin-bottom:14px;font-size:11px;color:var(--text);line-height:1.7">
         <strong style="color:var(--accent)">ℹ️ 내부 발열 데이터 입력 안내</strong><br>
         RTS 계산 엔진은 <strong>「실 목록 탭」의 각 실 상세 입력(🔧 버튼 → 내부발열·설정 탭)</strong>에서
@@ -4029,9 +4041,9 @@ body{background:var(--navy);color:var(--text);}
 
       <!-- ── ASHRAE HOF 2009 인체 발열량 코드 참조표 ── -->
       <div class="excel-wrap" style="margin-top:18px">
-        <div class="excel-header">📋 인체 발열량 기준표 — ASHRAE HOF 2009, Ch.18 Table 1 &nbsp;<span style="font-size:10px;color:var(--text2);font-weight:400">(단위: W/인)</span></div>
+        <div class="excel-header">📋 인체 발열량 기준표 — ASHRAE HOF 2009, Ch.18 Table 1 &nbsp;<span style="font-size:11px;color:var(--text2);font-weight:400">(단위: W/인)</span></div>
         <div style="overflow-x:auto">
-          <table class="excel-table" style="font-size:10px">
+          <table class="excel-table" style="font-size:11px">
             <thead>
               <tr>
                 <th rowspan="2" class="col-label" style="min-width:30px">Code</th>
@@ -4040,7 +4052,7 @@ body{background:var(--navy);color:var(--text);}
                 <th colspan="2" class="col-label">23℃</th>
                 <th colspan="2" class="col-label">24℃</th>
                 <th colspan="2" class="col-label">25℃</th>
-                <th colspan="2" class="col-label" style="background:rgba(0,180,216,0.25)">26℃ ★</th>
+                <th colspan="2" class="col-label" style="background:rgba(67,117,183,0.25)">26℃ ★</th>
                 <th colspan="2" class="col-label">27℃</th>
               </tr>
               <tr>
@@ -4048,8 +4060,8 @@ body{background:var(--navy);color:var(--text);}
                 <th class="col-label">SH</th><th class="col-label">LH</th>
                 <th class="col-label">SH</th><th class="col-label">LH</th>
                 <th class="col-label">SH</th><th class="col-label">LH</th>
-                <th class="col-label" style="background:rgba(0,180,216,0.15)">SH</th>
-                <th class="col-label" style="background:rgba(0,180,216,0.15)">LH</th>
+                <th class="col-label" style="background:rgba(67,117,183,0.15)">SH</th>
+                <th class="col-label" style="background:rgba(67,117,183,0.15)">LH</th>
                 <th class="col-label">SH</th><th class="col-label">LH</th>
               </tr>
             </thead>
@@ -4062,7 +4074,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="excel-wrap" style="margin-top:14px">
         <div class="excel-header">🏢 용도별 내부부하 기준 코드표 — RTS-SAREK (ASHRAE HOF 2009 기반)</div>
         <div style="overflow-x:auto">
-          <table class="excel-table" style="font-size:10px">
+          <table class="excel-table" style="font-size:11px">
             <thead>
               <tr>
                 <th class="col-label">Type</th>
@@ -4079,7 +4091,7 @@ body{background:var(--navy);color:var(--text);}
             <tbody id="tbody-internal-type-ref"></tbody>
           </table>
         </div>
-        <div style="padding:6px 10px;font-size:9px;color:var(--text2)">
+        <div style="padding:6px 10px;font-size:11px;color:var(--text2)">
           ★ 26℃ 기준값. 실 설정온도에 따라 자동 보간 적용됨 &nbsp;|&nbsp; EPD 0 = 해당 없음
         </div>
       </div>
@@ -4390,7 +4402,7 @@ body{background:var(--navy);color:var(--text);}
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             WAP 열기 ↗
           </button>
-          <button class="btn btn-secondary btn-sm" onclick="clearUvalData()" style="font-size:10px;padding:4px 10px;">
+          <button class="btn btn-secondary btn-sm" onclick="clearUvalData()" style="font-size:11px;padding:4px 10px;">
             🗑️ 초기화
           </button>
         </div>
@@ -4423,12 +4435,12 @@ body{background:var(--navy);color:var(--text);}
           <div style="flex:1;min-width:0;">
             <div class="ub-title" style="color:#fff;font-size:14px;font-weight:900;margin-bottom:3px;display:flex;align-items:center;gap:8px;">
               열관류율 종합 검토 시스템
-              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.2</span>
+              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:11px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.2</span>
             </div>
-            <div class="ub-sub" style="color:#a7f3d0;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호</div>
+            <div class="ub-sub" style="color:#a7f3d0;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호</div>
           </div>
           <button onclick="window.open('https://manminkim-eng.github.io/u-value-app-/','_blank')"
-            class="ub-btn" style="background:rgba(255,255,255,0.12);border:1px solid rgba(110,231,183,.6);color:#fff;border-radius:8px;padding:10px 18px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;transition:all .2s;display:flex;align-items:center;gap:7px;"
+            class="ub-btn" style="background:rgba(255,255,255,0.12);border:1px solid rgba(110,231,183,.6);color:#fff;border-radius:8px;padding:10px 18px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;transition:all .2s;display:flex;align-items:center;gap:7px;"
             onmouseover="this.style.background='rgba(255,255,255,0.2)';this.style.transform='translateY(-1px)'"
             onmouseout="this.style.background='rgba(255,255,255,0.12)';this.style.transform=''">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -4447,15 +4459,15 @@ body{background:var(--navy);color:var(--text);}
 
             <!-- STEP 1 -->
             <div style="flex:1;min-width:160px;background:rgba(5,150,105,0.12);border:1px solid rgba(5,150,105,0.3);border-radius:8px 0 0 8px;padding:14px 16px;position:relative;">
-              <div style="font-size:9px;font-weight:900;color:#047857;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">STEP 1 ✅</div>
+              <div style="font-size:11px;font-weight:900;color:#047857;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">STEP 1 ✅</div>
               <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:6px;">열관류율 검토 WAP</div>
-              <div style="font-size:10px;color:var(--text2);line-height:1.7;">
+              <div style="font-size:11px;color:var(--text2);line-height:1.7;">
                 · 지역·부위·용도 선택<br>
                 · 재료 레이어별 λ·t 입력<br>
                 · <strong style="color:#047857">U = 1/ΣR 자동 산출</strong><br>
                 · 법적 기준 적합 판정
               </div>
-              <div style="margin-top:8px;font-size:10px;background:rgba(5,150,105,0.12);border-radius:5px;padding:5px 8px;color:#047857;font-weight:700;">
+              <div style="margin-top:8px;font-size:11px;background:rgba(5,150,105,0.12);border-radius:5px;padding:5px 8px;color:#047857;font-weight:700;">
                 → U값 확정 후 아래 입력
               </div>
             </div>
@@ -4464,10 +4476,10 @@ body{background:var(--navy);color:var(--text);}
             <div style="display:flex;align-items:center;padding:0 4px;color:var(--accent);font-size:18px;font-weight:900;">→</div>
 
             <!-- STEP 2 -->
-            <div style="flex:1;min-width:160px;background:rgba(0,180,216,0.08);border:1px solid rgba(0,180,216,0.25);padding:14px 16px;">
-              <div style="font-size:9px;font-weight:900;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">STEP 2</div>
+            <div style="flex:1;min-width:160px;background:rgba(67,117,183,0.08);border:1px solid rgba(67,117,183,0.25);padding:14px 16px;">
+              <div style="font-size:11px;font-weight:900;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">STEP 2</div>
               <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:6px;">외부 부하 탭 입력</div>
-              <div style="font-size:10px;color:var(--text2);line-height:1.7;">
+              <div style="font-size:11px;color:var(--text2);line-height:1.7;">
                 · 외벽 U값 → 직접 입력<br>
                 · 지붕·창호 U값 → 입력<br>
                 · 방위·면적·흡수율 설정<br>
@@ -4480,9 +4492,9 @@ body{background:var(--navy);color:var(--text);}
 
             <!-- STEP 3 -->
             <div style="flex:1;min-width:160px;background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.25);padding:14px 16px;">
-              <div style="font-size:9px;font-weight:900;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">STEP 3</div>
+              <div style="font-size:11px;font-weight:900;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">STEP 3</div>
               <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:6px;">RTS 냉방 부하 계산</div>
-              <div style="font-size:10px;color:var(--text2);line-height:1.7;">
+              <div style="font-size:11px;color:var(--text2);line-height:1.7;">
                 · Sol-Air 온도 계산<br>
                 · Solar/Nonsolar RTS 적용<br>
                 · <strong style="color:var(--gold)">24시간 냉방부하 산출</strong><br>
@@ -4495,9 +4507,9 @@ body{background:var(--navy);color:var(--text);}
 
             <!-- STEP 4 -->
             <div style="flex:1;min-width:160px;background:rgba(232,64,64,0.08);border:1px solid rgba(232,64,64,0.25);border-radius:0 8px 8px 0;padding:14px 16px;">
-              <div style="font-size:9px;font-weight:900;color:var(--red);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">STEP 4</div>
+              <div style="font-size:11px;font-weight:900;color:var(--red);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">STEP 4</div>
               <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:6px;">장비 선정 · 집계</div>
-              <div style="font-size:10px;color:var(--text2);line-height:1.7;">
+              <div style="font-size:11px;color:var(--text2);line-height:1.7;">
                 · AHU 풍량·Fan 동력<br>
                 · 냉동기·보일러 용량<br>
                 · <strong style="color:var(--red)">건물 Block Peak Load</strong><br>
@@ -4531,7 +4543,7 @@ body{background:var(--navy);color:var(--text);}
               <!-- JS init으로 채움 -->
             </tbody>
           </table>
-          <div style="margin-top:10px;font-size:10px;color:var(--text2);line-height:1.8;">
+          <div style="margin-top:10px;font-size:11px;color:var(--text2);line-height:1.8;">
             ※ <strong style="color:var(--accent)">설계 U값</strong> 란에 열관류율 WAP에서 산출한 값을 직접 입력하세요.<br>
             ※ 법적 기준은 건축물 에너지절약설계기준 (제2026-360호) 기준값입니다. 지역·용도 변경 시 수동 수정하세요.<br>
             ※ 입력된 U값은 <strong style="color:var(--gold)">외부 부하 탭</strong>의 열관류율 컬럼에 그대로 사용합니다.
@@ -4581,7 +4593,7 @@ body{background:var(--navy);color:var(--text);}
     <div class="status-item"><div class="status-dot"></div> 계산 준비 완료</div>
     <div class="status-item">RTS · ASHRAE 2009</div>
     <div class="status-item" id="status-project">프로젝트: 미지정</div>
-    <div class="status-item" id="status-autosave" style="color:var(--text2);font-size:10px;">자동저장: 대기</div>
+    <div class="status-item" id="status-autosave" style="color:var(--text2);font-size:11px;">자동저장: 대기</div>
   </div>
   <div style="display:flex;gap:16px;align-items:center">
     <span id="status-rooms">실 수: 0</span>
@@ -4881,13 +4893,13 @@ function renderUvalReceived(list) {
       const noStr   = isHeader ? l.no : String(l.no).padStart(2,'0');
       return `
         <tr style="${isHeader?'background:rgba(0,0,0,.2);':''}">
-          <td class="row-label" style="font-size:10px;width:22px">${noStr}</td>
-          <td class="label-cell" style="font-size:10px;min-width:42px;font-family:'JetBrains Mono',monospace">${l.code||'—'}</td>
-          <td class="label-cell" style="font-size:10px;min-width:160px">${l.name||'—'}</td>
-          <td class="calc-cell" style="font-size:10px;min-width:52px;font-family:'JetBrains Mono',monospace">${thkStr}</td>
-          <td class="calc-cell" style="font-size:10px;min-width:60px;font-family:'JetBrains Mono',monospace">${lamStr}</td>
-          <td class="calc-cell" style="font-size:10px;min-width:60px;font-family:'JetBrains Mono',monospace;color:var(--accent)">${rStr}</td>
-          <td class="calc-cell" style="font-size:10px;min-width:55px">—</td>
+          <td class="row-label" style="font-size:11px;width:22px">${noStr}</td>
+          <td class="label-cell" style="font-size:11px;min-width:42px;font-family:'JetBrains Mono',monospace">${l.code||'—'}</td>
+          <td class="label-cell" style="font-size:11px;min-width:160px">${l.name||'—'}</td>
+          <td class="calc-cell" style="font-size:11px;min-width:52px;font-family:'JetBrains Mono',monospace">${thkStr}</td>
+          <td class="calc-cell" style="font-size:11px;min-width:60px;font-family:'JetBrains Mono',monospace">${lamStr}</td>
+          <td class="calc-cell" style="font-size:11px;min-width:60px;font-family:'JetBrains Mono',monospace;color:var(--accent)">${rStr}</td>
+          <td class="calc-cell" style="font-size:11px;min-width:55px">—</td>
         </tr>`;
     }).join('');
 
@@ -4904,15 +4916,15 @@ function renderUvalReceived(list) {
           (${labelTag} : ${data.partShort || data.part})
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
-          <span style="font-size:10px;font-weight:700;color:${uColor};background:rgba(0,0,0,.3);padding:3px 8px;border-radius:4px;">
+          <span style="font-size:11px;font-weight:700;color:${uColor};background:rgba(0,0,0,.3);padding:3px 8px;border-radius:4px;">
             U = ${U} W/㎡·K  ${passStr}
           </span>
-          <span style="font-size:10px;color:var(--text2);">기준: ${data.targetU?data.targetU.toFixed(3):'—'}</span>
+          <span style="font-size:11px;color:var(--text2);">기준: ${data.targetU?data.targetU.toFixed(3):'—'}</span>
         </div>
       </div>
       <!-- 레이어 테이블 (성락교회 PDF 포맷) -->
       <div style="overflow-x:auto">
-      <table class="excel-table" style="font-size:10px;">
+      <table class="excel-table" style="font-size:11px;">
         <thead>
           <tr>
             <th class="col-label" style="width:22px">No</th>
@@ -4928,7 +4940,7 @@ function renderUvalReceived(list) {
           ${rows}
           <!-- Grand Total 행 -->
           <tr style="border-top:1.5px solid var(--text2);">
-            <td colspan="5" class="total-cell" style="font-size:10px;font-weight:900;text-align:right;padding-right:12px;letter-spacing:.02em;">
+            <td colspan="5" class="total-cell" style="font-size:11px;font-weight:900;text-align:right;padding-right:12px;letter-spacing:.02em;">
               Grand Total
             </td>
             <td class="total-cell" style="font-size:11px;color:var(--gold);font-family:'JetBrains Mono',monospace;">
@@ -4943,7 +4955,7 @@ function renderUvalReceived(list) {
       </div>
       <!-- CTS 정보 (성락교회 PDF: CTS Type: Wall33 Absorptance: 0.60 K-Value) -->
       ${data.compType!=='glass' ? `
-      <div style="padding:6px 12px;background:rgba(0,0,0,.15);font-size:10px;color:var(--text2);font-family:'JetBrains Mono',monospace;display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="padding:6px 12px;background:rgba(0,0,0,.15);font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;display:flex;gap:16px;flex-wrap:wrap;">
         <span>CTS Type: <strong style="color:var(--accent)">${ctsType}</strong></span>
         <span>Absorptance: <strong style="color:var(--text)">${absorb}</strong></span>
         <span>Emittance: <strong style="color:var(--text)">${emitt}</strong></span>
@@ -4960,14 +4972,14 @@ function renderUvalReceived(list) {
     <div>
       <div style="color:#fff;font-size:13px;font-weight:900;margin-bottom:3px;">
         📥 열관류율 데이터 수신 완료
-        <span style="background:rgba(255,255,255,.15);border-radius:4px;padding:2px 8px;font-size:10px;margin-left:6px;font-family:'JetBrains Mono',monospace;">${list.length}개 부위</span>
+        <span style="background:rgba(255,255,255,.15);border-radius:4px;padding:2px 8px;font-size:11px;margin-left:6px;font-family:'JetBrains Mono',monospace;">${list.length}개 부위</span>
       </div>
-      <div style="color:rgba(4,120,87,.9);font-size:10px;">
+      <div style="color:rgba(4,120,87,.9);font-size:11px;">
         ${list[0]?.projectName || '—'} | 설계자: ${list[0]?.designerName || '—'} | 수신: ${tsStr}
       </div>
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
-      <span style="font-size:10px;color:rgba(4,120,87,.9);">${list[0]?.region || '—'}</span>
+      <span style="font-size:11px;color:rgba(4,120,87,.9);">${list[0]?.region || '—'}</span>
       <button onclick="applyAllUvalToRooms()" style="background:rgba(255,255,255,.15);border:1px solid rgba(4,120,87,.7);color:#047857;border-radius:7px;padding:8px 16px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;"
         onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
         ✅ U값 실별 입력에 적용
@@ -4976,7 +4988,7 @@ function renderUvalReceived(list) {
   </div>
 
   <!-- 1-2 시트 헤더 (성락교회 PDF 형식) -->
-  <div style="background:var(--cell-bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:10px;color:var(--text2);">
+  <div style="background:var(--cell-bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--text2);">
     <strong style="color:var(--accent);font-size:11px;">□ 1-2. T.D &amp; Glass / Wall / Roof Data</strong>
     <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.2</span>
   </div>`;
@@ -5661,9 +5673,9 @@ function renderRoomTable() {
           <option value="H"${lm==='H'?' selected':''}>난방</option>
         </select>
       </td>
-      <td class="calc-cell" style="font-size:9px;white-space:nowrap">🪟${(r.glass||[]).length} 🧱${(r.wall||[]).length}</td>
+      <td class="calc-cell" style="font-size:11px;white-space:nowrap">🪟${(r.glass||[]).length} 🧱${(r.wall||[]).length}</td>
       <td style="text-align:center">
-        <button class="btn btn-secondary btn-sm" style="font-size:9px;padding:3px 7px;white-space:nowrap"
+        <button class="btn btn-secondary btn-sm" style="font-size:11px;padding:3px 7px;white-space:nowrap"
           onclick="openRoomModal(${i})">▶ 상세</button>
       </td>
       <td><button class="btn btn-danger btn-sm" onclick="removeRoom(${i})">✕</button></td>
@@ -5810,8 +5822,8 @@ function _renderModal() {
              font-size:11px;font-weight:700;font-family:inherit;
              transition:all .15s;white-space:nowrap;">
       ${t.icon} ${t.label}
-      ${t.k==='glass'?`<span style="background:rgba(0,0,0,.25);border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px">${_modalGlass.length}</span>`:''}
-      ${t.k==='wall' ?`<span style="background:rgba(0,0,0,.25);border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px">${_modalWall.length}</span>`:''}
+      ${t.k==='glass'?`<span style="background:rgba(0,0,0,.25);border-radius:10px;padding:1px 6px;font-size:11px;margin-left:4px">${_modalGlass.length}</span>`:''}
+      ${t.k==='wall' ?`<span style="background:rgba(0,0,0,.25);border-radius:10px;padding:1px 6px;font-size:11px;margin-left:4px">${_modalWall.length}</span>`:''}
     </button>`).join('');
 
   /* ── 탭 컨텐츠 ── */
@@ -5826,7 +5838,7 @@ function _renderModal() {
     const pplHintVal  = (pplHintRaw?.byTemp && pplHintRaw.byTemp[_nearM]) ? pplHintRaw.byTemp[_nearM] : pplHintRaw;
     const pplHintStr  = pplHintVal
       ? `SH <b>${pplHintVal.sh}</b> W/p &nbsp;|&nbsp; LH <b>${pplHintVal.lh}</b> W/p`
-        + ` <span style="color:rgba(0,180,216,.6);font-size:9px">(${_nearM}℃ · ASHRAE HOF2009)</span>`
+        + ` <span style="color:rgba(67,117,183,.6);font-size:11px">(${_nearM}℃ · ASHRAE HOF2009)</span>`
       : '';
     content = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
@@ -5844,8 +5856,8 @@ function _renderModal() {
                 </option>`).join('')}
             </select>
           </div>
-          <div id="ppl-hint" style="background:rgba(0,180,216,.1);border:1px solid var(--accent);
-               border-radius:5px;padding:5px 8px;font-size:10px;color:var(--accent)">
+          <div id="ppl-hint" style="background:rgba(67,117,183,.1);border:1px solid var(--accent);
+               border-radius:5px;padding:5px 8px;font-size:11px;color:var(--accent)">
             ${pplHintStr}
           </div>
           <div class="form-row">
@@ -6007,7 +6019,7 @@ function _renderModal() {
         <td><input class="form-input" type="number" value="${g.condRad??''}" placeholder="0"
           style="width:54px" step="0.01" min="0" max="1" title="창호 전도열 복사비율 (기본 0 — ASHRAE 권장 SHGC&gt;0.5: 0.33, SHGC≤0.5: 0.46)"
           onchange="_mg(${gi},'condRad',this.value===''?null:+this.value)"></td>
-        <td style="text-align:center"><button class="btn btn-secondary btn-sm" style="font-size:10px;padding:2px 6px"
+        <td style="text-align:center"><button class="btn btn-secondary btn-sm" style="font-size:11px;padding:2px 6px"
           title="입사각별 SHGC 입력 (0·40·50·60·70·80°)" onclick="_mgAngToggle(${gi})">${(Array.isArray(g.shgcAng)&&g.shgcAng.some(x=>x!=null&&x!==''))?'θ ✔':'θ'}</button></td>
         <td>
           <select class="form-select" style="width:75px"
@@ -6023,25 +6035,25 @@ function _renderModal() {
           <button class="btn btn-danger btn-sm" onclick="_rmg(${gi})">✕</button>
         </td>
       </tr>${_mgAngOpen.has(gi) ? `
-      <tr><td></td><td colspan="11" style="padding:4px 8px;background:rgba(0,180,216,.05)">
-        <span style="font-size:10px;color:var(--text2);margin-right:6px">입사각별 SHGC(θ)</span>
-        ${SHGC_ANG_DEG.map((a,ai)=>`<label style="font-size:10px;margin-right:6px">${a}°
+      <tr><td></td><td colspan="11" style="padding:4px 8px;background:rgba(67,117,183,.05)">
+        <span style="font-size:11px;color:var(--text2);margin-right:6px">입사각별 SHGC(θ)</span>
+        ${SHGC_ANG_DEG.map((a,ai)=>`<label style="font-size:11px;margin-right:6px">${a}°
           <input class="form-input" type="number" value="${(g.shgcAng&&g.shgcAng[ai]!=null)?g.shgcAng[ai]:''}" placeholder="${(g.shgc??g.sc??0.40).toFixed(2)}"
             style="width:56px" step="0.01" min="0" max="1" onchange="_mgAng(${gi},${ai},this.value)"></label>`).join('')}
-        <span style="font-size:9px;color:var(--text2)">· 80°~90°는 0으로 감소 · 비우면 단일 SHGC</span>
+        <span style="font-size:11px;color:var(--text2)">· 80°~90°는 0으로 감소 · 비우면 단일 SHGC</span>
       </td></tr>` : ''}`).join('');
 
     content = `
     <div class="excel-wrap">
       <div class="excel-header" style="display:flex;justify-content:space-between;align-items:center">
         <span>🪟 유리창 입력 — 방위·면적·U값·SHGC (PDF 계산서 Glass 참조)</span>
-        <button onclick="_amg()" class="btn btn-secondary btn-sm" style="font-size:10px">+ 유리창 추가</button>
+        <button onclick="_amg()" class="btn btn-secondary btn-sm" style="font-size:11px">+ 유리창 추가</button>
       </div>
       <div style="overflow-x:auto;padding:8px">
       <table class="excel-table">
         <thead><tr>
           <th class="col-label"></th>
-          <th style="min-width:70px">방위<br><span style="font-size:9px;font-weight:400;opacity:.7">N·NE·E·SE·S·SW·W·NW</span></th>
+          <th style="min-width:70px">방위<br><span style="font-size:11px;font-weight:400;opacity:.7">N·NE·E·SE·S·SW·W·NW</span></th>
           <th style="min-width:70px">면적<br>(㎡)</th>
           <th style="min-width:75px">U값<br>(W/㎡K)</th>
           <th style="min-width:70px">SHGC<br>(일사조절)</th>
@@ -6057,7 +6069,7 @@ function _renderModal() {
       </table>
       </div>
     </div>
-    <div style="background:rgba(0,180,216,.07);border:1px solid var(--accent);border-radius:7px;padding:10px 14px;font-size:10px;color:var(--text2);margin-top:8px">
+    <div style="background:rgba(67,117,183,.07);border:1px solid var(--accent);border-radius:7px;padding:10px 14px;font-size:11px;color:var(--text2);margin-top:8px">
       <strong style="color:var(--accent)">💡 입력 안내</strong><br>
       · <b>방위</b>: N(북)·NE(북동)·E(동)·SE(남동)·S(남)·SW(남서)·W(서)·NW(북서)<br>
       · <b>U값</b>: 열관류율 WAP에서 산출한 창호 U값 입력 (예: 로이복층 2.60, 삼중 1.50)<br>
@@ -6120,17 +6132,17 @@ function _renderModal() {
       <div class="excel-header" style="display:flex;justify-content:space-between;align-items:center">
         <span>🧱 외벽 / 지붕 — 구분·방위·면적·U값 (열관류율 WAP 연계)</span>
         <div style="display:flex;gap:6px">
-          <button onclick="_amw('wall')" class="btn btn-secondary btn-sm" style="font-size:10px">+ 외벽 추가</button>
-          <button onclick="_amw('roof')" class="btn btn-secondary btn-sm" style="font-size:10px">+ 지붕 추가</button>
-          <button onclick="_amw('floor')" class="btn btn-secondary btn-sm" style="font-size:10px" title="최하층 바닥(외기 간접)·지중·간접벽">+ 바닥/지중 추가</button>
+          <button onclick="_amw('wall')" class="btn btn-secondary btn-sm" style="font-size:11px">+ 외벽 추가</button>
+          <button onclick="_amw('roof')" class="btn btn-secondary btn-sm" style="font-size:11px">+ 지붕 추가</button>
+          <button onclick="_amw('floor')" class="btn btn-secondary btn-sm" style="font-size:11px" title="최하층 바닥(외기 간접)·지중·간접벽">+ 바닥/지중 추가</button>
         </div>
       </div>
       <div style="overflow-x:auto;padding:8px">
       <table class="excel-table">
         <thead><tr>
           <th class="col-label"></th>
-          <th style="min-width:65px">구분<br><span style="font-size:9px;font-weight:400;opacity:.7">외벽·지붕·바닥·지중</span></th>
-          <th style="min-width:70px">방위<br><span style="font-size:9px;font-weight:400;opacity:.7">지붕=수평</span></th>
+          <th style="min-width:65px">구분<br><span style="font-size:11px;font-weight:400;opacity:.7">외벽·지붕·바닥·지중</span></th>
+          <th style="min-width:70px">방위<br><span style="font-size:11px;font-weight:400;opacity:.7">지붕=수평</span></th>
           <th style="min-width:70px">면적<br>(㎡)</th>
           <th style="min-width:75px">U값<br>(W/㎡K)</th>
           <th style="min-width:65px">흡수율<br>α</th>
@@ -6142,7 +6154,7 @@ function _renderModal() {
       </table>
       </div>
     </div>
-    <div style="background:rgba(0,180,216,.07);border:1px solid var(--accent);border-radius:7px;padding:10px 14px;font-size:10px;color:var(--text2);margin-top:8px">
+    <div style="background:rgba(67,117,183,.07);border:1px solid var(--accent);border-radius:7px;padding:10px 14px;font-size:11px;color:var(--text2);margin-top:8px">
       <strong style="color:var(--accent)">💡 입력 안내</strong><br>
       · <b>U값</b>: 열관류율 WAP(index.html)에서 산출한 값 사용 — 「3.5 열관류율 검토 탭」에서 확인<br>
       · <b>흡수율 α</b>: 일반콘크리트·벽돌 0.9, 밝은색 외장 0.5~0.6, 금속 0.3<br>
@@ -6204,7 +6216,7 @@ function _updatePplHint() {
   const nearest= temps.reduce((a,b)=>Math.abs(b-coolT)<Math.abs(a-coolT)?b:a);
   const t      = (c.byTemp && c.byTemp[nearest]) ? c.byTemp[nearest] : c;
   hint.innerHTML = `SH <b>${t.sh}</b> W/p &nbsp;|&nbsp; LH <b>${t.lh}</b> W/p`
-    + ` &nbsp;<span style="color:rgba(0,180,216,.6);font-size:9px">(${nearest}℃ 기준 · ASHRAE HOF2009)</span>`;
+    + ` &nbsp;<span style="color:rgba(67,117,183,.6);font-size:11px">(${nearest}℃ 기준 · ASHRAE HOF2009)</span>`;
 }
 
 /* Ver-5.2.0 B-3: 입사각별 SHGC 입력 행 */
@@ -6413,8 +6425,8 @@ function renderPeopleCodeRef() {
   if (!tbody) return;
   tbody.innerHTML = Object.entries(PEOPLE_CODE).map(([k, c]) => {
     const t = c.byTemp || {};
-    const td26s = `<td class="calc-cell" style="background:rgba(0,180,216,0.08);font-weight:700">${t[26]?.sh??c.sh}</td>`;
-    const td26l = `<td class="calc-cell" style="background:rgba(0,180,216,0.08);font-weight:700">${t[26]?.lh??c.lh}</td>`;
+    const td26s = `<td class="calc-cell" style="background:rgba(67,117,183,0.08);font-weight:700">${t[26]?.sh??c.sh}</td>`;
+    const td26l = `<td class="calc-cell" style="background:rgba(67,117,183,0.08);font-weight:700">${t[26]?.lh??c.lh}</td>`;
     return `<tr>
       <td class="row-label" style="font-weight:700;color:var(--gold)">${k}</td>
       <td class="label-cell">${c.label}</td>
@@ -6503,7 +6515,7 @@ function calcInternal() {
         <td class="calc-cell ${i===rows2.length-1?'highlight':''}">${fmt(r.sens)}</td>
         <td class="calc-cell">${fmt(r.lat)}</td>
         <td class="${i===rows2.length-1?'total-cell':'calc-cell'}">${fmt(r.total)}</td>
-        <td class="label-cell" style="font-size:10px">${i<3?'Radiant '+safeRatio(r.rad,r.total)+' · 실별합산':'-'}</td>
+        <td class="label-cell" style="font-size:11px">${i<3?'Radiant '+safeRatio(r.rad,r.total)+' · 실별합산':'-'}</td>
       </tr>`).join('');
     return;
   }
@@ -6548,7 +6560,7 @@ function calcInternal() {
       <td class="calc-cell ${i===rows.length-1?'highlight':''}">${fmt(r.sens)}</td>
       <td class="calc-cell">${fmt(r.lat)}</td>
       <td class="${i===rows.length-1?'total-cell':'calc-cell'}">${fmt(r.total)}</td>
-      <td class="label-cell" style="font-size:10px">${i<3?'Radiant '+safeRatio(r.rad,r.total):'-'}</td>
+      <td class="label-cell" style="font-size:11px">${i<3?'Radiant '+safeRatio(r.rad,r.total):'-'}</td>
     </tr>`).join('');
 }
 
@@ -6799,7 +6811,7 @@ function renderHourlyLoadTable(wall, glass, solar, internal, SF) {
     <tr class="${i===allRows.length-1?'row-group':''}">
       <td class="row-label">${i+1}</td>
       <td class="label-cell ${i===allRows.length-1?'fw-bold text-accent':''}">${r.name}</td>
-      ${r.data.map((vv,h)=>`<td class="${i===allRows.length-1?'total-cell':'calc-cell'}${h===peakIdx&&i===allRows.length-1?' style=background:rgba(0,180,216,0.25)!important;color:white!important':''}">${(+vv).toLocaleString()}</td>`).join('')}
+      ${r.data.map((vv,h)=>`<td class="${i===allRows.length-1?'total-cell':'calc-cell'}${h===peakIdx&&i===allRows.length-1?' style=background:rgba(67,117,183,0.25)!important;color:white!important':''}">${(+vv).toLocaleString()}</td>`).join('')}
       <td class="${i===allRows.length-1?'total-cell':'calc-cell'}">${Math.max(...r.data.map(Number)).toLocaleString()}</td>
     </tr>`).join('');
 }
@@ -6841,7 +6853,7 @@ function renderLoadBreakdown(wall, glass, solar, internal, latent, SF, cmp) {
       <td class="total-cell">100.0%</td>
       <td class="calc-cell">-</td>
     </tr>
-    ${chkTxt ? `<tr><td class="row-label">✓</td><td class="label-cell" colspan="10" style="font-size:10px;color:${okChk?'#0f766e':'#b91c1c'}">${chkTxt}</td></tr>` : ''}`;
+    ${chkTxt ? `<tr><td class="row-label">✓</td><td class="label-cell" colspan="10" style="font-size:11px;color:${okChk?'#2d5186':'#b91c1c'}">${chkTxt}</td></tr>` : ''}`;
 }
 
 /* ====================================================
@@ -7043,8 +7055,8 @@ function renderEquipTable(){
       <td>${(e.oaMode||'direct')==='direct'
             ? `<input class="form-input" type="number" value="${e.oaCMH||0}" style="width:72px" step="100" title="외기량 CMH" onchange="updateEquipField(${i},'oaCMH',this.value)">`
             : e.oaMode==='ppl'
-            ? `<input class="form-input" type="number" value="${e.oaPerPpl??29}" style="width:52px" step="1" title="CMH/인" onchange="updateEquipField(${i},'oaPerPpl',this.value)"><span style="font-size:9px;color:var(--text2)"> /인</span>`
-            : `<input class="form-input" type="number" value="${e.oaPerArea??5}" style="width:52px" step="0.5" title="CMH/㎡" onchange="updateEquipField(${i},'oaPerArea',this.value)"><span style="font-size:9px;color:var(--text2)"> /㎡</span>`}</td>
+            ? `<input class="form-input" type="number" value="${e.oaPerPpl??29}" style="width:52px" step="1" title="CMH/인" onchange="updateEquipField(${i},'oaPerPpl',this.value)"><span style="font-size:11px;color:var(--text2)"> /인</span>`
+            : `<input class="form-input" type="number" value="${e.oaPerArea??5}" style="width:52px" step="0.5" title="CMH/㎡" onchange="updateEquipField(${i},'oaPerArea',this.value)"><span style="font-size:11px;color:var(--text2)"> /㎡</span>`}</td>
       <td><input type="checkbox" ${e.ervOn?'checked':''} title="전열교환기 적용" onchange="updateEquipField(${i},'ervOn',this.checked)">
           <input class="form-input" type="number" value="${e.ervSens??70}" style="width:40px" step="1" min="0" max="95" title="현열 효율 %" onchange="updateEquipField(${i},'ervSens',this.value)" ${e.ervOn?'':'disabled'}>
           <input class="form-input" type="number" value="${e.ervLat??60}" style="width:40px" step="1" min="0" max="95" title="잠열 효율 %" onchange="updateEquipField(${i},'ervLat',this.value)" ${e.ervOn?'':'disabled'}></td>
@@ -7056,7 +7068,7 @@ function renderEquipTable(){
       <td class="calc-cell">${cnt}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeEquipment(${i})">✕</button></td>
     </tr>`;
-  }).join('') || `<tr><td colspan="12" style="text-align:center;color:var(--text2);font-size:10px;padding:14px">등록된 장비가 없습니다 — 「+ 장비 추가」 또는 「⚡ 실 AHU값 자동 생성」</td></tr>`;
+  }).join('') || `<tr><td colspan="12" style="text-align:center;color:var(--text2);font-size:11px;padding:14px">등록된 장비가 없습니다 — 「+ 장비 추가」 또는 「⚡ 실 AHU값 자동 생성」</td></tr>`;
 }
 function renderZoningBoard(){
   const tbody = document.getElementById('tbody-zb-rooms'); if(!tbody) return;
@@ -7072,7 +7084,7 @@ function renderZoningBoard(){
       <td style="text-align:center"><input type="checkbox" class="zb-chk" data-i="${i}" ${r._zbSel?'checked':''} onchange="rooms[${i}]._zbSel=this.checked"></td>
       <td>${r.id}</td><td>${r.name}</td><td>${r.floor||'1F'}</td>
       <td class="calc-cell">${((r.area||0)*(r.qty||1)).toFixed(0)}</td>
-      <td style="font-size:10px">${badge}</td>
+      <td style="font-size:11px">${badge}</td>
     </tr>`;
   }).join('');
   /* 대상 장비 셀렉트 */
@@ -7114,7 +7126,7 @@ function renderZoneTable(){
       <td class="calc-cell">${cnt}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeZone(${i})">✕</button></td>
     </tr>`;
-  }).join('') || `<tr><td colspan="6" style="text-align:center;color:var(--text2);font-size:10px;padding:12px">운영 존이 없습니다 — 「+ 존 추가」 (예: 주말존·평일존)</td></tr>`;
+  }).join('') || `<tr><td colspan="6" style="text-align:center;color:var(--text2);font-size:11px;padding:12px">운영 존이 없습니다 — 「+ 존 추가」 (예: 주말존·평일존)</td></tr>`;
 }
 function zbToggleAll(on){ rooms.forEach(r=>r._zbSel=on); renderZoningBoard(); }
 function assignRoomsToEquip(){
@@ -7220,7 +7232,7 @@ function calcEquipLoads(){
       <td class="calc-cell">${g.cnt}</td>
       <td class="calc-cell">${g.area.toFixed(0)}</td>
       <td class="calc-cell">${g.cnt?g.peakH+'시':'—'}</td>
-      <td class="calc-cell" style="text-align:left;font-size:10px"><b>${g.oa.toLocaleString()}</b><br><span style="color:var(--text2)">${g.oaBasis}${g.erv.on?` · ERV ${Math.round(g.erv.sens*100)}/${Math.round(g.erv.lat*100)}%`:''}</span></td>
+      <td class="calc-cell" style="text-align:left;font-size:11px"><b>${g.oa.toLocaleString()}</b><br><span style="color:var(--text2)">${g.oaBasis}${g.erv.on?` · ERV ${Math.round(g.erv.sens*100)}/${Math.round(g.erv.lat*100)}%`:''}</span></td>
       <td class="calc-cell">${kw(g.peak)}</td>
       <td class="calc-cell">${kw(g.lat)}</td>
       <td class="calc-cell">${kw(g.oaSH)}</td>
@@ -7656,7 +7668,7 @@ function _ahuPrintRun(mode){
   const st=document.createElement('style'); st.id='_ahu-print-page';
   const safe=String(pname).replace(/["\\]/g,'').slice(0,40);
   st.textContent=`@page { size:A4 portrait; margin:18mm 14mm 20mm 14mm;
-    @bottom-left { content:"${safe} · AHU 선정서"; font-family:'Noto Sans KR','Malgun Gothic',sans-serif; font-size:6.5pt; color:#6b7280; }
+    @bottom-left { content:"${safe} · AHU 선정서"; font-family:'Pretendard Variable',Pretendard,'Noto Sans KR','Malgun Gothic',sans-serif; font-size:6.5pt; color:#6b7280; }
     @bottom-right { content:"RTS-MANMIN ${RTS_APP_VERSION}"; } }`;
   document.head.appendChild(st);
   const _t=document.title;
@@ -7704,7 +7716,7 @@ function _ahuDiagramSVG(R){
   const c=R.cfg.coil, erv=!!R.eq.ervOn;
   const comps=[]; comps.push(['F','필터','#64748b']);
   if (c.pre!=='none') comps.push(['P/H','예열','#ea580c']);
-  comps.push(['C/C','냉각','#0e7490']);
+  comps.push(['C/C','냉각','#2d5186']);
   if (c.rh!=='none') comps.push(['R/H','재열','#dc2626']);
   if (c.hc!=='none') comps.push(['H/C','가열','#dc2626']);
   if (c.hum!=='none') comps.push(['HUM',c.hum==='water'?'수분무':'증기','#2563eb']);
@@ -7716,7 +7728,7 @@ function _ahuDiagramSVG(R){
   const f=v=>_aN(v), mid='ahar'+(++_ahuSvgSeq);
   let s=`<svg class="ahu-svg" viewBox="0 0 ${W} 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="공조 계통도 ${_aE(R.eq.no)}">
   <defs><marker id="${mid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
-  <style>.t{font:600 10px 'Noto Sans KR',sans-serif;fill:#1e293b}.s{font:500 9px 'Noto Sans KR',sans-serif;fill:#475569}.ln{stroke:#475569;stroke-width:1.6;fill:none}</style>`;
+  <style>.t{font:600 10px 'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;fill:#1e293b}.s{font:500 9px 'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;fill:#475569}.ln{stroke:#475569;stroke-width:1.6;fill:none}</style>`;
   const mk=`url(#${mid})`;
   /* AHU 케이싱 */
   s+=`<rect x="${x0-6}" y="${y-14}" width="${boxW+6}" height="${hgt+28}" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
@@ -7725,7 +7737,7 @@ function _ahuDiagramSVG(R){
     s+=`<rect x="${x}" y="${y}" width="${w}" height="${hgt}" rx="4" fill="#fff" stroke="${cp[2]}" stroke-width="1.6"/>
     <text class="t" x="${x+w/2}" y="${y+25}" text-anchor="middle" style="fill:${cp[2]}">${cp[0]}</text><text class="s" x="${x+w/2}" y="${y+40}" text-anchor="middle">${cp[1]}</text>`; });
   /* 급기팬 */
-  s+=`<circle cx="${sfX+24}" cy="${y+hgt/2}" r="20" fill="#fff" stroke="#0f766e" stroke-width="1.6"/><text class="t" x="${sfX+24}" y="${y+hgt/2+4}" text-anchor="middle" style="fill:#0f766e">SF</text>`;
+  s+=`<circle cx="${sfX+24}" cy="${y+hgt/2}" r="20" fill="#fff" stroke="#2d5186" stroke-width="1.6"/><text class="t" x="${sfX+24}" y="${y+hgt/2+4}" text-anchor="middle" style="fill:#2d5186">SF</text>`;
   /* 외기 → (ERV) → 혼합 */
   const mixX = x0-6;
   s+=`<text class="t" x="6" y="${y+hgt/2-6}">OA</text><text class="s" x="6" y="${y+hgt/2+8}">${f(R.OA)} ㎥/h</text>`;
@@ -7737,13 +7749,13 @@ function _ahuDiagramSVG(R){
   /* 급기 → 실 */
   s+=`<path class="ln" d="M${sfX+44} ${y+hgt/2} L${roomX-2} ${y+hgt/2}" marker-end="${mk}"/>
   <text class="t" x="${sfX+64}" y="${y+hgt/2-8}">SA</text><text class="s" x="${sfX+64}" y="${y+hgt/2+16}">${f(R.SA)} ㎥/h</text>
-  <rect x="${roomX}" y="${y-10}" width="110" height="${hgt+20}" rx="6" fill="#ecfeff" stroke="#0e7490"/>
+  <rect x="${roomX}" y="${y-10}" width="110" height="${hgt+20}" rx="6" fill="#eff5fd" stroke="#2d5186"/>
   <text class="t" x="${roomX+55}" y="${y+18}" text-anchor="middle">담당 실 ${R.n}개</text><text class="s" x="${roomX+55}" y="${y+34}" text-anchor="middle">${f(R.area)} ㎡</text>
   <text class="s" x="${roomX+55}" y="${y+50}" text-anchor="middle">TA ${f(R.TA)} ㎥/h</text>`;
   /* 환기 → RF → 혼합 / 배기 */
   const ry=30, rfX = Math.round((x0+roomX)/2);
   s+=`<path class="ln" d="M${roomX+55} ${y-10} L${roomX+55} ${ry} L${rfX+22} ${ry}" marker-end="${mk}"/>
-  ${R.core.fan.rfOn?`<circle cx="${rfX}" cy="${ry}" r="16" fill="#fff" stroke="#0f766e" stroke-width="1.6"/><text class="t" x="${rfX}" y="${ry+4}" text-anchor="middle" style="fill:#0f766e">RF</text>`:''}
+  ${R.core.fan.rfOn?`<circle cx="${rfX}" cy="${ry}" r="16" fill="#fff" stroke="#2d5186" stroke-width="1.6"/><text class="t" x="${rfX}" y="${ry+4}" text-anchor="middle" style="fill:#2d5186">RF</text>`:''}
   <text class="s" x="${rfX+28}" y="${ry-6}">RA ${f(R.RA)} ㎥/h</text>
   <path class="ln" d="M${rfX-16} ${ry} L${mixX+16} ${ry} L${mixX+16} ${y-16}" marker-end="${mk}"/>
   <path class="ln" d="M${mixX+16} ${ry} L${erv?121:40} ${ry} ${erv?`L121 ${y+4}`:''}" ${erv?'':`marker-end="${mk}"`}/>
@@ -7758,7 +7770,7 @@ function _ahuPsySVG(R){
   const W=520, Ht=300, m={l:40,r:46,t:14,b:30}, tmin=-15, tmax=45, xmax=0.030;
   const X=t=>m.l+(t-tmin)/(tmax-tmin)*(W-m.l-m.r), Y=x=>Ht-m.b-(x/xmax)*(Ht-m.t-m.b);
   let s=`<svg class="ahu-svg ahu-psy" viewBox="0 0 ${W} ${Ht}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="습공기선도 ${_aE(R.eq.no)}">
-  <style>.g{stroke:#e2e8f0;stroke-width:.8}.a{font:500 8.5px 'Noto Sans KR',sans-serif;fill:#64748b}.p{font:700 9px 'Noto Sans KR',sans-serif}</style>`;
+  <style>.g{stroke:#e2e8f0;stroke-width:.8}.a{font:500 8.5px 'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;fill:#64748b}.p{font:700 9px 'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif}</style>`;
   for(let t=-10;t<=45;t+=5) s+=`<line class="g" x1="${X(t)}" y1="${m.t}" x2="${X(t)}" y2="${Ht-m.b}"/><text class="a" x="${X(t)}" y="${Ht-m.b+12}" text-anchor="middle">${t}</text>`;
   for(let x=0;x<=0.030001;x+=0.005) s+=`<line class="g" x1="${m.l}" y1="${Y(x)}" x2="${W-m.r}" y2="${Y(x)}"/><text class="a" x="${W-m.r+4}" y="${Y(x)+3}">${x.toFixed(3)}</text>`;
   const curve=rh=>{ const pts=[]; for(let t=tmin;t<=tmax;t+=0.5){ const x=_ahuX(t,rh); if(x>xmax) break; pts.push(`${X(t).toFixed(1)},${Y(x).toFixed(1)}`);} return pts.join(' '); };
@@ -7767,7 +7779,7 @@ function _ahuPsySVG(R){
   <text class="a" x="${m.l}" y="${Ht-4}">건구온도 ℃</text><text class="a" x="${W-m.r-4}" y="${m.t-3}" text-anchor="end">절대습도 kg/kg'</text>`;
   const seg=(a,b,col,dash)=>`<line x1="${X(a.t)}" y1="${Y(a.x)}" x2="${X(b.t)}" y2="${Y(b.x)}" stroke="${col}" stroke-width="1.6" ${dash?'stroke-dasharray="4 3"':''}/>`;
   const pt=(p,lb,col,dx=5,dy=-5)=>`<circle cx="${X(p.t)}" cy="${Y(p.x)}" r="3" fill="${col}"/><text class="p" x="${X(p.t)+dx}" y="${Y(p.x)+dy}" style="fill:${col}">${lb}</text>`;
-  const cc='#0e7490', hc='#dc2626';
+  const cc='#2d5186', hc='#dc2626';
   const Sp={t:C.S, x:C.L.x};
   s+=seg(C.Op,C.M,cc,1)+seg(C.Rp,C.M,cc,1)+seg(C.M,C.L,cc)+seg(C.L,Sp,cc)+seg(Sp,C.I,cc,1);
   if (C.adp!=null){ const A={t:C.adp,x:_ahuXs(C.adp)}; s+=seg(C.L,A,'#94a3b8',1)+`<circle cx="${X(A.t)}" cy="${Y(A.x)}" r="2.5" fill="#94a3b8"/><text class="a" x="${X(A.t)-4}" y="${Y(A.x)-5}" text-anchor="end">ADP</text>`; }
@@ -8058,7 +8070,7 @@ function renderRoomLoadTable(results) {
     const density = r.area > 0 ? (r.peakCool / r.area).toFixed(1) : '—';
     return `<tr>
       <td class="row-label">${i+1}</td>
-      <td class="label-cell" style="font-family:monospace;font-size:10px">${rm.id}</td>
+      <td class="label-cell" style="font-family:monospace;font-size:11px">${rm.id}</td>
       <td class="label-cell">${rm.name}</td>
       <td class="calc-cell">${rm.qty||1}</td>
       <td class="calc-cell">${(rm.area||0).toFixed(0)}</td>
@@ -8123,9 +8135,9 @@ function renderRoomLoadTable(results) {
       const isTotal = code==='SH합계'||code==='Total';
       const cls = isTotal?'total-cell':'calc-cell';
       return `<tr class="${isTotal?'row-group':''}">
-        <td class="row-label" style="font-family:monospace;font-size:9px;color:var(--gold)">${code}</td>
-        <td class="label-cell" colspan="2" style="font-size:10px">${desc}</td>
-        <td class="label-cell" style="font-size:9px;color:var(--text2)">${capacity}</td>
+        <td class="row-label" style="font-family:monospace;font-size:11px;color:var(--gold)">${code}</td>
+        <td class="label-cell" colspan="2" style="font-size:11px">${desc}</td>
+        <td class="label-cell" style="font-size:11px;color:var(--text2)">${capacity}</td>
         ${vals.map(v=>`<td class="${cls}">${v.toLocaleString()}</td>`).join('')}
         <td class="${cls}">${extra}</td>
       </tr>`;
@@ -8133,7 +8145,7 @@ function renderRoomLoadTable(results) {
 
     return `
     <div class="excel-wrap" style="margin-top:8px;border:1px solid var(--border)">
-      <div class="excel-header" style="display:flex;justify-content:space-between;font-size:10px">
+      <div class="excel-header" style="display:flex;justify-content:space-between;font-size:11px">
         <span>
           [${rm.id}] <b>${rm.name}</b> &nbsp;·&nbsp;
           ${rm.qty||1}실, ${(rm.area||0).toFixed(0)} ㎡, 천장고 ${rm.height||2.7}m &nbsp;·&nbsp;
@@ -8144,7 +8156,7 @@ function renderRoomLoadTable(results) {
         </span>
       </div>
       <div style="overflow-x:auto">
-      <table class="excel-table" style="font-size:10px">
+      <table class="excel-table" style="font-size:11px">
         <thead>
           <tr>
             <th class="col-label" style="min-width:42px">항목</th>
@@ -8188,14 +8200,14 @@ function renderRoomLoadTable(results) {
           ${coolRow('EQ', `기기 · EPD ${(rm.epd ?? 15)} W/㎡`,
             `${Math.round((rm.epd ?? 15)*r.area)} W`,
             pick(r.intCL24.map(v=>v-r.infiltQ).map(v=>v*0.10)), '')}
-          <tr class="row-group" style="background:rgba(0,180,216,0.06)">
+          <tr class="row-group" style="background:rgba(67,117,183,0.06)">
             <td class="row-label" style="color:var(--accent);font-weight:900">SH합계</td>
             <td class="label-cell" colspan="2" style="font-weight:700">Sensible Load (현열 합계)</td>
             <td></td>
             ${HOURS.map(h=>{ const v2=Math.round(r.cool24[h-1]||0); return `<td class="total-cell">${v2.toLocaleString()}</td>`; }).join('')}
             <td class="total-cell" style="color:var(--red)">${Math.round(r.heatLoad).toLocaleString()}</td>
           </tr>
-          <tr style="background:rgba(0,180,216,0.12)">
+          <tr style="background:rgba(67,117,183,0.12)">
             <td class="row-label" style="color:var(--gold);font-weight:900">Total</td>
             <td class="label-cell" colspan="2" style="font-weight:700;color:var(--gold)">Total Load · Peak: <b>${r.peakHour}시 ${Math.round(r.peakCool+r.latTotal).toLocaleString()} W</b></td>
             <td></td>
@@ -8459,7 +8471,7 @@ function showToast(msg) {
       background:linear-gradient(135deg,#064e3b,#065f46);
       color:#6ee7b7;border:1px solid rgba(110,231,183,.4);
       border-radius:12px;padding:14px 20px;font-size:12px;
-      font-weight:700;font-family:'Noto Sans KR',sans-serif;
+      font-weight:700;font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;
       box-shadow:0 8px 32px rgba(0,0,0,.4);
       max-width:320px;white-space:pre-line;line-height:1.6;
       transition:opacity .3s;opacity:0;pointer-events:none;
@@ -8582,7 +8594,7 @@ function openRoomImport(){
             <span><input type="radio" name="_ri-mode" value="replace"> 전체 교체</span>
           </label>
         </div>
-        <div id="_ri-drop" style="border:2px dashed var(--accent);border-radius:10px;padding:26px 12px;text-align:center;cursor:pointer;background:rgba(0,180,216,.06)">
+        <div id="_ri-drop" style="border:2px dashed var(--accent);border-radius:10px;padding:26px 12px;text-align:center;cursor:pointer;background:rgba(67,117,183,.06)">
           파일을 여기에 <strong>끌어다 놓거나</strong> 클릭해서 선택하세요<br><span style="font-size:11px;color:var(--text2)">.xlsx · .xls · .csv — 1행은 헤더(템플릿 열 이름)</span>
           <input type="file" id="_ri-file" accept=".xlsx,.xls,.csv" style="display:none">
         </div>
@@ -8603,8 +8615,8 @@ function openRoomImport(){
     rd.readAsArrayBuffer(f); };
   drop.addEventListener('click', ()=>file.click());
   file.addEventListener('change', e=>handle(e.target.files[0]));
-  ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev, e=>{e.preventDefault(); drop.style.background='rgba(0,180,216,.18)';}));
-  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev, e=>{e.preventDefault(); drop.style.background='rgba(0,180,216,.06)';}));
+  ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev, e=>{e.preventDefault(); drop.style.background='rgba(67,117,183,.18)';}));
+  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev, e=>{e.preventDefault(); drop.style.background='rgba(67,117,183,.06)';}));
   drop.addEventListener('drop', e=>handle(e.dataTransfer.files[0]));
   ov.addEventListener('click', e=>{ if(e.target?.dataset?.act==='close' || e.target===ov) ov.remove(); });
   apply.addEventListener('click', ()=>{
@@ -8957,7 +8969,7 @@ function renderDesignRefTable(){
     <div style="overflow-x:auto;margin-top:8px"><table class="excel-table" style="font-size:11px">
       <thead><tr><th>장비</th><th>명칭</th><th>냉방코일 계산</th><th>설계</th><th>난방코일 계산</th><th>설계</th><th>급기량 계산</th><th>설계 CMH</th><th>외기량 계산</th><th>설계 CMH</th></tr></thead>
       <tbody>${er||'<tr><td colspan="10" style="text-align:center;color:var(--text2);padding:10px">장비 없음</td></tr>'}</tbody></table></div>
-    <div style="font-size:10px;color:var(--text2);margin-top:4px">계산값 단위: ${u} (급기·외기량은 CMH)</div>`;
+    <div style="font-size:11px;color:var(--text2);margin-top:4px">계산값 단위: ${u} (급기·외기량은 CMH)</div>`;
 }
 function toggleDesignRef(){ const w=document.getElementById('dr-wrap'); if(!w) return; w.style.display = w.style.display==='none' ? '' : 'none'; if (w.style.display!=='none') renderDesignRefTable(); }
 
@@ -9432,7 +9444,7 @@ function _exportReportRun(mode) {
   printStyle.textContent = `
 /* v5.1 A-2-3: 우하단 버전 워터마크 문자열을 RTS_APP_VERSION(단일 상수)으로 동기화 — @page는 @media 밖 최상위여야 Chromium이 적용 */
 @page { @bottom-right { content: "RTS-MANMIN ${RTS_APP_VERSION}"; }
-        @bottom-left  { content: "${(pname.length>28?pname.slice(0,27)+'…':pname).replace(/["\\]/g,'')} · 냉난방 부하계산 산출서"; font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif; font-size: 6.5pt; color: #6b7280; border-top: none; padding-top: 0; white-space: nowrap; } }
+        @bottom-left  { content: "${(pname.length>28?pname.slice(0,27)+'…':pname).replace(/["\\]/g,'')} · 냉난방 부하계산 산출서"; font-family: 'Pretendard Variable',Pretendard,'Noto Sans KR', 'Malgun Gothic', sans-serif; font-size: 6.5pt; color: #6b7280; border-top: none; padding-top: 0; white-space: nowrap; } }
 @media print {
   /* v5.1 A-2-1②③: 강제 전후 페이지브레이크 제거(빈 SHEET 5 원인) + transform/음수마진 → zoom(레이아웃 반영 축소) */
   .hourly-table-block {
@@ -10481,7 +10493,7 @@ function initUvalRefTable() {
     <tr>
       <td class="row-label">${i+1}</td>
       <td class="label-cell" style="font-weight:700;">${r.part}</td>
-      <td class="label-cell" style="font-size:10px;">${r.cond}</td>
+      <td class="label-cell" style="font-size:11px;">${r.cond}</td>
       <td class="calc-cell" style="color:var(--gold);font-weight:700;">${stdU.toFixed(3)}</td>
       <td>
         <input class="form-input" type="number" step="0.001" min="0" max="5"
@@ -10492,12 +10504,12 @@ function initUvalRefTable() {
       </td>
       <td class="calc-cell" id="uval-judge-${i}" style="text-align:center;font-weight:800;">—</td>
       <td style="text-align:center;">
-        <button class="btn btn-secondary btn-sm" style="font-size:9px;padding:3px 7px;"
+        <button class="btn btn-secondary btn-sm" style="font-size:11px;padding:3px 7px;"
           onclick="applyUvalToExternal(${i}, '${r.ext}')">
           외부부하 탭 적용
         </button>
       </td>
-      <td class="label-cell" style="font-size:10px;color:var(--text2);">${r.memo}</td>
+      <td class="label-cell" style="font-size:11px;color:var(--text2);">${r.memo}</td>
     </tr>`;
   }).join('');
 }
@@ -10571,16 +10583,16 @@ function renderUvalStdTable() {
           <tr>
             <td class="row-label">${i+1}</td>
             <td class="label-cell" style="font-weight:700;">${r[0]}</td>
-            <td class="label-cell" style="font-size:10px;">${r[1]}</td>
+            <td class="label-cell" style="font-size:11px;">${r[1]}</td>
             <td class="calc-cell" style="color:var(--accent);font-weight:800;">${uApt}</td>
             <td class="calc-cell" style="color:var(--gold);font-weight:800;">${u.toFixed(3)}</td>
-            <td class="label-cell" style="font-size:10px;color:var(--text2);">U ≤ 기준값 이하</td>
+            <td class="label-cell" style="font-size:11px;color:var(--text2);">U ≤ 기준값 이하</td>
           </tr>`;
         }).join('')}
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="6" class="label-cell" style="font-size:10px;color:var(--text2);padding:8px;">
+          <td colspan="6" class="label-cell" style="font-size:11px;color:var(--text2);padding:8px;">
             ※ 국토교통부고시 제2026-360호 별표1 기준 · <strong style="color:var(--accent)">${region}</strong> 적용
             (별표1 원문값 · 바닥 열의 공동주택/외 = 바닥난방/비난방 · 창호 "외" = 창, 문은 중부1 1.500/1.900)
           </td>
@@ -10925,7 +10937,7 @@ window.addEventListener('appinstalled', () => {
   <span style="font-size:18px;">🔗</span>
   <div style="flex:1">
     <div style="font-size:11px;font-weight:900;letter-spacing:.04em;">열관류율 데이터 수신 완료</div>
-    <div style="font-size:10px;color:rgba(110,231,183,.6);margin-top:1px;">${payload.projectName || ''}</div>
+    <div style="font-size:11px;color:rgba(110,231,183,.6);margin-top:1px;">${payload.projectName || ''}</div>
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
       <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.2  ·  ASHRAE 2009 RTS법</span>
@@ -10941,7 +10953,7 @@ window.addEventListener('appinstalled', () => {
   <div>U값 &nbsp;: <strong style="color:#fcd34d;font-family:'JetBrains Mono',monospace">${payload.currentU}</strong> W/m²K &nbsp;${passStr}</div>
   <div>ΣR &nbsp;&nbsp;: ${payload.totalR} m²K/W · 레이어 ${payload.layerRows ? payload.layerRows.length : 0}개</div>
 </div>
-<div style="margin-top:8px;font-size:10px;color:rgba(110,231,183,.55);">
+<div style="margin-top:8px;font-size:11px;color:rgba(110,231,183,.55);">
   ▶ 열관류율 참조 입력표에 자동 반영되었습니다.
 </div>`;
 
@@ -11027,5 +11039,15 @@ window.addEventListener('appinstalled', () => {
 <style>#mm-ios-tip{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:99999;display:none;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:#0B1B2E;color:#F4F1EA;border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 28px rgba(0,0,0,.35);font:600 13px/1.5 'Pretendard','Noto Sans KR',system-ui,sans-serif;max-width:560px;margin:0 auto}#mm-ios-tip b{color:#86efac}#mm-ios-tip button{flex:none;margin-left:auto;padding:7px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#F4F1EA;font:inherit;cursor:pointer}@media print{#mm-ios-tip{display:none!important}}</style>
 <div id="mm-ios-tip" role="dialog" aria-label="홈 화면에 앱 설치 안내"><span style="font-size:20px">📲</span><span>홈 화면에 앱으로 설치 — Safari <b>공유</b> 단추 → <b>홈 화면에 추가</b></span><button type="button" aria-label="설치 안내 닫기">닫기</button></div>
 <script>(function(){try{var n=navigator,ios=/iphone|ipad|ipod/i.test(n.userAgent)||(n.platform==='MacIntel'&&n.maxTouchPoints>1),sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||n.standalone===true;if(!ios||sa)return;try{if(sessionStorage.getItem('mm-ios-tip'))return}catch(e){}var t=document.getElementById('mm-ios-tip');if(!t)return;t.querySelector('button').addEventListener('click',function(){t.style.display='none';try{sessionStorage.setItem('mm-ios-tip','1')}catch(e){}});setTimeout(function(){t.style.display='flex'},2500)}catch(e){}})();</script>
+<!-- ══ FOOTER (하단 버전 표시) ══ -->
+<footer class="mm-foot no-print">
+  <div class="foot-inner">
+    <div>
+      <div class="foot-nm">MANMIN Ver-5.3</div>
+      <div class="foot-desc">건축물 냉난방 부하계산서(RTS법) | ASHRAE 2009 RTS법 · 에너지절약설계기준</div>
+    </div>
+    <div class="foot-copy">ARCHITECT KIM MANMIN © 2026</div>
+  </div>
+</footer>
 </body>
 </html>
