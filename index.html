@@ -2497,6 +2497,16 @@ body{background:var(--navy);color:var(--text);}
 /* Pretendard 전환 후 헤더 높이를 종전과 같게 (머리 글줄은 px 줄 높이라 그대로) */
 .hdr-right,.nav-tabs .nav-tab{line-height:1.45}
 </style>
+<style id="mm-print-fix-5-3-6">/* 2026-10-31 v5.3.6 — A4 출력 정리(작업지시서 §25-6-24)
+   ① 시트 끝 바닥 줄(.print-sheet-footer)이 꽉 찬 시트 다음 쪽에 혼자 넘어가 빈 쪽(SHEET 4 뒤) → 인쇄에서 숨김.
+      공사명 · 판 · 쪽 번호는 @page 바닥글, SHEET 번호는 시트 머리에 이미 있음.
+   ② 입력 조건표의 날짜 칸 달력 아이콘 · 빈 칸 안내 글(placeholder) 인쇄 안 함. */
+@media print{
+  html body .print-section .print-sheet-footer{display:none!important;}
+  input::-webkit-calendar-picker-indicator{display:none!important;}
+  input::placeholder,textarea::placeholder{color:transparent!important;}
+}
+</style>
 </head>
 <body>
 
