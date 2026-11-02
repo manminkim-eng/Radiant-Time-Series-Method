@@ -24,7 +24,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE = 'rts-v5.3.10';   /* 2026-11-03 판 표기 Ver-5.3.2 → 배포 판(§25-6-37) (종전 5.3.9 인쇄 선명화) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
+const CACHE = 'rts-v5.3.11';   /* 2026-11-03 산출서 구역 외곽 테두리 인쇄 삭제(§25-6-38) (종전 5.3.10 판 표기 정정) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
 const ASSETS = [
   './',
   './index.html',

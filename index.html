@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#2d5186">
 <meta name="msapplication-TileColor" content="#2d5186">
 <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
-<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.10 by MANMIN">
+<meta name="description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.11 by MANMIN">
 
 <!-- SheetJS Excel Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -30,25 +30,25 @@
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 <!-- ======================== -->
 
-<title>RTS-MANMIN 건축물 부하계산서 Ver-5.3.10 | 만민 건축사 신사옥 신축공사</title>
+<title>RTS-MANMIN 건축물 부하계산서 Ver-5.3.11 | 만민 건축사 신사옥 신축공사</title>
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
 <!-- 링크 미리보기(네이버 · 카카오 · SNS) — 2026-10-30 전수 정비 -->
 <link rel="canonical" href="https://manminkim-eng.github.io/Radiant-Time-Series-Method/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MANMIN ENGINEERING">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:title" content="RTS-MANMIN 건축물 부하계산서 Ver-5.3.10">
-<meta property="og:description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.10 by MANMIN">
+<meta property="og:title" content="RTS-MANMIN 건축물 부하계산서 Ver-5.3.11">
+<meta property="og:description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.11 by MANMIN">
 <meta property="og:url" content="https://manminkim-eng.github.io/Radiant-Time-Series-Method/">
 <meta property="og:image" content="https://manminkim-eng.github.io/Radiant-Time-Series-Method/og-card.jpg">
 <meta property="og:image:secure_url" content="https://manminkim-eng.github.io/Radiant-Time-Series-Method/og-card.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="RTS-MANMIN 건축물 부하계산서 Ver-5.3.10">
+<meta property="og:image:alt" content="RTS-MANMIN 건축물 부하계산서 Ver-5.3.11">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="RTS-MANMIN 건축물 부하계산서 Ver-5.3.10">
-<meta name="twitter:description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.10 by MANMIN">
+<meta name="twitter:title" content="RTS-MANMIN 건축물 부하계산서 Ver-5.3.11">
+<meta name="twitter:description" content="ASHRAE 2009 RTS법 건축물 냉난방 부하계산 전문 도구 Ver-5.3.11 by MANMIN">
 <meta name="twitter:image" content="https://manminkim-eng.github.io/Radiant-Time-Series-Method/og-card.jpg">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;900&display=swap'); /* v5.1: Orbitron 추가(헤더 각인·인쇄 워터마크 — 소방웹 동일 서체) */
@@ -1093,7 +1093,7 @@
     border-top: 0.3pt solid #aaa; padding-top: 2pt;
   }
   @bottom-right {  /* v5.1 A-2-3: 우하단 버전 워터마크(소방웹 규격) — 문자열은 인쇄 시 RTS_APP_VERSION으로 덮어씀 */
-    content: "RTS-MANMIN Ver-5.3.10";
+    content: "RTS-MANMIN Ver-5.3.11";
     font-family: 'Orbitron', sans-serif;
     font-size: 8pt; font-weight: 700; color: #9ca3af; letter-spacing: 0.08em; white-space: nowrap;
   }
@@ -2517,6 +2517,10 @@ body{background:var(--navy);color:var(--text);}
 #rts-report .ahu-rp .ahu-sub-h{font-size:11px} #rts-report .ahu-rp .ahu-sys-lines{font-size:10px}
 #rts-report table.rp-h24{font-size:11px}   /* 부록 시각별 표(1~12시 / 13~24시 두 단) 9 → 11px */
 @media print{
+  /* 5.3.11 (2026-11-03, §25-6-38) 산출서 구역 외곽 테두리 삭제(MIN 1안) — 구역마다 남색 2px 둥근 테두리 안에 표가 들어 있어 「표 안의 표」로 보이던 것 →
+     인쇄에서만 외곽 테두리 · 둥근 모서리 · 좌우 안쪽 여백을 없애 표가 쪽 폭을 다 씀. 남색 제목 띠 · 표 · 화면은 그대로 */
+  body.rts-report-mode #rts-report .rp-sec{border:0 !important;border-radius:0 !important;margin-bottom:14px}
+  body.rts-report-mode #rts-report .rp-sec-b,body.rts-report-mode #rts-report .rp-room .rp-sec-b{padding:6px 0 0 !important}
   body.rts-report-mode #rts-report .rp-sec.rp-2p,body.rts-report-mode #rts-report .rp-2p .ahu-card{break-inside:auto;page-break-inside:auto}
   /* 실별 상세 카드: 글자를 키우면 쪽당 1실로 밀려 쪽 수가 크게 늘어나므로 카드는 이어 찍고, 산출표·원장 표는 통째로(종전 규칙) 유지 */
   body.rts-report-mode #rts-report .rp-sec.rp-room{break-inside:auto;page-break-inside:auto}
@@ -2882,7 +2886,7 @@ body{background:var(--navy);color:var(--text);}
         <h1 class="hdr-h1">RTS-MANMIN 건축물 부하계산서</h1>
         <div class="hdr-sub">
           냉난방 부하 · 조닝·장비 · 건물 집계 · A4 / Excel 산출 &nbsp;·&nbsp; <span id="hdr-designer-line">설계자: 김만민 | 만민 건축사 신사옥 신축공사</span>
-          <span class="hdr-manmin">MANMIN · Ver-5.3.10</span>
+          <span class="hdr-manmin">MANMIN · Ver-5.3.11</span>
         </div>
       </div>
     </div>
@@ -3063,7 +3067,7 @@ body{background:var(--navy);color:var(--text);}
           <tr><td class="ci-label">검  토  자</td><td class="ci-value" id="cov-reviewer"></td></tr>
           <tr><td class="ci-label">계  산  일</td><td class="ci-value" id="cov-date"></td></tr>
           <tr><td class="ci-label">계 산 방 법</td><td class="ci-value">RTS Method · ASHRAE Fundamentals 2009</td></tr>
-          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value" id="cov-software">RTS-MANMIN Ver-5.3.10</td></tr>
+          <tr><td class="ci-label">S O F T W A R E</td><td class="ci-value" id="cov-software">RTS-MANMIN Ver-5.3.11</td></tr>
         </table>
         <!-- 하단 기준 고시 -->
         <div class="cover-footer-box">
@@ -3091,7 +3095,7 @@ body{background:var(--navy);color:var(--text);}
       <!-- 인쇄용 문서 헤더 (화면에서는 숨김) -->
       <div class="print-page-header" style="display:none">
         <div>
-          <div class="print-page-header-title" id="print-title">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10</div>
+          <div class="print-page-header-title" id="print-title">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11</div>
           <div style="font-size:7pt;color:#333;margin-top:2pt;" id="print-subtitle">만민 건축사 신사옥 신축공사 &nbsp;|&nbsp; 설계자: 김만민 &nbsp;|&nbsp; RTS법 (ASHRAE 2009)</div>
         </div>
         <div style="text-align:right;font-size:7pt;color:#555;" id="print-date"></div>
@@ -3324,7 +3328,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 0</span>
     </div>
 </div>
@@ -3334,7 +3338,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-w"></span>
         <span class="sh-title">SHEET 1 · 설계 외기 조건 및 기상 데이터</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-w"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-w"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🌡️ 설계 외기 조건 및 기상 데이터 <span class="stag">SHEET 1</span></div>
@@ -3455,7 +3459,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 1</span>
     </div>
 </div>
@@ -3466,7 +3470,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-r"></span>
         <span class="sh-title">SHEET 2 · 실별 기본 데이터 입력</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-r"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-r"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🏢 실별 기본 데이터 입력 <span class="stag">SHEET 2</span></div>
@@ -3601,7 +3605,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 2</span>
     </div>
 </div>
@@ -3611,10 +3615,10 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-z"></span>
         <span class="sh-title">SHEET 2-1 · 조닝 · 장비 배정 및 장비별 부하 집계</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-z"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-z"></span></span>
       </div>
       <div class="section-header">
-        <div class="section-title">🗂️ 조닝 · 장비 배정 (Zoning &amp; Equipment) <span class="stag">Ver-5.3.10</span></div>
+        <div class="section-title">🗂️ 조닝 · 장비 배정 (Zoning &amp; Equipment) <span class="stag">Ver-5.3.11</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-secondary btn-sm" onclick="addEquipment()">+ 장비 추가</button>
           <button class="btn btn-secondary btn-sm" onclick="autoGenEquipFromRooms()" title="실 목록의 AHU No. 고유값으로 장비 자동 등록">⚡ 실 AHU값 자동 생성</button>
@@ -3773,7 +3777,7 @@ body{background:var(--navy);color:var(--text);}
 
       <!-- 인쇄용 하단 푸터 -->
       <div class="print-sheet-footer no-print-hide" style="display:none">
-        <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+        <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
         <span class="sf-right">SHEET 2-1</span>
       </div>
     </div>
@@ -3783,7 +3787,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-e"></span>
         <span class="sh-title">SHEET 3 · 외부 열취득 (External Heat Gain)</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-e"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-e"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🌞 외부 열취득 (External Heat Gain) <span class="stag">SHEET 3</span></div>
@@ -3879,7 +3883,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 3</span>
     </div>
 </div>
@@ -3889,7 +3893,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-i"></span>
         <span class="sh-title">SHEET 4 · 내부 열취득 (Internal Heat Gain)</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-i"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-i"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">💡 내부 열취득 (Internal Heat Gain) <span class="stag">SHEET 4</span></div>
@@ -4125,7 +4129,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 4</span>
     </div>
 </div>
@@ -4135,7 +4139,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-rts"></span>
         <span class="sh-title">SHEET 5 · CTS / RTS 계수</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-rts"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-rts"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">📊 CTS / RTS 계수 (Conduction & Radiant Time Series) <span class="stag">ASHRAE 2009</span></div>
@@ -4156,7 +4160,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 5</span>
     </div>
 </div>
@@ -4166,7 +4170,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-res"></span>
         <span class="sh-title">SHEET 6 · 냉난방 부하 계산 결과</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-res"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-res"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">📈 냉난방 부하 계산 결과 <span class="stag">SHEET 6</span></div>
@@ -4273,7 +4277,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 6</span>
     </div>
 </div>
@@ -4283,7 +4287,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-ahu"></span>
         <span class="sh-title">SHEET 7 · AHU / FCU 선정</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-ahu"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-ahu"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">⚙️ AHU 선정 (AHU Load · Air Volume · System · Selection) <span class="stag">SHEET 7</span></div>
@@ -4340,7 +4344,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 7</span>
     </div>
 </div>
@@ -4350,7 +4354,7 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-bld"></span>
         <span class="sh-title">SHEET 8 · 건물 부하 집계</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-bld"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-bld"></span></span>
       </div>
       <div class="section-header">
         <div class="section-title">🏗️ 건물 부하 집계 (Building Load Summary) <span class="stag">SHEET 8</span></div>
@@ -4406,7 +4410,7 @@ body{background:var(--navy);color:var(--text);}
     
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET 8</span>
     </div>
 </div>
@@ -4417,10 +4421,10 @@ body{background:var(--navy);color:var(--text);}
       <div class="print-sheet-header no-print-hide" style="display:none">
         <span class="sh-project" id="sh-pname-uval"></span>
         <span class="sh-title">SHEET 1-2 · T.D &amp; Glass / Wall / Roof Data</span>
-        <span class="sh-meta">RTS-MANMIN Ver-5.3.10 &nbsp;|&nbsp; <span id="sh-date-uval"></span></span>
+        <span class="sh-meta">RTS-MANMIN Ver-5.3.11 &nbsp;|&nbsp; <span id="sh-date-uval"></span></span>
       </div>
       <div class="section-header">
-        <div class="section-title">🧱 부위별 열관류율 검토 연계 <span class="stag">RTS-MANMIN Ver-5.3.10</span></div>
+        <div class="section-title">🧱 부위별 열관류율 검토 연계 <span class="stag">RTS-MANMIN Ver-5.3.11</span></div>
         <div style="display:flex;gap:8px;align-items:center">
           <button class="btn btn-primary btn-sm" onclick="loadAndRenderUvalData()" style="background:linear-gradient(135deg,#059669,#065f46);border:none;">
             🔄 전송 데이터 불러오기
@@ -4462,7 +4466,7 @@ body{background:var(--navy);color:var(--text);}
           <div style="flex:1;min-width:0;">
             <div class="ub-title" style="color:#fff;font-size:14px;font-weight:900;margin-bottom:3px;display:flex;align-items:center;gap:8px;">
               열관류율 종합 검토 시스템
-              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:11px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.10</span>
+              <span style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-size:11px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.11</span>
             </div>
             <div class="ub-sub" style="color:#a7f3d0;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호</div>
           </div>
@@ -4626,7 +4630,7 @@ body{background:var(--navy);color:var(--text);}
     <span id="status-rooms">실 수: 0</span>
     <span id="status-cool">냉방: 0 kW</span>
     <span id="status-heat">난방: 0 kW</span>
-    <span style="color:var(--text2)">© RTS-MANMIN 부하계산 WAP &nbsp;|&nbsp; <span style="color:rgba(147,197,253,0.8);font-weight:700;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.10</span></span>
+    <span style="color:var(--text2)">© RTS-MANMIN 부하계산 WAP &nbsp;|&nbsp; <span style="color:rgba(147,197,253,0.8);font-weight:700;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.11</span></span>
   </div>
 </div>
 
@@ -5017,7 +5021,7 @@ function renderUvalReceived(list) {
   <!-- 1-2 시트 헤더 (성락교회 PDF 형식) -->
   <div style="background:var(--cell-bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--text2);">
     <strong style="color:var(--accent);font-size:11px;">□ 1-2. T.D &amp; Glass / Wall / Roof Data</strong>
-    <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.10</span>
+    <span style="margin-left:12px;font-family:'JetBrains Mono',monospace;">RTS-MANMIN Ver-5.3.11</span>
   </div>`;
 
   /* 부위 순서: Wall → Roof → Floor → Glass */
@@ -8416,7 +8420,7 @@ function restoreProjectData(data) {
   const name     = document.getElementById('p-name')?.value     || '';
   const designer = document.getElementById('p-designer')?.value || '';
   setEl('status-project', `${name} | ${designer}`);
-  document.title = `RTS-MANMIN Ver-5.3.10 | ${name}`;
+  document.title = `RTS-MANMIN Ver-5.3.11 | ${name}`;
   syncHeader();
   /* 기상 + 전체 재계산 */
   if (typeof calcWeather === 'function') calcWeather();
@@ -8430,7 +8434,7 @@ function saveProjectFile() {
   const name     = document.getElementById('p-name')?.value     || '만민 건축사 신사옥 신축공사';
   const designer = document.getElementById('p-designer')?.value || '김만민';
   setEl('status-project', `${name} | ${designer}`);
-  document.title = `RTS-MANMIN Ver-5.3.10 | ${name}`;
+  document.title = `RTS-MANMIN Ver-5.3.11 | ${name}`;
   syncHeader();
 
   const data    = collectProjectData();
@@ -9299,7 +9303,7 @@ function openRtsManual(e){
   }
   return true;
 }
-const RTS_APP_VERSION = 'Ver-5.3.10';   /* 5.3.10(2026-11-03, §25-6-37): 5.3.3~5.3.9 동안 'Ver-5.3.2' 로 멈춰 있던 화면 · 산출서 · 바닥글 판 표기를 배포 판에 맞춤. C-2: 헤더 각인·표지·워터마크·.rts 저장·README와 한 쌍 (sw.js CACHE rts-v5.3.2 — 5.3.0 AHU 선정 · 5.3.1 보강 1~8 · 5.3.2 AHU 선정서 A4 출력) */
+const RTS_APP_VERSION = 'Ver-5.3.11';   /* 5.3.11(2026-11-03, §25-6-38): 산출서 구역 외곽 테두리 인쇄 삭제. 5.3.10(2026-11-03, §25-6-37): 5.3.3~5.3.9 동안 'Ver-5.3.2' 로 멈춰 있던 화면 · 산출서 · 바닥글 판 표기를 배포 판에 맞춤. C-2: 헤더 각인·표지·워터마크·.rts 저장·README와 한 쌍 (sw.js CACHE rts-v5.3.2 — 5.3.0 AHU 선정 · 5.3.1 보강 1~8 · 5.3.2 AHU 선정서 A4 출력) */
 const RTS_LEGAL = {
   notice:    '건축물 에너지절약설계기준 · 국토교통부고시 제2026-360호',
   effective: '2026. 7. 8.',
@@ -9429,7 +9433,7 @@ function _exportReportRun(mode) {
     el._printOrigHTML = el._printOrigHTML || el.innerHTML;
   });
   const ptEl = document.getElementById('print-title');
-  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver-5.3.10'; }
+  if(ptEl) { ptEl.removeAttribute('style'); ptEl.textContent = 'RTS-MANMIN 건축물 부하계산서 Ver-5.3.11'; }
   const psEl = document.getElementById('print-subtitle');
   if(psEl) psEl.textContent = pname + ' | 설계자: ' + des + ' | ASHRAE 2009 RTS법';
 
@@ -9758,7 +9762,7 @@ function exportExcel() {
     for (let i=0; i<6; i++) { ws[XLSX.utils.encode_cell({r,c:0})] = {v:'',t:'s'}; r++; }
 
     // 메인 제목
-    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver-5.3.10', t:'s',
+    ws[XLSX.utils.encode_cell({r,c:1})] = { v:'RTS-MANMIN 건축물 부하계산서 Ver-5.3.11', t:'s',
       s: S({ bold:true, bg:'0A3A6B', color:'FFFFFF', sz:16, align:'center' }) };
     mergeCells(ws, [[r,1,r,6]]);
     r++;
@@ -10968,7 +10972,7 @@ window.addEventListener('appinstalled', () => {
     <div style="font-size:11px;color:rgba(110,231,183,.6);margin-top:1px;">${payload.projectName || ''}</div>
     <!-- 인쇄용 하단 푸터 -->
     <div class="print-sheet-footer no-print-hide" style="display:none">
-      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.10  ·  ASHRAE 2009 RTS법</span>
+      <span class="sf-left">RTS-MANMIN 건축물 부하계산서 Ver-5.3.11  ·  ASHRAE 2009 RTS법</span>
       <span class="sf-right">SHEET U</span>
     </div>
 
