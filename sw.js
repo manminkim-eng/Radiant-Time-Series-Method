@@ -24,7 +24,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE = 'rts-v5.3.11';   /* 2026-11-03 산출서 구역 외곽 테두리 인쇄 삭제(§25-6-38) (종전 5.3.10 판 표기 정정) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
+const CACHE = 'rts-v5.3.12';   /* 2026-11-04 Ⅱ 실별 입력 표 잘림 · 소수 자릿수 정리(§25-6-41) (종전 5.3.11 외곽 테두리 삭제) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
 const ASSETS = [
   './',
   './index.html',
