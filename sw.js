@@ -24,7 +24,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE = 'rts-v5.3.14';   /* 2026-11-04 목록 구역 쪽 나눔 허용(§25-6-41) (종전 5.3.12 Ⅱ 표 잘림 · 자릿수) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
+const CACHE = 'rts-v5.3.14';   /* 2026-11-08 공통 인쇄 원본 v1.0 · 매뉴얼 이미지 교체(§25-6-49) (종전 5.3.13 목록 구역 쪽 나눔) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
 const ASSETS = [
   './',
   './index.html',
