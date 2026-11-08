@@ -3,7 +3,7 @@
 // 예제 = manual/sample/manual_example_6rooms.rts (6실 · AHU 2대) 를 restoreProjectData 로 넣고 calcAll() 뒤 캡처
 // clip 종류: 'viewport' · 'panel'(머리 고정 영역 아래 본문 1220×658, scroll 요소를 위에 맞춤) · CSS/찾기 선택자(요소 자체, maxH 로 자름)
 // 찾기 선택자: 'txt:<범위>|<글자>'(범위 안에서 글자로 시작하는 가장 작은 요소) · 'up:<선택자>|<조상>'(가장 가까운 조상) · 'lbl:<입력 id>'(입력 칸이 든 줄) · 'nth:<선택자>|<i>' · 일반 CSS
-const {chromium}=require('playwright');const fs=require('fs');const path=require('path');const {setup,server}=require('./serve');
+const {chromium}=require(process.env.MM_PW||'playwright');const fs=require('fs');const path=require('path');const {setup,server}=require('./serve');
 const repo=path.resolve(process.argv[2]),out=path.resolve(process.argv[3]);fs.mkdirSync(out,{recursive:true});
 const VW=1440,VH=900,DSF=1.25,PORT=8894;
 const EX=JSON.parse(fs.readFileSync(path.join(repo,'manual/sample/manual_example_6rooms.rts'),'utf8'));
@@ -38,6 +38,8 @@ const SHOTS=[
  {id:'s20_report',tab:'tab-report',clip:'viewport',m:[['#rp-status','조립 상태'],['#rts-report','A4 미리보기']]},
  {id:'s20_1_report_ahu',tab:'tab-report',clip:'up:txt:#rts-report .rp-sec-h|Ⅴ-4|.rp-sec',m:[]},
  {id:'s21_formula',tab:'tab-project',clip:'viewport',pre:"openFormulaModal()",post:"closeFormulaModal()",m:[]},
+ {id:'s25_proj_menu',tab:'tab-project',fab:true,clip:'viewport',pre:"localStorage.setItem('MANMIN_PROJECT_V1',JSON.stringify({\"사업명\": \"만민 건축사 신사옥 신축공사\", \"작성자\": \"김만민 건축사\", \"연면적\": \"12800\", \"지상층\": \"15\", \"updated\": \"2026-11-08 10:00\", \"from\": \"열관류율\"}));document.querySelector('.mm-proj-btn').click()",post:"document.querySelectorAll('.mm-proj-menu').forEach(e=>e.remove())",m:[[".mm-proj-btn", "「🏢 건물개요」 단추(오른쪽 아래)"], [".mm-proj-menu button[data-a=\"save\"]", "저장 — 지금 값 담기"], [".mm-proj-menu button[data-a=\"load\"]", "불러오기"], [".mm-proj-menu button[data-a=\"exp\"]", "파일로 내보내기(.json)"], [".mm-proj-menu button[data-a=\"imp\"]", "파일 가져오기"]]},
+ {id:'s26_proj_load',tab:'tab-project',clip:'.mm-proj-dlg',pre:"(()=>{const e=MMProject.fields('사업명')[0];if(e){const d=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value');d.set.call(e,'');e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}localStorage.setItem('MANMIN_PROJECT_V1',JSON.stringify({\"사업명\": \"만민 건축사 신사옥 신축공사\", \"작성자\": \"김만민 건축사\", \"연면적\": \"12800\", \"지상층\": \"15\", \"updated\": \"2026-11-08 10:00\", \"from\": \"열관류율\"}));MMProject.load();})()",post:"document.querySelectorAll('.mm-proj-back').forEach(e=>e.remove())",m:[[".mm-proj-dlg input[type=checkbox]", "체크한 항목만 채움(빈 칸은 체크된 채로)"], [".mm-proj-dlg .mm-proj-warn", "이미 입력된 칸 — 직접 체크해야 덮어씀"], [".mm-proj-dlg .mm-proj-ok", "채우기"]]},
 ];
 (async()=>{
  const s=await server(repo,PORT);const b=await chromium.launch();const meta={};const errs=[];

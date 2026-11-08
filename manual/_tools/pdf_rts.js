@@ -1,5 +1,5 @@
 // RTS 매뉴얼 A4 PDF (EPI pdf_epi.js 와 같음 — 꼬리말 제목 · 쪽 번호) — usage: node pdf_rts.js <manual 폴더> <파일명.pdf> "<푸터 제목>"
-const {chromium}=require('playwright');const path=require('path');const fs=require('fs');const {setup,server}=require('./serve');
+const {chromium}=require(process.env.MM_PW||'playwright');const path=require('path');const fs=require('fs');const {setup,server}=require('./serve');
 (async()=>{const M=path.resolve(process.argv[2]),name=process.argv[3],foot=process.argv[4];
  const repo=path.resolve(M,'..');const s=await server(repo,8896);const b=await chromium.launch();
  const ctx=await b.newContext();await setup(ctx,repo);const p=await ctx.newPage();
