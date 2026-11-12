@@ -1,5 +1,10 @@
 # RTS-MANMIN 건축물 부하계산서 · MANMIN Ver-5.0 — 디자인 통일 회차 (2026-09-05)
 
+## v6.1.4 (2026-11-12) — html2canvas SRI(정밀검토 B8)
+
+- html2canvas 1.4.1 머리 태그 SRI(integrity sha384 · crossorigin) · 공통 인쇄 원본 MM-PRINT v1.0 → v1.1(지연 로더도 SRI)(정밀검토 B8 · html2canvas SRI) — 화면 · 계산 · 인쇄 불변 · 작업지시서 §25-6-87.
+- sw 캐시명 v6.1.4 · MM-PROJECT 구간 · 사용자 매뉴얼 변경 없음.
+
 ## v6.1.3 (2026-11-12) — CDN 판 통일 · SRI(정밀검토 C2)
 
 - Pretendard CSS · SheetJS xlsx 0.18.5 SRI(integrity)(정밀검토 C2) — 화면 · 계산 · 인쇄 불변 · 작업지시서 §25-6-82.
