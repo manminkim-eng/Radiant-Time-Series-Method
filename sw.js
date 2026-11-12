@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════
+   v6.1.2 (2026-11-12) — 건물개요 공통 원본 MM-PROJECT v1.2 → v1.3(불러오기 창 표 칸 모양 고정 — 도구 CSS 가 새지 않음 · 저장값 같음, 정밀검토 C10) · 작업지시서 §25-6-80 · 판 6.1 · 캐시명 v6.1.2 (종전 v6.1.1)
    v6.1.1 (2026-11-12) — 건물개요 공통 원본 MM-PROJECT v1.0 → v1.2(불러오기 창 칸 줄바꿈 · 저장값 같음, 정밀검토 B5 · 작업지시서 §25-6-76) · 캐시명 v6.1.1 (종전 rts-v6.1.0)
    RTS-MANMIN — 건축물 부하계산서(RTS법)  MANMIN Ver-6.1.1
    Service Worker — 오프라인 캐시 + 버전 업데이트 · ARCHITECT KIM MANMIN
@@ -25,7 +26,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE = 'rts-v6.1.1';   /* 2026-11-12 v6.1.0 기준 U값 참조표 바닥 행 별표1 구분 표기(정밀검토 B13) (종전 rts-v5.3.15) */   /* 2026-11-08 건물개요 저장 · 불러오기 MM-PROJECT v1.0(§25-6-50) (종전 5.3.14 공통 인쇄 원본 v1.0) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
+const CACHE = 'rts-v6.1.2';   /* 2026-11-12 v6.1.0 기준 U값 참조표 바닥 행 별표1 구분 표기(정밀검토 B13) (종전 rts-v5.3.15) */   /* 2026-11-08 건물개요 저장 · 불러오기 MM-PROJECT v1.0(§25-6-50) (종전 5.3.14 공통 인쇄 원본 v1.0) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
 const ASSETS = [
   './',
   './index.html',
