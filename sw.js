@@ -1,9 +1,10 @@
 /* ═══════════════════════════════════════════════════
+   v6.1.5 (2026-11-24) — 기계 3차 교차검증 반영: RTS Zone · 복사비율 칸 잠금(Zone 8 고정) · 산출서 외기 출처 연동 · 수식 모달 외기 표 별표7 · 0/빈 값 처리(입력 검증 차단) · 근거 인용 보강 · 판 표기 Ver-6.1.5 · 캐시명 v6.1.5 (종전 v6.1.4)
    v6.1.4 (2026-11-12) — html2canvas 1.4.1 머리 태그 SRI(integrity sha384 · crossorigin) · 공통 인쇄 원본 MM-PRINT v1.0 → v1.1(지연 로더도 SRI)(정밀검토 B8 · html2canvas SRI) — 화면 · 계산 · 인쇄 불변 · 작업지시서 §25-6-87 · 캐시명 v6.1.4 (종전 v6.1.3)
    v6.1.3 (2026-11-12) — Pretendard CSS · SheetJS xlsx 0.18.5 SRI(integrity)(정밀검토 C2) — 화면 · 계산 · 인쇄 불변 · 작업지시서 §25-6-82 · 캐시명 v6.1.3 (종전 v6.1.2)
    v6.1.2 (2026-11-12) — 건물개요 공통 원본 MM-PROJECT v1.2 → v1.3(불러오기 창 표 칸 모양 고정 — 도구 CSS 가 새지 않음 · 저장값 같음, 정밀검토 C10) · 작업지시서 §25-6-80 · 판 6.1 · 캐시명 v6.1.2 (종전 v6.1.1)
    v6.1.1 (2026-11-12) — 건물개요 공통 원본 MM-PROJECT v1.0 → v1.2(불러오기 창 칸 줄바꿈 · 저장값 같음, 정밀검토 B5 · 작업지시서 §25-6-76) · 캐시명 v6.1.1 (종전 rts-v6.1.0)
-   RTS-MANMIN — 건축물 부하계산서(RTS법)  MANMIN Ver-6.1.1
+   RTS-MANMIN — 건축물 부하계산서(RTS법)  MANMIN Ver-6.1.5
    Service Worker — 오프라인 캐시 + 버전 업데이트 · ARCHITECT KIM MANMIN
    기준: 지시서 v3 §11-3 · §17-1 · §21-1 R3·R19·R25 (2026-09-05 스킬 v5.0)
    v5.0.0 (2026-09-05) — v4.3.0 sw(문서 Cache-first · 전 origin 캐시 삭제 · addAll)를 규격으로 전면 교체
@@ -28,7 +29,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE = 'rts-v6.1.4';   /* 2026-11-12 v6.1.0 기준 U값 참조표 바닥 행 별표1 구분 표기(정밀검토 B13) (종전 rts-v5.3.15) */   /* 2026-11-08 건물개요 저장 · 불러오기 MM-PROJECT v1.0(§25-6-50) (종전 5.3.14 공통 인쇄 원본 v1.0) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
+const CACHE = 'rts-v6.1.5';   /* 2026-11-12 v6.1.0 기준 U값 참조표 바닥 행 별표1 구분 표기(정밀검토 B13) (종전 rts-v5.3.15) */   /* 2026-11-08 건물개요 저장 · 불러오기 MM-PROJECT v1.0(§25-6-50) (종전 5.3.14 공통 인쇄 원본 v1.0) */   /* index.html 을 고칠 때마다 +0.0.1 (§11-3) */
 const ASSETS = [
   './',
   './index.html',
