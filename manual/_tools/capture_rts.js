@@ -5,7 +5,7 @@
 // 찾기 선택자: 'txt:<범위>|<글자>'(범위 안에서 글자로 시작하는 가장 작은 요소) · 'up:<선택자>|<조상>'(가장 가까운 조상) · 'lbl:<입력 id>'(입력 칸이 든 줄) · 'nth:<선택자>|<i>' · 일반 CSS
 const {chromium}=require(process.env.MM_PW||'playwright');const fs=require('fs');const path=require('path');const {setup,server}=require('./serve');
 const repo=path.resolve(process.argv[2]),out=path.resolve(process.argv[3]);fs.mkdirSync(out,{recursive:true});
-const VW=1440,VH=900,DSF=1.25,PORT=8894;
+const VW=1440,VH=900,DSF=1.25,PORT=+(process.env.MM_PORT||8894);   /* 동시 작업 때 포트 배정(MM_PORT) — 2026-11-24 */
 const EX=JSON.parse(fs.readFileSync(path.join(repo,'manual/sample/manual_example_6rooms.rts'),'utf8'));
 const HIDE="#rts-toast{display:none!important} *{animation:none!important;transition:none!important;caret-color:transparent!important}";
 const NOFAB=".formula-fab{display:none!important}";
@@ -14,8 +14,8 @@ const tab=t=>`showTab('${t}');${t==='tab-zoning'?'renderZoningAll();':''}${t==='
 const SHOTS=[
  {id:'s01_overview',tab:'tab-project',clip:'viewport',fab:true,m:[['.hdr-btns','헤더 버튼'],['.nav-tabs .tab-bar-inner','작업 탭'],['.sum-bar','요약 스트립'],['.sidebar .sidebar-title','계산 단계 메뉴']]},
  {id:'s02_hdrbtns',tab:'tab-project',clip:'.hdr-btns',pad:6,bar:true,m:[['txt:.hdr-btns|💾','저장'],['txt:.hdr-btns|📂','불러오기'],['txt:.hdr-btns|🔄','전체 계산'],['txt:.hdr-btns|🖨️','A4 출력'],['txt:.hdr-btns|📄','PDF 저장'],['.hdr-btns .btn-uval','열관류율'],['.hdr-btns .btn-manual','매뉴얼']]},
- {id:'s03_project',tab:'tab-project',clip:'panel',m:[['lbl:p-name','프로젝트명'],['lbl:p-city','지역'],['lbl:p-lat','위도'],['lbl:p-cool-month','냉방 계산월'],['lbl:p-sf','안전율']]},
- {id:'s04_weather',tab:'tab-weather',clip:'panel',m:[['lbl:w-summer-db','냉방 DB'],['lbl:w-summer-wb','냉방 WB'],['lbl:w-dr','일교차'],['lbl:w-winter-db','난방 외기'],['lbl:w-indoor-cool','실내 냉방'],['lbl:p-ho','ho']]},
+ {id:'s03_project',tab:'tab-project',clip:'panel',m:[['lbl:p-name','프로젝트명'],['lbl:p-city','지역'],['lbl:p-lat','위도'],['lbl:p-cool-month','냉방 계산월'],['lbl:p-sf','안전율'],['#rts-fixed-note','Zone 8 고정 안내']]},
+ {id:'s04_weather',tab:'tab-weather',clip:'panel',m:[['lbl:w-summer-db','냉방 DB'],['lbl:w-summer-wb','냉방 WB'],['lbl:w-dr','일교차'],['lbl:w-winter-db','난방 외기'],['lbl:w-indoor-cool','실내 냉방'],['lbl:p-ho','ho'],['#indoor-basis-note','설계 조건 근거']]},
  {id:'s05_hourlytemp',tab:'tab-weather',clip:'up:#tbl-hourly-temp|div',pad:0,m:[]},
  {id:'s06_rooms',tab:'tab-room',clip:'#tab-room',m:[['txt:#tab-room|+ 실 추가','실 추가'],['txt:#tab-room|📥','가져오기'],['#tbl-rooms','실 목록']]},
  {id:'s07_modal_internal',tab:'tab-room',clip:'viewport',pre:"openRoomModal(0)",post:"closeRoomModal()",m:[['txt:#modal-room-body|안전율','실별 안전율'],['txt:#modal-room-body|RTS Zone','RTS Zone'],['txt:#modal-room-body|국소배기 용도','국소배기'],['txt:#modal-room-body|양압','양압'],['txt:#modal-room-body|환기(RA)','RA 없음'],['txt:#modal-room-body|조명→천장','조명→천장속']]},
@@ -23,7 +23,8 @@ const SHOTS=[
  {id:'s09_modal_wall',tab:'tab-room',clip:'viewport',pre:"openRoomModal(3);_switchTab('wall')",post:"closeRoomModal()",m:[['txt:#modal-room-body|+ 외벽','외벽 추가'],['txt:#modal-room-body|+ 지붕','지붕 추가'],['txt:#modal-room-body|+ 바닥','바닥/지중']]},
  {id:'s10_import',tab:'tab-room',clip:'viewport',pre:"openRoomImport()",post:"document.getElementById('_ri-modal')?.remove()",m:[]},
  {id:'s17_validation',tab:'tab-result',clip:'viewport',pre:"void showValidationReport(null,{force:true})",post:"document.getElementById('_rts-val-modal')?.remove()",m:[]},
- {id:'s11_zoning',tab:'tab-zoning',clip:'panel',m:[['txt:#tab-zoning|+ 장비 추가','장비 추가']]},
+ {id:'s27_val_block',tab:'tab-result',clip:'#_rts-val-modal .formula-modal',pad:8,pre:"window.__a0=rooms[0].area;rooms[0].area=-400;void showValidationReport(validateInputs())",post:"document.getElementById('_rts-val-modal')?.remove();rooms[0].area=window.__a0;calcAll()",m:[['txt:#_rts-val-modal td|차단','차단 항목'],['txt:#_rts-val-modal div|⛔','차단 안내'],['txt:#_rts-val-modal button|닫고','닫고 수정']]},   /* v6.1.5 입력 검증 「차단」 */
+ {id:'s11_zoning',tab:'tab-zoning',clip:'panel',m:[['txt:#tab-zoning|+ 장비 추가','장비 추가'],['txt:#tab-zoning div|📌 외기량','외기량 29 근거']]},
  {id:'s12_equip',tab:'tab-zoning',pre:"calcEquipLoads()",clip:'#equip-result-wrap',m:[]},
  {id:'s13_external',tab:'tab-external',clip:'panel',m:[['#ext-rooms-note','합산 안내']]},
  {id:'s14_internal',tab:'tab-internal',clip:'#tab-internal',maxH:1000,m:[]},
@@ -37,7 +38,9 @@ const SHOTS=[
  {id:'s19_building',tab:'tab-building',clip:'#tab-building',m:[]},
  {id:'s20_report',tab:'tab-report',clip:'viewport',m:[['#rp-status','조립 상태'],['#rts-report','A4 미리보기']]},
  {id:'s20_1_report_ahu',tab:'tab-report',clip:'up:txt:#rts-report .rp-sec-h|Ⅴ-4|.rp-sec',m:[]},
+ {id:'s20_2_report_cond',tab:'tab-report',clip:'up:txt:#rts-report .rp-sec-h|Ⅰ|.rp-sec',maxH:760,m:[['txt:#rts-report td|에너지절약설계기준 별표7','외기 출처']]},   /* v6.1.5 산출서 Ⅰ 외기 출처 연동 */
  {id:'s21_formula',tab:'tab-project',clip:'viewport',pre:"openFormulaModal()",post:"closeFormulaModal()",m:[]},
+ {id:'s21b_formula_city',tab:'tab-project',clip:'viewport',pre:"openFormulaModal();switchFmTab('fm-code');(()=>{const e=[...document.querySelectorAll('#fm-code div')].filter(d=>d.textContent.trim().startsWith('📌 별표1 비고')).sort((a,b)=>a.textContent.length-b.textContent.length)[0];e.scrollIntoView({block:'start'});let p=e.parentElement;while(p&&p.scrollHeight<=p.clientHeight+2)p=p.parentElement;if(p)p.scrollTop-=14;})()",post:"switchFmTab('fm-work');closeFormulaModal()",m:[['txt:#fm-code div|📌 별표1 비고','지역 구분(별표1 비고)'],['txt:#fm-code .fm-section-title|🌡️ 도시별','별표7 17개 도시 표']]},   /* v6.1.5 안내창 외기 표 = 별표7 */
  {id:'s25_proj_menu',tab:'tab-project',fab:true,clip:'viewport',pre:"localStorage.setItem('MANMIN_PROJECT_V1',JSON.stringify({\"사업명\": \"만민 건축사 신사옥 신축공사\", \"작성자\": \"김만민 건축사\", \"연면적\": \"12800\", \"지상층\": \"15\", \"updated\": \"2026-11-08 10:00\", \"from\": \"열관류율\"}));document.querySelector('.mm-proj-btn').click()",post:"document.querySelectorAll('.mm-proj-menu').forEach(e=>e.remove())",m:[[".mm-proj-btn", "「🏢 건물개요」 단추(오른쪽 아래)"], [".mm-proj-menu button[data-a=\"save\"]", "저장 — 지금 값 담기"], [".mm-proj-menu button[data-a=\"load\"]", "불러오기"], [".mm-proj-menu button[data-a=\"exp\"]", "파일로 내보내기(.json)"], [".mm-proj-menu button[data-a=\"imp\"]", "파일 가져오기"]]},
  {id:'s26_proj_load',tab:'tab-project',clip:'.mm-proj-dlg',pre:"(()=>{const e=MMProject.fields('사업명')[0];if(e){const d=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value');d.set.call(e,'');e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}localStorage.setItem('MANMIN_PROJECT_V1',JSON.stringify({\"사업명\": \"만민 건축사 신사옥 신축공사\", \"작성자\": \"김만민 건축사\", \"연면적\": \"12800\", \"지상층\": \"15\", \"updated\": \"2026-11-08 10:00\", \"from\": \"열관류율\"}));MMProject.load();})()",post:"document.querySelectorAll('.mm-proj-back').forEach(e=>e.remove())",m:[[".mm-proj-dlg input[type=checkbox]", "체크한 항목만 채움(빈 칸은 체크된 채로)"], [".mm-proj-dlg .mm-proj-warn", "이미 입력된 칸 — 직접 체크해야 덮어씀"], [".mm-proj-dlg .mm-proj-ok", "채우기"]]},
 ];
